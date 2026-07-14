@@ -13,7 +13,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_DIR = ROOT / "artifacts"
-CONFIG_PATH = ROOT / "configs" / "faro_paper_a_reproducibility.json"
+CONFIG_PATH = ROOT / "configs" / "vera_reproducibility.json"
 CHECKLIST_PATH = ROOT / "maintrack" / "REPRODUCIBILITY_CHECKLIST.md"
 DEFAULT_JSON = ARTIFACT_DIR / "reproducibility_packet_audit.json"
 DEFAULT_MD = ARTIFACT_DIR / "reproducibility_packet_audit.md"
@@ -148,11 +148,13 @@ def main() -> None:
         if isinstance(command, dict)
     }
     required_command_keys = {
-        "benchmark_claim_audit",
-        "maintrack_figures",
-        "maintrack_readiness",
-        "adversarial_internal_review",
-        "manuscript_compile",
+        "official_receipt_audit",
+        "exact_balanced_audit",
+        "exact_family_grid_audit",
+        "confirmatory_raw_audit",
+        "compact_reproduction",
+        "presentation_audit",
+        "claim_ledger_audit",
     }
     all_command_refs_ok = all(
         isinstance(command, dict) and command_has_existing_references(command)
@@ -210,14 +212,14 @@ def main() -> None:
             status=status(bool(manifest)),
             evidence=f"path={CONFIG_PATH}; exists={bool_word(CONFIG_PATH.exists())}",
             requirement="A machine-readable reproducibility manifest must exist.",
-            next_step="Create `research/configs/faro_paper_a_reproducibility.json`.",
+            next_step="Create `research/configs/vera_reproducibility.json`.",
         ),
         Check(
             key="checklist_present",
             status=status(
                 CHECKLIST_PATH.exists()
-                and "Reproduction Commands" in checklist_text
-                and "Pre-Submission Checklist" in checklist_text
+                and "## Reproduction" in checklist_text
+                and "## Final Human Gates" in checklist_text
             ),
             evidence=f"path={CHECKLIST_PATH}; exists={bool_word(CHECKLIST_PATH.exists())}",
             requirement="A human-readable reproducibility checklist must exist.",
@@ -226,18 +228,20 @@ def main() -> None:
         Check(
             key="seed_policy_locked",
             status=status(
-                seed_policy.get("official_seed_list") == [0, 1, 2, 3, 4]
-                and int(seed_policy.get("minimum_official_seeds", 0)) == 5
+                seed_policy.get("pilot_seed_list") == [0, 1, 2, 3, 4]
+                and seed_policy.get("confirmatory_seed_list") == [5, 6, 7, 8, 9, 10, 11, 12]
+                and int(seed_policy.get("minimum_confirmatory_seeds", 0)) == 8
                 and abs(float(seed_policy.get("confidence_level", 0.0)) - 0.95) < 1e-9
                 and bool(seed_policy.get("paired_statistics_required")) is True
             ),
             evidence=(
-                f"official_seed_list={seed_policy.get('official_seed_list')}; "
-                f"minimum_official_seeds={seed_policy.get('minimum_official_seeds')}; "
+                f"pilot_seed_list={seed_policy.get('pilot_seed_list')}; "
+                f"confirmatory_seed_list={seed_policy.get('confirmatory_seed_list')}; "
+                f"minimum_confirmatory_seeds={seed_policy.get('minimum_confirmatory_seeds')}; "
                 f"confidence_level={seed_policy.get('confidence_level')}; "
                 f"paired_statistics_required={seed_policy.get('paired_statistics_required')}"
             ),
-            requirement="Official rows need locked five-seed, 95 percent interval, paired-statistics policy.",
+            requirement="Claim-grade rows need a disclosed pilot split, eight untouched seeds, 95 percent intervals, and paired statistics.",
             next_step="Update the seed policy in the reproducibility manifest.",
         ),
         Check(
@@ -318,7 +322,11 @@ def main() -> None:
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
     args.json_out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     with args.csv_out.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["key", "status", "evidence", "requirement", "next_step"])
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["key", "status", "evidence", "requirement", "next_step"],
+            lineterminator="\n",
+        )
         writer.writeheader()
         for check in checks:
             writer.writerow(asdict(check))

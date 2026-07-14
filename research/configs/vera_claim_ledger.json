@@ -1,0 +1,219 @@
+{
+  "name": "VERA submission claim ledger",
+  "version": "2026-07-14",
+  "scope": "Claims permitted in the current AAAI/ICLR-facing VERA paper and supplement. Automated checks verify traceability, not novelty, proof correctness, venue acceptance, or fair eligibility.",
+  "allowed_claims": [
+    {
+      "key": "ltt_positioning",
+      "claim": "VERA applies Learn Then Test style finite-family risk control to preregistered representation edits and does not claim finite-candidate testing or abstention as novel.",
+      "evidence": [
+        "research/maintrack/CLAIM_LEDGER.md",
+        "research/maintrack/NOVELTY_DECISION_2026-07-13.md",
+        "research/maintrack/aaai2027_template/AuthorKit27/vera_paper_body.tex"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "support_aware_shift_envelope_written",
+      "claim": "The manuscript states a simultaneous support-aware shift-envelope theorem for paired target harm and class-balanced leakage under declared support and conditional density-ratio bounds.",
+      "evidence": [
+        "research/maintrack/THEORY_TARGET.md",
+        "research/maintrack/appendix_shift_robust_theory.tex",
+        "research/maintrack/aaai2027_template/AuthorKit27/vera_paper_body.tex"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "unsupported_cell_impossibility_written",
+      "claim": "The manuscript states and proves a two-world impossibility boundary for an unsupported required deployment cell, and identifies the registered Camelyon17 support failure as an empirical instance of forced abstention.",
+      "evidence": [
+        "research/maintrack/appendix_shift_robust_theory.tex",
+        "research/maintrack/aaai2027_template/AuthorKit27/vera_supplement_body.tex",
+        "research/artifacts/vera_confirmatory_abstract_numbers.json"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "theory_implementation_consistency",
+      "claim": "Automated numerical checks agree with the implemented closed forms and shift-envelope optimization to floating-point tolerance; these checks do not constitute human verification of the proofs or novelty.",
+      "evidence": [
+        "research/scripts/audit_theory_consistency.py",
+        "research/artifacts/vera_theory_consistency_audit.json"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "official_baseline_matrix",
+      "claim": "The locked confirmatory matrix contains 200 official-code receipts covering five datasets, five pinned erasers, and eight untouched seeds, with no proxy rows in claim-grade results.",
+      "evidence": [
+        "research/artifacts/official_eraser_receipt_audit.json",
+        "research/artifacts/confirmatory_balanced_receipt_audit.json",
+        "research/artifacts/confirmatory_balanced_receipts",
+        "research/artifacts/upstream_baseline_reference_inventory.json"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "raw_result_replay",
+      "claim": "The independent raw audit verifies 480 NPZ checksums and recomputes 25,920 candidate rows and 10,800 deployment-rule decisions without a semantic or selection mismatch.",
+      "evidence": [
+        "research/scripts/audit_vera_confirmatory_analysis.py",
+        "research/artifacts/vera_confirmatory_analysis_audit.json",
+        "research/artifacts/vera_confirmatory_results_package_audit.json"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "descriptive_stress_effect",
+      "claim": "In the registered 32-configuration stress family, point selection violated 7 contracts and VERA-IUT violated none; this descriptive effect did not survive the preregistered seed-blocked Holm-corrected comparison.",
+      "evidence": [
+        "research/prereg_confirmatory_balanced.json",
+        "research/prereg_confirmatory_balanced.sha256",
+        "research/artifacts/vera_confirmatory_balanced_report.json",
+        "research/artifacts/vera_confirmatory_analysis_audit.json"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "primary_inference_failed",
+      "claim": "The preregistered primary paired-significance pass condition failed, so the paper may not claim confirmatory empirical superiority over point selection.",
+      "evidence": [
+        "research/artifacts/vera_confirmatory_balanced_report.json",
+        "research/artifacts/vera_confirmatory_analysis_audit.json",
+        "research/artifacts/vera_confirmatory_results_package_audit.json"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "exact_simulation_coverage",
+      "claim": "Independent replays pass the registered 54-cell, 108,000-replicate simulation and the 216-cell, 432,000-replicate candidate/group-count extension, with false acceptances evaluated against each registered familywise bound.",
+      "evidence": [
+        "research/artifacts/vera_exact_balanced_audit.json",
+        "research/artifacts/vera_exact_family_grid_audit.json",
+        "research/prereg_exact_family_grid.json",
+        "research/prereg_exact_family_grid.sha256"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "camelyon_support_abstention",
+      "claim": "All 144 registered Camelyon17 VERA configurations abstain because the deployment hospital lacks certification support; balanced external leakage is not estimable for its registered one-class source slice.",
+      "evidence": [
+        "research/artifacts/vera_confirmatory_abstract_numbers.json",
+        "research/artifacts/vera_confirmatory_balanced_report.json",
+        "research/artifacts/vera_confirmatory_analysis_audit.json"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "paper_format_and_references",
+      "claim": "The current AAAI build uses seven content pages plus references, has a vector three-panel Figure 1, verified references, an explicit AI-assistance disclosure, and clean anonymous metadata under the automated presentation audit.",
+      "evidence": [
+        "research/artifacts/presentation_readiness_audit.json",
+        "research/artifacts/reference_verification_report.json",
+        "research/maintrack/aaai2027_template/AuthorKit27/vera_aaai2027_anonymous.pdf"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "independent_replication_in_progress",
+      "claim": "A separately hashed 32-seed stress replication is registered and running; no result from it may be claimed until all receipts and the independent audit are complete.",
+      "evidence": [
+        "research/prereg_independent_stress_replication.json",
+        "research/prereg_independent_stress_replication.sha256",
+        "research/artifacts/vera_independent_stress_design.json",
+        "research/scripts/analyze_vera_independent_stress_replication.py",
+        "research/scripts/audit_vera_independent_stress_replication.py"
+      ],
+      "manuscript_status": "allowed"
+    }
+  ],
+  "forbidden_claims": [
+    {
+      "key": "finite_family_novelty",
+      "claim": "VERA invented finite-family risk control, candidate certification, or abstention.",
+      "forbidden_exact_patterns": [
+        "VERA invents finite-family risk control",
+        "VERA invents candidate certification",
+        "VERA invents abstention"
+      ]
+    },
+    {
+      "key": "proof_or_novelty_verified",
+      "claim": "The theorem or its novelty has been formally or externally verified.",
+      "forbidden_exact_patterns": [
+        "the VERA theorem is formally verified",
+        "VERA's novelty is verified",
+        "the theorem has been externally verified"
+      ]
+    },
+    {
+      "key": "unconditional_external_validity",
+      "claim": "VERA controls external risk without support and density-ratio assumptions.",
+      "forbidden_exact_patterns": [
+        "VERA guarantees safety under arbitrary distribution shift",
+        "VERA controls every external distribution",
+        "VERA requires no shift assumptions"
+      ]
+    },
+    {
+      "key": "confirmatory_empirical_superiority",
+      "claim": "The locked study establishes statistically significant empirical superiority over point selection.",
+      "forbidden_exact_patterns": [
+        "VERA significantly outperforms point selection",
+        "VERA establishes empirical superiority",
+        "VERA wins on all five datasets"
+      ]
+    },
+    {
+      "key": "universal_erasure_or_attacker_safety",
+      "claim": "VERA removes a concept universally or protects against unregistered attackers.",
+      "forbidden_exact_patterns": [
+        "VERA universally removes the concept",
+        "VERA is safe against every attacker",
+        "VERA guarantees fairness for unmeasured concepts"
+      ]
+    },
+    {
+      "key": "clinical_readiness",
+      "claim": "Camelyon17 results establish clinical safety or deployment readiness.",
+      "forbidden_exact_patterns": [
+        "VERA is clinically safe",
+        "Camelyon17 validates clinical deployment",
+        "VERA is ready for clinical deployment"
+      ]
+    },
+    {
+      "key": "replication_complete",
+      "claim": "The independent stress replication is complete before all registered receipts and audits exist.",
+      "forbidden_exact_patterns": [
+        "the independent stress replication is complete",
+        "the 32-seed replication passed",
+        "the replication confirms the headline"
+      ]
+    },
+    {
+      "key": "external_review_or_acceptance",
+      "claim": "Human external review, venue acceptance, or ISEF eligibility is complete or guaranteed.",
+      "forbidden_exact_patterns": [
+        "two external ML reviews are complete",
+        "VERA will be accepted to AAAI",
+        "VERA will be accepted to ICLR",
+        "VERA is ISEF eligible"
+      ]
+    }
+  ],
+  "audited_manuscript_paths": [
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_paper_body.tex",
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_supplement_body.tex",
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_aaai2027_anonymous.tex",
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_aaai2027_named.tex",
+    "research/maintrack/CLAIM_LEDGER.md"
+  ],
+  "external_blockers": [
+    "Two genuine cold reviews from researchers who publish in machine learning remain incomplete.",
+    "Formal proof and novelty assessment remain human scientific gates; numerical consistency checks do not close them.",
+    "The independent 32-seed stress replication is still running and cannot support a claim until its registered audit passes.",
+    "ISEF eligibility, student independence, authorship, AI-assistance disclosure, and venue submission confirmations require the student, sponsor, SRC, or venue systems."
+  ]
+}

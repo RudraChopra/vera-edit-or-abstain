@@ -6,7 +6,9 @@ This ledger is the submission-facing contract between the manuscript and the
 claim-grade evidence. Machine audits verify consistency and provenance; they do
 not prove novelty, theorem correctness, ethical eligibility, or acceptance.
 
-## Allowed Method Claims
+## Allowed Claims
+
+### Method Claims
 
 VERA may claim to audit a finite, preregistered family of representation edits
 and either select an edit satisfying paired target-harm and balanced-leakage
@@ -33,7 +35,7 @@ cell has no certification support and the model class contains observationally
 indistinguishable safe and unsafe worlds, no validation-only protocol can both
 uniformly control false acceptance and nontrivially accept in the safe world.
 
-## Allowed Empirical Claims
+### Empirical Claims
 
 Only outputs generated from the locked seeds 5--12 analysis may be called
 confirmatory. Seeds 0--4 informed protocol design and remain exploratory.

@@ -15,9 +15,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_DIR = ROOT / "artifacts"
 AAAI_DIR = ROOT / "maintrack" / "aaai2027_template" / "AuthorKit27"
-SOURCE = AAAI_DIR / "faro_aaai2027_draft.tex"
-ANONYMOUS_SOURCE = AAAI_DIR / "faro_aaai2027_anonymous.tex"
-NAMED_SOURCE = AAAI_DIR / "faro_aaai2027_named.tex"
+SOURCE = AAAI_DIR / "vera_paper_body.tex"
+ANONYMOUS_SOURCE = AAAI_DIR / "vera_aaai2027_anonymous.tex"
+NAMED_SOURCE = AAAI_DIR / "vera_aaai2027_named.tex"
 STYLE = AAAI_DIR / "aaai2027.sty"
 
 DEFAULT_JSON = ARTIFACT_DIR / "aaai2027_source_readiness.json"
@@ -60,15 +60,20 @@ def estimate_main_words(source: str) -> int:
 
 
 def collect_checks() -> tuple[list[Check], dict[str, Any]]:
-    source = load_text(SOURCE)
-    anonymous_source = load_text(ANONYMOUS_SOURCE)
-    named_source = load_text(NAMED_SOURCE)
+    body_source = load_text(SOURCE)
+    anonymous_wrapper = load_text(ANONYMOUS_SOURCE)
+    named_wrapper = load_text(NAMED_SOURCE)
+    source = anonymous_wrapper + "\n" + body_source
+    anonymous_source = anonymous_wrapper + "\n" + body_source
+    named_source = named_wrapper + "\n" + body_source
     normalized_source = re.sub(r"\s+", " ", source)
     style = load_text(STYLE)
-    pdflatex = shutil.which("pdflatex")
-    word_count = estimate_main_words(source)
-    stale_terms = ["40k/16k/16k", "40,000", "16,000", "$0.8474$", "$0.5410$", "$0.8759$"]
-    stale_present = [term for term in stale_terms if term in source]
+    texlive_pdflatex = Path("/Library/TeX/texbin/pdflatex")
+    pdflatex = shutil.which("pdflatex") or (
+        str(texlive_pdflatex) if texlive_pdflatex.is_file() else None
+    )
+    latex_engine = pdflatex or shutil.which("tectonic")
+    word_count = estimate_main_words(body_source)
     anonymous_identity_terms = [
         "Rudra",
         "Chopra",
@@ -84,13 +89,13 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
     ]
     required_sections = [
         "\\section{Introduction}",
-        "\\section{Method}",
-        "\\section{Theory}",
-        "\\section{Experiments}",
-        "\\section{Reference MANCE++ Baseline}",
-        "\\section{Limitations}",
-        "\\section{Code Availability}",
-        "\\section{Conclusion}",
+        "\\section{Related Work}",
+        "\\section{Problem Setup}",
+        "\\section{VERA}",
+        "\\section{Experimental Protocol}",
+        "\\section{Results}",
+        "\\section{Reproducibility}",
+        "\\section{Limitations and Conclusion}",
     ]
     missing_sections = [section for section in required_sections if section not in source]
     checks = [
@@ -108,17 +113,17 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
         ),
         Check(
             key="uses_official_submission_style",
-            status=status("\\usepackage[submission]{aaai2027}" in source),
+            status=status("\\usepackage[submission]{aaai2027}" in anonymous_wrapper),
             evidence="source uses \\usepackage[submission]{aaai2027}",
             requirement="Submission source must use the official AAAI submission style.",
         ),
         Check(
             key="anonymous_author_block",
             status=status(
-                "\\author{Anonymous Submission}" in source
-                and "VERA Project" not in source
-                and "Rudra" not in source
-                and "Chopra" not in source
+                "\\author{Anonymous Submission}" in anonymous_wrapper
+                and "VERA Project" not in anonymous_wrapper
+                and "Rudra" not in anonymous_wrapper
+                and "Chopra" not in anonymous_wrapper
             ),
             evidence="author block is anonymous and local identity strings are absent",
             requirement="AAAI double-anonymous source must not expose author identity.",
@@ -133,7 +138,8 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
             key="anonymous_source_identity_free",
             status=status(
                 "\\author{Anonymous Submission}" in anonymous_source
-                and "\\section{Code Availability}" in anonymous_source
+                and "\\section{Reproducibility}" in anonymous_source
+                and "anonymous supplementary archive" in anonymous_source
                 and not anonymous_leaks
             ),
             evidence=f"anonymous_leaks={anonymous_leaks}",
@@ -146,7 +152,8 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
                 and "\\author{Rudra Chopra}" in named_source
                 and "Contra Costa County" in named_source
                 and "https://github.com/RudraChopra/vera-edit-or-abstain" in named_source
-                and "\\section{Code Availability}" in named_source
+                and "\\section{Reproducibility}" in named_source
+                and "\\newcommand{\\CodeAvailabilityText}" in named_source
             ),
             evidence=(
                 f"path={NAMED_SOURCE}; materialized={materialized_file(NAMED_SOURCE)}; "
@@ -162,48 +169,46 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
             requirement="AAAI source must include the core method-paper sections.",
         ),
         Check(
-            key="current_camelyon_mance_reference",
+            key="official_baseline_matrix_present",
             status=status(
-                "full no-cap" in normalized_source
-                and "302,436/68,464/85,054" in source
-                and "$0.5635$" in source
-                and "$0.8741$" in source
+                all(term in source for term in ("INLP", "R-LACE", "LEACE", "TaCo", "MANCE++"))
+                and "200 official-method runs" in source
+                and "no proxy" in source.lower()
             ),
-            evidence="AAAI source contains the full no-cap Camelyon MANCE++ reference numbers",
-            requirement="AAAI source must cite the full no-cap Camelyon MANCE++ receipt rather than superseded diagnostics.",
-        ),
-        Check(
-            key="no_stale_camelyon_mance_terms",
-            status=status(not stale_present),
-            evidence=f"stale_terms_present={stale_present}",
-            requirement="Superseded 40k Camelyon MANCE++ text must be removed.",
+            evidence="source identifies all five official erasers, 200 runs, and the zero-proxy boundary",
+            requirement="AAAI source must describe the current official baseline matrix without proxy rows.",
         ),
         Check(
             key="false_acceptance_corollary_present",
-            status=status("False-acceptance control" in source),
+            status=status("false-acceptance control" in source.lower()),
             evidence="source contains the false-acceptance corollary",
             requirement="Theory section should include explicit false-acceptance control.",
         ),
         Check(
             key="reviewer_attack_preempted",
-            status=status("strongest reviewer objection" in source.lower()),
-            evidence="source explicitly preempts the eraser-versus-decision-layer objection",
-            requirement="AAAI source should preempt the strongest baseline-framing attack.",
+            status=status(
+                "learn then test" in source.lower()
+                and "does not claim" in source.lower()
+                and "prompt risk control" in source.lower()
+            ),
+            evidence="source squarely attributes finite-family testing and distinguishes VERA from LTT and Prompt Risk Control",
+            requirement="AAAI source should preempt the closest-prior-work objection.",
         ),
         Check(
             key="reference_boundary_present",
             status=status(
-                all(term in source for term in ("R-LACE", "TaCo", "LEACE", "proxy"))
-                and "state-of-the-art erasure" in source
+                all(term in source for term in ("R-LACE", "TaCo", "LEACE", "MANCE++"))
+                and "No proxy row" in source
+                and "does not claim" in source
             ),
-            evidence="source separates pinned/proxy baselines and denies universal erasure SOTA",
-            requirement="AAAI source must not overclaim reference parity.",
+            evidence="source identifies pinned official baselines, excludes proxy rows, and states explicit non-novelty boundaries",
+            requirement="AAAI source must not overclaim baseline or method novelty.",
         ),
         Check(
             key="clinical_boundary_present",
             status=status(
                 "not clinical evidence" in normalized_source
-                and "do not establish clinical safety" in normalized_source
+                and "not clinical validation" in normalized_source
             ),
             evidence="source states Camelyon17/GaitPDB are not clinical deployment evidence",
             requirement="Medical benchmark language must not imply clinical deployment readiness.",
@@ -215,10 +220,10 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
             requirement="AAAI source should remain plausibly within the 7-page technical limit.",
         ),
         Check(
-            key="pdflatex_available",
-            status=status(pdflatex is not None, warn=True),
-            evidence=f"pdflatex={pdflatex or '<missing>'}",
-            requirement="Local final AAAI PDF compilation requires PDFLaTeX.",
+            key="latex_engine_available",
+            status=status(latex_engine is not None, warn=True),
+            evidence=f"latex_engine={latex_engine or '<missing>'}",
+            requirement="Local final AAAI PDF compilation requires PDFLaTeX or Tectonic.",
         ),
     ]
     metadata = {
@@ -227,8 +232,8 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
         "named_source": str(NAMED_SOURCE),
         "style": str(STYLE),
         "estimated_main_words": word_count,
-        "pdflatex": pdflatex,
-        "compile_blocker": None if pdflatex else "PDFLaTeX is not installed locally",
+        "latex_engine": latex_engine,
+        "compile_blocker": None if latex_engine else "PDFLaTeX and Tectonic are not installed locally",
     }
     return checks, metadata
 
@@ -276,7 +281,7 @@ def main() -> int:
         "name": "VERA AAAI-27 source readiness audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "source_ready": fail_count == 0,
-        "pdf_compile_ready": metadata.get("pdflatex") is not None,
+        "pdf_compile_ready": metadata.get("latex_engine") is not None,
         "fail_count": fail_count,
         "warn_count": warn_count,
         "checks": [asdict(check) for check in checks],

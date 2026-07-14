@@ -1,0 +1,128 @@
+{
+  "name": "VERA claim-grade reproducibility manifest",
+  "version": "2026-07-14",
+  "paper": {
+    "title": "VERA: Support-Aware Shift Envelopes for Representation Erasure",
+    "primary_claim": "VERA audits a preregistered finite frontier of representation edits and either selects an edit whose paired target-harm and balanced-leakage contracts are certified for a declared support-aware shift profile or abstains.",
+    "claim_boundary": "The finite-family testing mechanism is inherited from Learn Then Test style risk control. The guarantee is conditional on declared support and density-ratio bounds and is not clinical validation, universal erasure, formal proof verification, or a guarantee of venue acceptance."
+  },
+  "runtime": {
+    "python": "Python 3.10+ with NumPy, SciPy, and Matplotlib",
+    "local_claim_grade_environment": "/Volumes/Backups/FARO/runtime/faro-torch-venv",
+    "latex": "/Library/TeX/texbin/pdflatex",
+    "large_artifact_root": "/Volumes/Backups/FARO/artifacts"
+  },
+  "seed_policy": {
+    "pilot_seed_list": [0, 1, 2, 3, 4],
+    "confirmatory_seed_list": [5, 6, 7, 8, 9, 10, 11, 12],
+    "minimum_confirmatory_seeds": 8,
+    "confidence_level": 0.95,
+    "paired_statistics_required": true,
+    "external_split_reselection_allowed": false
+  },
+  "reproduction_commands": [
+    {
+      "key": "official_receipt_audit",
+      "argv": ["python", "research/scripts/audit_official_eraser_receipts.py", "--prereg", "research/prereg_confirmatory_balanced.json", "--hash-file", "research/prereg_confirmatory_balanced.sha256", "--receipt-dir", "research/artifacts/confirmatory_balanced_receipts", "--output", "research/artifacts/confirmatory_balanced_receipt_audit.json"],
+      "expected_outputs": ["research/artifacts/confirmatory_balanced_receipt_audit.json"]
+    },
+    {
+      "key": "exact_balanced_audit",
+      "argv": ["python", "research/scripts/audit_exact_balanced_simulation.py"],
+      "expected_outputs": ["research/artifacts/vera_exact_balanced_audit.json"]
+    },
+    {
+      "key": "exact_family_grid_audit",
+      "argv": ["python", "research/scripts/audit_exact_family_grid_simulation.py"],
+      "expected_outputs": ["research/artifacts/vera_exact_family_grid_audit.json"]
+    },
+    {
+      "key": "confirmatory_raw_audit",
+      "argv": ["python", "research/scripts/audit_vera_confirmatory_analysis.py"],
+      "expected_outputs": ["research/artifacts/vera_confirmatory_analysis_audit.json"]
+    },
+    {
+      "key": "compact_reproduction",
+      "argv": ["python", "research/scripts/reproduce_vera_submission.py"],
+      "expected_outputs": ["research/maintrack/aaai2027_template/AuthorKit27/vera_main_results_table.tex"]
+    },
+    {
+      "key": "presentation_audit",
+      "argv": ["python", "research/scripts/audit_presentation_readiness.py"],
+      "expected_outputs": ["research/artifacts/presentation_readiness_audit.json"]
+    },
+    {
+      "key": "claim_ledger_audit",
+      "argv": ["python", "research/scripts/audit_claim_ledger.py"],
+      "expected_outputs": ["research/artifacts/claim_ledger_audit.json", "research/artifacts/claim_ledger_audit.csv", "research/artifacts/claim_ledger_audit.md"]
+    }
+  ],
+  "claim_ready_rows": [
+    {
+      "benchmark": "Waterbirds",
+      "receipt": "research/artifacts/confirmatory_balanced_receipts",
+      "statistics": "research/artifacts/vera_confirmatory_balanced_report.json",
+      "claim_role": "vision benchmark with externally estimable balanced leakage"
+    },
+    {
+      "benchmark": "Camelyon17-WILDS",
+      "receipt": "research/artifacts/confirmatory_balanced_receipts",
+      "statistics": "research/artifacts/vera_confirmatory_balanced_report.json",
+      "claim_role": "support-mismatch forced-abstention benchmark; not clinical evidence"
+    },
+    {
+      "benchmark": "CivilComments-WILDS",
+      "receipt": "research/artifacts/confirmatory_balanced_receipts",
+      "statistics": "research/artifacts/vera_confirmatory_balanced_report.json",
+      "claim_role": "text benchmark with externally estimable balanced leakage"
+    },
+    {
+      "benchmark": "Bios",
+      "receipt": "research/artifacts/confirmatory_balanced_receipts",
+      "statistics": "research/artifacts/vera_confirmatory_balanced_report.json",
+      "claim_role": "text representation-erasure benchmark"
+    },
+    {
+      "benchmark": "GaitPDB",
+      "receipt": "research/artifacts/confirmatory_balanced_receipts",
+      "statistics": "research/artifacts/vera_confirmatory_balanced_report.json",
+      "claim_role": "time-series benchmark; not clinical evidence"
+    }
+  ],
+  "blocked_required_rows": [
+    {
+      "benchmark": "Independent 32-seed stress replication",
+      "required_for_empirical_superiority_claim": true,
+      "current_blocker": "The separately hashed 800-run replication is still running; partial receipts cannot support a paper claim.",
+      "preflight_report": "research/artifacts/vera_independent_stress_design.json",
+      "next_action": "Finish all 800 runs, audit every receipt, run the preregistered analysis, and use the theory-first fallback unless every registered pass condition holds."
+    }
+  ],
+  "core_artifacts": [
+    "README.md",
+    "research/prereg_confirmatory_balanced.json",
+    "research/prereg_confirmatory_balanced.sha256",
+    "research/prereg_exact_family_grid.json",
+    "research/prereg_exact_family_grid.sha256",
+    "research/maintrack/appendix_shift_robust_theory.tex",
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_paper_body.tex",
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_aaai2027_anonymous.pdf",
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_aaai2027_supplement_anonymous.pdf",
+    "research/maintrack/CLAIM_LEDGER.md",
+    "research/configs/vera_claim_ledger.json",
+    "research/artifacts/confirmatory_balanced_receipt_audit.json",
+    "research/artifacts/vera_confirmatory_analysis_audit.json",
+    "research/artifacts/vera_confirmatory_results_package_audit.json",
+    "research/artifacts/vera_exact_balanced_audit.json",
+    "research/artifacts/vera_exact_family_grid_audit.json",
+    "research/artifacts/presentation_readiness_audit.json",
+    "research/artifacts/reference_verification_report.json"
+  ],
+  "public_release_policy": {
+    "release_code_configs_and_small_artifacts": true,
+    "release_large_raw_data": false,
+    "anonymization_required_for_review": true,
+    "third_party_datasets_excluded": true,
+    "partial_replication_results_claimable": false
+  }
+}

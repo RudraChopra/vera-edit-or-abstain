@@ -20,6 +20,11 @@ from analyze_vera_confirmatory_balanced import (  # noqa: E402
     seed_cluster_ratio_interval,
     summarize,
 )
+from analyze_vera_independent_stress_replication import (  # noqa: E402
+    exact_one_sided_mcnemar,
+    make_abstract_record as make_replication_abstract_record,
+    summarize as summarize_replication,
+)
 from audit_vera_confirmatory_analysis import (  # noqa: E402
     independent_balanced_leakage_ucb,
     independent_target_ucb,
@@ -35,6 +40,9 @@ from analyze_vera_secondary_ablations import (  # noqa: E402
     cluster_summary,
     select_candidate,
 )
+from audit_vera_independent_stress_replication import (  # noqa: E402
+    exact_one_sided_mcnemar as audit_one_sided_mcnemar,
+)
 from run_exact_balanced_simulation import (  # noqa: E402
     cp_upper,
     exact_balanced_pass_probability,
@@ -47,6 +55,62 @@ from vera_robust_certificate import (  # noqa: E402
 
 
 class SeedBlockedInferenceTests(unittest.TestCase):
+    def test_independent_mcnemar_matches_preregistered_holm_boundary(self) -> None:
+        raw = {
+            dataset: exact_one_sided_mcnemar(7, 0)
+            for dataset in ("bios", "civil", "gait", "waterbirds")
+        }
+        self.assertEqual(set(raw.values()), {0.0078125})
+        self.assertTrue(all(value == 0.03125 for value in holm_adjust(raw).values()))
+
+    def test_independent_mcnemar_is_directional(self) -> None:
+        self.assertEqual(exact_one_sided_mcnemar(0, 0), 1.0)
+        self.assertEqual(exact_one_sided_mcnemar(0, 7), 1.0)
+        self.assertLess(exact_one_sided_mcnemar(8, 1), 0.05)
+
+    def test_independent_audit_reimplements_paired_test_exactly(self) -> None:
+        for point_only in range(10):
+            for vera_only in range(10):
+                self.assertEqual(
+                    audit_one_sided_mcnemar(point_only, vera_only),
+                    exact_one_sided_mcnemar(point_only, vera_only),
+                )
+
+    def test_independent_abstract_falls_back_when_any_gate_fails(self) -> None:
+        record = make_replication_abstract_record(
+            prereg_hash="abc",
+            supported_count=128,
+            point_rate=0.25,
+            vera_rate=0.0,
+            retention=0.5,
+            passed=False,
+            camelyon_forced_count=64,
+        )
+        self.assertFalse(record["registered_pass_conditions_met"])
+        self.assertEqual(record["headline_mode"], "theory_and_support_impossibility")
+        self.assertIn("did not satisfy", record["sentence"])
+
+    def test_independent_summary_counts_abstention_in_false_accept_denominator(self) -> None:
+        rows = [
+            {
+                "external_contract_estimable": True,
+                "deployed": True,
+                "external_contract_satisfied": False,
+                "measured_external_contract_violation": True,
+                "procedurally_unsupported_deployment": False,
+            },
+            {
+                "external_contract_estimable": True,
+                "deployed": False,
+                "external_contract_satisfied": "NA",
+                "measured_external_contract_violation": False,
+                "procedurally_unsupported_deployment": False,
+            },
+        ]
+        observed = summarize_replication(rows)
+        self.assertEqual(observed["measured_external_violation_rate"], 0.5)
+        self.assertEqual(observed["violation_rate_conditional_on_estimable_deployment"], 1.0)
+
     def test_abstract_uses_empirical_headline_only_when_gap_passes(self) -> None:
         record = build_abstract_record(
             prereg_hash="abc",

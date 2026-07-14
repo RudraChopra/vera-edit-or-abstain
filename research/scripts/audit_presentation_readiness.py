@@ -265,10 +265,14 @@ def main() -> int:
         and visual.get("pdf_sha256") == sha256(args.figure)
     )
     exact_page_limit = content_page_count == 7
+    total_page_limit = (
+        anonymous_reader is not None and len(anonymous_reader.pages) <= 9
+    )
     verified_references = int(references.get("verified_reference_count", 0))
     passed = (
         not missing
         and exact_page_limit
+        and total_page_limit
         and references.get("passed") is True
         and verified_references >= 40
         and figure_vector
@@ -298,6 +302,7 @@ def main() -> int:
             None if named_reader is None else len(named_reader.pages)
         ),
         "exact_page_limit": exact_page_limit,
+        "total_page_limit": total_page_limit,
         "verified_reference_count": verified_references,
         "reference_audit_passed": references.get("passed") is True,
         "figure_1_vector": figure_vector,

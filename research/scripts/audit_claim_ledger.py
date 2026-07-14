@@ -13,7 +13,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_DIR = ROOT / "artifacts"
-LEDGER_PATH = ROOT / "configs" / "faro_claim_ledger.json"
+LEDGER_PATH = ROOT / "configs" / "vera_claim_ledger.json"
 CHECKLIST_PATH = ROOT / "maintrack" / "CLAIM_LEDGER.md"
 DEFAULT_JSON = ARTIFACT_DIR / "claim_ledger_audit.json"
 DEFAULT_MD = ARTIFACT_DIR / "claim_ledger_audit.md"
@@ -115,7 +115,7 @@ def main() -> None:
             status=status(bool(ledger)),
             evidence=f"path={LEDGER_PATH}; exists={bool_word(LEDGER_PATH.exists())}",
             requirement="A machine-readable claim ledger must exist.",
-            next_step="Create `research/configs/faro_claim_ledger.json`.",
+            next_step="Create `research/configs/vera_claim_ledger.json`.",
         ),
         Check(
             key="claim_ledger_markdown_present",
@@ -174,7 +174,11 @@ def main() -> None:
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
     args.json_out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     with args.csv_out.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["key", "status", "evidence", "requirement", "next_step"])
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["key", "status", "evidence", "requirement", "next_step"],
+            lineterminator="\n",
+        )
         writer.writeheader()
         for check in checks:
             writer.writerow(asdict(check))
