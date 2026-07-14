@@ -1,0 +1,250 @@
+\documentclass[letterpaper]{article}
+\usepackage[submission]{aaai2027}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}
+\usepackage{caption}
+\frenchspacing
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\graphicspath{{../../figures/}}
+\pdfinfo{/TemplateVersion (2027.1)}
+\setcounter{secnumdepth}{0}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\title{FARO: Certified Edit-or-Abstain Selection for Representation Interventions}
+\author{Anonymous Submission}
+\affiliations{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Representation editing methods remove source or protected information from
+embeddings, but they do not decide whether a proposed edit should be deployed.
+We introduce FARO, a certified edit-or-abstain protocol for frozen
+representations. FARO evaluates a finite frontier of candidate edits with fresh
+target and source probes, accepts only edits whose validation confidence
+intervals certify both target preservation and source-leakage reduction, and
+otherwise returns an auditable abstention certificate. This makes FARO
+orthogonal to INLP, LEACE, R-LACE, TaCo, SPLINCE, and MANCE++: those methods
+propose interventions, while FARO certifies whether an intervention is safe
+under a pre-registered contract. Across Waterbirds, Camelyon17-WILDS, and a
+public PhysioNet gait benchmark, FARO produces locked receipts, paired
+statistics, and explicit claim boundaries. We also integrate the official
+MANCE++ implementation as a full Waterbirds reference and a full no-cap
+Camelyon17 reference row. The evidence supports FARO as a decision layer over
+candidate erasers, not as a universal state-of-the-art erasure method.
+\end{abstract}
+
+\section{Introduction}
+
+Neural representations often encode source information that is predictive on
+training data but unreliable under distribution shift. Concept-erasure methods
+modify embeddings so that a specified concept is harder to recover. INLP
+removes concept information by iterative nullspace projection, R-LACE formulates
+linear erasure as a minimax projection, LEACE gives a closed-form least-squares
+eraser, and MANCE++ adds a nonlinear manifold-aware edit. These methods answer
+an edit-construction question: how should a representation be changed?
+
+The deployment question is different: should the edit be used at all? This
+distinction matters because source removal can damage the target task, and
+because an edit that is safe on one benchmark may be unsafe on another. FARO
+treats representation editing as a certified selection problem. It fixes data
+splits, target labels, source labels, metrics, candidate edits, and confidence
+rules; evaluates a frontier of edits; and either selects a certified edit or
+returns \texttt{ABSTAIN}.
+
+The contribution is a protocol claim. FARO is not a replacement for every
+modern eraser and does not claim universal state-of-the-art erasure. It supplies
+the decision layer that existing erasers lack: a reproducible rule for accepting
+or rejecting an edit under target-preservation and source-reduction constraints.
+
+\section{Method}
+
+Let $Z \in \mathbb{R}^{n \times d}$ be frozen representations, $Y$ target
+labels, $S$ source labels, and $\mathcal{A}=\{a_1,\ldots,a_m\}$ a finite
+candidate edit family. For each $a$, FARO forms edited representations
+$\tilde Z(a)$, trains fresh target and source probes on the edited training
+split, and estimates validation target utility $U_Y(a)$ and source leakage
+$L_S(a)$ with simultaneous confidence intervals.
+
+\begin{algorithm}[t]
+\caption{FARO validation-only edit selection}
+\label{alg:faro}
+\begin{algorithmic}[1]
+\REQUIRE Frozen representations $Z$, target labels $Y$, source labels $S$,
+splits, candidate edits $\mathcal{A}$, target threshold $\tau$, leakage
+threshold $\lambda$, confidence radii $\epsilon_U,\epsilon_L$
+\STATE For each $a\in\mathcal{A}$, construct edited representations
+$\tilde Z(a)$ on train, validation, and external splits.
+\STATE Fit fresh target and source probes on the edited training split only.
+\STATE Estimate validation target utility $\widehat U_{\mathrm{val}}(a)$ and
+source leakage $\widehat L_{\mathrm{val}}(a)$.
+\STATE Form the certified set of candidates satisfying
+$\widehat U_{\mathrm{val}}(a)-\epsilon_U \ge \tau$ and
+$\widehat L_{\mathrm{val}}(a)+\epsilon_L \le \lambda$.
+\IF{the certified set is empty}
+\STATE return \texttt{ABSTAIN}
+\ELSE
+\STATE return the strongest certified leakage-reducing edit; read external
+metrics only after this decision is fixed.
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{faro_method_overview.pdf}
+\caption{FARO separates edit construction from edit deployment. Candidate
+erasers propose a frontier; FARO certifies whether any frontier point satisfies
+the target and source constraints.}
+\label{fig:method}
+\end{figure}
+
+\section{Theory}
+
+\begin{theorem}[Simultaneous frontier certification]
+Let $U_{\mathrm{ext}}(a)$ denote external target utility and
+$L_{\mathrm{ext}}(a)$ external source leakage. Suppose that for every
+$a\in\mathcal{A}$, event $\mathcal{E}$ gives
+$|U_{\mathrm{ext}}(a)-\widehat U_{\mathrm{val}}(a)|\le\epsilon_U$ and
+$|L_{\mathrm{ext}}(a)-\widehat L_{\mathrm{val}}(a)|\le\epsilon_L$. If FARO
+accepts only candidates satisfying
+$\widehat U_{\mathrm{val}}(a)-\epsilon_U\ge\tau$ and
+$\widehat L_{\mathrm{val}}(a)+\epsilon_L\le\lambda$, then every accepted edit
+has $U_{\mathrm{ext}}(a)\ge\tau$ and
+$L_{\mathrm{ext}}(a)\le\lambda$ on $\mathcal{E}$. If no candidate satisfies
+both inequalities, FARO returns \texttt{ABSTAIN}.
+\end{theorem}
+
+\begin{proof}
+On $\mathcal{E}$, target utility is lower-bounded by
+$\widehat U_{\mathrm{val}}(a)-\epsilon_U$ and leakage is upper-bounded by
+$\widehat L_{\mathrm{val}}(a)+\epsilon_L$. Therefore any accepted candidate
+satisfies the external target and leakage constraints. If the certified set is
+empty, the deterministic rule in Algorithm~\ref{alg:faro} returns
+\texttt{ABSTAIN}.
+\end{proof}
+
+\begin{corollary}[False-acceptance control]
+If the simultaneous validation intervals cover all target and leakage
+quantities on $\mathcal{A}$ with probability at least $1-\delta$, then FARO's
+probability of accepting an edit that violates either external constraint is at
+most $\delta$.
+\end{corollary}
+
+\begin{proof}
+On the coverage event, the theorem rules out accepted edits that violate the
+external target or leakage constraints. A false acceptance can occur only when
+the simultaneous coverage event fails.
+\end{proof}
+
+\section{Experiments}
+
+Waterbirds is a spurious-correlation image benchmark. Camelyon17-WILDS is a
+hospital-shift medical benchmark used only as representation-reliability
+evidence, not clinical evidence. GaitPDB is a public PhysioNet gait benchmark
+with deterministic time-series features, patient/control target labels, and
+site-code source labels.
+
+\begin{table}[t]
+\centering
+\caption{Artifact-backed benchmark summary. BA denotes balanced accuracy.}
+\label{tab:main}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Method & Target BA & Worst group & Source leak \\
+\midrule
+Waterbirds FARO & 0.8012 & 0.6234 & 0.8935 \\
+Waterbirds reweighted ERM & 0.8685 & 0.8186 & 0.8935 \\
+Camelyon17 FARO & 0.8905 & 0.8464 & val. 0.8180 \\
+Camelyon17 GroupDRO & 0.8790 & 0.8176 & val. 0.8180 \\
+GaitPDB FARO & 0.6944 & 0.6667 & val. 0.7606 \\
+GaitPDB GroupDRO & 0.6650 & 0.5556 & val. 0.7606 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Camelyon17 projection-frontier certificate gives a real abstention case:
+with target-loss budget $0.02$ and source-reduction target $0.05$, no tested
+projection strength certifies source reduction, so FARO returns
+\texttt{ABSTAIN}. External source leakage is omitted for this certificate
+because the binary source encoding has a single source class in the external
+split.
+
+\section{Reference MANCE++ Baseline}
+
+MANCE++ is the closest recent nonlinear erasure baseline in the current packet.
+Using the official upstream implementation, Waterbirds has a full-split,
+five-seed reference row. MANCE++ reduces external source leakage BA from
+$0.9059$ to $0.4468$, while external target BA changes from $0.7390$ to
+$0.6915$. On Camelyon17, the official-code run uses the full no-cap
+302,436/68,464/85,054 train/validation/external frozen-representation store:
+validation source leakage decreases from $0.8492$ to $0.5635$, validation
+target BA decreases from $0.8974$ to $0.8876$, external target BA decreases
+from $0.8905$ to $0.8741$, and external worst target-source accuracy decreases
+from $0.8465$ to $0.8137$. The upstream inventory also pins official R-LACE,
+TaCo, and LEACE repositories locally; those rows remain proxy stress tests
+until matched receipts are added.
+
+\section{Limitations}
+
+FARO requires source labels, target labels, a meaningful validation split, and a
+finite candidate edit family. It does not prove that no safe edit exists
+outside the audited family. Current SPLINCE, R-LACE, and TaCo rows are scoped
+proxy stress tests unless exact upstream reference receipts are added.
+Camelyon17 and GaitPDB are representation-reliability evidence only and do not
+establish clinical safety or deployment readiness.
+
+The strongest reviewer objection is that FARO could be mistaken for a new
+eraser and judged as if it must dominate INLP, LEACE, R-LACE, TaCo, SPLINCE,
+and MANCE++. We avoid that claim. FARO is the validation-only decision layer:
+it accepts an edit only when the registered intervals certify the contract, and
+otherwise it returns \texttt{ABSTAIN}.
+
+\section{Code Availability}
+
+For double-anonymous review, the code, paper sources, configuration manifests,
+small receipts, and reproduction audits are provided as an anonymized
+supplemental archive. The named public repository is intentionally omitted from
+this source during review. Large raw datasets, embedding stores, and third-party
+upstream repositories are not included in the archive; the manifest records
+their expected locations, generation commands, and claim boundaries.
+
+\section{Conclusion}
+
+FARO reframes representation editing as a certified decision problem: construct
+a frontier, certify target preservation and source reduction, then edit or
+abstain. This contribution is compatible with linear erasers, nonlinear
+erasers, and robust prediction baselines because it audits the deployment
+decision rather than replacing every candidate eraser.
+
+\begin{thebibliography}{9}
+\bibitem[Ravfogel et~al.(2020)]{ravfogel2020inlp}
+Ravfogel, S., Elazar, Y., Gonen, H., Twiton, M., and Goldberg, Y. Null It Out:
+Guarding Protected Attributes by Iterative Nullspace Projection. ACL, 2020.
+\bibitem[Ravfogel et~al.(2022)]{ravfogel2022lace}
+Ravfogel, S., Twiton, M., Goldberg, Y., and Cotterell, R. Linear Adversarial
+Concept Erasure. ICML, 2022.
+\bibitem[Belrose et~al.(2023)]{belrose2023leace}
+Belrose, N. et al. LEACE: Perfect Linear Concept Erasure in Closed Form. arXiv
+preprint arXiv:2306.03819, 2023.
+\bibitem[Avitan et~al.(2026)]{avitan2026mance}
+Avitan, M., Goldberg, Y., and Elazar, Y. MANCE: Manifold Aware Concept Erasure.
+arXiv preprint arXiv:2607.03973, 2026.
+\bibitem[Koh et~al.(2021)]{koh2021wilds}
+Koh, P. W. et al. WILDS: A Benchmark of in-the-Wild Distribution Shifts. ICML,
+2021.
+\end{thebibliography}
+
+\end{document}

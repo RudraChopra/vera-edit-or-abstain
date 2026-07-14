@@ -1,0 +1,137 @@
+{
+  "claim_grade_reference_row": true,
+  "created_at_utc": "2026-07-13T19:31:32.402587+00:00",
+  "dataset_name": "waterbirds",
+  "diagnostic_reason": "",
+  "interpretation": "This run is labeled as a claim-grade official-code MANCE reference row.",
+  "metrics": {
+    "after": {
+      "external_source_leakage_balanced_accuracy": 0.4408008284432171,
+      "external_target_balanced_accuracy": 0.6923397987165938,
+      "external_worst_target_source_accuracy": 0.5264797507788161,
+      "validation_source_leakage_balanced_accuracy": 0.4369560378408458,
+      "validation_target_balanced_accuracy": 0.6579209277212323
+    },
+    "before": {
+      "external_source_leakage_balanced_accuracy": 0.9059371763893683,
+      "external_target_balanced_accuracy": 0.7390300888990198,
+      "external_worst_target_source_accuracy": 0.49065420560747663,
+      "validation_source_leakage_balanced_accuracy": 0.9065498052309404,
+      "validation_target_balanced_accuracy": 0.7456905930420907
+    },
+    "delta": {
+      "external_source_leakage_balanced_accuracy": -0.4651363479461512,
+      "external_target_balanced_accuracy": -0.046690290182425986,
+      "external_worst_target_source_accuracy": 0.03582554517133951,
+      "validation_source_leakage_balanced_accuracy": -0.4695937673900946,
+      "validation_target_balanced_accuracy": -0.08776966532085839
+    },
+    "mance_history": [
+      {
+        "concept_acc": 0.721608579158783,
+        "control_acc": 0.8577839136123657,
+        "scorer_val_acc": NaN,
+        "step": 0
+      },
+      {
+        "concept_acc": 0.6908871531486511,
+        "control_acc": 0.8569209575653076,
+        "scorer_val_acc": 0.7948290109634399,
+        "step": 1
+      },
+      {
+        "concept_acc": 0.6316879391670227,
+        "control_acc": 0.8589920401573181,
+        "scorer_val_acc": 0.7948290109634399,
+        "step": 2
+      },
+      {
+        "concept_acc": 0.5778391361236572,
+        "control_acc": 0.8553676009178162,
+        "scorer_val_acc": 0.7948290109634399,
+        "step": 3
+      },
+      {
+        "concept_acc": 0.5465999245643616,
+        "control_acc": 0.8479461669921875,
+        "scorer_val_acc": 0.7948290109634399,
+        "step": 4
+      },
+      {
+        "concept_acc": 0.5163962841033936,
+        "control_acc": 0.836037278175354,
+        "scorer_val_acc": 0.7948290109634399,
+        "step": 5
+      }
+    ],
+    "mance_n_neighbors": 8,
+    "mance_rank": 7
+  },
+  "reference_method": {
+    "commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+    "device": "cpu",
+    "epsilon": 0.1,
+    "eval_hidden": 64,
+    "eval_steps": 100,
+    "n_neighbors": 8,
+    "n_steps": 5,
+    "name": "MANCE",
+    "paper_url": "https://arxiv.org/abs/2607.03973",
+    "repo": "/Volumes/Backups/FARO/external/mance",
+    "repo_url": "https://github.com/MatanAvitan/mance",
+    "scorer_hidden": 128,
+    "scorer_steps": 200,
+    "seed": 0,
+    "variant": "mance++"
+  },
+  "runtime_seconds": 27.954,
+  "sample": {
+    "counts": {
+      "external": 5794,
+      "train": 4795,
+      "validation": 1199
+    },
+    "external_group_counts": {
+      "y=0,s=0": 2255,
+      "y=0,s=1": 2255,
+      "y=1,s=0": 642,
+      "y=1,s=1": 642
+    },
+    "full_counts": {
+      "external": 5794,
+      "train": 4795,
+      "validation": 1199
+    },
+    "sampled": false,
+    "seed": 0,
+    "strategy": "stratified_by_target_and_source_within_each_split",
+    "train_group_counts": {
+      "y=0,s=0": 3498,
+      "y=0,s=1": 184,
+      "y=1,s=0": 56,
+      "y=1,s=1": 1057
+    },
+    "train_s_counts": {
+      "0": 3554,
+      "1": 1241
+    },
+    "train_y_counts": {
+      "0": 3682,
+      "1": 1113
+    },
+    "validation_group_counts": {
+      "y=0,s=0": 467,
+      "y=0,s=1": 466,
+      "y=1,s=0": 133,
+      "y=1,s=1": 133
+    }
+  },
+  "schema": "faro_mance_reference_numpy_store_v1",
+  "store_dir": "/Volumes/Backups/FARO/artifacts/waterbirds_official_numpy_store",
+  "store_manifest": {
+    "feature_count": 512,
+    "format": "trace_embedding_store_v1",
+    "n_examples": 11788,
+    "name": "FARO Waterbirds official NumPy embedding store"
+  }
+}

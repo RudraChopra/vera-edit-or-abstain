@@ -1,0 +1,376 @@
+{
+  "name": "TRACE official benchmark experiment receipt",
+  "created_at_utc": "2026-07-12T19:47:09.066171+00:00",
+  "benchmark": {
+    "key": "waterbirds",
+    "name": "Waterbirds",
+    "family": "spurious correlation / background shift",
+    "target": "bird type",
+    "source": "background or place",
+    "split_policy": "official train/validation/test metadata; test mapped to TRACE external",
+    "primary_metric": "worst-group accuracy"
+  },
+  "output_prefix": "waterbirds_official",
+  "embedding_table": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_trace_embeddings.csv",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "claim_confirmations": {
+    "official_data_confirmed": true,
+    "official_splits_confirmed": true,
+    "real_samples_confirmed": true,
+    "claim_grade_embeddings_confirmed": true
+  },
+  "encoder_report": {
+    "name": "TRACE official image embedding export",
+    "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+    "trace_embedding_table": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+    "image_root": "",
+    "manifest_report": {
+      "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+      "image_manifest_path": "",
+      "image_path_column": "image_path",
+      "split_counts": {
+        "train": 4795,
+        "validation": 1199,
+        "external": 5794
+      },
+      "direct_trace_export": true,
+      "image_manifest_materialized": false
+    },
+    "encoder_report": {
+      "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+      "output_path": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+      "n_images": 11788,
+      "feature_count": 512,
+      "mode": "manual_resnet18_imagenet",
+      "encoder_family": "manual_resnet18_imagenet_frozen_pillow_loader",
+      "weights_path": "/Users/rudrachopra/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth",
+      "weights_sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec",
+      "deep_encoder": true,
+      "claim_grade_embedding": true,
+      "direct_trace_table": true,
+      "device_request": "cpu",
+      "runtime_device": "cpu",
+      "resumable_export": true,
+      "resume_enabled_for_this_run": false,
+      "resumed_from_rows": 0,
+      "missing_keys": [],
+      "unexpected_keys": [],
+      "claim_warning": ""
+    },
+    "export_report": {
+      "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+      "embeddings_path": "",
+      "output_path": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+      "n_examples": 11788,
+      "feature_count": 512,
+      "split_counts": {
+        "train": 4795,
+        "validation": 1199,
+        "external": 5794
+      },
+      "direct_trace_export": true,
+      "streaming_aligned_merge": false
+    },
+    "validation_report_path": "research/artifacts/waterbirds_official_trace_validation.json",
+    "validation_report": {
+      "path": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+      "n_examples": 11788,
+      "feature_count": 512,
+      "feature_prefix": [
+        "embedding_0000",
+        "embedding_0001",
+        "embedding_0002",
+        "embedding_0003",
+        "embedding_0004",
+        "embedding_0005",
+        "embedding_0006",
+        "embedding_0007"
+      ],
+      "splits": {
+        "counterfactual": {
+          "n": 1199,
+          "target_counts": {
+            "0": 933,
+            "1": 266
+          },
+          "source_counts": {
+            "0": 600,
+            "1": 599
+          }
+        },
+        "external": {
+          "n": 5794,
+          "target_counts": {
+            "0": 4510,
+            "1": 1284
+          },
+          "source_counts": {
+            "0": 2897,
+            "1": 2897
+          }
+        },
+        "train": {
+          "n": 4795,
+          "target_counts": {
+            "0": 3682,
+            "1": 1113
+          },
+          "source_counts": {
+            "0": 3554,
+            "1": 1241
+          }
+        },
+        "validation": {
+          "n": 1199,
+          "target_counts": {
+            "0": 933,
+            "1": 266
+          },
+          "source_counts": {
+            "0": 600,
+            "1": 599
+          }
+        }
+      },
+      "constant_feature_count": 0,
+      "constant_features": [],
+      "passed": true,
+      "failures": []
+    },
+    "claim_grade_embedding": true
+  },
+  "feature_cap_report": {
+    "applied": false
+  },
+  "provenance_report": {
+    "name": "TRACE Waterbirds Hugging Face mirror metadata export",
+    "created_at_utc": "2026-07-12T17:16:04.588903+00:00",
+    "dataset_name": "Waterbirds",
+    "dataset_source": "grodino/waterbirds Hugging Face dataset mirror",
+    "upstream_repository": "https://github.com/kohpangwei/group_DRO",
+    "dataset_card": "https://huggingface.co/datasets/grodino/waterbirds",
+    "input_mode": "official_csv",
+    "mirror_provenance_verified": true,
+    "metadata_path": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_hf_metadata.csv",
+    "image_dir": "/Users/rudrachopra/Documents/Science Fair/research/data/waterbirds_hf/images",
+    "n_examples": 11788,
+    "expected_n_examples": 11788,
+    "full_dataset_matches_expected": true,
+    "max_examples_per_split": null,
+    "split_mapping": {
+      "train": "train",
+      "validation": "validation",
+      "test": "external"
+    },
+    "split_counts": {
+      "external": 5794,
+      "train": 4795,
+      "validation": 1199
+    },
+    "raw_split_counts": {
+      "test": 5794,
+      "train": 4795,
+      "validation": 1199
+    },
+    "expected_raw_split_counts": {
+      "train": 4795,
+      "validation": 1199,
+      "test": 5794
+    },
+    "target_counts": {
+      "0": 9125,
+      "1": 2663
+    },
+    "source_counts": {
+      "0": 7051,
+      "1": 4737
+    },
+    "group_counts": {
+      "external:y0:s0": 2255,
+      "external:y0:s1": 2255,
+      "external:y1:s0": 642,
+      "external:y1:s1": 642,
+      "train:y0:s0": 3498,
+      "train:y0:s1": 184,
+      "train:y1:s0": 56,
+      "train:y1:s1": 1057,
+      "validation:y0:s0": 467,
+      "validation:y0:s1": 466,
+      "validation:y1:s0": 133,
+      "validation:y1:s1": 133
+    },
+    "target_column": "label",
+    "source_column": "place",
+    "image_path_column": "image_path",
+    "parquet_hashes": {
+      "train": "575b462a17ae00e6a03b4f1833e3a5952e28492e278d3246186586c27a46367a",
+      "validation": "9ab73e8625fb5856e132ecbbe509f20829e5d59a9bd087b6cda86f5c478350fb",
+      "test": "fdb8696ce4db78c0ad48dd0120aaae40ce4330416d37fc41c9ea57faadc007f7"
+    },
+    "parquet_sizes": {
+      "train": 212123440,
+      "validation": 48110990,
+      "test": 231664112
+    },
+    "official_splits_confirmed": true,
+    "real_samples_confirmed": true,
+    "claim_grade_metadata": true,
+    "claim_warning": ""
+  },
+  "provenance_assessment": {
+    "report_provided": true,
+    "full_dataset_export": true,
+    "official_source_mode": true,
+    "subset_or_cap_detected": false,
+    "mirror_provenance_verified": true,
+    "full_dataset_matches_expected": true,
+    "blocking_reason": ""
+  },
+  "claim_gates": {
+    "official_dataset": true,
+    "official_splits": true,
+    "real_images_or_samples": true,
+    "frozen_or_deep_embeddings": true,
+    "multi_seed": true,
+    "strong_baselines": true,
+    "worst_group_or_domain_metric": true,
+    "failure_or_abstention_analysis": true
+  },
+  "missing_claim_gates": [],
+  "claim_gate_passed": true,
+  "allowed_claim": "official frozen-embedding benchmark row candidate",
+  "next_gate": "compare against full end-to-end WILDS/DomainBed baselines if required",
+  "scope_warning": "This receipt evaluates frozen ResNet-18 embeddings and representation edits; it is not an end-to-end Waterbirds leaderboard claim.",
+  "validation_report": {
+    "path": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+    "n_examples": 11788,
+    "feature_count": 512,
+    "feature_prefix": [
+      "embedding_0000",
+      "embedding_0001",
+      "embedding_0002",
+      "embedding_0003",
+      "embedding_0004",
+      "embedding_0005",
+      "embedding_0006",
+      "embedding_0007"
+    ],
+    "splits": {
+      "counterfactual": {
+        "n": 1199,
+        "target_counts": {
+          "0": 933,
+          "1": 266
+        },
+        "source_counts": {
+          "0": 600,
+          "1": 599
+        }
+      },
+      "external": {
+        "n": 5794,
+        "target_counts": {
+          "0": 4510,
+          "1": 1284
+        },
+        "source_counts": {
+          "0": 2897,
+          "1": 2897
+        }
+      },
+      "train": {
+        "n": 4795,
+        "target_counts": {
+          "0": 3682,
+          "1": 1113
+        },
+        "source_counts": {
+          "0": 3554,
+          "1": 1241
+        }
+      },
+      "validation": {
+        "n": 1199,
+        "target_counts": {
+          "0": 933,
+          "1": 266
+        },
+        "source_counts": {
+          "0": 600,
+          "1": 599
+        }
+      }
+    },
+    "constant_feature_count": 0,
+    "constant_features": [],
+    "passed": true,
+    "failures": []
+  },
+  "selected_trace_rows": {
+    "coordinate_TRACE": {
+      "method": "FARO_selected",
+      "method_label": "FARO abstain/no edit",
+      "n_seeds": 5,
+      "external_target_balanced_accuracy_mean": 0.80118,
+      "external_target_balanced_accuracy_ci95": 0.000458,
+      "external_target_accuracy_mean": 0.814152,
+      "external_target_accuracy_ci95": 0.000377,
+      "external_worst_source_accuracy_mean": 0.719572,
+      "external_worst_source_accuracy_ci95": 0.001061,
+      "external_worst_target_source_accuracy_mean": 0.623365,
+      "external_worst_target_source_accuracy_ci95": 0.00178,
+      "validation_source_leakage_balanced_accuracy_mean": 0.891728,
+      "validation_source_leakage_balanced_accuracy_ci95": 0.001584,
+      "external_source_leakage_balanced_accuracy_mean": 0.893511,
+      "external_source_leakage_balanced_accuracy_ci95": 0.000513,
+      "benchmark": "Waterbirds",
+      "benchmark_key": "waterbirds",
+      "embedding_table": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_trace_embeddings.csv",
+      "output_prefix": "waterbirds_official",
+      "evidence_level": "official_frozen_embedding_vectorized_receipt"
+    },
+    "subspace_TRACE": {
+      "method": "FARO_selected",
+      "method_label": "FARO abstain/no edit",
+      "n_seeds": 5,
+      "external_target_balanced_accuracy_mean": 0.80118,
+      "external_target_balanced_accuracy_ci95": 0.000458,
+      "external_target_accuracy_mean": 0.814152,
+      "external_target_accuracy_ci95": 0.000377,
+      "external_worst_source_accuracy_mean": 0.719572,
+      "external_worst_source_accuracy_ci95": 0.001061,
+      "external_worst_target_source_accuracy_mean": 0.623365,
+      "external_worst_target_source_accuracy_ci95": 0.00178,
+      "validation_source_leakage_balanced_accuracy_mean": 0.891728,
+      "validation_source_leakage_balanced_accuracy_ci95": 0.001584,
+      "external_source_leakage_balanced_accuracy_mean": 0.893511,
+      "external_source_leakage_balanced_accuracy_ci95": 0.000513,
+      "benchmark": "Waterbirds",
+      "benchmark_key": "waterbirds",
+      "embedding_table": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_trace_embeddings.csv",
+      "output_prefix": "waterbirds_official",
+      "evidence_level": "official_frozen_embedding_vectorized_receipt"
+    }
+  },
+  "artifacts": {
+    "validation": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_trace_validation.json",
+    "coordinate_trace_results": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_baseline_per_seed.csv",
+    "coordinate_trace_diagnostics": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_trace_diagnostics.json",
+    "subspace_trace_results": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_baseline_per_seed.csv",
+    "subspace_trace_diagnostics": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_trace_diagnostics.json",
+    "baseline_per_seed": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_baseline_per_seed.csv",
+    "baseline_summary": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_baseline_summary.csv",
+    "baseline_diagnostics": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_trace_diagnostics.json",
+    "baseline_latex_table": "/Users/rudrachopra/Documents/Science Fair/research/paper/waterbirds_official_baseline_table.tex",
+    "statistical_report": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_statistical_report.json",
+    "statistical_latex_table": "/Users/rudrachopra/Documents/Science Fair/research/paper/waterbirds_official_statistical_table.tex",
+    "receipt": "/Users/rudrachopra/Documents/Science Fair/research/artifacts/waterbirds_official_result_receipt.json"
+  },
+  "notes": "Vectorized Waterbirds receipt generated from the full Hugging Face mirror with frozen ResNet-18 embeddings."
+}

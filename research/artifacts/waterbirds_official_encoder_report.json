@@ -1,0 +1,120 @@
+{
+  "name": "TRACE official image embedding export",
+  "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+  "trace_embedding_table": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+  "image_root": "",
+  "manifest_report": {
+    "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+    "image_manifest_path": "",
+    "image_path_column": "image_path",
+    "split_counts": {
+      "train": 4795,
+      "validation": 1199,
+      "external": 5794
+    },
+    "direct_trace_export": true,
+    "image_manifest_materialized": false
+  },
+  "encoder_report": {
+    "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+    "output_path": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+    "n_images": 11788,
+    "feature_count": 512,
+    "mode": "manual_resnet18_imagenet",
+    "encoder_family": "manual_resnet18_imagenet_frozen_pillow_loader",
+    "weights_path": "/Users/rudrachopra/.cache/torch/hub/checkpoints/resnet18-f37072fd.pth",
+    "weights_sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec",
+    "deep_encoder": true,
+    "claim_grade_embedding": true,
+    "direct_trace_table": true,
+    "device_request": "cpu",
+    "runtime_device": "cpu",
+    "resumable_export": true,
+    "resume_enabled_for_this_run": false,
+    "resumed_from_rows": 0,
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "claim_warning": ""
+  },
+  "export_report": {
+    "metadata_path": "research/artifacts/waterbirds_hf_metadata.csv",
+    "embeddings_path": "",
+    "output_path": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+    "n_examples": 11788,
+    "feature_count": 512,
+    "split_counts": {
+      "train": 4795,
+      "validation": 1199,
+      "external": 5794
+    },
+    "direct_trace_export": true,
+    "streaming_aligned_merge": false
+  },
+  "validation_report_path": "research/artifacts/waterbirds_official_trace_validation.json",
+  "validation_report": {
+    "path": "research/artifacts/waterbirds_official_trace_embeddings.csv",
+    "n_examples": 11788,
+    "feature_count": 512,
+    "feature_prefix": [
+      "embedding_0000",
+      "embedding_0001",
+      "embedding_0002",
+      "embedding_0003",
+      "embedding_0004",
+      "embedding_0005",
+      "embedding_0006",
+      "embedding_0007"
+    ],
+    "splits": {
+      "counterfactual": {
+        "n": 1199,
+        "target_counts": {
+          "0": 933,
+          "1": 266
+        },
+        "source_counts": {
+          "0": 600,
+          "1": 599
+        }
+      },
+      "external": {
+        "n": 5794,
+        "target_counts": {
+          "0": 4510,
+          "1": 1284
+        },
+        "source_counts": {
+          "0": 2897,
+          "1": 2897
+        }
+      },
+      "train": {
+        "n": 4795,
+        "target_counts": {
+          "0": 3682,
+          "1": 1113
+        },
+        "source_counts": {
+          "0": 3554,
+          "1": 1241
+        }
+      },
+      "validation": {
+        "n": 1199,
+        "target_counts": {
+          "0": 933,
+          "1": 266
+        },
+        "source_counts": {
+          "0": 600,
+          "1": 599
+        }
+      }
+    },
+    "constant_feature_count": 0,
+    "constant_features": [],
+    "passed": true,
+    "failures": []
+  },
+  "claim_grade_embedding": true
+}

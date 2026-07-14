@@ -1,0 +1,72 @@
+{
+  "name": "FARO Paper A reproducibility packet audit",
+  "created_at_utc": "2026-07-14T00:55:04.906905+00:00",
+  "packet_ready": true,
+  "pass_count": 9,
+  "fail_count": 0,
+  "checks": [
+    {
+      "key": "manifest_present",
+      "status": "pass",
+      "evidence": "path=/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/configs/faro_paper_a_reproducibility.json; exists=yes",
+      "requirement": "A machine-readable reproducibility manifest must exist.",
+      "next_step": "Create `research/configs/faro_paper_a_reproducibility.json`."
+    },
+    {
+      "key": "checklist_present",
+      "status": "pass",
+      "evidence": "path=/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/REPRODUCIBILITY_CHECKLIST.md; exists=yes",
+      "requirement": "A human-readable reproducibility checklist must exist.",
+      "next_step": "Create or update `research/maintrack/REPRODUCIBILITY_CHECKLIST.md`."
+    },
+    {
+      "key": "seed_policy_locked",
+      "status": "pass",
+      "evidence": "official_seed_list=[0, 1, 2, 3, 4]; minimum_official_seeds=5; confidence_level=0.95; paired_statistics_required=True",
+      "requirement": "Official rows need locked five-seed, 95 percent interval, paired-statistics policy.",
+      "next_step": "Update the seed policy in the reproducibility manifest."
+    },
+    {
+      "key": "reproduction_commands_complete",
+      "status": "pass",
+      "evidence": "command_keys=['aaai2027_source_readiness', 'adversarial_internal_review', 'benchmark_claim_audit', 'camelyon17_mance_scaling_feasibility', 'camelyon17_mancepp_80k_diagnostic', 'camelyon17_mancepp_full_nocap_reference', 'camelyon17_numpy_store_conversion', 'camelyon17_official_benchmark', 'camelyon17_projection_frontier_certificate', 'camelyon17_tar_stream_dryrun', 'claim_ledger_audit', 'gaitpdb_numpy_store', 'gaitpdb_public_locked_split_benchmark', 'iclr2026_style_draft_compile', 'maintrack_figures', 'maintrack_readiness', 'manuscript_compile', 'reference_baseline_scope_audit', 'upstream_baseline_reference_inventory']; missing=[]; script_refs_ok=yes; missing_script_refs={}",
+      "requirement": "The manifest must list the core reproduction commands and reference existing scripts.",
+      "next_step": "Add missing commands or repair stale script paths in the manifest."
+    },
+    {
+      "key": "reproduction_outputs_present",
+      "status": "pass",
+      "evidence": "all_expected_outputs_present=yes; missing_outputs={}",
+      "requirement": "Core reproduction commands should have current output artifacts.",
+      "next_step": "Run the missing reproduction commands and regenerate their outputs."
+    },
+    {
+      "key": "claim_rows_have_receipts",
+      "status": "pass",
+      "evidence": "claim_ready_rows=2; receipts_present=yes; missing_claim_receipts=[]",
+      "requirement": "The packet must include at least two durable claim-ready rows, each with existing receipts and statistical reports.",
+      "next_step": "Finish, rehydrate, or regenerate another official benchmark row with materialized receipt and statistical report."
+    },
+    {
+      "key": "blocked_rows_scoped",
+      "status": "pass",
+      "evidence": "blocked_rows=1; scoped=yes",
+      "requirement": "Required but incomplete rows must have an explicit blocker and next action.",
+      "next_step": "Add blocker, preflight report, and next action for every required incomplete row."
+    },
+    {
+      "key": "core_artifacts_present",
+      "status": "pass",
+      "evidence": "core_artifact_count=58; present=yes",
+      "requirement": "The reproducibility packet must point to all core method, paper, and audit artifacts.",
+      "next_step": "Regenerate or relink missing core artifacts."
+    },
+    {
+      "key": "release_policy_scoped",
+      "status": "pass",
+      "evidence": "release_code_configs_and_small_artifacts=True; release_large_raw_data=False; anonymization_required_for_review=True",
+      "requirement": "Public release policy must avoid committing third-party data and preserve review anonymity.",
+      "next_step": "Update the public release policy in the manifest."
+    }
+  ]
+}

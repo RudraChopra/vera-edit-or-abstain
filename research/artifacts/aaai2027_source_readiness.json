@@ -1,0 +1,115 @@
+{
+  "checks": [
+    {
+      "evidence": "path=/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/faro_aaai2027_draft.tex; materialized=True",
+      "key": "source_materialized",
+      "requirement": "AAAI source must exist locally and not be a dataless placeholder.",
+      "status": "pass"
+    },
+    {
+      "evidence": "path=/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/aaai2027.sty; materialized=True",
+      "key": "official_style_materialized",
+      "requirement": "Official AAAI-27 style file must be present.",
+      "status": "pass"
+    },
+    {
+      "evidence": "source uses \\usepackage[submission]{aaai2027}",
+      "key": "uses_official_submission_style",
+      "requirement": "Submission source must use the official AAAI submission style.",
+      "status": "pass"
+    },
+    {
+      "evidence": "author block is anonymous and local identity strings are absent",
+      "key": "anonymous_author_block",
+      "requirement": "AAAI double-anonymous source must not expose author identity.",
+      "status": "pass"
+    },
+    {
+      "evidence": "path=/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/faro_aaai2027_anonymous.tex; materialized=True",
+      "key": "anonymous_source_materialized",
+      "requirement": "Dedicated anonymous AAAI source must exist locally.",
+      "status": "pass"
+    },
+    {
+      "evidence": "anonymous_leaks=[]",
+      "key": "anonymous_source_identity_free",
+      "requirement": "Anonymous AAAI source must include code availability without named identity or GitHub URL.",
+      "status": "pass"
+    },
+    {
+      "evidence": "path=/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/faro_aaai2027_named.tex; materialized=True; has_author=True; has_repo=True",
+      "key": "named_source_release_metadata",
+      "requirement": "Named AAAI source must contain author metadata and the public release URL.",
+      "status": "pass"
+    },
+    {
+      "evidence": "missing_sections=[]",
+      "key": "required_sections_present",
+      "requirement": "AAAI source must include the core method-paper sections.",
+      "status": "pass"
+    },
+    {
+      "evidence": "AAAI source contains the full no-cap Camelyon MANCE++ reference numbers",
+      "key": "current_camelyon_mance_reference",
+      "requirement": "AAAI source must cite the full no-cap Camelyon MANCE++ receipt rather than superseded diagnostics.",
+      "status": "pass"
+    },
+    {
+      "evidence": "stale_terms_present=[]",
+      "key": "no_stale_camelyon_mance_terms",
+      "requirement": "Superseded 40k Camelyon MANCE++ text must be removed.",
+      "status": "pass"
+    },
+    {
+      "evidence": "source contains the false-acceptance corollary",
+      "key": "false_acceptance_corollary_present",
+      "requirement": "Theory section should include explicit false-acceptance control.",
+      "status": "pass"
+    },
+    {
+      "evidence": "source explicitly preempts the eraser-versus-decision-layer objection",
+      "key": "reviewer_attack_preempted",
+      "requirement": "AAAI source should preempt the strongest baseline-framing attack.",
+      "status": "pass"
+    },
+    {
+      "evidence": "source separates pinned/proxy baselines and denies universal erasure SOTA",
+      "key": "reference_boundary_present",
+      "requirement": "AAAI source must not overclaim reference parity.",
+      "status": "pass"
+    },
+    {
+      "evidence": "source states Camelyon17/GaitPDB are not clinical deployment evidence",
+      "key": "clinical_boundary_present",
+      "requirement": "Medical benchmark language must not imply clinical deployment readiness.",
+      "status": "pass"
+    },
+    {
+      "evidence": "estimated_main_words=1221",
+      "key": "estimated_length_reasonable",
+      "requirement": "AAAI source should remain plausibly within the 7-page technical limit.",
+      "status": "pass"
+    },
+    {
+      "evidence": "pdflatex=<missing>",
+      "key": "pdflatex_available",
+      "requirement": "Local final AAAI PDF compilation requires PDFLaTeX.",
+      "status": "warn"
+    }
+  ],
+  "created_at_utc": "2026-07-14T00:55:12.617664+00:00",
+  "fail_count": 0,
+  "metadata": {
+    "anonymous_source": "/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/faro_aaai2027_anonymous.tex",
+    "compile_blocker": "PDFLaTeX is not installed locally",
+    "estimated_main_words": 1221,
+    "named_source": "/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/faro_aaai2027_named.tex",
+    "pdflatex": null,
+    "source": "/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/faro_aaai2027_draft.tex",
+    "style": "/Volumes/Backups/FARO/github_export/faro-edit-or-abstain/research/maintrack/aaai2027_template/AuthorKit27/aaai2027.sty"
+  },
+  "name": "FARO AAAI-27 source readiness audit",
+  "pdf_compile_ready": false,
+  "source_ready": true,
+  "warn_count": 1
+}

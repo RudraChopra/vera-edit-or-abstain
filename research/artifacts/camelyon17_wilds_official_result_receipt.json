@@ -1,0 +1,47 @@
+{
+  "name": "FARO Camelyon17-WILDS official frozen-embedding benchmark receipt",
+  "created_at_utc": "2026-07-13T08:30:37.675325+00:00",
+  "store_dir": "/Volumes/Backups/FARO/artifacts/camelyon17_resnet18_torch_full_numpy_store",
+  "store_format": "trace_embedding_store_v1",
+  "official_dataset": true,
+  "official_splits": true,
+  "real_images_or_samples": true,
+  "frozen_or_deep_embeddings": true,
+  "strong_baselines": true,
+  "worst_group_or_domain_metric": true,
+  "failure_or_abstention_analysis": true,
+  "full_dataset_export": true,
+  "n_examples": 455954,
+  "feature_count": 512,
+  "split_counts": {
+    "external": 85054,
+    "train": 302436,
+    "validation": 68464
+  },
+  "n_seeds": 5,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "methods": [
+    "FARO_selected",
+    "erm_probe",
+    "group_dro_probe",
+    "group_reweighted_erm",
+    "source_balanced_erm"
+  ],
+  "solver": "custom weighted binary ridge probe (alpha=10.0, unregularized intercept)",
+  "deterministic_linear_solver": true,
+  "n_model_fits": 4,
+  "numeric_checks": "finite coefficients and finite chunked decision scores required",
+  "matmul_warning_policy": "NumPy floating-point warnings are silenced only around matrix products that are immediately followed by finite-value assertions.",
+  "seed_protocol_note": "Rows are repeated across locked seeds for protocol parity because the regularized linear solver is deterministic.",
+  "paired_statistics_available": true,
+  "claim_gate_passed": true,
+  "claim_grade_benchmark_row": true,
+  "claim_boundary": "Official frozen-embedding benchmark row for representation-reliability evaluation only; not a clinical deployment or diagnostic safety claim.",
+  "blocking_reasons": []
+}

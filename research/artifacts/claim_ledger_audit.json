@@ -1,0 +1,51 @@
+{
+  "name": "FARO Paper A claim ledger audit",
+  "created_at_utc": "2026-07-14T00:52:48.802612+00:00",
+  "claim_ledger_ready": true,
+  "pass_count": 6,
+  "fail_count": 0,
+  "checks": [
+    {
+      "key": "claim_ledger_present",
+      "status": "pass",
+      "evidence": "path=/Users/rudrachopra/Documents/Science Fair/research/configs/faro_claim_ledger.json; exists=yes",
+      "requirement": "A machine-readable claim ledger must exist.",
+      "next_step": "Create `research/configs/faro_claim_ledger.json`."
+    },
+    {
+      "key": "claim_ledger_markdown_present",
+      "status": "pass",
+      "evidence": "path=/Users/rudrachopra/Documents/Science Fair/research/maintrack/CLAIM_LEDGER.md; exists=yes",
+      "requirement": "A human-readable claim ledger must exist.",
+      "next_step": "Create or update `research/maintrack/CLAIM_LEDGER.md`."
+    },
+    {
+      "key": "allowed_claims_have_evidence",
+      "status": "pass",
+      "evidence": "allowed_claims=13; with_existing_evidence=13",
+      "requirement": "Every allowed claim must point to existing evidence artifacts.",
+      "next_step": "Add evidence paths for every allowed claim or remove unsupported claims."
+    },
+    {
+      "key": "forbidden_claims_registered",
+      "status": "pass",
+      "evidence": "forbidden_claims=6; forbidden_patterns=19",
+      "requirement": "The ledger must register the most dangerous unsupported claims.",
+      "next_step": "Add missing forbidden claims and exact manuscript patterns."
+    },
+    {
+      "key": "audited_manuscript_paths_exist",
+      "status": "pass",
+      "evidence": "audited_paths=['research/maintrack/faro_main.tex', 'research/maintrack/README.md', 'research/maintrack/PAPER_A_LOCK.md', 'research/maintrack/READINESS_GATES.md']; exist=yes",
+      "requirement": "The claim audit must scan the submission-facing manuscript files.",
+      "next_step": "Add or repair audited manuscript paths in the claim ledger."
+    },
+    {
+      "key": "forbidden_claims_absent_from_manuscript",
+      "status": "pass",
+      "evidence": "forbidden_hits=[]",
+      "requirement": "Submission-facing manuscript files must not assert unsupported claims.",
+      "next_step": "Remove or reframe the forbidden claims from the manuscript files."
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "claim_grade_reference_row": false,
+  "created_at_utc": "2026-07-13T19:25:53.393440+00:00",
+  "dataset_name": "camelyon17",
+  "diagnostic_reason": "stratified subset run, not a full matched benchmark row",
+  "interpretation": "This is an official-code MANCE reference diagnostic. It proves integration against the upstream implementation, but it should not be cited as a full claim-grade baseline unless rerun without caps and with a finalized schedule.",
+  "metrics": {
+    "after": {
+      "external_source_leakage_balanced_accuracy": null,
+      "external_target_balanced_accuracy": 0.8342499999999999,
+      "external_worst_target_source_accuracy": 0.7195,
+      "validation_source_leakage_balanced_accuracy": 0.5387500000000001,
+      "validation_target_balanced_accuracy": 0.886625
+    },
+    "before": {
+      "external_source_leakage_balanced_accuracy": null,
+      "external_target_balanced_accuracy": 0.868625,
+      "external_worst_target_source_accuracy": 0.79125,
+      "validation_source_leakage_balanced_accuracy": 0.84675,
+      "validation_target_balanced_accuracy": 0.9117500000000001
+    },
+    "delta": {
+      "external_source_leakage_balanced_accuracy": null,
+      "external_target_balanced_accuracy": -0.034375000000000044,
+      "external_worst_target_source_accuracy": -0.07174999999999998,
+      "validation_source_leakage_balanced_accuracy": -0.30799999999999994,
+      "validation_target_balanced_accuracy": -0.025125000000000064
+    },
+    "mance_history": [
+      {
+        "concept_acc": 0.9172499775886536,
+        "control_acc": 0.8728749752044678,
+        "scorer_val_acc": NaN,
+        "step": 0
+      },
+      {
+        "concept_acc": 0.8933749794960022,
+        "control_acc": 0.8675000071525574,
+        "scorer_val_acc": 0.8531249761581421,
+        "step": 1
+      },
+      {
+        "concept_acc": 0.8573750257492065,
+        "control_acc": 0.8663750290870667,
+        "scorer_val_acc": 0.8531249761581421,
+        "step": 2
+      },
+      {
+        "concept_acc": 0.7946249842643738,
+        "control_acc": 0.8643749952316284,
+        "scorer_val_acc": 0.8531249761581421,
+        "step": 3
+      },
+      {
+        "concept_acc": 0.7102500200271606,
+        "control_acc": 0.8654999732971191,
+        "scorer_val_acc": 0.8531249761581421,
+        "step": 4
+      },
+      {
+        "concept_acc": 0.6003749966621399,
+        "control_acc": 0.862500011920929,
+        "scorer_val_acc": 0.8531249761581421,
+        "step": 5
+      }
+    ],
+    "mance_n_neighbors": 8,
+    "mance_rank": 7
+  },
+  "reference_method": {
+    "commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+    "device": "cpu",
+    "epsilon": 0.1,
+    "eval_hidden": 64,
+    "eval_steps": 120,
+    "n_neighbors": 8,
+    "n_steps": 5,
+    "name": "MANCE",
+    "paper_url": "https://arxiv.org/abs/2607.03973",
+    "repo": "/Volumes/Backups/FARO/external/mance",
+    "repo_url": "https://github.com/MatanAvitan/mance",
+    "scorer_hidden": 128,
+    "scorer_steps": 200,
+    "variant": "mance++"
+  },
+  "runtime_seconds": 83.539,
+  "sample": {
+    "counts": {
+      "external": 8000,
+      "train": 20000,
+      "validation": 8000
+    },
+    "external_group_counts": {
+      "y=0,s=1": 4000,
+      "y=1,s=1": 4000
+    },
+    "full_counts": {
+      "external": 85054,
+      "train": 302436,
+      "validation": 68464
+    },
+    "sampled": true,
+    "seed": 0,
+    "strategy": "stratified_by_target_and_source_within_each_split",
+    "train_group_counts": {
+      "y=0,s=0": 5000,
+      "y=0,s=1": 5000,
+      "y=1,s=0": 5000,
+      "y=1,s=1": 5000
+    },
+    "train_s_counts": {
+      "0": 10000,
+      "1": 10000
+    },
+    "train_y_counts": {
+      "0": 10000,
+      "1": 10000
+    },
+    "validation_group_counts": {
+      "y=0,s=0": 2000,
+      "y=0,s=1": 2000,
+      "y=1,s=0": 2000,
+      "y=1,s=1": 2000
+    }
+  },
+  "schema": "faro_mance_reference_numpy_store_v1",
+  "store_dir": "/Volumes/Backups/FARO/artifacts/camelyon17_resnet18_torch_full_numpy_store",
+  "store_manifest": {
+    "feature_count": 512,
+    "format": "trace_embedding_store_v1",
+    "n_examples": 455954,
+    "name": "FARO Camelyon17 no-PIL ResNet18 NumPy embedding store"
+  }
+}

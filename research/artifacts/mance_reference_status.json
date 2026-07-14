@@ -1,0 +1,66 @@
+{
+  "created_at_utc": "2026-07-14T00:24:34.015619+00:00",
+  "status": "waterbirds_and_camelyon_claim_grade",
+  "upstream_repo": "/Volumes/Backups/FARO/external/mance",
+  "upstream_repo_url": "https://github.com/MatanAvitan/mance",
+  "paper_url": "https://arxiv.org/abs/2607.03973",
+  "adapter": "research/scripts/run_mance_reference_numpy_store.py",
+  "waterbirds": {
+    "claim_grade_reference_row": true,
+    "claim_grade_statistics": true,
+    "statistical_report": "research/artifacts/mance_reference_statistical_report.json",
+    "per_seed_csv": "research/artifacts/mance_reference_waterbirds_per_seed.csv",
+    "seeds": [0, 1, 2, 3, 4],
+    "sample_counts": {
+      "train": 4795,
+      "validation": 1199,
+      "external": 5794
+    },
+    "variant": "mance++",
+    "n_steps": 5,
+    "delta_means": {
+      "external_source_leakage_balanced_accuracy": -0.4590956161546427,
+      "external_target_balanced_accuracy": -0.04750153691001646,
+      "external_worst_target_source_accuracy": 0.03769470404984421,
+      "validation_source_leakage_balanced_accuracy": -0.4542540345019477,
+      "validation_target_balanced_accuracy": -0.07478140689343933
+    }
+  },
+  "camelyon17": {
+    "claim_grade_reference_row": true,
+    "full_nocap_receipt": "research/artifacts/camelyon17_mancepp_reference_full_nocap_receipt.json",
+    "external_full_nocap_receipt": "/Volumes/Backups/FARO/artifacts/mance_reference/camelyon17_mancepp_reference_full_nocap_receipt.json",
+    "diagnostic_receipt": "research/artifacts/camelyon17_mancepp_reference_diagnostic_receipt.json",
+    "expanded_diagnostic_receipt": "research/artifacts/camelyon17_mancepp_reference_80k_diagnostic_receipt.json",
+    "prior_expanded_diagnostic_receipt": "research/artifacts/camelyon17_mancepp_reference_40k_diagnostic_receipt.json",
+    "sample_counts": {
+      "train": 302436,
+      "validation": 68464,
+      "external": 85054
+    },
+    "full_counts": {
+      "train": 302436,
+      "validation": 68464,
+      "external": 85054
+    },
+    "variant": "mance++",
+    "n_steps": 5,
+    "metrics": {
+      "validation_source_leakage_balanced_accuracy_before": 0.8491882658360984,
+      "validation_source_leakage_balanced_accuracy_after": 0.5634600340400916,
+      "validation_source_leakage_balanced_accuracy_delta": -0.2857282317960068,
+      "validation_target_balanced_accuracy_before": 0.8973533116873231,
+      "validation_target_balanced_accuracy_after": 0.8876272341435942,
+      "validation_target_balanced_accuracy_delta": -0.009726077543728895,
+      "external_target_balanced_accuracy_before": 0.8905048557387072,
+      "external_target_balanced_accuracy_after": 0.8741035107108426,
+      "external_target_balanced_accuracy_delta": -0.01640134502786461,
+      "external_worst_target_source_accuracy_before": 0.8465445481693983,
+      "external_worst_target_source_accuracy_after": 0.8136948291673525,
+      "external_worst_target_source_accuracy_delta": -0.03284971900204581
+    },
+    "diagnostic_boundary": "Superseded by the full no-cap claim-grade receipt. Earlier 20k/40k/80k subset receipts remain diagnostic integration checks.",
+    "claim_boundary": "Claim-grade for the full no-cap Camelyon17 frozen-representation store, with external source leakage intentionally null because the external split has one binary source class."
+  },
+  "remaining_claim_boundary": "Waterbirds and Camelyon17 now both have official-code MANCE++ reference evidence. Exact upstream R-LACE, TaCo, LEACE, and SPLINCE/SPLICE receipts remain optional strengthening beyond the scoped protocol claim."
+}
