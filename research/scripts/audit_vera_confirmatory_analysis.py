@@ -379,7 +379,7 @@ def replay_raw_candidates(
         for seed in seeds:
             loaded: list[tuple[str, str, dict[str, np.ndarray]]] = []
             reference: tuple[np.ndarray, np.ndarray, np.ndarray] | None = None
-            for method_key in study["methods"]:
+            for method_key, method_config in study["methods"].items():
                 receipt_path = receipt_dir / f"{dataset}__{method_key}__seed-{seed}.json"
                 receipt = load_json(receipt_path)
                 for candidate in receipt["candidates"]:
@@ -409,8 +409,8 @@ def replay_raw_candidates(
                         )
                     loaded.append(
                         (
-                            str(candidate["candidate_key"]),
-                            str(candidate["method"]),
+                            f"{method_config['display_name']}::{candidate['strength']}",
+                            str(method_config["display_name"]),
                             arrays,
                         )
                     )
