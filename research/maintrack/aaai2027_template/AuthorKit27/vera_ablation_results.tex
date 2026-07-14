@@ -1,0 +1,39 @@
+\section{Secondary Sensitivity Analyses}
+\begin{table*}[t]
+\centering\scriptsize
+\begin{tabular}{llrrr}
+\toprule
+Dimension & Condition & Deploy & Measured violation & Safe retention \\
+\midrule
+fixed profile shift budget & gamma=1 & 12.5\% & 0.0\% & 30.8\% \\
+fixed profile shift budget & gamma=1.01 & 10.3\% & 0.0\% & 25.3\% \\
+fixed profile shift budget & gamma=1.05 & 4.4\% & 0.0\% & 11.0\% \\
+fixed profile shift budget & gamma=1.1 & 0.6\% & 0.0\% & 1.4\% \\
+fixed profile shift budget & gamma=1.25 & 0.0\% & 0.0\% & 0.0\% \\
+fixed profile shift budget & gamma=1.5 & 0.0\% & 0.0\% & 0.0\% \\
+fixed profile shift budget & gamma=2 & 0.0\% & 0.0\% & 0.0\% \\
+fixed profile shift budget & gamma=4 & 0.0\% & 0.0\% & 0.0\% \\
+\addlinespace
+attacker portfolio & drop\_forest & 12.5\% & 0.0\% & 30.8\% \\
+attacker portfolio & drop\_linear & 13.1\% & 0.0\% & 32.2\% \\
+attacker portfolio & drop\_mlp & 25.0\% & 14.9\% & 32.2\% \\
+attacker portfolio & drop\_rbf & 12.8\% & 0.0\% & 31.5\% \\
+attacker portfolio & full & 12.5\% & 0.0\% & 30.8\% \\
+attacker portfolio & linear\_only & 43.6\% & 34.0\% & 40.4\% \\
+attacker portfolio & linear\_rbf & 27.2\% & 17.7\% & 32.2\% \\
+\addlinespace
+eraser frontier & all five official erasers & 12.5\% & 0.0\% & 30.8\% \\
+eraser frontier & leave INLP out & 8.9\% & 0.0\% & 29.4\% \\
+eraser frontier & leave LEACE out & 12.2\% & 0.0\% & 30.1\% \\
+eraser frontier & leave MANCE++ out & 12.5\% & 0.0\% & 30.8\% \\
+eraser frontier & leave R-LACE out & 12.5\% & 0.0\% & 31.2\% \\
+eraser frontier & leave TaCo out & 9.2\% & 0.0\% & 25.4\% \\
+\addlinespace
+frontier granularity & coarse\_5 & 11.4\% & 0.0\% & 31.8\% \\
+frontier granularity & full\_12 & 12.5\% & 0.0\% & 30.8\% \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\caption{Outcome-blindly locked secondary analyses. External safety always uses all four attackers. Candidate alpha and envelope multiplicity remain fixed at the original 12-candidate family, so removing attackers or erasers receives no confidence-allocation windfall.}
+\label{tab:ablations}
+\end{table*}

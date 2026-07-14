@@ -24,22 +24,23 @@ Ask the reviewer to assess the work as a conference submission and identify the
 strongest reasons to reject it. Request explicit comments on:
 
 1. correctness and scope of the external-distribution guarantee;
-2. novelty relative to Learn Then Test, conformal risk control, fairness
-   certification, and concept erasure;
+2. novelty relative to Learn Then Test, Prompt Risk Control, conformal risk
+   control, fairness certification, and concept erasure;
 3. whether the unsupported-support impossibility result is meaningful;
 4. whether the experiments demonstrate a need for certification;
 5. whether any claim is stronger than its receipt-backed evidence;
 6. the single most important missing experiment or ablation.
 
 After the free-form review is complete, ask one binary follow-up: "Does the
-paper explicitly and adequately address its overlap with Learn Then Test?"
+paper explicitly and adequately address its overlap with Learn Then Test and
+Prompt Risk Control?"
 
 ## Required Attestations
 
 Each reviewer record must include a verifiable ML publication URL, conflict
 disclosure, confirmation that the review is human-authored and cold, the exact
-main-PDF hash reviewed, an explicit LTT-overlap verdict, and confirmation that
-every finding was transcribed into the private registry.
+main-PDF hash reviewed, an explicit LTT/Prompt-Risk-Control overlap verdict,
+and confirmation that every finding was transcribed into the private registry.
 
 ## Resolution
 

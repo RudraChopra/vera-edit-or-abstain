@@ -12,7 +12,7 @@ VERA may claim to audit a finite, preregistered family of representation edits
 and either select an edit satisfying paired target-harm and balanced-leakage
 contracts at a declared shift profile or abstain. The finite-candidate
 acceptance mechanism must be attributed to Learn Then Test and related risk
-control; it is not a novelty claim.
+control, including Prompt Risk Control; it is not a novelty claim.
 
 VERA may claim a simultaneous support-aware erasure shift envelope. Target
 coordinates bound within-environment density ratios for paired incremental
@@ -56,10 +56,12 @@ candidate/group-count extension, whose multiplicity family includes the
 identity action, may support family-size robustness only if its 432,000
 registered replicates and independent replay pass.
 
-The memorable abstract sentence may appear only if it is generated from the
-32 prespecified stress configurations, the point-selection minus VERA gap is at
-least 15 percentage points, the complete primary pass conditions hold, and the
-independent raw-NPZ audit reproduces it.
+The 32-configuration stress effect may appear in the abstract only if the
+point-selection minus VERA gap is at least 15 percentage points, the independent
+raw-NPZ audit reproduces it, and the same abstract states that the seed-blocked
+comparison did not survive Holm correction. It is a descriptive effect, not a
+successful primary inference. A stronger empirical-superiority headline may
+appear only if every preregistered primary pass condition holds.
 
 ## Statistical Boundaries
 
@@ -76,8 +78,9 @@ budget, or exploratory seed result.
 
 ## Forbidden Claims
 
-- Do not claim that VERA invents LTT, conformal risk control, finite-family
-  testing, generic robust validation, or generic fairness certification.
+- Do not claim that VERA invents LTT, Prompt Risk Control, conformal risk
+  control, finite-family testing, generic robust validation, or generic
+  fairness certification.
 - Do not claim universal concept erasure, security against unregistered
   attackers, fairness for unmeasured concepts, or eraser optimality.
 - Do not claim external-distribution validity without the stated support and

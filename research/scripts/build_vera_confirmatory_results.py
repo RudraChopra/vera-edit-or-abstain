@@ -156,7 +156,7 @@ def build_rule_figure(
 ) -> dict[str, Any]:
     configure_plot()
     rng = np.random.default_rng(20270718)
-    fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.5), sharex=True)
+    fig, axes = plt.subplots(1, 2, figsize=(7.1, 2.7), sharex=True)
     fields = (
         (
             "measured_external_contract_violation",
@@ -243,14 +243,18 @@ def build_rule_figure(
         fontsize=6.3,
         color="#4A4A4A",
     )
-    axes[1].legend(
+    legend_handles, legend_labels = axes[1].get_legend_handles_labels()
+    fig.legend(
+        legend_handles,
+        legend_labels,
         frameon=False,
-        loc="upper right",
-        ncol=2,
-        columnspacing=0.7,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.985),
+        ncol=5,
+        columnspacing=0.9,
         handletextpad=0.35,
     )
-    fig.tight_layout(w_pad=1.1)
+    fig.tight_layout(rect=(0, 0, 1, 0.88), w_pad=1.1)
     pdf.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(pdf, bbox_inches="tight", facecolor="white")
     fig.savefig(png, dpi=300, bbox_inches="tight", facecolor="white")
@@ -280,15 +284,27 @@ def write_macros(
     else:
         seed_result = "no supported dataset reached Holm-adjusted $p\\leq0.05$"
     headline = tex_escape(str(abstract["sentence"]))
+    stress = report["headline_stress_family"]
+    stress_effect = (
+        f"Across {int(stress['configuration_count'])} prespecified stress "
+        "configurations, validation-only selection deployed contract-violating "
+        f"edits in {100.0 * float(stress['point_selection_violation_rate']):.1f}\\% "
+        f"versus {100.0 * float(stress['vera_iut_violation_rate']):.1f}\\% for "
+        "VERA. Across all threshold configurations, VERA retained "
+        f"{100.0 * float(report['safe_retention']['rate']):.1f}\\% of "
+        "external-oracle opportunities; the seed-blocked comparison did not "
+        "survive Holm correction."
+    )
     content = "\n".join(
         (
-            f"\\renewcommand{{\\HeadlineResult}}{{{headline}}}",
-            f"\\renewcommand{{\\PointViolationRate}}{{{fmt_percent(point)}}}",
-            f"\\renewcommand{{\\VERAViolationRate}}{{{fmt_percent(vera)}}}",
-            f"\\renewcommand{{\\SafeRetentionRate}}{{{fmt_percent(retention)}}}",
-            "\\renewcommand{\\OfficialReceiptCount}"
+            f"\\providecommand{{\\HeadlineResult}}{{{headline}}}",
+            f"\\providecommand{{\\PointViolationRate}}{{{fmt_percent(point)}}}",
+            f"\\providecommand{{\\VERAViolationRate}}{{{fmt_percent(vera)}}}",
+            f"\\providecommand{{\\SafeRetentionRate}}{{{fmt_percent(retention)}}}",
+            "\\providecommand{\\OfficialReceiptCount}"
             f"{{{int(receipt_audit['official_run_receipt_count'])}}}",
-            f"\\renewcommand{{\\SeedBlockedResult}}{{{seed_result}}}",
+            f"\\providecommand{{\\SeedBlockedResult}}{{{seed_result}}}",
+            f"\\providecommand{{\\StressEffectResult}}{{{stress_effect}}}",
             "",
         )
     )

@@ -74,6 +74,10 @@ def pdf_text(reader: PdfReader) -> str:
     return "\n".join(page.extract_text() or "" for page in reader.pages)
 
 
+def compact_alphanumeric(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", text.lower())
+
+
 def image_xobject_count(reader: PdfReader) -> int:
     count = 0
     seen: set[int] = set()
@@ -109,7 +113,12 @@ def image_xobject_count(reader: PdfReader) -> int:
     return count
 
 
-def parse_content_page(aux: Path) -> int | None:
+def parse_content_page(aux: Path, reader: PdfReader | None) -> int | None:
+    if reader is not None:
+        for page_number, page in enumerate(reader.pages, start=1):
+            text = page.extract_text() or ""
+            if re.search(r"(?:^|\n)References(?:\n|$)", text):
+                return page_number - 1
     if not aux.is_file():
         return None
     match = re.search(
@@ -207,7 +216,7 @@ def main() -> int:
         {} if anonymous_reader is None else dict(anonymous_reader.metadata or {})
     )
     named_metadata = {} if named_reader is None else dict(named_reader.metadata or {})
-    content_page_count = parse_content_page(args.aux)
+    content_page_count = parse_content_page(args.aux, anonymous_reader)
     forbidden_count, forbidden_hits, formatting_hits = source_audit()
     repository_forbidden_count, repository_forbidden_hits, naming_unscanned = (
         repository_naming_audit()
@@ -219,10 +228,10 @@ def main() -> int:
     source_disclosure_present = (
         AUTHOR_KIT / "vera_paper_body.tex"
     ).read_text(encoding="utf-8").lower().count(disclosure_phrase) == 1
-    ai_assistance_disclosed = (
-        source_disclosure_present
-        and disclosure_phrase in anonymous_lower
-        and disclosure_phrase in named_lower
+    compact_disclosure = compact_alphanumeric(disclosure_phrase)
+    ai_assistance_disclosed = source_disclosure_present and all(
+        compact_disclosure in compact_alphanumeric(text)
+        for text in (anonymous_text, named_text)
     )
     anonymous_pdf_clean = (
         bool(anonymous_text)

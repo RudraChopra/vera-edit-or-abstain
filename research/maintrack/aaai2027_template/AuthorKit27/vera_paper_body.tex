@@ -4,6 +4,7 @@
 \providecommand{\SafeRetentionRate}{pending}
 \providecommand{\OfficialReceiptCount}{pending}
 \providecommand{\SeedBlockedResult}{pending}
+\providecommand{\StressEffectResult}{The prespecified stress-family effect is pending final audit.}
 \providecommand{\CodeAvailabilityText}{Code, hashed preregistrations, compact receipts, audit scripts, and manuscript sources are included in the anonymous supplementary archive. Large public-dataset derivatives are represented by manifests and content hashes.}
 
 \begin{abstract}
@@ -25,6 +26,7 @@ risk control, not claimed as new. The empirical protocol combines a 54-cell
 exact abstention study, a 216-cell candidate-family/group-count coverage grid,
 and a preregistered 200-run official-code matrix spanning five erasers, five
 datasets, and eight untouched seeds. \HeadlineResult
+\StressEffectResult
 \end{abstract}
 
 \section{Introduction}
@@ -62,6 +64,8 @@ Testing already calibrate finite algorithm families against one or several
 risks; recent work also couples risk, acceptance, and utility and provides
 group-conditional PAC control
 \cite{bates2021rcps,angelopoulos2025ltt,angelopoulos2024crc,laufer2023pareto,yu2026joint,huang2026conditional}.
+Prompt Risk Control applies related candidate-wise bounds to LLM prompts and
+includes an estimated covariate-shift correction \cite{zollo2024prompt}.
 Weighted risk control and robust validation already address important forms of
 covariate and distribution shift
 \cite{tibshirani2019covariate,almeida2025hprc,cauchois2024robust,ai2024finegrained}.
@@ -124,7 +128,14 @@ general monotone losses \cite{angelopoulos2024crc}. Joint adaptive certificates
 couple risk, acceptance, and utility, while group-conditional PAC methods
 control routing risk within registered groups
 \cite{yu2026joint,huang2026conditional}. These works invalidate any claim that
-VERA invents finite-family, joint, or groupwise acceptance. Selective
+VERA invents finite-family, joint, or groupwise acceptance. Prompt Risk Control
+is a particularly close application template: it selects LLM prompts using
+high-probability bounds on mean, tail, and dispersion risks and corrects
+covariate shift using unlabeled target data \cite{zollo2024prompt}. VERA instead
+audits paired representation interventions without a target sample or estimated
+importance weights, reports worst-case guarantees over a declared bounded
+reweighting class, retrains a heterogeneous attacker portfolio, and makes
+unsupported cells an explicit impossibility boundary. Selective
 classification and SelectiveNet reject individual examples
 \cite{elyaniv2010foundations,geifman2017selective,geifman2019selectivenet}; VERA
 instead rejects an entire intervention. Continuous monitoring detects risk
@@ -140,14 +151,13 @@ fine-grained robust conformal inference provide ambiguity-set guarantees
 CVaR concentration supply closely related technical tools
 \cite{najafi2025federated,thomas2019cvar,waudbysmith2024means}. Distributional
 fairness certificates and Wasserstein fairness audits are close application-level
-neighbors \cite{kang2022certifying,ehyaei2025fragile}; concept interventions can
-also fail under OOD leakage \cite{zarlenga2025leakage}. Worst-case subpopulation
+neighbors \cite{kang2022certifying,ehyaei2025fragile}. Worst-case subpopulation
 treatment effects are especially close to our paired-harm view
 \cite{jeong2020worstcase}. VERA does not claim these tools or generic robust
 fairness auditing. It applies bounded reweighting to a selected representation
 edit's paired target and retrained-attacker contracts and reports the admissible
 support-scoped envelope. Group DRO and robustness benchmarks motivate the observed-group view
-\cite{sagawa2020groupdro,koh2021wilds,zhou2021spurious,sohoni2020subclass}, and
+\cite{sagawa2020groupdro,koh2021wilds,sohoni2020subclass}, and
 domain-adaptation impossibility results motivate explicit support assumptions
 \cite{bendavid2010impossibility,subbaswamy2021evaluation}.
 
@@ -201,6 +211,16 @@ common erasure shift radius is
 \end{equation}
 with value zero if a contract fails at $\Gamma=1$.
 
+This radius is a sensitivity statement, not an estimate of how much shift will
+occur. A user declares a profile of plausible density-ratio caps; VERA states
+whether the available certification sample supports the contracts throughout
+that profile. Conditioning target harm on environment prevents a favorable
+environment mixture from hiding damage in a smaller group. Standardizing
+leakage to equal source-class weight similarly prevents source prevalence from
+making an attacker appear weak. These two conditionings need not describe one
+factorized joint model: the claim applies when each registered conditional law
+obeys its own stated cap.
+
 \section{VERA}
 
 The bounded-reweighting risk has the CVaR dual
@@ -237,6 +257,23 @@ over candidates, but not over components. The separately reported envelope
 uses Bonferroni coverage over every candidate--contract pair because every
 curve remains available for post-certification inspection.
 
+Let $U^T_{e,g}(\gamma_g)$ denote the simultaneous target-harm upper curve in
+observed environment $g$, and let $U^L_{e,a,s}(\eta_s)$ denote attacker $a$'s
+source-class recall curve. VERA's central reported object is
+\begin{equation}
+\begin{split}
+\widehat{\mathcal E}_e=\{(\boldsymbol\gamma,\boldsymbol\eta):
+&U^T_{e,g}(\gamma_g)\le\tau\quad\forall g,\\
+&\tfrac12\textstyle\sum_s U^L_{e,a,s}(\eta_s)\le\lambda
+\quad\forall a\}.
+\end{split}
+\end{equation}
+Coordinates for unsupported required cells are zero. The common radius is the
+largest diagonal point $(\Gamma\mathbf 1,\Gamma,\Gamma)$ in this envelope,
+right-censored at the registered computational cap. Reporting the vector
+envelope as well as its diagonal summary reveals which environment, source
+class, or attacker limits an edit.
+
 \begin{algorithm}[t]
 \caption{VERA fixed-profile selection and shift envelope}
 \label{alg:vera}
@@ -267,6 +304,14 @@ cannot increase that probability. Union bounding only over the $M$ candidates
 proves the result. This is the LTT-style finite-family decision used for the
 primary experiment.
 
+The distinction from simply applying LTT is in the population contract being
+tested. Each edit induces paired target variables and a family of retrained
+attacker variables; each variable is robustified over a continuum of
+conditional reweightings; and all coordinates are inverted into an admissible
+shift region. LTT supplies the fixed-family testing logic. The robust
+edit-specific envelope, balanced conditional leakage functional, and explicit
+support boundary define the deployment object studied here.
+
 The simultaneous envelope is richer but more conservative. It contains every
 profile $(\boldsymbol\gamma,\boldsymbol\eta)$ for which each environment target
 curve clears $\tau$ and each attacker's mean of two source-class curves clears
@@ -275,6 +320,21 @@ coordinates. Environment mixing preserves the target threshold by linearity,
 and source prevalence does not enter balanced leakage. Restricting this
 envelope to the diagonal gives the reported common radius. Full statements and
 proofs are in the supplement.
+
+\begin{theorem}[Support-aware envelope]
+With probability at least $1-\delta$, simultaneously for every registered edit
+$e$, every profile in $\widehat{\mathcal E}_e$ satisfies all target-harm and
+balanced-leakage contracts. Environment mixture weights and source prevalence
+may be selected after certification without another multiplicity correction.
+\end{theorem}
+
+The proof event covers every edit, environment, attacker, source class, and
+every $\Gamma\ge1$. Conditional robust-risk bounds imply each component
+contract; arbitrary mixtures of controlled environment risks remain controlled
+by linearity, and source prevalence is absent from the standardized leakage
+functional. Intersecting or choosing objects already covered by the same event
+does not spend additional error probability. This argument establishes the
+external-distribution guarantee only for laws inside the declared envelope.
 
 \begin{theorem}[Unsupported-cell impossibility]
 Suppose a required audit cell has zero validation probability, and the model
@@ -291,6 +351,14 @@ cannot identify the omitted class's conditional leakage. Camelyon17 center 2
 and its constant binary source label therefore trigger abstention. This does
 not assert that the measured center-2 target outcome necessarily violates a
 contract.
+
+The impossibility result is deliberately stronger than ``we have too little
+data.'' If safe and unsafe worlds induce exactly the same observations, any
+randomized protocol accepts with the same probability in both. Uniform
+false-acceptance control in the unsafe world therefore limits acceptance in the
+safe world to at most $\delta$. More optimization or a different confidence
+interval cannot remove this identification boundary; the remedy is new support
+or an explicit structural assumption.
 
 \section{Experimental Protocol}
 
@@ -310,6 +378,38 @@ hashes, and the shared runner commit. Model cards, datasheets, auditing, and
 reproducibility guidance motivate this receipt design
 \cite{mitchell2019modelcards,gebru2021datasheets,raji2020auditing,pineau2021reproducibility}.
 
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4.2pt}
+\begin{tabular}{lllll}
+\toprule
+Dataset & Modality & Target $Y$ & Erased/audited source $S$ & Target environment/support \\
+\midrule
+Waterbirds & vision & bird type & background/place & place; supported \\
+Camelyon17-WILDS & medical vision & tumor status & center 0 vs. centers 1--4 & hospital; center 2 unseen \\
+CivilComments-WILDS & text & toxicity & identity mention & identity mention; supported \\
+Bios & text & profession (28-way) & gender label & gender label; supported \\
+GaitPDB & time series & Parkinson status & recording site & recording site; supported \\
+\bottomrule
+\end{tabular}
+\caption{Cross-modal protocol and support scope. ``Supported'' means every
+registered external environment is represented during certification; it does
+not imply that the bounded-reweighting assumption is known to hold. Camelyon17
+is included to instantiate the unsupported-environment boundary, not to make a
+clinical claim.}
+\label{tab:datasets}
+\end{table*}
+
+The official frontier contains 12 edits per dataset--seed block: INLP ranks
+$\{1,2,4,8\}$, R-LACE ranks $\{1,4\}$, closed-form LEACE, TaCo removal counts
+$\{1,2,3,5\}$, and one registered MANCE++ configuration. Every method calls a
+pinned upstream entry point; no proxy implementation contributes a row. We cap
+eraser training, construction, certification, and external evaluation at
+8,000, 2,000, 8,000, and 8,000 examples. Train-only standardization and, where
+needed, randomized PCA precede editing. Eraser fitting, post-edit target-probe
+fitting, and attacker fitting use no certification outcomes.
+
 Each candidate retrains a logistic target probe and four leakage attackers:
 logistic regression, an RBF Nystroem map followed by logistic regression, a
 random forest, and a two-layer MLP. Certification uses fractions
@@ -323,6 +423,23 @@ envelope, and an external oracle. External contract violation is reported
 separately from procedural non-certifiability. Camelyon17 external balanced
 leakage is \textsc{NA} because the slice has one source class, and VERA must
 abstain because center 2 is absent during certification.
+
+Within each configuration, the registered selection utility minimizes the
+largest validation balanced leakage, then the largest environment-conditional
+paired harm, then a stable candidate key. Point selection applies this order to
+empirically feasible edits without intervals. VERA-IUT applies it only to edits
+passing the fixed-profile certificate. The envelope rule additionally requires
+the simultaneous common radius to reach the profile. Always-deploy uses the
+same utility order without a feasibility gate; the external oracle is an
+evaluation ceiling and never supplies a training or selection label.
+
+We report two endpoints separately. A measured external violation requires an
+estimable external target and balanced-leakage contract and an actually
+deployed edit that fails either threshold. A procedurally unsupported
+deployment enters a registered environment or source-label cell absent from
+certification. The latter is a failure of identification, not evidence that an
+observable external threshold was exceeded. This separation prevents the
+support theorem from manufacturing empirical failures by definition.
 
 The exact balanced study contains 2,000 replicates in each of 54 cells: six
 certification sizes, three $\delta$ levels, and three shift budgets. Its finite
@@ -342,6 +459,38 @@ require magnitude symmetry.
 \IfFileExists{vera_main_results_narrative.tex}{
   \input{vera_main_results_narrative}
   \input{vera_main_results_table}
+
+  \paragraph{Prespecified stress family.}
+  Across 32 pilot-selected, preregistered stress configurations, point
+  selection deployed externally violating edits in 7/32 cases (21.9\%), while
+  VERA-IUT deployed none. Waterbirds contributed 3/8 and CivilComments 2/8 at
+  their locked stress thresholds; GaitPDB contributed 1/8, and Bios 0/8. The
+  effect direction is consistent---there were no VERA-only violations---but
+  only three seed blocks were nonzero for Waterbirds and CivilComments. Their
+  one-sided seed-blocked raw values were therefore $p=0.125$ and Holm-adjusted
+  values were $p=0.5$. We report the effect size because it is prespecified and
+  receipted, but do not call the paired comparison statistically significant.
+
+  \paragraph{What the certificate costs.}
+  Over all nine primary threshold pairs, point selection deployed in 45.8\% of
+  configurations and violated 14/288 externally estimable contracts. VERA-IUT
+  deployed in 12.5\%, violated 0/288, and retained 45/146 external-oracle
+  opportunities. This is a certification tax rather than an accuracy claim:
+  VERA sacrifices deployments when evidence is insufficient. The more
+  conservative simultaneous envelope deployed in 10.0\% of configurations.
+  At $\Gamma=1.01$, IUT deployment fell to 10.3\% with 0/288 measured
+  violations; no edit certified at $\Gamma\ge1.25$ under the locked thresholds.
+
+  \paragraph{The attacker portfolio matters.}
+  The full four-attacker audit deployed in 12.5\% of configurations with zero
+  measured violations. A linear-only audit deployed in 43.6\% but violated
+  98/288 (34.0\%) external contracts when judged by the complete portfolio;
+  linear plus RBF still violated 17.7\%. Dropping only the MLP doubled
+  deployment to 25.0\% and produced 43/288 violations. Forest, MLP, RBF, and
+  linear attackers were the limiting component in 22, 10, 9, and 4 of the 45
+  full-portfolio deployments, respectively. Thus heterogeneous attackers are
+  not decorative multiplicity: they materially change which edits appear safe.
+
   \begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{../../figures/vera_exact_theory_match.pdf}
@@ -380,6 +529,14 @@ require magnitude symmetry.
 that records the locked parent commit, upstream eraser commit, split hashes,
 and per-example audit-array hashes.
 
+The fail-closed receipt audit validates all 200 dataset--method--seed runs and
+zero proxy rows. A second implementation rehashes 480 raw NPZ archives,
+reconstructs all 25,920 candidate rows, and replays all 10,800 rule decisions.
+The first replay exposed a display-name mismatch between upstream `R-LACE' and
+registered `RLACE'; both the failed audit and the label-only correction are
+retained. After canonicalization, numeric, eligibility, radius, selection, and
+external-semantic mismatches are all zero.
+
 \paragraph{Generative-AI assistance disclosure.}
 OpenAI Codex was used extensively for research ideation, literature discovery,
 theorem and proof drafting, software implementation, experiment orchestration,
@@ -403,6 +560,11 @@ not make the five benchmark datasets a random sample of deployment domains.
 The primary sign-flip analysis relies on paired sign symmetry; a sign-only
 sensitivity is also reported. Both were fixed before those seeds were run, and
 all four adjusted values are reported regardless of outcome.
+The observed point-versus-VERA differences did not survive Holm correction, so
+the empirical comparison is evidence of a practically relevant failure regime,
+not a definitive population-level superiority claim. Neither internal audits,
+exact synthetic coverage, nor a polished artifact predicts conference
+acceptance.
 
 Within those boundaries, VERA changes the output of representation erasure
 from ``apply this edit'' to a falsifiable statement: this edit meets these

@@ -42,6 +42,18 @@ budgets, and a zero-radius support boundary tied to the same audit cells. The
 locked deployment-rule experiment must show that this object changes unsafe
 edit decisions; otherwise the novelty claim is not empirically earned.
 
+## Not Just Prompt Risk Control
+
+Zollo et al. (ICLR 2024) already select LLM prompts using high-probability
+bounds on mean, tail, and dispersion risks, and they include a covariate-shift
+correction estimated from unlabeled target data. VERA must not claim that
+risk-bounded candidate selection, CVaR-style auditing, or shift correction is
+new. The proposed delta is narrower: paired identity/edit harm, a retrained
+heterogeneous leakage-attacker portfolio, worst-case guarantees over a declared
+bounded-reweighting class without target samples or estimated importance
+weights, a vector envelope of separately interpretable shift budgets, and an
+explicit impossibility boundary at unsupported required cells.
+
 ## Medical Scope
 
 Camelyon17-WILDS is now the high-stakes hospital-shift benchmark row. It
@@ -58,4 +70,4 @@ over registered edit frontiers.
 
 Forbidden: VERA is universally state of the art, clinically safe, independent
 of support assumptions, secure against every possible attacker, or the first
-finite-family risk-control method.
+finite-family, prompt-risk, or shift-aware risk-control method.

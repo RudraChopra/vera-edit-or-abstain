@@ -406,7 +406,7 @@ def write_tex(path: Path, summaries: dict[str, dict[str, Any]]) -> None:
         for condition, summary in records:
             lines.append(
                 f"{dimension.replace('_', ' ')} & "
-                f"{condition.replace('_', r'\\_')} & "
+                f"{condition.replace('_', r'\_')} & "
                 f"{pct(float(summary['deployment_rate']))} & "
                 f"{pct(summary['measured_external_violation_rate'])} & "
                 f"{pct(float(summary['safe_retention']))} \\\\"

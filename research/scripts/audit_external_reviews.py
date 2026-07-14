@@ -74,6 +74,14 @@ def review_valid(
         failures.append(f"{review_id}: LTT overlap was not explicitly assessed")
     if not isinstance(review.get("unaddressed_ltt_overlap"), bool):
         failures.append(f"{review_id}: LTT-overlap verdict is not explicit")
+    if review.get("prompt_risk_control_overlap_explicitly_assessed") is not True:
+        failures.append(
+            f"{review_id}: Prompt Risk Control overlap was not explicitly assessed"
+        )
+    if not isinstance(review.get("unaddressed_prompt_risk_control_overlap"), bool):
+        failures.append(
+            f"{review_id}: Prompt Risk Control overlap verdict is not explicit"
+        )
     if review.get("all_findings_transcribed") is not True:
         failures.append(f"{review_id}: complete finding transcription is not attested")
     if frozen_main_hash and review.get("main_pdf_sha256_reviewed") != frozen_main_hash:
@@ -160,6 +168,10 @@ def main() -> int:
     ltt_unaddressed = sum(
         review.get("unaddressed_ltt_overlap") is True for review in valid_reviews
     )
+    prompt_risk_unaddressed = sum(
+        review.get("unaddressed_prompt_risk_control_overlap") is True
+        for review in valid_reviews
+    )
     orphaned_critical_major = [
         finding
         for finding in critical_major
@@ -180,6 +192,7 @@ def main() -> int:
         and unresolved_critical == 0
         and unresolved_major == 0
         and ltt_unaddressed == 0
+        and prompt_risk_unaddressed == 0
         and response_complete
         and identity_verified
         and frozen_files_verified
@@ -200,6 +213,9 @@ def main() -> int:
         "unresolved_critical_count": unresolved_critical,
         "unresolved_major_count": unresolved_major,
         "reviewers_flagging_unaddressed_ltt_overlap": ltt_unaddressed,
+        "reviewers_flagging_unaddressed_prompt_risk_control_overlap": (
+            prompt_risk_unaddressed
+        ),
         "response_ledger_complete": response_complete,
         "reviewer_identity_evidence_human_verified": identity_verified,
         "reviewer_ids": sorted(valid_ids),

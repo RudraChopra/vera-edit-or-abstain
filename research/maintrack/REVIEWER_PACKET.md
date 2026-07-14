@@ -30,8 +30,8 @@ Suggested request:
 
 > Please review this as a skeptical ICLR/AAAI main-track submission. I need you
 > to identify fatal, major, and minor issues rather than help defend the paper.
-> In particular, assess novelty over Learn Then Test and robust risk control,
-> correctness and usefulness of the shift envelope, validity of the
+> In particular, assess novelty over Learn Then Test, Prompt Risk Control, and
+> robust risk control, correctness and usefulness of the shift envelope, validity of the
 > unsupported-support theorem, and whether the experiments support the stated
 > claims. Please use the form below or return equivalent free-form feedback.
 
@@ -65,8 +65,8 @@ the counterargument or prior work, and the evidence needed to fix it.
 Evaluate:
 
 1. Is the paper's proposed object distinguishable from finite-family Learn Then
-   Test, Conformal Risk Control, robust validation, and ordinary sensitivity
-   analysis?
+   Test, Prompt Risk Control, Conformal Risk Control, robust validation, and
+   ordinary sensitivity analysis?
 2. Is the simultaneous support-aware envelope mathematically correct under its
    stated density-ratio and support assumptions?
 3. Does the fixed-profile IUT spend error probability correctly over candidates
@@ -79,8 +79,8 @@ Evaluate:
    target distributions?
 7. Are official baselines, seeds, thresholds, uncertainty, and abstention taxes
    sufficient to support the empirical story?
-8. Does the paper state the LTT overlap plainly enough that it cannot be read as
-   evasion?
+8. Does the paper state the LTT and Prompt Risk Control overlap plainly enough
+   that it cannot be read as evasion?
 
 ### Minor Issues
 
