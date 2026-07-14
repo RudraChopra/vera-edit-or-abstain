@@ -146,7 +146,7 @@ def import_torch():
         import torch.nn.functional as functional
     except ImportError as exc:
         raise SystemExit(
-            "This exporter needs torch. Use the clean runtime created for FARO, "
+            "This exporter needs torch. Use the clean runtime created for VERA, "
             "for example `/tmp/faro-torch-venv/bin/python`."
         ) from exc
     return torch, nn, functional
@@ -462,7 +462,7 @@ def main() -> int:
     )
 
     report = {
-        "name": "FARO Camelyon17 no-PIL torch ResNet18 export",
+        "name": "VERA Camelyon17 no-PIL torch ResNet18 export",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "input_mode": "direct_camelyon17_wilds_metadata_csv",
         "encoder_family": "manual_resnet18_imagenet_frozen_no_pil",
@@ -496,7 +496,7 @@ def main() -> int:
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2), encoding="utf-8")
 
-    print("FARO Camelyon17 no-PIL ResNet-18 export complete")
+    print("VERA Camelyon17 no-PIL ResNet-18 export complete")
     print(f"embedding_table={args.out}")
     print(f"report={args.report}")
     print(f"sample_count={total_rows}")

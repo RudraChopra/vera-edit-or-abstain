@@ -1,4 +1,4 @@
-# FARO Statistical Integrity
+# VERA Statistical Integrity
 
 ## Claim-Ready Unit
 

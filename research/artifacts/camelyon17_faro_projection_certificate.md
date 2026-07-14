@@ -1,4 +1,4 @@
-# Camelyon17 FARO Projection Frontier Certificate
+# Camelyon17 VERA Projection Frontier Certificate
 
 - Decision: `ABSTAIN`
 - Selected strength: `0.0`

@@ -1,6 +1,6 @@
-# FARO Adversarial Internal Review
+# VERA Adversarial Internal Review
 
-Generated at UTC: `2026-07-14T00:55:12.648880+00:00`
+Generated at UTC: `2026-07-14T01:06:38.784874+00:00`
 
 ## Decision
 

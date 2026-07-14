@@ -1,4 +1,4 @@
-# FARO Figure Plan
+# VERA Figure Plan
 
 ## Figure 1: Method Overview
 
@@ -8,7 +8,7 @@ frontier estimation, certified safe set, selected edit, and abstention output.
 ## Figure 2: Frontier Geometry
 
 Plot target utility versus source leakage with confidence intervals. Mark safe
-candidates, rejected candidates, and the FARO selected point.
+candidates, rejected candidates, and the VERA selected point.
 
 ## Figure 3: Official Benchmark Summary
 

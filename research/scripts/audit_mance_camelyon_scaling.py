@@ -166,7 +166,7 @@ def main() -> int:
         ),
         "claim_boundary": (
             "The full no-cap MANCE++ Camelyon17 receipt is materialized and claim-grade "
-            "under FARO's frozen-representation protocol."
+            "under VERA's frozen-representation protocol."
             if full_completed
             else (
                 "The 80k MANCE++ Camelyon17 receipt is a large official-code diagnostic, "

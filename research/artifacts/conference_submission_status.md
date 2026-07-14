@@ -1,4 +1,4 @@
-# FARO Conference Submission Status
+# VERA Conference Submission Status
 
 Generated at UTC: `2026-07-13T19:10:00+00:00`
 

@@ -1,4 +1,4 @@
-"""Audit whether FARO's reference/proxy baseline boundary is explicit.
+"""Audit whether VERA's reference/proxy baseline boundary is explicit.
 
 This audit does not convert proxy stress tests into reference implementations.
 It verifies the narrower claim needed for a protocol paper: official-code
@@ -176,7 +176,7 @@ def collect_checks() -> list[Check]:
 
 def write_markdown(path: Path, report: dict[str, object]) -> None:
     lines = [
-        "# FARO Reference Baseline Scope Audit",
+        "# VERA Reference Baseline Scope Audit",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         f"Reference scope ready: `{report['reference_scope_ready']}`",
@@ -202,7 +202,7 @@ def main() -> int:
     fail_count = sum(check.status == "fail" for check in checks)
     pass_count = sum(check.status == "pass" for check in checks)
     report = {
-        "name": "FARO reference baseline scope audit",
+        "name": "VERA reference baseline scope audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "reference_scope_ready": fail_count == 0,
         "universal_erasure_sota_claim_allowed": False,
@@ -220,7 +220,7 @@ def main() -> int:
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
     args.json_out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_markdown(args.markdown_out, report)
-    print("FARO reference baseline scope audit complete")
+    print("VERA reference baseline scope audit complete")
     print(f"reference_scope_ready={str(report['reference_scope_ready']).lower()}")
     print(f"fail_count={fail_count}")
     print(f"report={args.json_out}")

@@ -1,4 +1,4 @@
-"""Run the official MANCE reference implementation on a FARO NumPy store.
+"""Run the official MANCE reference implementation on a VERA NumPy store.
 
 This script is intentionally separate from the older "MANCE-style" proxy
 baseline. It imports the upstream MANCE package from a checked-out repository

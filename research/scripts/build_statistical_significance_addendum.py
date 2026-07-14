@@ -1,4 +1,4 @@
-"""Build nonparametric paired significance-test addendum for FARO artifacts."""
+"""Build nonparametric paired significance-test addendum for VERA artifacts."""
 
 from __future__ import annotations
 
@@ -111,7 +111,7 @@ def mance_before_after_tests(path: Path) -> list[dict[str, object]]:
 
 def write_markdown(path: Path, report: dict[str, object]) -> None:
     lines = [
-        "# FARO Statistical Significance Addendum",
+        "# VERA Statistical Significance Addendum",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         "",
@@ -148,7 +148,7 @@ def main() -> None:
         paired_method_tests(
             path=ARTIFACT_DIR / "waterbirds_official_baseline_per_seed.csv",
             dataset="waterbirds",
-            method_a="FARO_selected",
+            method_a="VERA_selected",
             method_b="group_reweighted_erm",
             metrics=[
                 "external_target_balanced_accuracy",
@@ -161,7 +161,7 @@ def main() -> None:
         paired_method_tests(
             path=ARTIFACT_DIR / "camelyon17_wilds_official_multiseed_results.csv",
             dataset="camelyon17",
-            method_a="FARO_selected",
+            method_a="VERA_selected",
             method_b="group_dro_probe",
             metrics=[
                 "external_target_balanced_accuracy",
@@ -175,7 +175,7 @@ def main() -> None:
     for test in tests:
         grouped[str(test["dataset"])] += 1
     report = {
-        "name": "FARO statistical significance addendum",
+        "name": "VERA statistical significance addendum",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "test_family": "exact paired sign tests",
         "claim_boundary": (

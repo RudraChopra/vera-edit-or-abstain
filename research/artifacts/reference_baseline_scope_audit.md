@@ -1,4 +1,4 @@
-# FARO Reference Baseline Scope Audit
+# VERA Reference Baseline Scope Audit
 
 Generated at UTC: `2026-07-14T00:52:52.628492+00:00`
 Reference scope ready: `True`

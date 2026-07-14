@@ -1,16 +1,16 @@
-# FARO Reproducibility Checklist
+# VERA Reproducibility Checklist
 
 ## Scope
 
 This checklist defines what must be reproducible before Paper A is submitted to
-ICLR, NeurIPS, AAAI, ICML, ICDM, or a journal extension. It covers the FARO
+ICLR, NeurIPS, AAAI, ICML, ICDM, or a journal extension. It covers the VERA
 method paper, not the old science-fair materials. The authoritative
 machine-readable manifest is
 `research/configs/faro_paper_a_reproducibility.json`.
 
 ## Fixed Claims
 
-The paper's reproducible claim is that FARO estimates a leakage-utility
+The paper's reproducible claim is that VERA estimates a leakage-utility
 frontier over candidate representation edits, applies the smallest edit whose
 simultaneous intervals certify source reduction and target-risk preservation,
 and abstains when the certified safe set is empty. The reproducibility packet
@@ -59,7 +59,7 @@ audit is the authoritative submission gate for Paper A.
 Waterbirds and Camelyon17-WILDS are the current durable official claim-ready
 families in the local packet. Waterbirds has full local image metadata, frozen
 ResNet-18 embeddings, five seeds, paired statistics, and a passing receipt.
-Waterbirds is a negative or abstention row: FARO abstains under the locked rule
+Waterbirds is a negative or abstention row: VERA abstains under the locked rule
 while group-reweighted ERM is stronger on worst-group accuracy.
 Camelyon17-WILDS has a complete 455,954-example frozen ResNet-18 embedding
 store, full NumPy-store conversion, five locked protocol rows, paired

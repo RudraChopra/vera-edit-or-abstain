@@ -1,4 +1,4 @@
-# FARO Venue Format Plan
+# VERA Venue Format Plan
 
 Date: July 13, 2026
 
@@ -27,7 +27,7 @@ Date: July 13, 2026
 - Local venue-template references are useful for drafting, but they are not a
   substitute for the official current style files.
 
-## Current FARO Manuscript Status
+## Current VERA Manuscript Status
 
 `research/maintrack/faro_main.tex` is a readable generic LaTeX content draft.
 `research/maintrack/iclr2026_template/iclr2026/faro_iclr2026_draft.tex` is an

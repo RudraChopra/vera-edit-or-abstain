@@ -1,18 +1,18 @@
-# FARO Abstention Protocol
+# VERA Abstention Protocol
 
 ## Decision Labels
 
-FARO has two terminal decisions: `EDIT` and `ABSTAIN`.
+VERA has two terminal decisions: `EDIT` and `ABSTAIN`.
 
 ## Calibration
 
-For each candidate edit, FARO computes calibrated uncertainty intervals for
+For each candidate edit, VERA computes calibrated uncertainty intervals for
 target balanced accuracy, worst target-source accuracy, and source leakage
 balanced accuracy. Calibration must be fixed before external metrics are used.
 
 ## ABSTAIN Condition
 
-FARO returns ABSTAIN when every candidate edit fails at least one certified
+VERA returns ABSTAIN when every candidate edit fails at least one certified
 constraint:
 
 - target balanced accuracy falls below the allowed tolerance,

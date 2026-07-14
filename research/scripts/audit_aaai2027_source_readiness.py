@@ -1,4 +1,4 @@
-"""Audit the FARO AAAI-27 source package without modifying official style files."""
+"""Audit the VERA AAAI-27 source package without modifying official style files."""
 
 from __future__ import annotations
 
@@ -116,7 +116,7 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
             key="anonymous_author_block",
             status=status(
                 "\\author{Anonymous Submission}" in source
-                and "FARO Project" not in source
+                and "VERA Project" not in source
                 and "Rudra" not in source
                 and "Chopra" not in source
             ),
@@ -145,13 +145,13 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
                 materialized_file(NAMED_SOURCE)
                 and "\\author{Rudra Chopra}" in named_source
                 and "Contra Costa County" in named_source
-                and "https://github.com/RudraChopra/faro-edit-or-abstain" in named_source
+                and "https://github.com/RudraChopra/vera-edit-or-abstain" in named_source
                 and "\\section{Code Availability}" in named_source
             ),
             evidence=(
                 f"path={NAMED_SOURCE}; materialized={materialized_file(NAMED_SOURCE)}; "
                 f"has_author={'Rudra Chopra' in named_source}; "
-                f"has_repo={'https://github.com/RudraChopra/faro-edit-or-abstain' in named_source}"
+                f"has_repo={'https://github.com/RudraChopra/vera-edit-or-abstain' in named_source}"
             ),
             requirement="Named AAAI source must contain author metadata and the public release URL.",
         ),
@@ -273,7 +273,7 @@ def main() -> int:
     fail_count = sum(check.status == "fail" for check in checks)
     warn_count = sum(check.status == "warn" for check in checks)
     report = {
-        "name": "FARO AAAI-27 source readiness audit",
+        "name": "VERA AAAI-27 source readiness audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "source_ready": fail_count == 0,
         "pdf_compile_ready": metadata.get("pdflatex") is not None,
@@ -285,7 +285,7 @@ def main() -> int:
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
     args.json_out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_markdown(args.markdown_out, report)
-    print("FARO AAAI-27 source readiness audit complete")
+    print("VERA AAAI-27 source readiness audit complete")
     print(f"source_ready={str(report['source_ready']).lower()}")
     print(f"pdf_compile_ready={str(report['pdf_compile_ready']).lower()}")
     print(f"fail_count={fail_count}")

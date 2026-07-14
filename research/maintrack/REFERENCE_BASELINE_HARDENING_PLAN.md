@@ -1,10 +1,10 @@
-# FARO Reference Baseline Hardening Plan
+# VERA Reference Baseline Hardening Plan
 
 ## Current Status
 
-The local FARO packet has claim-ready official rows for Waterbirds and
+The local VERA packet has claim-ready official rows for Waterbirds and
 Camelyon17-WILDS, but the adversarial review is intentionally not submission
-ready after the July 2026 novelty update. The remaining issue is not the FARO
+ready after the July 2026 novelty update. The remaining issue is not the VERA
 method specification or the Camelyon evidence. The issue is baseline
 defensibility: current SPLINCE/SPLICE-style, R-LACE-style, TaCo-style, and
 MANCE-style rows are proxy stress tests unless the corresponding reference
@@ -12,7 +12,7 @@ implementations are run or the claims are scoped so reference parity is not
 required.
 
 As of July 13, 2026, the official upstream MANCE repository has been cloned and
-wired into FARO through `research/scripts/run_mance_reference_numpy_store.py`.
+wired into VERA through `research/scripts/run_mance_reference_numpy_store.py`.
 Waterbirds now has a full-split, five-seed, official-code MANCE++ reference
 package with a claim-grade statistical report. The mean external source
 leakage balanced accuracy drops from 0.905937 to 0.446842, while mean external
@@ -25,7 +25,7 @@ examples. Validation source leakage drops from 0.849188 to 0.563460, while
 validation target balanced accuracy drops from 0.897353 to 0.887627. External
 target balanced accuracy drops from 0.890505 to 0.874104, and external worst
 target-source accuracy drops from 0.846545 to 0.813695. This clears the prior
-Camelyon-specific MANCE++ reference blocker under FARO's frozen-representation
+Camelyon-specific MANCE++ reference blocker under VERA's frozen-representation
 protocol.
 
 The scaling audit at
@@ -38,7 +38,7 @@ The upstream inventory at
 `research/artifacts/upstream_baseline_reference_inventory.json` now pins
 official repositories and commits for MANCE++, R-LACE, TaCo, and LEACE. This
 improves reproducibility but does not convert the current R-LACE, TaCo, or
-LEACE rows into reference-parity rows. Matched receipts under FARO's locked
+LEACE rows into reference-parity rows. Matched receipts under VERA's locked
 splits are still required before the manuscript can claim exact upstream
 comparisons for those methods.
 
@@ -48,7 +48,7 @@ The strongest MANCE/MANCE++ blocker is now cleared for Waterbirds and
 Camelyon17. Remaining reference-parity work is optional strengthening: exact
 matched receipts for R-LACE, TaCo, LEACE, and an identified official
 SPLINCE/SPLICE implementation. Until those receipts exist, those rows remain
-proxy stress tests, and FARO should continue to be framed as a certified
+proxy stress tests, and VERA should continue to be framed as a certified
 selection and abstention layer over candidate edits rather than a universal
 state-of-the-art erasure method.
 
@@ -60,7 +60,7 @@ A reference MANCE/MANCE++ run should write these artifacts.
 | --- | --- |
 | `research/artifacts/waterbirds_mancepp_reference_seed*_receipt.json` | Waterbirds reference receipts with claim boundary |
 | `research/artifacts/mance_reference_camelyon17_result_receipt.json` | Camelyon17 reference receipt or documented infeasibility |
-| `research/artifacts/mance_reference_statistical_report.json` | Paired comparison against FARO and GroupDRO-style baselines |
+| `research/artifacts/mance_reference_statistical_report.json` | Paired comparison against VERA and GroupDRO-style baselines |
 | `research/artifacts/mance_reference_environment.json` | Commit, dependency, and runtime provenance |
 | `research/artifacts/faro_baseline_fairness_report.json` | Materialized baseline audit report with proxy/reference labels |
 
@@ -86,16 +86,16 @@ the following conditions.
 The baseline fairness report is materialized locally and reports zero failing
 checks. Every table and caption distinguishes reference implementations from
 proxy stress tests. The MANCE++ receipts use the locked splits, source labels,
-target labels, metrics, seeds, and confidence-interval policy expected by FARO.
+target labels, metrics, seeds, and confidence-interval policy expected by VERA.
 
 For AAAI/NeurIPS-level claims, a pinned upstream repository alone is not enough.
 Each reference-parity row must have a receipt, environment provenance, split
-hashes, and metric definitions matching FARO's reported rows.
+hashes, and metric definitions matching VERA's reported rows.
 
 ## Claim Boundary
 
-The defensible contribution sentence remains: FARO is a certified
+The defensible contribution sentence remains: VERA is a certified
 edit-or-abstain protocol over a candidate eraser family, not a replacement for
 every modern eraser. This framing survives INLP, LEACE, R-LACE, TaCo, SPLINCE,
-and MANCE because those methods propose edits, while FARO decides whether an
+and MANCE because those methods propose edits, while VERA decides whether an
 edit is certifiably safe.

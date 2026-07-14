@@ -1,11 +1,11 @@
-# FARO Goal Completion Audit
+# VERA Goal Completion Audit
 
 Generated at UTC: `2026-07-13T19:45:41.825821+00:00`
 Full goal complete: `False`
 
 | Status | Requirement | Evidence | Next step |
 | --- | --- | --- | --- |
-| pass | `novelty_locked` | NOVELTY_LOCK distinguishes FARO from erasure and domain generalization. | Keep novelty sweep current before submission. |
+| pass | `novelty_locked` | NOVELTY_LOCK distinguishes VERA from erasure and domain generalization. | Keep novelty sweep current before submission. |
 | pass | `method_formalized` | Manuscript defines frontier selection and abstention. | Expand pseudocode and notation for camera-ready polish. |
 | pass | `theory_present` | Manuscript contains a finite-candidate safety/abstention theorem. | Strengthen theorem section with leakage constraint and proof details. |
 | pass | `strong_baselines_scoped` | Baseline audit passes and MANCE++ Waterbirds has five-seed official-code statistics. | Add reference SPLINCE/R-LACE/TaCo if claiming erasure SOTA. |

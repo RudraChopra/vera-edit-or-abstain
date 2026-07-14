@@ -2,9 +2,9 @@
 
 Named release URL:
 
-`https://github.com/RudraChopra/faro-edit-or-abstain`
+`https://github.com/RudraChopra/vera-edit-or-abstain`
 
-The repository contains the FARO manuscript sources, reproducibility scripts,
+The repository contains the VERA manuscript sources, reproducibility scripts,
 configuration files, audit scripts, and small JSON/CSV/Markdown receipts needed
 to verify the paper claims. It intentionally excludes third-party raw datasets,
 large frozen embedding stores, and external-drive-only generated arrays.

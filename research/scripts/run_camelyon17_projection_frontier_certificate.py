@@ -1,4 +1,4 @@
-"""Build a full Camelyon17 FARO projection-frontier certificate.
+"""Build a full Camelyon17 VERA projection-frontier certificate.
 
 This script uses the claim-grade Camelyon17 frozen ResNet-18 NumPy store and
 tests a transparent source-direction projection family:
@@ -6,7 +6,7 @@ tests a transparent source-direction projection family:
     z(lambda) = z - lambda <z, u_s> u_s
 
 where u_s is the unit linear-probe direction for the hospital/source label on
-the training split. FARO selection is performed only on validation metrics. The
+the training split. VERA selection is performed only on validation metrics. The
 external split is reported after the selected decision is fixed.
 """
 
@@ -226,7 +226,7 @@ def write_frontier(path: Path, rows: list[dict[str, object]]) -> None:
 def write_markdown(path: Path, certificate: dict[str, object]) -> None:
     selected = certificate["selected_candidate"]
     lines = [
-        "# Camelyon17 FARO Projection Frontier Certificate",
+        "# Camelyon17 VERA Projection Frontier Certificate",
         "",
         f"- Decision: `{certificate['decision']}`",
         f"- Selected strength: `{selected.get('strength')}`",
@@ -442,7 +442,7 @@ def main() -> int:
     args.certificate.write_text(json.dumps(certificate, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_markdown(args.markdown, certificate)
 
-    print("Camelyon17 FARO projection frontier certificate complete")
+    print("Camelyon17 VERA projection frontier certificate complete")
     print(f"decision={decision}")
     print(f"safe_candidate_count={len(safe_rows)}")
     print(f"selected_strength={selected.get('strength')}")

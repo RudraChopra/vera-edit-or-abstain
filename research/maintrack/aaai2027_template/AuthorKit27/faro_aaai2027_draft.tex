@@ -21,7 +21,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
 
-\title{FARO: Certified Edit-or-Abstain Selection for Representation Interventions}
+\title{VERA: Validation-Gated Edit-or-Abstain for Reliable Representation Interventions}
 \author{Anonymous Submission}
 \affiliations{}
 
@@ -31,18 +31,18 @@
 \begin{abstract}
 Representation editing methods remove source or protected information from
 embeddings, but they do not decide whether a proposed edit should be deployed.
-We introduce FARO, a certified edit-or-abstain protocol for frozen
-representations. FARO evaluates a finite frontier of candidate edits with fresh
+We introduce VERA, a certified edit-or-abstain protocol for frozen
+representations. VERA evaluates a finite frontier of candidate edits with fresh
 target and source probes, accepts only edits whose validation confidence
 intervals certify both target preservation and source-leakage reduction, and
-otherwise returns an auditable abstention certificate. This makes FARO
+otherwise returns an auditable abstention certificate. This makes VERA
 orthogonal to INLP, LEACE, R-LACE, TaCo, SPLINCE, and MANCE++: those methods
-propose interventions, while FARO certifies whether an intervention is safe
+propose interventions, while VERA certifies whether an intervention is safe
 under a pre-registered contract. Across Waterbirds, Camelyon17-WILDS, and a
-public PhysioNet gait benchmark, FARO produces locked receipts, paired
+public PhysioNet gait benchmark, VERA produces locked receipts, paired
 statistics, and explicit claim boundaries. We also integrate the official
 MANCE++ implementation as a full Waterbirds reference and a full no-cap
-Camelyon17 reference row. The evidence supports FARO as a decision layer over
+Camelyon17 reference row. The evidence supports VERA as a decision layer over
 candidate erasers, not as a universal state-of-the-art erasure method.
 \end{abstract}
 
@@ -58,13 +58,13 @@ an edit-construction question: how should a representation be changed?
 
 The deployment question is different: should the edit be used at all? This
 distinction matters because source removal can damage the target task, and
-because an edit that is safe on one benchmark may be unsafe on another. FARO
+because an edit that is safe on one benchmark may be unsafe on another. VERA
 treats representation editing as a certified selection problem. It fixes data
 splits, target labels, source labels, metrics, candidate edits, and confidence
 rules; evaluates a frontier of edits; and either selects a certified edit or
 returns \texttt{ABSTAIN}.
 
-The contribution is a protocol claim. FARO is not a replacement for every
+The contribution is a protocol claim. VERA is not a replacement for every
 modern eraser and does not claim universal state-of-the-art erasure. It supplies
 the decision layer that existing erasers lack: a reproducible rule for accepting
 or rejecting an edit under target-preservation and source-reduction constraints.
@@ -73,13 +73,13 @@ or rejecting an edit under target-preservation and source-reduction constraints.
 
 Let $Z \in \mathbb{R}^{n \times d}$ be frozen representations, $Y$ target
 labels, $S$ source labels, and $\mathcal{A}=\{a_1,\ldots,a_m\}$ a finite
-candidate edit family. For each $a$, FARO forms edited representations
+candidate edit family. For each $a$, VERA forms edited representations
 $\tilde Z(a)$, trains fresh target and source probes on the edited training
 split, and estimates validation target utility $U_Y(a)$ and source leakage
 $L_S(a)$ with simultaneous confidence intervals.
 
 \begin{algorithm}[t]
-\caption{FARO validation-only edit selection}
+\caption{VERA validation-only edit selection}
 \label{alg:faro}
 \begin{algorithmic}[1]
 \REQUIRE Frozen representations $Z$, target labels $Y$, source labels $S$,
@@ -105,8 +105,8 @@ metrics only after this decision is fixed.
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.95\linewidth]{faro_method_overview.pdf}
-\caption{FARO separates edit construction from edit deployment. Candidate
-erasers propose a frontier; FARO certifies whether any frontier point satisfies
+\caption{VERA separates edit construction from edit deployment. Candidate
+erasers propose a frontier; VERA certifies whether any frontier point satisfies
 the target and source constraints.}
 \label{fig:method}
 \end{figure}
@@ -118,13 +118,13 @@ Let $U_{\mathrm{ext}}(a)$ denote external target utility and
 $L_{\mathrm{ext}}(a)$ external source leakage. Suppose that for every
 $a\in\mathcal{A}$, event $\mathcal{E}$ gives
 $|U_{\mathrm{ext}}(a)-\widehat U_{\mathrm{val}}(a)|\le\epsilon_U$ and
-$|L_{\mathrm{ext}}(a)-\widehat L_{\mathrm{val}}(a)|\le\epsilon_L$. If FARO
+$|L_{\mathrm{ext}}(a)-\widehat L_{\mathrm{val}}(a)|\le\epsilon_L$. If VERA
 accepts only candidates satisfying
 $\widehat U_{\mathrm{val}}(a)-\epsilon_U\ge\tau$ and
 $\widehat L_{\mathrm{val}}(a)+\epsilon_L\le\lambda$, then every accepted edit
 has $U_{\mathrm{ext}}(a)\ge\tau$ and
 $L_{\mathrm{ext}}(a)\le\lambda$ on $\mathcal{E}$. If no candidate satisfies
-both inequalities, FARO returns \texttt{ABSTAIN}.
+both inequalities, VERA returns \texttt{ABSTAIN}.
 \end{theorem}
 
 \begin{proof}
@@ -138,7 +138,7 @@ empty, the deterministic rule in Algorithm~\ref{alg:faro} returns
 
 \begin{corollary}[False-acceptance control]
 If the simultaneous validation intervals cover all target and leakage
-quantities on $\mathcal{A}$ with probability at least $1-\delta$, then FARO's
+quantities on $\mathcal{A}$ with probability at least $1-\delta$, then VERA's
 probability of accepting an edit that violates either external constraint is at
 most $\delta$.
 \end{corollary}
@@ -165,11 +165,11 @@ site-code source labels.
 \toprule
 Method & Target BA & Worst group & Source leak \\
 \midrule
-Waterbirds FARO & 0.8012 & 0.6234 & 0.8935 \\
+Waterbirds VERA & 0.8012 & 0.6234 & 0.8935 \\
 Waterbirds reweighted ERM & 0.8685 & 0.8186 & 0.8935 \\
-Camelyon17 FARO & 0.8905 & 0.8464 & val. 0.8180 \\
+Camelyon17 VERA & 0.8905 & 0.8464 & val. 0.8180 \\
 Camelyon17 GroupDRO & 0.8790 & 0.8176 & val. 0.8180 \\
-GaitPDB FARO & 0.6944 & 0.6667 & val. 0.7606 \\
+GaitPDB VERA & 0.6944 & 0.6667 & val. 0.7606 \\
 GaitPDB GroupDRO & 0.6650 & 0.5556 & val. 0.7606 \\
 \bottomrule
 \end{tabular}
@@ -177,7 +177,7 @@ GaitPDB GroupDRO & 0.6650 & 0.5556 & val. 0.7606 \\
 
 The Camelyon17 projection-frontier certificate gives a real abstention case:
 with target-loss budget $0.02$ and source-reduction target $0.05$, no tested
-projection strength certifies source reduction, so FARO returns
+projection strength certifies source reduction, so VERA returns
 \texttt{ABSTAIN}. External source leakage is omitted for this certificate
 because the binary source encoding has a single source class in the external
 split.
@@ -199,16 +199,16 @@ until matched receipts are added.
 
 \section{Limitations}
 
-FARO requires source labels, target labels, a meaningful validation split, and a
+VERA requires source labels, target labels, a meaningful validation split, and a
 finite candidate edit family. It does not prove that no safe edit exists
 outside the audited family. Current SPLINCE, R-LACE, and TaCo rows are scoped
 proxy stress tests unless exact upstream reference receipts are added.
 Camelyon17 and GaitPDB are representation-reliability evidence only and do not
 establish clinical safety or deployment readiness.
 
-The strongest reviewer objection is that FARO could be mistaken for a new
+The strongest reviewer objection is that VERA could be mistaken for a new
 eraser and judged as if it must dominate INLP, LEACE, R-LACE, TaCo, SPLINCE,
-and MANCE++. We avoid that claim. FARO is the validation-only decision layer:
+and MANCE++. We avoid that claim. VERA is the validation-only decision layer:
 it accepts an edit only when the registered intervals certify the contract, and
 otherwise it returns \texttt{ABSTAIN}.
 
@@ -223,7 +223,7 @@ their expected locations, generation commands, and claim boundaries.
 
 \section{Conclusion}
 
-FARO reframes representation editing as a certified decision problem: construct
+VERA reframes representation editing as a certified decision problem: construct
 a frontier, certify target preservation and source reduction, then edit or
 abstain. This contribution is compatible with linear erasers, nonlinear
 erasers, and robust prediction baselines because it audits the deployment

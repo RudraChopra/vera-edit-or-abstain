@@ -1,4 +1,4 @@
-"""Run a strict internal reviewer audit for the FARO main-track package."""
+"""Run a strict internal reviewer audit for the VERA main-track package."""
 
 from __future__ import annotations
 
@@ -91,7 +91,7 @@ def collect_findings() -> list[Finding]:
                 severity="critical",
                 title="Baseline package is not yet reviewer-proof",
                 evidence=f"fail_count={baseline.get('fail_count')}; failing_baselines={missing}",
-                reviewer_attack="FARO is compared against weakened or incomplete erasure baselines.",
+                reviewer_attack="VERA is compared against weakened or incomplete erasure baselines.",
                 required_fix="Implement SPLINCE/SPLICE, R-LACE, TaCo, and MANCE under matched conditions, or scope the claims so omitted baselines are not required.",
             )
         )
@@ -164,7 +164,7 @@ def collect_findings() -> list[Finding]:
                     f"safe_candidate_count={overlap.get('safe_candidate_count')}"
                 ),
                 reviewer_attack="The abstention story may be a toy construction rather than a real benchmark behavior.",
-                required_fix="Add a real frontier stress test where FARO abstains or narrowly rejects unsafe edits.",
+                required_fix="Add a real frontier stress test where VERA abstains or narrowly rejects unsafe edits.",
             )
         )
     elif overlap.get("decision") != "ABSTAIN":
@@ -320,7 +320,7 @@ def collect_findings() -> list[Finding]:
 
 def write_markdown(path: Path, findings: list[Finding], report: dict[str, object]) -> None:
     lines = [
-        "# FARO Adversarial Internal Review",
+        "# VERA Adversarial Internal Review",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         "",
@@ -364,7 +364,7 @@ def main() -> int:
     major_count = sum(1 for finding in findings if finding.severity == "major")
     minor_count = sum(1 for finding in findings if finding.severity == "minor")
     report = {
-        "name": "FARO adversarial internal review",
+        "name": "VERA adversarial internal review",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "submission_ready": critical_count == 0 and major_count == 0,
         "critical_count": critical_count,
@@ -376,7 +376,7 @@ def main() -> int:
     args.json_out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     write_markdown(args.markdown_out, findings, report)
 
-    print("FARO adversarial internal review complete")
+    print("VERA adversarial internal review complete")
     print(f"submission_ready={str(report['submission_ready']).lower()}")
     print(f"critical_count={critical_count}")
     print(f"major_count={major_count}")

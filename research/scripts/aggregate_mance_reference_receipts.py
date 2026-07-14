@@ -77,7 +77,7 @@ def main() -> None:
             stats[phase][metric] = summary(values)
 
     report = {
-        "name": "FARO MANCE reference statistical report",
+        "name": "VERA MANCE reference statistical report",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "dataset_name": args.dataset_name,
         "method_name": args.method_name,

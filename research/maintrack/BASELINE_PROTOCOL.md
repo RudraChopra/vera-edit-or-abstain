@@ -1,8 +1,8 @@
-# FARO Baseline Protocol
+# VERA Baseline Protocol
 
 ## Purpose
 
-Every baseline row must answer the same question as FARO: how much source
+Every baseline row must answer the same question as VERA: how much source
 leakage is reduced, how much target utility is preserved, and whether the edit
 is safe under the declared epsilon and delta thresholds.
 
@@ -14,7 +14,7 @@ is safe under the declared epsilon and delta thresholds.
 - INLP and LEACE for linear concept removal.
 - R-LACE/RLACE, TaCo, SPLINCE or SPLICE, and MANCE where faithful implementations are
   available.
-- Source-probe projection and FARO frontier candidates as internal stress
+- Source-probe projection and VERA frontier candidates as internal stress
   baselines.
 
 ## Proxy Labels

@@ -442,7 +442,7 @@ def main() -> int:
 
     if args.dry_run:
         report = {
-            "name": "FARO Camelyon17 WILDS tar-stream store dry run",
+            "name": "VERA Camelyon17 WILDS tar-stream store dry run",
             "created_at_utc": datetime.now(timezone.utc).isoformat(),
             "dry_run": True,
             "archive_path": str(args.archive),
@@ -461,7 +461,7 @@ def main() -> int:
             "claim_grade_benchmark_row": False,
         }
         write_report(args.report, report)
-        print("FARO Camelyon17 tar-stream store dry run complete")
+        print("VERA Camelyon17 tar-stream store dry run complete")
         print(f"metadata_rows={len(metadata_by_member)}")
         print(f"report={args.report}")
         return 0
@@ -498,7 +498,7 @@ def main() -> int:
         and not export_report["unexpected_keys"]
     )
     report = {
-        "name": "FARO Camelyon17 WILDS tar-stream ResNet18 embedding store",
+        "name": "VERA Camelyon17 WILDS tar-stream ResNet18 embedding store",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "dry_run": False,
         "input_mode": "official_wilds_archive_tar_stream",
@@ -545,7 +545,7 @@ def main() -> int:
     report["embeddings_sha256"] = sha256_file(embeddings_path)
     write_report(args.report, report)
 
-    print("FARO Camelyon17 tar-stream ResNet-18 store export complete")
+    print("VERA Camelyon17 tar-stream ResNet-18 store export complete")
     print(f"store_dir={args.store_dir}")
     print(f"report={args.report}")
     print(f"sample_count={total_rows}")

@@ -1,4 +1,4 @@
-"""Audit the FARO Paper A reproducibility packet."""
+"""Audit the VERA Paper A reproducibility packet."""
 
 from __future__ import annotations
 
@@ -307,7 +307,7 @@ def main() -> None:
 
     fail_count = sum(1 for check in checks if check.status == "fail")
     report = {
-        "name": "FARO Paper A reproducibility packet audit",
+        "name": "VERA Paper A reproducibility packet audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "packet_ready": fail_count == 0,
         "pass_count": len(checks) - fail_count,
@@ -324,7 +324,7 @@ def main() -> None:
             writer.writerow(asdict(check))
 
     lines = [
-        "# FARO Reproducibility Packet Audit",
+        "# VERA Reproducibility Packet Audit",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         "",
@@ -339,7 +339,7 @@ def main() -> None:
         lines.append(f"| `{check.key}` | {check.status} | {check.evidence} |")
     args.md_out.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    print("FARO reproducibility packet audit complete")
+    print("VERA reproducibility packet audit complete")
     print(f"packet_ready={str(report['packet_ready']).lower()}")
     print(f"fail_count={fail_count}")
     print(f"report={args.json_out}")

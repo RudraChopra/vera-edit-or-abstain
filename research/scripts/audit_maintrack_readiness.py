@@ -1,4 +1,4 @@
-"""Audit whether the FARO main-track package has its required evidence.
+"""Audit whether the VERA main-track package has its required evidence.
 
 The audit is intentionally artifact-driven: it checks the paper-facing specs,
 claim-grade benchmark receipts, statistical reports, reproducibility packet,
@@ -223,9 +223,9 @@ def camelyon_frontier_certificate_check() -> Check:
 
 def collect_checks() -> list[Check]:
     checks: list[Check] = [
-        doc_check("README.md", ("FARO", "main-track")),
-        doc_check("PROJECT_SPEC.md", ("FARO", "claim", "benchmark")),
-        doc_check("PAPER_A_LOCK.md", ("Paper A", "FARO")),
+        doc_check("README.md", ("VERA", "main-track")),
+        doc_check("PROJECT_SPEC.md", ("VERA", "claim", "benchmark")),
+        doc_check("PAPER_A_LOCK.md", ("Paper A", "VERA")),
         doc_check("NOVELTY_LOCK.md", ("LEACE", "RLACE", "INLP", "TaCo")),
         doc_check("NOVELTY_SWEEP_2026_UPDATE.md", ("MANCE", "SPLINCE")),
         doc_check("ALGORITHM_SPEC.md", ("frontier", "abstention")),
@@ -240,7 +240,7 @@ def collect_checks() -> list[Check]:
         doc_check(
             "faro_main.tex",
             (
-                "FARO",
+                "VERA",
                 "Camelyon17",
                 "Waterbirds",
                 "False-acceptance control",
@@ -293,7 +293,7 @@ def collect_checks() -> list[Check]:
 
 def write_markdown(path: Path, report: dict[str, object]) -> None:
     lines = [
-        "# FARO Main-Track Readiness Audit",
+        "# VERA Main-Track Readiness Audit",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         f"Main-track ready: `{report['maintrack_ready']}`",
@@ -333,7 +333,7 @@ def main() -> int:
     fail_count = sum(check.status == "fail" for check in checks)
     pass_count = sum(check.status == "pass" for check in checks)
     report = {
-        "name": "FARO main-track readiness audit",
+        "name": "VERA main-track readiness audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "maintrack_ready": fail_count == 0,
         "pass_count": pass_count,
@@ -344,7 +344,7 @@ def main() -> int:
     args.json_out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     write_markdown(args.markdown_out, report)
     write_csv(args.csv_out, report)
-    print("FARO main-track readiness audit complete")
+    print("VERA main-track readiness audit complete")
     print(f"maintrack_ready={str(report['maintrack_ready']).lower()}")
     print(f"pass_count={pass_count}")
     print(f"fail_count={fail_count}")

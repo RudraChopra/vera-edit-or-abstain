@@ -1,6 +1,6 @@
-# FARO Full Goal Completion Audit
+# VERA Full Goal Completion Audit
 
-Generated at UTC: `2026-07-14T00:55:12.759388+00:00`
+Generated at UTC: `2026-07-14T01:06:25.516956+00:00`
 Goal complete: `True`
 
 | Status | Requirement | Evidence | Remaining work |

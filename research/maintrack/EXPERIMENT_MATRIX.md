@@ -1,15 +1,15 @@
-# FARO Experiment Matrix
+# VERA Experiment Matrix
 
 ## Current Evidence
 
 | Family | Dataset | Status | Role |
 | --- | --- | --- | --- |
 | Text / subpopulation shift | CivilComments-WILDS | Prior full-store result artifacts exist, but the receipt and statistical report are currently macOS File Provider dataless placeholders; do not count as durable claim-ready evidence until rehydrated or regenerated | Optional third family once durable |
-| Spurious correlation / background shift | Waterbirds | Full Hugging Face mirror exported to 11,788 local images, frozen ResNet-18 TRACE table validated with 512 nonconstant features, five-seed vectorized receipt passed all official gates; FARO abstains and group-reweighted ERM is stronger | Current durable official family and honest abstention/failure-analysis row |
+| Spurious correlation / background shift | Waterbirds | Full Hugging Face mirror exported to 11,788 local images, frozen ResNet-18 TRACE table validated with 512 nonconstant features, five-seed vectorized receipt passed all official gates; VERA abstains and group-reweighted ERM is stronger | Current durable official family and honest abstention/failure-analysis row |
 | Medical / hospital shift | Camelyon17-WILDS | Complete 455,954-row frozen ResNet-18 store, full NumPy-store conversion, five locked protocol rows, paired statistics, and a passing official high-stakes receipt | Current durable high-stakes official family; not clinical deployment evidence |
 | Medical / neuroimaging source shift | Alzheimer/OASIS-style MRI | Planned only; source-label feasibility must be verified before use | Optional flagship medical stress test |
 | Controlled vision shift | Colored MNIST | Reproducible development evidence | Ablation and frontier visualization |
-| Synthetic latent shift | Synthetic TRACE/FARO suite | Reproducible mechanism evidence plus FARO abstention certificate | Theory-aligned sanity checks |
+| Synthetic latent shift | Synthetic TRACE/VERA suite | Reproducible mechanism evidence plus VERA abstention certificate | Theory-aligned sanity checks |
 
 ## Required Official Rows
 
@@ -17,7 +17,7 @@
    receipt and paired statistical report before counting this as a claim-ready
    official row.
 2. **Waterbirds official.** Keep as the current durable official benchmark family and
-   frame it as an abstention stress test: under the locked selection rule FARO
+   frame it as an abstention stress test: under the locked selection rule VERA
    abstains, and group-reweighted ERM is stronger on worst-group accuracy.
 3. **Camelyon17-WILDS medical shift.** Keep as the durable high-stakes official
    row: complete frozen embeddings, NumPy store, five locked protocol rows,
@@ -45,8 +45,8 @@ Required baselines:
 - R-LACE-style linear adversarial erasure,
 - TaCo-style target-conditioned nonlinear erasure,
 - MANCE-style manifold-aware erasure,
-- FARO selected frontier point,
-- FARO abstention/failure mode.
+- VERA selected frontier point,
+- VERA abstention/failure mode.
 
 Reviewer-critical baseline caveats:
 
@@ -68,7 +68,7 @@ Each official row should report:
 
 ## Stop Rules
 
-If FARO only wins on synthetic or Colored-MNIST-like data, do not submit as a
+If VERA only wins on synthetic or Colored-MNIST-like data, do not submit as a
 main-conference method paper. Reposition as an empirical study of when source
 erasure fails.
 
@@ -124,7 +124,7 @@ available and source leakage populated. Its receipt remains
 ## Current Baseline Expansion
 
 `research/scripts/run_splince_style_civilcomments_baseline.py` adds a matched
-task-preserving linear concept-removal proxy to the FARO-labeled CivilComments
+task-preserving linear concept-removal proxy to the VERA-labeled CivilComments
 table. The current row is `task_preserving_linear_erasure` with
 `external_target_balanced_accuracy_mean=0.7325`,
 `external_worst_target_source_accuracy_mean=0.6678`, and
@@ -164,7 +164,7 @@ claims.
 `research/scripts/run_faro_synthetic_abstention_certificate.py` writes a
 deterministic frontier for two theory-aligned cases. In the overlap case,
 `lambda_y_star=0.3` and `lambda_s_star=0.7`, so the certified safe set is empty
-and FARO returns `ABSTAIN`. In the non-overlap case, FARO selects
+and VERA returns `ABSTAIN`. In the non-overlap case, VERA selects
 `strength=0.4` and returns `EDIT`. The generated report is
 `research/artifacts/faro_synthetic_abstention_report.json`. This supports the
 abstention mechanism but remains development evidence, not an official

@@ -1,4 +1,4 @@
-"""Run FARO-style linear-probe benchmarks on any binary FARO NumPy store."""
+"""Run VERA-style linear-probe benchmarks on any binary VERA NumPy store."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ METHODS = [
     ("source_balanced_erm", "source-balanced ERM"),
     ("group_reweighted_erm", "group-reweighted ERM"),
     ("group_dro_probe", "GroupDRO-style probe"),
-    ("FARO_selected", "FARO selected frontier point"),
+    ("VERA_selected", "VERA selected frontier point"),
 ]
 METRICS = [
     "validation_target_balanced_accuracy",
@@ -195,7 +195,7 @@ def build_statistics(rows: list[dict[str, object]], seeds: list[int], dataset_na
     for method, method_rows in by_method.items():
         summaries[method] = {metric: mean_ci([float(row[metric]) for row in method_rows]) for metric in METRICS}
     return {
-        "name": f"FARO {dataset_name} benchmark paired statistics",
+        "name": f"VERA {dataset_name} benchmark paired statistics",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "dataset_name": dataset_name,
         "n_seeds": len(seeds),
@@ -222,7 +222,7 @@ def run(store: Store, seeds: list[int]) -> list[dict[str, object]]:
         "source_balanced_erm": fit_probe(x_tr, y_tr, class_weights(s_tr)),
         "group_reweighted_erm": group_probe,
         "group_dro_probe": group_probe,
-        "FARO_selected": fit_probe(x_tr, y_tr),
+        "VERA_selected": fit_probe(x_tr, y_tr),
     }
     rows = []
     for seed in seeds:
@@ -233,7 +233,7 @@ def run(store: Store, seeds: list[int]) -> list[dict[str, object]]:
                 "method_key": key,
                 "method": label,
                 "seed": seed,
-                "decision": "FIT" if key != "FARO_selected" else "EDIT_OR_ABSTAIN_EVALUATED",
+                "decision": "FIT" if key != "VERA_selected" else "EDIT_OR_ABSTAIN_EVALUATED",
                 "n_examples": int(store.manifest.get("n_examples", len(store.y))),
                 "train_examples": len(tr),
                 "validation_examples": len(va),
@@ -250,7 +250,7 @@ def receipt(store: Store, stats_payload: dict[str, object], seeds: list[int], da
     n = int(store.manifest.get("n_examples", 0))
     passed = n > 0 and len(seeds) >= 5 and bool(stats_payload.get("claim_grade_statistics"))
     return {
-        "name": f"FARO {dataset_name} public locked-split benchmark receipt",
+        "name": f"VERA {dataset_name} public locked-split benchmark receipt",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "dataset_name": dataset_name,
         "store_dir": str(store.store_dir),

@@ -10,8 +10,8 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
 
-\title{FARO: Certified Edit-or-Abstain Selection for Representation Interventions}
-\author{FARO Project}
+\title{VERA: Validation-Gated Edit-or-Abstain for Reliable Representation Interventions}
+\author{VERA Project}
 \date{July 13, 2026}
 
 \begin{document}
@@ -24,15 +24,15 @@ Representation editing methods can remove source or protected information from
 model embeddings, but the edit itself is not the decision a downstream system
 needs to make. A useful deployment rule must decide whether any available edit
 is safe enough to use under a target-preservation constraint, and it must
-refuse edits when the evidence is insufficient. We introduce FARO, a certified
-edit-or-abstain protocol for frozen representations. FARO evaluates a frontier
+refuse edits when the evidence is insufficient. We introduce VERA, a certified
+edit-or-abstain protocol for frozen representations. VERA evaluates a frontier
 of candidate edits, trains fresh target and source probes after each edit, and
 accepts only frontier points whose confidence intervals satisfy pre-registered
 target-preservation and leakage-reduction constraints. Otherwise it returns
-\texttt{ABSTAIN}. This makes FARO orthogonal to erasure methods such as INLP,
+\texttt{ABSTAIN}. This makes VERA orthogonal to erasure methods such as INLP,
 LEACE, RLACE, TaCo, SPLINCE, and MANCE++: those methods propose edits, while
-FARO certifies whether an edit should be deployed. On official Waterbirds and
-Camelyon17 frozen-image benchmarks, FARO produces auditable receipts,
+VERA certifies whether an edit should be deployed. On official Waterbirds and
+Camelyon17 frozen-image benchmarks, VERA produces auditable receipts,
 seed-level statistics, abstention certificates, and claim ledgers. We add a
 full Camelyon17 projection-frontier certificate showing a validation-only
 \texttt{ABSTAIN} decision when source reduction is not certifiable. We also run
@@ -64,13 +64,13 @@ benchmark may be unsafe on another. In high-stakes settings such as
 Camelyon17-WILDS hospital shift, a protocol that can refuse an unsafe edit is
 more defensible than a protocol that always edits.
 
-FARO addresses this gap by treating representation editing as a certified
+VERA addresses this gap by treating representation editing as a certified
 selection problem. It evaluates candidate edits under locked splits, source
 labels, target labels, metrics, and seeds. It then selects the strongest
 frontier point that satisfies target-preservation constraints, or returns
 \texttt{ABSTAIN}. This paper is therefore not claiming a new eraser that
 dominates INLP, LEACE, RLACE, TaCo, SPLINCE, or MANCE++. The claim is that
-FARO is a decision layer over candidate erasers, with explicit claim
+VERA is a decision layer over candidate erasers, with explicit claim
 boundaries, reproducibility receipts, and adversarial readiness checks.
 
 This paper makes four contributions. First, it formalizes representation
@@ -88,48 +88,48 @@ Linear concept-erasure methods remove directions or subspaces associated with a
 concept label. INLP repeatedly projects away classifier null spaces, R-LACE
 casts erasure as a minimax linear projection, and LEACE gives a closed-form
 least-squares eraser for linear concept information. These methods define how
-to construct an edit. FARO instead asks whether a candidate edit should be
+to construct an edit. VERA instead asks whether a candidate edit should be
 accepted under an explicit target-preservation and leakage-reduction contract.
 
 Nonlinear and task-preserving erasure methods address limitations of purely
 linear removal. TaCo, SPLINCE/SPLICE-style methods, and MANCE/MANCE++ motivate
 the strongest comparison space because they explicitly consider target
-preservation, geometry, or nonlinear concept information. FARO is orthogonal to
+preservation, geometry, or nonlinear concept information. VERA is orthogonal to
 these methods: it can evaluate their edits as candidates, but its claim is the
 certified decision layer over a finite candidate family, not universal
 dominance as an eraser.
 
 Domain generalization methods optimize prediction under environment shift,
-often through robust losses, reweighting, or group-aware training. FARO has a
+often through robust losses, reweighting, or group-aware training. VERA has a
 different object: it audits whether a representation intervention is certified
 to reduce source recoverability without violating target utility. This makes
 domain-generalization baselines relevant for comparison, but it separates the
-FARO contribution from robust prediction itself.
+VERA contribution from robust prediction itself.
 
 \section{Method}
 
 Let $z_i \in \mathbb{R}^d$ be a frozen representation, $y_i$ the target label,
 $s_i$ the source or environment label, and $a \in \mathcal{A}$ a candidate edit
-from an eraser family. FARO evaluates each edited representation
+from an eraser family. VERA evaluates each edited representation
 $\tilde z_i(a)$ by fitting fresh probes for the target and source labels on the
 edited training split and measuring target balanced accuracy, worst
 target-source accuracy, and source leakage balanced accuracy on validation and
 external splits.
 
 The candidate frontier is the non-dominated subset of $\mathcal{A}$ under
-target utility and source leakage. FARO's selection rule is fixed before
+target utility and source leakage. VERA's selection rule is fixed before
 external metrics are read. On the validation split, it accepts an edit only if
 the lower confidence bound on target preservation remains above the
 pre-registered tolerance and the upper confidence bound on source leakage shows
-meaningful reduction. If multiple edits are certified, FARO selects the
-strongest leakage-reducing edit among them. If no edit is certified, FARO
+meaningful reduction. If multiple edits are certified, VERA selects the
+strongest leakage-reducing edit among them. If no edit is certified, VERA
 returns \texttt{ABSTAIN}.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.82\linewidth]{figures/faro_method_overview.pdf}
-\caption{FARO separates edit construction from edit deployment. Candidate
-erasers propose a frontier of representation interventions. FARO evaluates the
+\caption{VERA separates edit construction from edit deployment. Candidate
+erasers propose a frontier of representation interventions. VERA evaluates the
 frontier with fresh probes and either selects a certified edit or returns
 \texttt{ABSTAIN}.}
 \label{fig:method}
@@ -137,7 +137,7 @@ frontier with fresh probes and either selects a certified edit or returns
 
 \begin{table}[t]
 \centering
-\caption{FARO edit-or-abstain protocol. Selection uses validation estimates
+\caption{VERA edit-or-abstain protocol. Selection uses validation estimates
 and simultaneous intervals only; external metrics are read after the decision
 is fixed.}
 \label{tab:algorithm}
@@ -160,26 +160,26 @@ Let $U_{\mathrm{ext}}(a)$ be the external target utility of edit $a$, let
 $\widehat U_{\mathrm{val}}(a)$ be its validation estimate, and let $\tau$ be the
 minimum acceptable target utility. Suppose event $\mathcal{E}$ holds, where
 $|U_{\mathrm{ext}}(a)-\widehat U_{\mathrm{val}}(a)| \le \epsilon$ for every
-$a \in \mathcal{A}$. If FARO accepts only edits satisfying
+$a \in \mathcal{A}$. If VERA accepts only edits satisfying
 $\widehat U_{\mathrm{val}}(a)-\epsilon \ge \tau$, then every accepted edit has
 $U_{\mathrm{ext}}(a) \ge \tau$ on $\mathcal{E}$. If no edit satisfies this
-lower-confidence-bound condition, FARO returns \texttt{ABSTAIN}.
+lower-confidence-bound condition, VERA returns \texttt{ABSTAIN}.
 \end{theorem}
 
 \begin{proof}
 On $\mathcal{E}$, every candidate satisfies
 $U_{\mathrm{ext}}(a) \ge \widehat U_{\mathrm{val}}(a)-\epsilon$. Therefore, if
-FARO accepts an edit $a$ only when
+VERA accepts an edit $a$ only when
 $\widehat U_{\mathrm{val}}(a)-\epsilon \ge \tau$, the accepted edit also
 satisfies $U_{\mathrm{ext}}(a) \ge \tau$. If no candidate satisfies the same
-lower-confidence-bound condition, the selection set is empty, and the FARO
+lower-confidence-bound condition, the selection set is empty, and the VERA
 decision rule returns \texttt{ABSTAIN}. This proves both safe acceptance on the
 coverage event and abstention when no candidate is certifiable.
 \end{proof}
 
 The theorem is intentionally a decision-safety statement, not a claim that
 erasure can hurt accuracy. Its role is to formalize why abstention is a useful
-output. FARO may be conservative, but under the stated coverage event it does
+output. VERA may be conservative, but under the stated coverage event it does
 not accept an edit that the available evidence cannot certify.
 
 \begin{theorem}[Simultaneous frontier certification]
@@ -195,7 +195,7 @@ holds, where for every $a \in \mathcal{F}$,
 \quad\textrm{and}\quad
 |L_{\mathrm{ext}}(a)-\widehat L_{\mathrm{val}}(a)| \le \epsilon_L .
 \]
-If FARO accepts only edits satisfying
+If VERA accepts only edits satisfying
 \[
 \widehat U_{\mathrm{val}}(a)-\epsilon_U \ge \tau
 \quad\textrm{and}\quad
@@ -203,7 +203,7 @@ If FARO accepts only edits satisfying
 \]
 then every accepted edit has $U_{\mathrm{ext}}(a)\ge \tau$ and
 $L_{\mathrm{ext}}(a)\le \lambda$ on $\mathcal{E}_{F}$. If the feasible set is
-empty, FARO returns \texttt{ABSTAIN}.
+empty, VERA returns \texttt{ABSTAIN}.
 \end{theorem}
 
 \begin{proof}
@@ -214,13 +214,13 @@ $L_{\mathrm{ext}}(a)\le \widehat L_{\mathrm{val}}(a)+\epsilon_L\le\lambda$.
 Thus every accepted edit simultaneously satisfies the external target and
 leakage constraints on the coverage event. If no candidate satisfies the two
 lower/upper confidence-bound inequalities, the certified feasible set is empty,
-and FARO's rule returns \texttt{ABSTAIN}.
+and VERA's rule returns \texttt{ABSTAIN}.
 \end{proof}
 
 For a finite frontier, $\mathcal{E}_{F}$ can be obtained by any valid
 simultaneous confidence construction over the $2|\mathcal{F}|$ target and
 leakage estimates, for example Bonferroni-corrected empirical Bernstein or
-bootstrap intervals. FARO does not require these intervals to be tight; wider
+bootstrap intervals. VERA does not require these intervals to be tight; wider
 intervals simply make abstention more likely.
 
 \begin{theorem}[Finite-sample validation certificate]
@@ -258,9 +258,9 @@ simultaneous frontier theorem.
 \end{proof}
 
 \begin{corollary}[False-acceptance control]
-If the simultaneous validation intervals used by FARO cover every target and
+If the simultaneous validation intervals used by VERA cover every target and
 leakage quantity on the audited frontier $\mathcal{F}$ with probability at
-least $1-\delta$, then the probability that FARO accepts an edit violating
+least $1-\delta$, then the probability that VERA accepts an edit violating
 either its external target constraint or its external leakage constraint is at
 most $\delta$.
 \end{corollary}
@@ -287,7 +287,7 @@ challenge split.
 For Camelyon17, we additionally run a full 455,954-example source-direction
 projection frontier. The certificate is selected using validation metrics only:
 with target-loss budget $0.02$ and source-reduction target $0.05$, no projection
-strength certifies source reduction, so FARO returns \texttt{ABSTAIN}. External
+strength certifies source reduction, so VERA returns \texttt{ABSTAIN}. External
 target and worst-group metrics are reported after the decision; external source
 leakage is scoped out because the binary source encoding has a single source
 class in the external split.
@@ -299,18 +299,18 @@ class in the external split.
 \toprule
 Method & Target BA & Worst group & Source leakage \\
 \midrule
-Waterbirds FARO & $0.8012 \pm 0.0005$ & $0.6234 \pm 0.0018$ & $0.8935 \pm 0.0005$ \\
+Waterbirds VERA & $0.8012 \pm 0.0005$ & $0.6234 \pm 0.0018$ & $0.8935 \pm 0.0005$ \\
 Waterbirds reweighted ERM & $0.8685 \pm 0.0007$ & $0.8186 \pm 0.0012$ & $0.8935 \pm 0.0004$ \\
-Camelyon17 FARO & $0.8905 \pm 0.0000$ & $0.8464 \pm 0.0000$ & val. $0.8180$ \\
+Camelyon17 VERA & $0.8905 \pm 0.0000$ & $0.8464 \pm 0.0000$ & val. $0.8180$ \\
 Camelyon17 GroupDRO probe & $0.8790 \pm 0.0000$ & $0.8176 \pm 0.0000$ & val. $0.8180$ \\
-GaitPDB FARO & $0.6944 \pm 0.0000$ & $0.6667 \pm 0.0000$ & val. $0.7606$ \\
+GaitPDB VERA & $0.6944 \pm 0.0000$ & $0.6667 \pm 0.0000$ & val. $0.7606$ \\
 GaitPDB GroupDRO probe & $0.6650 \pm 0.0000$ & $0.5556 \pm 0.0000$ & val. $0.7606$ \\
 \bottomrule
 \end{tabular}
 \caption{Artifact-backed benchmark summary. BA denotes balanced accuracy. On
-Waterbirds, FARO abstains/no-edits because the candidate edit frontier does not
-certify a better safe edit; this is a valid FARO decision, not an accuracy win
-claim. On Camelyon17, FARO preserves stronger external target and worst-group
+Waterbirds, VERA abstains/no-edits because the candidate edit frontier does not
+certify a better safe edit; this is a valid VERA decision, not an accuracy win
+claim. On Camelyon17, VERA preserves stronger external target and worst-group
 metrics than the GroupDRO-style probe under the frozen representation protocol.
 GaitPDB is a public locked-split sensor benchmark and is not counted as an
 official challenge row.}
@@ -320,13 +320,13 @@ official challenge row.}
 \section{Reference MANCE++ Baseline}
 
 Because MANCE++ is a recent and close nonlinear erasure baseline, we integrated
-the official upstream implementation into the FARO harness rather than relying
+the official upstream implementation into the VERA harness rather than relying
 only on a proxy. The Waterbirds run is full-split and five-seed. MANCE++ reduces
 external source leakage balanced accuracy from $0.9059$ to $0.4468$ with mean
 delta $-0.4591 \pm 0.0067$. External target balanced accuracy changes from
 $0.7390$ to $0.6915$, and worst target-source accuracy improves from $0.4907$
 to $0.5283$. These numbers support the claim that MANCE++ is a strong erasure
-candidate, but they also show why FARO's decision layer is necessary: leakage
+candidate, but they also show why VERA's decision layer is necessary: leakage
 reduction and target preservation must be adjudicated under explicit
 constraints.
 
@@ -376,13 +376,13 @@ SPLINCE/SPLICE & No pinned official repo & Proxy or paper-only boundary \\
 \end{tabular}
 \caption{Reference-baseline boundary recorded by the upstream inventory audit.
 Pinned code means the official repository and commit are materialized locally;
-it does not by itself create reference parity without a matched FARO receipt.}
+it does not by itself create reference parity without a matched VERA receipt.}
 \label{tab:reference-boundary}
 \end{table}
 
 \section{Abstention}
 
-FARO's differentiating behavior is the ability to refuse an edit. The synthetic
+VERA's differentiating behavior is the ability to refuse an edit. The synthetic
 abstention certificate demonstrates the geometry of overlapping target and
 source directions, where every leakage-reducing candidate violates the target
 constraint. The real benchmark stress tests apply the same logic to artifact
@@ -393,7 +393,7 @@ does not justify deployment.
 The full Camelyon17 projection frontier gives a concrete medical benchmark
 example. Across strengths $0$ through $1$, the validation target-loss upper
 confidence bound remains below $0.02$, but the source-reduction lower
-confidence bound is $0$ for every candidate. FARO therefore abstains: the
+confidence bound is $0$ for every candidate. VERA therefore abstains: the
 candidate family appears target-safe, but it fails the pre-registered source
 reduction requirement. This is exactly the behavior the protocol is designed
 to expose.
@@ -401,7 +401,7 @@ to expose.
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.72\linewidth]{figures/faro_synthetic_abstention_geometry.pdf}
-\caption{Synthetic abstention geometry. FARO abstains when the candidate
+\caption{Synthetic abstention geometry. VERA abstains when the candidate
 frontier cannot certify both target preservation and source leakage reduction.}
 \label{fig:abstention}
 \end{figure}
@@ -411,7 +411,7 @@ frontier cannot certify both target preservation and source leakage reduction.}
 \includegraphics[width=0.72\linewidth]{figures/faro_camelyon_projection_frontier.pdf}
 \caption{Full Camelyon17 projection frontier certificate. The green feasible
 region requires both source-reduction and target-preservation bounds. No
-candidate enters the feasible region, so FARO returns \texttt{ABSTAIN}.}
+candidate enters the feasible region, so VERA returns \texttt{ABSTAIN}.}
 \label{fig:camelyon-frontier}
 \end{figure}
 
@@ -424,17 +424,17 @@ directionality checks because their smallest possible nonzero p-value is
 0.0625. The main readiness gate can therefore verify integrity, but it should
 not be read as a conventional large-sample significance claim.
 
-The most important limitation is that FARO is a selection and abstention
+The most important limitation is that VERA is a selection and abstention
 protocol, not a universal erasure method. It depends on candidate erasers,
 source labels, target labels, and meaningful validation-to-external uncertainty
 estimates. Full-reference MANCE++ evidence is claim-grade for Waterbirds and
-Camelyon17. The manuscript should therefore avoid any statement that FARO is
+Camelyon17. The manuscript should therefore avoid any statement that VERA is
 universally state of the art at nonlinear erasure or clinically deployable in
 medical settings.
 
-The strongest reviewer objection is that FARO could be mistaken for an erasure
+The strongest reviewer objection is that VERA could be mistaken for an erasure
 algorithm and then judged as if it must dominate every modern eraser. The paper
-does not make that claim. FARO's contribution is the validation-only
+does not make that claim. VERA's contribution is the validation-only
 edit-or-abstain decision rule, the receipt format, and the claim boundary around
 candidate edits. Reference implementations are used when matched receipts
 exist; otherwise, the manuscript labels rows as proxy stress tests and denies
@@ -443,9 +443,9 @@ universal erasure state-of-the-art claims.
 \section{Code Availability}
 
 The release repository is
-\url{https://github.com/RudraChopra/faro-edit-or-abstain}. It contains the
+\url{https://github.com/RudraChopra/vera-edit-or-abstain}. It contains the
 paper sources, audit scripts, configuration manifests, small receipts, and
-reproduction commands needed to inspect the reported FARO claims. Large raw
+reproduction commands needed to inspect the reported VERA claims. Large raw
 datasets, embedding stores, and third-party upstream repositories are excluded
 from the repository; the manifest records their expected locations, generation
 commands, and claim boundaries. Anonymous conference submissions should use the
@@ -454,7 +454,7 @@ review.
 
 \section{Conclusion}
 
-FARO reframes representation editing as a decision problem: construct a
+VERA reframes representation editing as a decision problem: construct a
 frontier, certify target preservation and leakage reduction, then edit or
 abstain. This framing is compatible with linear erasers, nonlinear manifold
 erasers, and domain-shift benchmarks. The current evidence package is strong

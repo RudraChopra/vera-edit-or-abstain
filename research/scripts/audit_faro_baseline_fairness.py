@@ -1,4 +1,4 @@
-"""Audit FARO baseline scope and reference-evidence boundaries."""
+"""Audit VERA baseline scope and reference-evidence boundaries."""
 
 from __future__ import annotations
 
@@ -72,16 +72,16 @@ def collect_checks() -> list[Check]:
             "diagnostic_boundary",
             "Camelyon17 MANCE++ is diagnostic only and must not be presented as a full reference row.",
         ),
-        Check("faro_selected_frontier_point", "pass", "method_under_test", "FARO selected point and abstention decision are reported separately from baselines."),
+        Check("faro_selected_frontier_point", "pass", "method_under_test", "VERA selected point and abstention decision are reported separately from baselines."),
         Check("claim_boundary", "pass", "audit_boundary", "Tables and prose distinguish proxy stress tests from official reference implementations."),
-        Check("no_sota_erasure_claim", "pass", "claim_boundary", "Evidence supports FARO as certified selection/abstention, not universal SOTA erasure."),
+        Check("no_sota_erasure_claim", "pass", "claim_boundary", "Evidence supports VERA as certified selection/abstention, not universal SOTA erasure."),
     ]
     return checks
 
 
 def write_markdown(path: Path, report: dict[str, object]) -> None:
     lines = [
-        "# FARO Baseline Fairness Audit",
+        "# VERA Baseline Fairness Audit",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         f"Baseline ready: `{report['baseline_ready']}`",
@@ -109,7 +109,7 @@ def main() -> int:
     fail_count = sum(check.status == "fail" for check in checks)
     pass_count = sum(check.status == "pass" for check in checks)
     report = {
-        "name": "FARO baseline fairness audit",
+        "name": "VERA baseline fairness audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "baseline_ready": fail_count == 0,
         "fail_count": fail_count,
@@ -130,7 +130,7 @@ def main() -> int:
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
     args.json_out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     write_markdown(args.markdown_out, report)
-    print("FARO baseline fairness audit complete")
+    print("VERA baseline fairness audit complete")
     print(f"baseline_ready={str(report['baseline_ready']).lower()}")
     print(f"fail_count={fail_count}")
     print(f"report={args.json_out.resolve()}")

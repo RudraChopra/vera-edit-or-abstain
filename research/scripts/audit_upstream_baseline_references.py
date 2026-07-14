@@ -1,7 +1,7 @@
-"""Inventory upstream erasure-baseline reference repositories for FARO.
+"""Inventory upstream erasure-baseline reference repositories for VERA.
 
 This audit does not claim that every upstream implementation has been run under
-matched FARO splits. It records which exact official-code repositories are
+matched VERA splits. It records which exact official-code repositories are
 available locally and which baselines remain proxy or paper-only comparisons.
 """
 
@@ -49,7 +49,7 @@ REPOS = [
         expected_remote_fragment="MatanAvitan/mance",
         key_files=("mance/erasure.py", "mance/tangent.py", "mance/scorer.py"),
         allowed_claim=(
-            "Official-code FARO adapter exists; Waterbirds is claim-grade, "
+            "Official-code VERA adapter exists; Waterbirds is claim-grade, "
             "and Camelyon17 has a full no-cap claim-grade receipt."
         ),
     ),
@@ -60,7 +60,7 @@ REPOS = [
         expected_remote_fragment="shauli-ravfogel/rlace-icml",
         key_files=("rlace.py", "debias.py", "classifier.py"),
         allowed_claim=(
-            "Official upstream code is pinned locally; current FARO tables may "
+            "Official upstream code is pinned locally; current VERA tables may "
             "only claim R-LACE-style proxy stress tests until matched receipts exist."
         ),
     ),
@@ -71,7 +71,7 @@ REPOS = [
         expected_remote_fragment="fanny-jourdan/TaCo",
         key_files=("TaCo/TaCo.py", "TaCo/concept_removal.py", "TaCo/run_TaCo.py"),
         allowed_claim=(
-            "Official upstream code is pinned locally; current FARO tables may "
+            "Official upstream code is pinned locally; current VERA tables may "
             "only claim TaCo-style proxy stress tests until matched receipts exist."
         ),
     ),
@@ -82,7 +82,7 @@ REPOS = [
         expected_remote_fragment="EleutherAI/concept-erasure",
         key_files=("concept_erasure/leace.py", "tests/test_leace.py", "pyproject.toml"),
         allowed_claim=(
-            "Official upstream code is pinned locally; current FARO tables may "
+            "Official upstream code is pinned locally; current VERA tables may "
             "only claim LEACE-style proxy stress tests until matched receipts exist."
         ),
     ),
@@ -214,7 +214,7 @@ def main() -> int:
 
     fail_count = sum(check.status == "fail" for check in checks)
     report = {
-        "name": "FARO upstream baseline reference inventory",
+        "name": "VERA upstream baseline reference inventory",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "inventory_ready": fail_count == 0,
         "full_reference_parity_claim_allowed": False,
@@ -227,7 +227,7 @@ def main() -> int:
     args.json_out.parent.mkdir(parents=True, exist_ok=True)
     args.json_out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_markdown(args.markdown_out, report)
-    print("FARO upstream baseline reference inventory complete")
+    print("VERA upstream baseline reference inventory complete")
     print(f"inventory_ready={str(report['inventory_ready']).lower()}")
     print(f"fail_count={fail_count}")
     print(f"report={args.json_out}")

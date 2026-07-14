@@ -9,8 +9,8 @@ collection stratum.
 
 ## Why This Matters
 
-FARO studies target-preserving source removal. A medical dataset without an
-explicit source label does not test FARO's core question. It would create a
+VERA studies target-preserving source removal. A medical dataset without an
+explicit source label does not test VERA's core question. It would create a
 weak medical story and a reviewer could correctly call it opportunistic.
 
 ## Current Medical Row

@@ -1,4 +1,4 @@
-"""Run a vectorized Waterbirds frozen-embedding FARO receipt.
+"""Run a vectorized Waterbirds frozen-embedding VERA receipt.
 
 The generic official runner is intentionally simple and pure Python. This script
 keeps the same audit artifacts for Waterbirds but uses NumPy for the heavy probe
@@ -326,7 +326,7 @@ def latex_metric(row: dict[str, object], metric: str) -> str:
 
 def latex_method_label(row: dict[str, object]) -> str:
     labels = {
-        "FARO_selected": "FARO abstain",
+        "VERA_selected": "VERA abstain",
         "baseline_no_edit": "ERM",
         "group_reweighted_erm": "Group-reweighted ERM",
         "random_erasure_k8": "Random erase",
@@ -343,7 +343,7 @@ def write_latex_table(path: Path, summary_rows: list[dict[str, object]]) -> None
         "\\centering",
         "\\small",
         "\\setlength{\\tabcolsep}{4pt}",
-        "\\caption{Waterbirds frozen-embedding abstention stress test. Values are means with approximate 95\\% confidence intervals over five seeds. FARO abstains under the locked frontier rule, matching no-edit ERM, while group-reweighted ERM is the stronger predictor on this benchmark.}",
+        "\\caption{Waterbirds frozen-embedding abstention stress test. Values are means with approximate 95\\% confidence intervals over five seeds. VERA abstains under the locked frontier rule, matching no-edit ERM, while group-reweighted ERM is the stronger predictor on this benchmark.}",
         "\\label{tab:waterbirds-official-receipt}",
         "\\begin{tabular}{@{}lccc@{}}",
         "\\toprule",
@@ -463,7 +463,7 @@ def main() -> int:
     for k in range(1, args.frontier_rank + 1):
         candidate = MethodSpec(
             f"faro_frontier_k{k}",
-            f"FARO frontier k={k}",
+            f"VERA frontier k={k}",
             tuple(int(idx) for idx in target_preserving_rank[:k]),
         )
         row = evaluate_method(
@@ -488,8 +488,8 @@ def main() -> int:
             break
 
     selected_method = MethodSpec(
-        "FARO_selected",
-        "FARO selected edit" if not abstained else "FARO abstain/no edit",
+        "VERA_selected",
+        "VERA selected edit" if not abstained else "VERA abstain/no edit",
         selected_dims,
         abstained=abstained,
     )
@@ -588,7 +588,7 @@ def main() -> int:
     claim_gate_passed = not missing_claim_gates
 
     baseline_candidates = [
-        row for row in summary_rows if row["method"] not in {"FARO_selected"}
+        row for row in summary_rows if row["method"] not in {"VERA_selected"}
     ]
     strongest = max(
         baseline_candidates,
@@ -598,19 +598,19 @@ def main() -> int:
         paired_statistics(
             all_rows,
             metric="external_worst_target_source_accuracy",
-            trace_method="FARO_selected",
+            trace_method="VERA_selected",
             baseline_method=str(strongest),
         ),
         paired_statistics(
             all_rows,
             metric="external_target_balanced_accuracy",
-            trace_method="FARO_selected",
+            trace_method="VERA_selected",
             baseline_method=str(strongest),
         ),
         paired_statistics(
             all_rows,
             metric="external_source_leakage_balanced_accuracy",
-            trace_method="FARO_selected",
+            trace_method="VERA_selected",
             baseline_method=str(strongest),
         ),
     ]
@@ -632,7 +632,7 @@ def main() -> int:
     write_latex_table(stats_table_path, summary_rows)
 
     diagnostics = {
-        "name": "Waterbirds vectorized FARO diagnostics",
+        "name": "Waterbirds vectorized VERA diagnostics",
         "feature_count": len(feature_names),
         "n_examples": int(x.shape[0]),
         "n_train": int(masks["train"].sum()),
@@ -705,10 +705,10 @@ def main() -> int:
         "validation_report": validation_report,
         "selected_trace_rows": {
             "coordinate_TRACE": next(
-                row for row in summary_rows if row["method"] == "FARO_selected"
+                row for row in summary_rows if row["method"] == "VERA_selected"
             ),
             "subspace_TRACE": next(
-                row for row in summary_rows if row["method"] == "FARO_selected"
+                row for row in summary_rows if row["method"] == "VERA_selected"
             ),
         },
         "artifacts": {
@@ -732,7 +732,7 @@ def main() -> int:
     }
     receipt_path.write_text(json.dumps(receipt, indent=2), encoding="utf-8")
 
-    print("Waterbirds vectorized FARO receipt complete")
+    print("Waterbirds vectorized VERA receipt complete")
     print(f"per_seed={per_seed_path}")
     print(f"summary={summary_path}")
     print(f"receipt={receipt_path}")

@@ -1,6 +1,6 @@
-# FARO Main-Track Readiness Audit
+# VERA Main-Track Readiness Audit
 
-Generated at UTC: `2026-07-14T00:55:12.636790+00:00`
+Generated at UTC: `2026-07-14T01:06:25.526375+00:00`
 Main-track ready: `True`
 
 | Status | Check | Evidence |

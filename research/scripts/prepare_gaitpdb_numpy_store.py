@@ -1,4 +1,4 @@
-"""Build a FARO NumPy store from PhysioNet Gait in Parkinson's Disease files."""
+"""Build a VERA NumPy store from PhysioNet Gait in Parkinson's Disease files."""
 
 from __future__ import annotations
 
@@ -148,7 +148,7 @@ def main() -> int:
     manifest = {
         "format": "trace_embedding_store_v1",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "name": "FARO PhysioNet gaitpdb NumPy feature store",
+        "name": "VERA PhysioNet gaitpdb NumPy feature store",
         "source_dataset": "PhysioNet Gait in Parkinson's Disease v1.0.0",
         "source_url": "https://physionet.org/content/gaitpdb/1.0.0/",
         "n_examples": int(z.shape[0]),
@@ -165,7 +165,7 @@ def main() -> int:
     }
     (args.out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     report = {
-        "name": "FARO gaitpdb NumPy store report",
+        "name": "VERA gaitpdb NumPy store report",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "store_dir": str(args.out_dir),
         "n_examples": int(z.shape[0]),

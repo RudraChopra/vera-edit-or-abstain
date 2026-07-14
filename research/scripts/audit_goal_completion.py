@@ -1,4 +1,4 @@
-"""Audit FARO against the full user goal, not just local readiness gates."""
+"""Audit VERA against the full user goal, not just local readiness gates."""
 
 from __future__ import annotations
 
@@ -274,7 +274,7 @@ def collect_requirements() -> list[Requirement]:
 
 def write_markdown(path: Path, report: dict[str, object]) -> None:
     lines = [
-        "# FARO Full Goal Completion Audit",
+        "# VERA Full Goal Completion Audit",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         f"Goal complete: `{report['goal_complete']}`",
@@ -300,7 +300,7 @@ def main() -> None:
         for status in ("pass", "partial", "fail")
     }
     report = {
-        "name": "FARO full user-goal completion audit",
+        "name": "VERA full user-goal completion audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "goal_complete": counts.get("partial", 0) == 0 and counts.get("fail", 0) == 0,
         "status_counts": counts,
@@ -309,7 +309,7 @@ def main() -> None:
     DEFAULT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_markdown(DEFAULT_MD, report)
     print(
-        "FARO full-goal completion audit complete\n"
+        "VERA full-goal completion audit complete\n"
         f"goal_complete={str(report['goal_complete']).lower()}\n"
         f"pass={counts.get('pass', 0)} partial={counts.get('partial', 0)} fail={counts.get('fail', 0)}\n"
         f"report={DEFAULT_JSON}"

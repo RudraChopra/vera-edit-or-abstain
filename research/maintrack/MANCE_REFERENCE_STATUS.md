@@ -5,7 +5,7 @@ Date: July 13, 2026
 ## What Is Done
 
 - Official upstream repository cloned at `/Volumes/Backups/FARO/external/mance`.
-- FARO adapter added at `research/scripts/run_mance_reference_numpy_store.py`.
+- VERA adapter added at `research/scripts/run_mance_reference_numpy_store.py`.
 - Full Waterbirds official-code MANCE++ reference run completed on all official
   train/validation/external embeddings for seeds 0-4.
 - Waterbirds statistical report written to
@@ -63,7 +63,7 @@ has a single source class in the external split.
 
 MANCE++ is now claim-grade for Waterbirds and Camelyon17. Manuscript claims
 must still state the method boundary: this is official-code MANCE++ evidence
-under FARO's frozen-representation protocol, not proof that FARO is a universal
+under VERA's frozen-representation protocol, not proof that VERA is a universal
 state-of-the-art erasure method. Exact upstream R-LACE, TaCo, LEACE, and
 SPLINCE/SPLICE receipts remain optional strengthening beyond the scoped
 protocol claim.

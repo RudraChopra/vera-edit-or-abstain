@@ -1,4 +1,4 @@
-"""Audit which FARO benchmark artifacts can support paper claims.
+"""Audit which VERA benchmark artifacts can support paper claims.
 
 This script is intentionally conservative. A row is claim-ready only when the
 receipt and statistics are materialized local files, the receipt explicitly
@@ -260,7 +260,7 @@ def static_development_rows() -> list[ClaimRow]:
     specs = [
         (
             "synthetic_abstention",
-            "Synthetic FARO abstention certificate",
+            "Synthetic VERA abstention certificate",
             "controlled latent",
             ARTIFACT_DIR / "faro_synthetic_abstention_report.json",
             "mechanism and abstention certificate",
@@ -315,7 +315,7 @@ def build_rows() -> list[ClaimRow]:
             family="spurious correlation / background shift",
             receipt_path=ARTIFACT_DIR / "waterbirds_official_result_receipt.json",
             statistics_path=ARTIFACT_DIR / "waterbirds_official_statistical_report.json",
-            allowed_ready_claim="official frozen-embedding benchmark row; FARO abstains and is not a win",
+            allowed_ready_claim="official frozen-embedding benchmark row; VERA abstains and is not a win",
             next_gate="keep as failure-analysis/abstention evidence, not as a positive result",
         )
     )
@@ -340,7 +340,7 @@ def build_rows() -> list[ClaimRow]:
             receipt_path=ARTIFACT_DIR / "camelyon17_wilds_official_result_receipt.json",
             statistics_path=ARTIFACT_DIR / "camelyon17_wilds_official_statistical_report.json",
             allowed_ready_claim=(
-                "official frozen-embedding high-stakes benchmark row with FARO "
+                "official frozen-embedding high-stakes benchmark row with VERA "
                 "abstention boundary; not clinical deployment evidence"
             ),
             next_gate="maintain claim boundary and replicate in another high-stakes family",
@@ -379,7 +379,7 @@ def write_table(path: Path, rows: list[ClaimRow]) -> None:
         r"\begin{table*}[t]",
         r"\centering",
         (
-            r"\caption{FARO benchmark claim audit. Claim-ready requires materialized "
+            r"\caption{VERA benchmark claim audit. Claim-ready requires materialized "
             r"official receipts, paired statistics, and explicit claim gates.}"
         ),
         r"\label{tab:benchmark-claim-audit}",
@@ -408,7 +408,7 @@ def main() -> int:
         if row.official_dataset == "yes" and row.official_splits == "yes"
     ]
     report = {
-        "name": "FARO benchmark claim audit",
+        "name": "VERA benchmark claim audit",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "claim_ready_count": len(claim_ready_rows),
         "official_claim_ready_count": len(official_claim_ready_rows),
@@ -423,7 +423,7 @@ def main() -> int:
     JSON_OUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     write_csv(CSV_OUT, rows)
     write_table(TABLE_OUT, rows)
-    print("FARO benchmark claim audit complete")
+    print("VERA benchmark claim audit complete")
     print(f"submission_ready={str(report['submission_ready']).lower()}")
     print(f"official_claim_ready_count={report['official_claim_ready_count']}")
     print(f"report={JSON_OUT}")

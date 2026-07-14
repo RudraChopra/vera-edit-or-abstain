@@ -1,4 +1,4 @@
-# FARO Claim Ledger Audit
+# VERA Claim Ledger Audit
 
 Generated at UTC: `2026-07-14T00:52:48.802612+00:00`
 

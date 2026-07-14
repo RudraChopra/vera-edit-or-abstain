@@ -1,4 +1,4 @@
-# FARO Main-Track Readiness Gates
+# VERA Main-Track Readiness Gates
 
 ## Decision
 
@@ -8,7 +8,7 @@ Current decision: **not ready for ICLR 2027 main-track submission**.
 
 - Waterbirds now has a full 11,788-example frozen ResNet-18 TRACE table, a
   five-seed official-style vectorized receipt, paired statistics, and passing
-  claim gates. It is an abstention/failure-analysis row: FARO abstains under
+  claim gates. It is an abstention/failure-analysis row: VERA abstains under
   the locked rule, while group-reweighted ERM is stronger on worst-group
   accuracy.
 - CivilComments-WILDS has prior full-store stress artifacts, but it is not
@@ -29,10 +29,10 @@ Current decision: **not ready for ICLR 2027 main-track submission**.
 - A source-aware Camelyon17 store smoke has been converted to
   `trace_embedding_store_v1` and consumed by a multi-seed benchmark runner with
   source-leakage metrics and an explicit non-claim-ready receipt.
-- The FARO-labeled CivilComments baseline fairness audit now passes with
+- The VERA-labeled CivilComments baseline fairness audit now passes with
   matched SPLINCE/SPLICE-style, R-LACE-style, TaCo-style, and MANCE-style proxy
   rows. These are comparison stress tests, not reference parity claims.
-- A deterministic FARO synthetic abstention certificate now passes: the overlap
+- A deterministic VERA synthetic abstention certificate now passes: the overlap
   case returns `ABSTAIN` with zero safe candidates, while the non-overlap case
   returns `EDIT`. This is development evidence for abstention geometry, not an
   official benchmark result.
@@ -61,7 +61,7 @@ Attempt ICLR 2027 only if all of these are true before submission:
 - the second official benchmark receipt passes,
 - the Waterbirds abstention result is framed honestly rather than as a win,
 - a medical or equivalent high-stakes official receipt passes,
-- the manuscript is rewritten around FARO,
+- the manuscript is rewritten around VERA,
 - the novelty lock is explicitly defended against INLP, R-LACE, LEACE, TaCo,
   and domain generalization,
 - the theory section proves the target-preservation interval, abstention

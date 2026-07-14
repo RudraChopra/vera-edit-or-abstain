@@ -86,7 +86,7 @@ def main() -> int:
     manifest = {
         "format": "trace_embedding_store_v1",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "name": "FARO Camelyon17 ResNet18 NumPy embedding store",
+        "name": "VERA Camelyon17 ResNet18 NumPy embedding store",
         "source_report": str(args.source_report),
         "source_manifest_csv": str(manifest_csv),
         "source_embeddings_f32": str(embeddings_path),
@@ -110,7 +110,7 @@ def main() -> int:
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     report = {
-        "name": "FARO Camelyon17 NumPy store conversion report",
+        "name": "VERA Camelyon17 NumPy store conversion report",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "source_report": str(args.source_report),
         "out_dir": str(args.out_dir),

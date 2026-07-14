@@ -4,7 +4,7 @@ Date: July 13, 2026
 
 ## Purpose
 
-This matrix prevents FARO from overstating baseline coverage. A baseline can be
+This matrix prevents VERA from overstating baseline coverage. A baseline can be
 used in one of three ways: as a local reference implementation, as an official
 upstream reference implementation, or as a scoped proxy stress test. Only the
 second category supports reference-parity claims.
@@ -28,7 +28,7 @@ second category supports reference-parity claims.
 
 ## Reviewer-Facing Boundary
 
-The paper may claim that FARO is compared against matched robust probes, scoped
+The paper may claim that VERA is compared against matched robust probes, scoped
 erasure stress tests, and a full official-code MANCE++ Waterbirds baseline. It
 may also say that official upstream repositories for MANCE++, R-LACE, TaCo, and
 LEACE are pinned locally. It must not claim universal erasure state of the art
@@ -39,6 +39,6 @@ reference implementations are run under the same splits and audited.
 
 The highest-value next reference implementations are exact matched receipts for
 R-LACE, TaCo, and LEACE using the pinned upstream repositories, or an
-identified official SPLINCE/SPLICE implementation. FARO's main claim should
+identified official SPLINCE/SPLICE implementation. VERA's main claim should
 remain the certified edit-or-abstain protocol rather than state-of-the-art
 erasure.

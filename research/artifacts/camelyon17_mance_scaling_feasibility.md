@@ -20,4 +20,4 @@ Recommendation: `use the full no-cap Camelyon17 MANCE++ receipt as the current r
 
 ## Boundary
 
-The full no-cap MANCE++ Camelyon17 receipt is materialized and claim-grade under FARO's frozen-representation protocol.
+The full no-cap MANCE++ Camelyon17 receipt is materialized and claim-grade under VERA's frozen-representation protocol.

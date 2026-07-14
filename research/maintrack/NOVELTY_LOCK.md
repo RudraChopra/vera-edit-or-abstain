@@ -1,8 +1,8 @@
-# FARO Novelty Lock
+# VERA Novelty Lock
 
 ## Defensible Claim
 
-FARO is not another unconditional erasure method. Its novelty is the
+VERA is not another unconditional erasure method. Its novelty is the
 frontier-aware edit-or-abstain contract: estimate a source-leakage versus
 target-utility frontier, certify a safe set under simultaneous intervals, pick
 the smallest source-reducing edit that preserves target risk, or return an
@@ -11,15 +11,15 @@ auditable abstention certificate.
 ## Not Just Prior Erasure
 
 INLP, LEACE, R-LACE/RLACE, TaCo, SPLINCE, and MANCE motivate the baseline space, but
-the FARO claim is different. Those methods define erasure or task-preserving
-projection procedures. FARO defines a decision layer over candidate erasers: it
+the VERA claim is different. Those methods define erasure or task-preserving
+projection procedures. VERA defines a decision layer over candidate erasers: it
 can accept, reject, or abstain based on target-preservation and source-leakage
 certificates.
 
 ## Not Just Domain Generalization
 
 Domain generalization methods optimize prediction under distribution shift.
-FARO audits whether a representation edit is safe after source or environment
+VERA audits whether a representation edit is safe after source or environment
 information is reduced. The paper may compare against domain generalization
 baselines only with matched representations, splits, metrics, and source labels.
 
@@ -33,9 +33,9 @@ deployment readiness.
 
 ## Locked Boundary
 
-Allowed: FARO introduces a certified frontier and abstention protocol for
+Allowed: VERA introduces a certified frontier and abstention protocol for
 target-preserving source removal.
 
-Forbidden: FARO is universally state of the art, clinically safe, independent
+Forbidden: VERA is universally state of the art, clinically safe, independent
 of source labels, or a reference implementation of every concept-erasure
 baseline.

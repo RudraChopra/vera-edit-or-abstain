@@ -1,4 +1,4 @@
-"""Build deterministic FARO main-track figures from checked artifacts.
+"""Build deterministic VERA main-track figures from checked artifacts.
 
 The figures intentionally avoid generated or hand-entered numbers. Each plotted
 metric comes from a receipt, summary CSV, or abstention certificate already
@@ -76,7 +76,7 @@ def savefig(fig: plt.Figure, path: Path) -> None:
             output_path,
             bbox_inches="tight",
             dpi=300,
-            metadata={"Creator": "FARO artifact figure builder"},
+            metadata={"Creator": "VERA artifact figure builder"},
         )
     plt.close(fig)
 
@@ -139,13 +139,13 @@ def build_method_overview() -> FigureRecord:
     draw_arrow(ax, (0.75, 0.70), (0.82, 0.72), GREEN)
 
     ax.text(0.66, 0.50, "target budget +\nsource reduction", ha="center", va="center", fontsize=8, color=GREY)
-    ax.text(0.03, 0.08, "FARO is a certification layer over candidate erasers, not another unconditional eraser.", fontsize=9)
+    ax.text(0.03, 0.08, "VERA is a certification layer over candidate erasers, not another unconditional eraser.", fontsize=9)
     savefig(fig, path)
     return FigureRecord(
         key="method_overview",
         path=path,
         inputs=[],
-        caption_intent="Schematic of FARO as a frontier-estimation and edit-or-abstain certification layer.",
+        caption_intent="Schematic of VERA as a frontier-estimation and edit-or-abstain certification layer.",
     )
 
 
@@ -330,7 +330,7 @@ def build_camelyon_projection_frontier() -> FigureRecord:
         key="camelyon_projection_frontier",
         path=path,
         inputs=[str(frontier_path), str(certificate_path)],
-        caption_intent="Full Camelyon17 validation-only projection frontier: candidates preserve target utility but do not certify source-leakage reduction, so FARO abstains.",
+        caption_intent="Full Camelyon17 validation-only projection frontier: candidates preserve target utility but do not certify source-leakage reduction, so VERA abstains.",
     )
 
 
@@ -351,9 +351,9 @@ def build_official_summary() -> FigureRecord:
     path = FIGURES / "faro_official_benchmark_summary.png"
 
     entries = [
-        ("Waterbirds\nFARO\nABSTAIN", choose_row(water, "FARO_selected")),
+        ("Waterbirds\nVERA\nABSTAIN", choose_row(water, "VERA_selected")),
         ("Waterbirds\nGroup rw.\nbaseline", choose_row(water, "group_reweighted_erm")),
-        ("Camelyon17\nFARO\nABSTAIN", choose_row(camelyon, "FARO_selected")),
+        ("Camelyon17\nVERA\nABSTAIN", choose_row(camelyon, "VERA_selected")),
         ("Camelyon17\nGroupDRO-style", choose_row(camelyon, "group_dro_probe")),
     ]
     metrics = [
@@ -406,7 +406,7 @@ def main() -> None:
         build_official_summary(),
     ]
     payload = {
-        "name": "FARO main-track figure report",
+        "name": "VERA main-track figure report",
         "figure_count": len(records),
         "figures": [
             {
@@ -421,7 +421,7 @@ def main() -> None:
         ],
     }
     REPORT.write_text(json.dumps(payload, indent=2) + "\n")
-    print("FARO main-track figures built")
+    print("VERA main-track figures built")
     print(f"figure_count={len(records)}")
     print(f"report={REPORT}")
     for record in records:

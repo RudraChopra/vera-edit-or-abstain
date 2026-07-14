@@ -6,4 +6,4 @@ small claim receipts will be supplied as anonymized supplementary material.
 
 The named version may cite:
 
-`https://github.com/RudraChopra/faro-edit-or-abstain`
+`https://github.com/RudraChopra/vera-edit-or-abstain`

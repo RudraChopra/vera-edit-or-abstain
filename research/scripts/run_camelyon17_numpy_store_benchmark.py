@@ -1,4 +1,4 @@
-"""Run a FARO Camelyon17 benchmark from a NumPy embedding store.
+"""Run a VERA Camelyon17 benchmark from a NumPy embedding store.
 
 The image encoder/export step writes a runner-compatible store with
 ``manifest.json``, ``z.npy``, ``y.npy``, ``s.npy``, and ``split.npy``. This
@@ -34,7 +34,7 @@ METHODS = [
     ("source_balanced_erm", "source-balanced ERM"),
     ("group_reweighted_erm", "group-reweighted ERM"),
     ("group_dro_probe", "GroupDRO-style probe"),
-    ("FARO_selected", "FARO selected frontier point"),
+    ("VERA_selected", "VERA selected frontier point"),
 ]
 METRICS = [
     "validation_target_balanced_accuracy",
@@ -320,7 +320,7 @@ def build_statistics(rows: list[dict[str, object]], seeds: list[int]) -> dict[st
             }
         summaries[method_key] = metric_summary
     return {
-        "name": "FARO Camelyon17 benchmark paired statistics",
+        "name": "VERA Camelyon17 benchmark paired statistics",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "n_seeds": len(seeds),
         "seeds": seeds,
@@ -375,7 +375,7 @@ def run(store: Store, seeds: list[int]) -> list[dict[str, object]]:
         "group_reweighted_erm": group_probe,
         "group_dro_probe": group_probe,
     }
-    target_models["FARO_selected"] = target_models["erm_probe"]
+    target_models["VERA_selected"] = target_models["erm_probe"]
 
     predictions: dict[str, tuple[np.ndarray, np.ndarray]] = {}
     for method_key, _ in METHODS:
@@ -394,7 +394,7 @@ def run(store: Store, seeds: list[int]) -> list[dict[str, object]]:
                     "method_key": method_key,
                     "method": method,
                     "seed": seed,
-                    "decision": "ABSTAIN" if method_key == "FARO_selected" else "FIT",
+                    "decision": "ABSTAIN" if method_key == "VERA_selected" else "FIT",
                     "store_format": str(store.manifest.get("format", "")),
                     "n_examples": int(store.manifest.get("n_examples", len(store.y))),
                     "train_examples": len(train_idx),
@@ -431,7 +431,7 @@ def receipt_payload(
         and set(method_keys) >= {key for key, _ in METHODS}
     )
     return {
-        "name": "FARO Camelyon17-WILDS official frozen-embedding benchmark receipt",
+        "name": "VERA Camelyon17-WILDS official frozen-embedding benchmark receipt",
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "store_dir": str(store.store_dir),
         "store_format": store.manifest.get("format"),
@@ -498,7 +498,7 @@ def main() -> int:
     args.receipt.parent.mkdir(parents=True, exist_ok=True)
     args.receipt.write_text(json.dumps(receipt, indent=2), encoding="utf-8")
 
-    print("FARO Camelyon17 NumPy-store benchmark complete")
+    print("VERA Camelyon17 NumPy-store benchmark complete")
     print(f"results={args.results}")
     print(f"receipt={args.receipt}")
     print(f"statistics={args.statistics}")

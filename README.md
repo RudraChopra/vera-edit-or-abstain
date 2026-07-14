@@ -1,6 +1,6 @@
-# FARO: Certified Edit-or-Abstain Selection
+# VERA: Validation-Gated Edit-or-Abstain for Reliable Representation Interventions
 
-This repository contains the reproducibility-safe public release for FARO,
+This repository contains the reproducibility-safe public release for VERA,
 a representation-editing protocol that selects a certified source-removing edit
 or returns an abstention certificate when no safe edit is validated.
 

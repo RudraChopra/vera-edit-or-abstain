@@ -1,4 +1,4 @@
-"""Convert a FARO embedding CSV table into the NumPy store format."""
+"""Convert a VERA embedding CSV table into the NumPy store format."""
 
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ def main() -> None:
         },
         "ids": "ids.csv",
         "claim_grade_embedding_store": True,
-        "claim_boundary": "Converted from an existing claim-grade FARO embedding CSV table.",
+        "claim_boundary": "Converted from an existing claim-grade VERA embedding CSV table.",
     }
     (args.output_dir / "manifest.json").write_text(
         json.dumps(manifest, indent=2, sort_keys=True) + "\n",

@@ -1,4 +1,4 @@
-"""Convert a TRACE/FARO embedding CSV into the NumPy store format."""
+"""Convert a TRACE/VERA embedding CSV into the NumPy store format."""
 
 from __future__ import annotations
 
