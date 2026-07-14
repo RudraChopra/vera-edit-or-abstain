@@ -257,7 +257,7 @@ def main() -> None:
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", newline="", encoding="utf-8") as handle:
         fieldnames = list(asdict(cells[0]))
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(asdict(cell) for cell in cells)
 
