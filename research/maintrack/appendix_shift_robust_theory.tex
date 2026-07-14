@@ -81,6 +81,42 @@ simultaneous validity.  On this event, every accepted edit obeys each contract;
 selection among accepted edits does not change the event.
 \end{proof}
 
+\begin{corollary}[Exact discrete paired certificate]
+\label{cor:exact-discrete}
+Let $L\in\{0,1\}$ have success probability $p$, and let
+$H\in\{-1,0,1\}$ have probabilities $(p_-,p_0,p_+)$. Then
+\begin{equation}
+ \rho_{\Gamma,P}(L)=\min\{1,\Gamma p\},
+\end{equation}
+and
+\begin{equation}
+ \rho_{\Gamma,P}(H)=
+ \begin{cases}
+  1, & \Gamma p_+\geq1,\\
+  \Gamma p_+, & \Gamma p_+<1\leq\Gamma(1-p_-),\\
+  \Gamma p_+-\{1-\Gamma(1-p_-)\}, & \Gamma(1-p_-)<1.
+ \end{cases}
+\end{equation}
+For a registered family of $K$ contracts, replace $p$ by a one-sided
+Clopper--Pearson upper bound at error $\delta/K$. For paired harm, replace
+$p_+$ by its one-sided upper bound and $p_-$ by its one-sided lower bound,
+each at error $\delta/(2K)$. Substitution in the formulas above gives
+simultaneous upper confidence curves for every $\Gamma\geq1$. Inverting these
+curves therefore gives the same shift-radius and false-acceptance guarantees
+as Theorem~\ref{thm:shift-radius}.
+\end{corollary}
+
+\begin{proof}
+The worst density ratio assigns weight $\Gamma$ first to value one, then to
+value zero, and finally assigns the residual unit mass to value minus one.
+This greedy allocation yields the displayed formulas. The Bernoulli expression
+is increasing in $p$. The paired expression is increasing in $p_+$ and
+decreasing in $p_-$ in every branch. The stated exact binomial intervals and a
+union bound therefore dominate every registered robust risk simultaneously.
+Their coverage event is independent of $\Gamma$, so the event holds over the
+entire continuum and remains valid after inversion and edit selection.
+\end{proof}
+
 \begin{corollary}[Worst-group mixture shift]
 \label{cor:mixture}
 Let $P_g$ be validated group-conditional distributions for
@@ -156,8 +192,11 @@ bound therefore holds in the safe world.  This is a two-point indistinguishabili
 argument with total variation zero between the observed experiments.
 \end{proof}
 
-The same construction applies to leakage when a certification split contains
-only one sensitive class: the absent class-conditional representation law can
-be changed arbitrarily without changing any observed sample.  A balanced
-leakage certificate must therefore abstain unless every declared source class
-has validation support or an additional structural assumption is supplied.
+The same construction applies when a declared deployment environment is absent
+from certification: its conditional representation law can be changed
+arbitrarily without changing any observed sample. In the preregistered
+Camelyon17 split, official hospital center 2 occurs only in the external split,
+whereas centers 0, 1, 3, and 4 are observed during certification. A uniform
+certificate over all five centers must therefore abstain unless an additional
+cross-center structural assumption is supplied. This dataset is an instance
+of the support boundary, not evidence for the theorem by itself.

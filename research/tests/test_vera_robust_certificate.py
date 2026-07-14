@@ -11,9 +11,11 @@ SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from vera_robust_certificate import (  # noqa: E402
+    certify_discrete_shift_radius,
     certify_shift_radius,
     certify_edits,
     empirical_reweighting_risk,
+    exact_discrete_risk_certificate,
     robust_risk_certificate,
 )
 
@@ -33,6 +35,44 @@ class EmpiricalReweightingRiskTests(unittest.TestCase):
 
 
 class CertificateTests(unittest.TestCase):
+    def test_exact_bernoulli_certificate_rejects_high_leakage(self) -> None:
+        certificate = exact_discrete_risk_certificate(
+            "leakage",
+            [1] * 80 + [0] * 20,
+            gamma=1.0,
+            failure_probability=0.05,
+            support=(0, 1),
+        )
+        self.assertGreater(certificate.upper_confidence_bound, 0.8)
+
+    def test_exact_paired_certificate_uses_beneficial_negative_harm(self) -> None:
+        certificate = exact_discrete_risk_certificate(
+            "harm",
+            [-1] * 100 + [0] * 900,
+            gamma=1.0,
+            failure_probability=0.05,
+            support=(-1, 0, 1),
+        )
+        self.assertLess(certificate.upper_confidence_bound, 0.0)
+
+    def test_exact_shift_radius_spends_alpha_over_full_family(self) -> None:
+        report = certify_discrete_shift_radius(
+            {"harm": np.zeros(1000), "leakage": np.zeros(1000)},
+            delta=0.05,
+            supports={"harm": (-1, 0, 1), "leakage": (0, 1)},
+            thresholds={"harm": 0.1, "leakage": 0.1},
+            family_size=20,
+            gamma_cap=4.0,
+        )
+        self.assertEqual(report.decision, "EDIT")
+        self.assertGreaterEqual(report.certified_radius, 1.0)
+        self.assertTrue(
+            all(
+                certificate.simultaneous_failure_probability == 0.05 / 20
+                for certificate in report.certificates_at_radius
+            )
+        )
+
     def test_ucb_is_at_least_empirical_robust_risk(self) -> None:
         cert = robust_risk_certificate(
             "risk",

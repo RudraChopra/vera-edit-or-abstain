@@ -1,7 +1,7 @@
 # VERA Main-Track Readiness Audit
 
-Generated at UTC: `2026-07-14T01:06:25.526375+00:00`
-Main-track ready: `True`
+Generated at UTC: `2026-07-14T06:01:31.615260+00:00`
+Main-track ready: `False`
 
 | Status | Check | Evidence |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ Main-track ready: `True`
 | pass | `maintrack_novelty_lock_present` | exists=yes; missing_terms=[] |
 | pass | `maintrack_novelty_sweep_2026_update_present` | exists=yes; missing_terms=[] |
 | pass | `maintrack_algorithm_spec_present` | exists=yes; missing_terms=[] |
-| pass | `maintrack_theory_target_present` | exists=yes; missing_terms=[] |
+| fail | `maintrack_theory_target_present` | exists=yes; missing_terms=['abstention'] |
 | pass | `maintrack_baseline_protocol_present` | exists=yes; missing_terms=[] |
 | pass | `maintrack_abstention_protocol_present` | exists=yes; missing_terms=[] |
 | pass | `maintrack_statistical_integrity_present` | exists=yes; missing_terms=[] |
@@ -34,3 +34,4 @@ Main-track ready: `True`
 | pass | `upstream_baseline_inventory_passed` | inventory_ready=yes; report_exists=yes |
 | pass | `aaai2027_source_readiness_passed` | source_ready=yes; report_exists=yes |
 | pass | `adversarial_internal_review_passed` | submission_ready=yes; report_exists=yes |
+| fail | `exact_seven_gate_goal_and_submission_audit_passed` | schema_version=2; paper_goals_complete=False; goal_complete=False; fail_count=7 |

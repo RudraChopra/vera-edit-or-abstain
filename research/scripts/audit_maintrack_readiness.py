@@ -288,6 +288,20 @@ def collect_checks() -> list[Check]:
             ),
         ]
     )
+    full_goal = load_json(ARTIFACT_DIR / "faro_goal_completion_audit.json")
+    checks.append(
+        passfail(
+            "exact_seven_gate_goal_and_submission_audit_passed",
+            full_goal.get("goal_complete") is True
+            and int(full_goal.get("schema_version", 0)) >= 2,
+            (
+                f"schema_version={full_goal.get('schema_version')}; "
+                f"paper_goals_complete={full_goal.get('paper_goals_complete')}; "
+                f"goal_complete={full_goal.get('goal_complete')}; "
+                f"fail_count={full_goal.get('fail_count')}"
+            ),
+        )
+    )
     return checks
 
 
@@ -309,7 +323,11 @@ def write_markdown(path: Path, report: dict[str, object]) -> None:
 
 def write_csv(path: Path, report: dict[str, object]) -> None:
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["status", "key", "evidence"])
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["status", "key", "evidence"],
+            lineterminator="\n",
+        )
         writer.writeheader()
         for check in report["checks"]:
             writer.writerow(

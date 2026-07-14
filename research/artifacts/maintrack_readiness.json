@@ -1,9 +1,9 @@
 {
   "name": "VERA main-track readiness audit",
-  "created_at_utc": "2026-07-14T01:06:25.526375+00:00",
-  "maintrack_ready": true,
-  "pass_count": 29,
-  "fail_count": 0,
+  "created_at_utc": "2026-07-14T06:01:31.615260+00:00",
+  "maintrack_ready": false,
+  "pass_count": 28,
+  "fail_count": 2,
   "checks": [
     {
       "key": "maintrack_readme_present",
@@ -37,8 +37,8 @@
     },
     {
       "key": "maintrack_theory_target_present",
-      "status": "pass",
-      "evidence": "exists=yes; missing_terms=[]"
+      "status": "fail",
+      "evidence": "exists=yes; missing_terms=['abstention']"
     },
     {
       "key": "maintrack_baseline_protocol_present",
@@ -149,6 +149,11 @@
       "key": "adversarial_internal_review_passed",
       "status": "pass",
       "evidence": "submission_ready=yes; report_exists=yes"
+    },
+    {
+      "key": "exact_seven_gate_goal_and_submission_audit_passed",
+      "status": "fail",
+      "evidence": "schema_version=2; paper_goals_complete=False; goal_complete=False; fail_count=7"
     }
   ]
 }

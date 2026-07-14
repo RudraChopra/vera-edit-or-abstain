@@ -1,0 +1,253 @@
+{
+  "project": "VERA: Verified Erasure under Reweighting Ambiguity",
+  "status": "locked_before_claim_grade_runs",
+  "locked_date": "2026-07-13",
+  "primary_claim": "VERA lower-certifies the maximum common bounded-reweighting shift radius under which one representation edit simultaneously preserves paired target utility and limits every preregistered leakage attacker; it abstains under unsupported deployment environments.",
+  "novelty_boundary": "Finite-family testing and abstention follow Learn Then Test style risk control. DKW, Clopper-Pearson, CVaR, and bounded-density-ratio DRO are standard building blocks. The proposed object is the paired multi-contract erasure shift radius, specialized to representation interventions and paired with a support-mismatch impossibility boundary.",
+  "exact_synthetic_study": {
+    "seed": 20270714,
+    "replicates": 1000,
+    "validation_sizes": [250, 500, 1000, 2000, 5000, 10000],
+    "delta_levels": [0.01, 0.05, 0.1],
+    "candidate_count": 12,
+    "attacker_probability_offsets": [-0.03, 0.0, 0.02, 0.04],
+    "gamma": 1.25,
+    "target_threshold": 0.1,
+    "leakage_threshold": 0.7,
+    "target_positive_probabilities": [0.005, 0.015, 0.025, 0.035, 0.045, 0.055, 0.065, 0.075, 0.085, 0.095, 0.105, 0.115],
+    "target_negative_probabilities": [0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005],
+    "leakage_probabilities": [0.65, 0.61, 0.57, 0.53, 0.49, 0.45, 0.41, 0.37, 0.33, 0.29, 0.25, 0.21],
+    "multiplicity": "Bonferroni over all candidates, target contracts, and attackers; paired-harm positive and negative binomial bounds split each target-contract alpha equally.",
+    "prediction": "Exact multinomial/binomial acceptance probability under the registered synthetic law.",
+    "pass_condition": "The simultaneous 95% Clopper-Pearson upper bound on false acceptance is at most delta in every cell and observed abstention lies in the simultaneous 95% exact binomial prediction band in every cell."
+  },
+  "real_study": {
+    "datasets": {
+      "Waterbirds": {
+        "store_dir": "/Volumes/Backups/FARO/artifacts/waterbirds_official_numpy_store",
+        "manifest_sha256": "fd4c17004512e9b38afc086eab8544dd9a15d187323747f666f3ae38d5d8c41f",
+        "modality": "vision",
+        "target": "bird type",
+        "source_concept": "background/place",
+        "environment": "background/place",
+        "force_abstain_for_unsupported_environment": false
+      },
+      "Camelyon17-WILDS": {
+        "store_dir": "/Volumes/Backups/FARO/artifacts/camelyon17_resnet18_torch_center_numpy_store",
+        "manifest_sha256": "6d18335f5a66a174304bbafbd7ca6efca9250fb4c450d7d35ce9791a27883fb3",
+        "modality": "medical vision",
+        "target": "tumor status",
+        "source_concept": "center 0 versus centers 1-4",
+        "environment": "official hospital center ID",
+        "certification_environment_classes": [0, 1, 3, 4],
+        "unsupported_external_environment_classes": [2],
+        "force_abstain_for_unsupported_environment": true
+      },
+      "CivilComments-WILDS": {
+        "store_dir": "/Volumes/Backups/FARO/artifacts/civilcomments_lexical_numpy_store",
+        "manifest_sha256": "bfe7394a8189cfeaa12efbaf038306b0463c70d9e05508eed6f154823b0e5c10",
+        "modality": "text",
+        "target": "toxicity",
+        "source_concept": "identity mention",
+        "environment": "identity mention",
+        "force_abstain_for_unsupported_environment": false
+      },
+      "Bios": {
+        "store_dir": "/Volumes/Backups/FARO/artifacts/bios_rlace_numpy_store",
+        "manifest_sha256": "a2f0d7cd2d67eb2cb01a05fccbd32c24519cd916ac9ceb508ca680ce1f3aa1e4",
+        "modality": "text",
+        "target": "profession (28-way)",
+        "source_concept": "gender label",
+        "environment": "gender label",
+        "force_abstain_for_unsupported_environment": false
+      },
+      "GaitPDB": {
+        "store_dir": "/Volumes/Backups/FARO/artifacts/gaitpdb_numpy_store",
+        "manifest_sha256": "8ff97ea9c25d32e58dc5551dbadfd63f12e3582b0623808713ad3a3a81c7d8bc",
+        "modality": "time series",
+        "target": "Parkinson patient versus control",
+        "source_concept": "recording site indicator",
+        "environment": "recording site indicator",
+        "force_abstain_for_unsupported_environment": false
+      }
+    },
+    "methods": {
+      "inlp": {
+        "display_name": "INLP",
+        "candidate_count": 4,
+        "upstream_remote": "https://github.com/shauli-ravfogel/nullspace_projection.git",
+        "upstream_commit": "e1edcc19d808108ab71cbb3afb0389db0206a7eb",
+        "candidate_configuration": {
+          "ranks": [1, 2, 4, 8],
+          "classifier": "SGDClassifier",
+          "loss": "log_loss",
+          "fit_intercept": true,
+          "max_iter": 5000,
+          "tol": 0.0001,
+          "n_iter_no_change": 20,
+          "alpha": 0.0001,
+          "by_class": false,
+          "dropout_rate": 0
+        }
+      },
+      "leace": {
+        "display_name": "LEACE",
+        "candidate_count": 1,
+        "upstream_remote": "https://github.com/EleutherAI/concept-erasure",
+        "upstream_commit": "9f51753821316a1edacf78b52b464ab26d40e60a",
+        "candidate_configuration": {
+          "candidate": "closed_form",
+          "method": "leace"
+        }
+      },
+      "rlace": {
+        "display_name": "RLACE",
+        "candidate_count": 2,
+        "upstream_remote": "https://github.com/shauli-ravfogel/rlace-icml",
+        "upstream_commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+        "candidate_configuration": {
+          "ranks": [1, 4],
+          "iterations": 10000,
+          "epsilon": 0.002,
+          "batch_size": 256,
+          "evaluate_every": 1000,
+          "optimizer": "SGD",
+          "projection_optimizer": {"lr": 0.005, "weight_decay": 0.0001, "momentum": 0.0},
+          "predictor_optimizer": {"lr": 0.005, "weight_decay": 0.00001, "momentum": 0.9}
+        }
+      },
+      "taco": {
+        "display_name": "TaCo",
+        "candidate_count": 4,
+        "upstream_remote": "https://github.com/fanny-jourdan/TaCo",
+        "upstream_commit": "35995e44b95dc1722b03d18b9b16c5b9f8322db5",
+        "candidate_configuration": {
+          "removals": [1, 2, 3, 5],
+          "components": 20,
+          "sobol_sampled": 500,
+          "sobol_design": 8,
+          "head_steps": 250,
+          "pca_fit": "eraser_train_only",
+          "head_optimizer": "AdamW",
+          "head_learning_rate": 0.002,
+          "head_weight_decay": 0.0001
+        }
+      },
+      "mance": {
+        "display_name": "MANCE++",
+        "candidate_count": 1,
+        "upstream_remote": "https://github.com/MatanAvitan/mance.git",
+        "upstream_commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+        "candidate_configuration": {
+          "variant": "mance++",
+          "epsilon": 0.05,
+          "steps": 3,
+          "n_neighbors": 8,
+          "scorer_hidden": 128,
+          "scorer_steps": 120,
+          "scorer_refit_every": 3,
+          "eval_hidden": 64,
+          "eval_steps": 80,
+          "stop_at_floor": false
+        }
+      }
+    },
+    "seeds": [0, 1, 2, 3, 4],
+    "max_train": 8000,
+    "max_construction": 2000,
+    "max_certification": 8000,
+    "max_external": 8000,
+    "pca_dimension": 128,
+    "split_policy": "Group-stratify official train into 80% eraser-train and 20% construction before caps; use untouched official validation for certification; lock official external/test until all selections are complete.",
+    "preprocessing": "Standardize from eraser-train only and fit randomized PCA from eraser-train only.",
+    "target_probe": {
+      "class": "sklearn.linear_model.LogisticRegression",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "max_iter": 2000,
+      "solver": "lbfgs",
+      "seed_offset": 101
+    },
+    "leakage_attackers": {
+      "linear": {
+        "class": "sklearn.linear_model.LogisticRegression",
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 2000,
+        "solver": "lbfgs",
+        "seed_offset": 11
+      },
+      "rbf": {
+        "class": "Nystroem-RBF plus LogisticRegression",
+        "gamma": "1 / representation_dimension",
+        "n_components": "min(256, max(32, 2 * representation_dimension))",
+        "standardize_after_features": true,
+        "C": 1.0,
+        "class_weight": "balanced",
+        "max_iter": 1500,
+        "nystroem_seed_offset": 13,
+        "logistic_seed_offset": 17
+      },
+      "forest": {
+        "class": "sklearn.ensemble.RandomForestClassifier",
+        "n_estimators": 200,
+        "min_samples_leaf": 3,
+        "class_weight": "balanced_subsample",
+        "n_jobs": 8,
+        "seed_offset": 19
+      },
+      "mlp": {
+        "class": "sklearn.neural_network.MLPClassifier",
+        "hidden_layer_sizes": [128, 64],
+        "alpha": 0.0001,
+        "batch_size": 256,
+        "learning_rate_init": 0.001,
+        "max_iter": 150,
+        "early_stopping": true,
+        "validation_fraction": 0.15,
+        "n_iter_no_change": 12,
+        "standardize": true,
+        "seed_offset": 23
+      }
+    },
+    "validation_fractions": [0.05, 0.1, 0.25, 0.5, 1.0],
+    "target_harm_thresholds": [0.05, 0.1, 0.2],
+    "leakage_thresholds": [0.6, 0.7, 0.8],
+    "threshold_pair_count": 9,
+    "delta": 0.05,
+    "deployment_gamma": 1.25,
+    "gamma_cap": 8.0,
+    "contracts": {
+      "target": "Maximum environment-conditional mean paired increase in zero-one target loss versus the identity edit.",
+      "leakage": "For every attacker, environment, and represented source class, mean source-prediction correctness is at most lambda.",
+      "multiplicity": "Bonferroni over every candidate and every target/leakage contract before candidate selection.",
+      "confidence": "Exact one-sided Clopper-Pearson for Bernoulli leakage; simultaneous positive-upper and negative-lower Clopper-Pearson bounds for paired {-1,0,1} harm.",
+      "shift_model": "Within each observed environment, deployment density ratio relative to certification is bounded by Gamma; environment mixture weights may change arbitrarily.",
+      "support_rule": "Any declared external environment absent from certification forces VERA and IID certification to abstain."
+    },
+    "deployment_rules": ["always_deploy", "point_selection", "iid_ltt", "vera", "oracle"],
+    "selection_utility": "Among eligible candidates, minimize maximum validation leakage, then maximum paired target harm, then candidate key.",
+    "external_evaluation": "Use the same environment-conditional target and attacker contracts on the locked external split. A support-mismatch deployment is not certifiable and counts as unsafe if a naive rule deploys.",
+    "statistical_tests": {
+      "primary_false_acceptance_unit": "preregistered dataset/seed/threshold/fraction configuration",
+      "mcnemar": "exact two-sided McNemar for point selection versus VERA within each dataset, Holm corrected over five datasets",
+      "dependence_caution": "Threshold and fraction configurations share seeds; seed-blocked sensitivity analysis must accompany configuration-level McNemar values.",
+      "intervals": "95% Clopper-Pearson intervals for false acceptance and certification retention"
+    },
+    "pass_conditions": {
+      "naive_failure": "Point selection false acceptance is at least 20% in at least one registered regime for every dataset.",
+      "vera_control": "Global VERA false-acceptance 95% upper bound is at most delta.",
+      "paired_significance": "Holm-corrected exact McNemar p <= 0.05 on at least four datasets.",
+      "abstract_gap": "Point-selection minus VERA false acceptance is at least 15 percentage points.",
+      "receipt_matrix": "Every one of 5 datasets x 5 methods x 5 seeds has a valid official-code receipt and no proxy row."
+    }
+  },
+  "data_policy": {
+    "external_labels_locked_during_edit_construction": true,
+    "one_receipt_per_dataset_method_seed": true,
+    "per_example_audit_arrays_required": true,
+    "zero_proxy_rows": true,
+    "all_table_numbers_regenerated_from_receipts": true,
+    "thresholds_and_analysis_frozen_before_claim_grade_runs": true
+  }
+}

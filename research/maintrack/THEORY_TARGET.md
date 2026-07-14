@@ -36,6 +36,14 @@ The proof must state all constants, support multiclass balanced leakage through
 class-conditional certification, and keep attacker training independent of the
 certification fold.
 
+For the actual zero-one audits, use the exact discrete specialization rather
+than discarding structure with a range-only bound. Bernoulli attacker
+correctness uses a one-sided Clopper-Pearson upper bound. Paired harm in
+`{-1,0,1}` uses simultaneous upper/lower binomial bounds for its positive and
+negative masses and the closed-form worst reweighting allocation. The shared
+confidence event is independent of `Gamma`, so the exact curves remain uniform
+over the full radius.
+
 ## Theorem B: Certified Erasure Shift Radius
 
 For edit `e`, define its population shift radius as the largest `Gamma >= 1`
@@ -66,8 +74,8 @@ induce exactly the same validation observations but opposite edit outcomes on
 the unsupported region. Therefore no protocol can both accept nontrivially and
 uniformly control false acceptance over that unrestricted shift class. The
 proof must formalize the indistinguishable worlds and connect the result to the
-Camelyon17 single-source-class failure case without claiming that Camelyon17
-alone proves the theorem.
+preregistered Camelyon17 center-2 support mismatch without claiming that the
+benchmark alone proves the theorem.
 
 ## Corollary E: False Acceptance
 

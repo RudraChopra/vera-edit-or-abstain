@@ -1,321 +1,394 @@
-"""Audit VERA against the full user goal, not just local readiness gates."""
+"""Audit the exact seven VERA paper gates and submission machinery.
+
+This is a fail-closed audit.  It never infers scientific readiness from keyword
+presence, old benchmark rows, or an internal review.  Downstream aggregate
+reports must explicitly attest their preregistered pass conditions and expose
+the counts used here.  Human-review and account checks require human evidence.
+"""
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
 MAINTRACK_DIR = ROOT / "maintrack"
 ARTIFACT_DIR = ROOT / "artifacts"
-EXTERNAL_ARTIFACT_DIR = Path("/Volumes/Backups/FARO/artifacts")
 
 DEFAULT_JSON = ARTIFACT_DIR / "faro_goal_completion_audit.json"
 DEFAULT_MD = ARTIFACT_DIR / "faro_goal_completion_audit.md"
 
+EXPECTED_DATASETS = {
+    "Waterbirds",
+    "Camelyon17-WILDS",
+    "CivilComments-WILDS",
+    "Bios",
+    "GaitPDB",
+}
+EXPECTED_ERASERS = {"INLP", "RLACE", "LEACE", "MANCE++", "TaCo"}
+EXPECTED_SEEDS = {0, 1, 2, 3, 4}
+EXPECTED_REAL_FRACTIONS = {0.05, 0.1, 0.25, 0.5, 1.0}
+EXPECTED_SYNTHETIC_SIZES = {250, 500, 1000, 2000, 5000, 10000}
+EXPECTED_DELTAS = {0.01, 0.05, 0.1}
+
 
 @dataclass(frozen=True)
-class Requirement:
+class Gate:
     key: str
+    title: str
     status: str
     evidence: str
-    remaining_work: str
+    required_next: str
 
 
-def load_json(path: Path) -> dict[str, object]:
-    if not path.exists():
-        return {}
-    stat = path.stat()
-    if stat.st_size > 0 and getattr(stat, "st_blocks", 1) == 0:
+def load_json(path: Path) -> dict[str, Any]:
+    if not path.is_file():
         return {}
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
         return {}
-    return data if isinstance(data, dict) else {}
+    return value if isinstance(value, dict) else {}
 
 
-def read_text(path: Path) -> str:
-    if not path.exists():
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def sidecar_hash(path: Path) -> str:
+    if not path.is_file():
         return ""
-    stat = path.stat()
-    if stat.st_size > 0 and getattr(stat, "st_blocks", 1) == 0:
-        return ""
-    return path.read_text(encoding="utf-8")
+    fields = path.read_text(encoding="utf-8").strip().split()
+    return fields[0] if fields else ""
 
 
-def materialized(path: Path) -> bool:
-    if not path.exists() or not path.is_file():
-        return False
-    stat = path.stat()
-    return not (stat.st_size > 0 and getattr(stat, "st_blocks", 1) == 0)
+def set_of(data: dict[str, Any], key: str) -> set[Any]:
+    value = data.get(key, [])
+    return set(value) if isinstance(value, list) else set()
 
 
-def req(key: str, status: str, evidence: str, remaining: str) -> Requirement:
-    return Requirement(key=key, status=status, evidence=evidence, remaining_work=remaining)
-
-
-def collect_requirements() -> list[Requirement]:
-    readiness = load_json(ARTIFACT_DIR / "maintrack_readiness.json")
-    adversarial = load_json(ARTIFACT_DIR / "faro_adversarial_internal_review.json")
-    mance = load_json(ARTIFACT_DIR / "mance_reference_status.json")
-    mance_stats = load_json(ARTIFACT_DIR / "mance_reference_statistical_report.json")
-    baseline = load_json(ARTIFACT_DIR / "faro_baseline_fairness_report.json")
-    abstention = load_json(ARTIFACT_DIR / "faro_synthetic_abstention_report.json")
-    real_abstention = load_json(ARTIFACT_DIR / "faro_real_abstention_stress_report.json")
-    waterbirds = load_json(ARTIFACT_DIR / "waterbirds_official_result_receipt.json")
-    camelyon = load_json(ARTIFACT_DIR / "camelyon17_wilds_official_result_receipt.json")
-    waterbirds_stats = load_json(ARTIFACT_DIR / "waterbirds_official_statistical_report.json")
-    camelyon_stats = load_json(ARTIFACT_DIR / "camelyon17_wilds_official_statistical_report.json")
-    camelyon_frontier = load_json(ARTIFACT_DIR / "camelyon17_faro_projection_certificate.json")
-    claim_ledger = load_json(ARTIFACT_DIR / "claim_ledger_audit.json")
-    repro = load_json(ARTIFACT_DIR / "reproducibility_packet_audit.json")
-    significance = load_json(ARTIFACT_DIR / "faro_statistical_significance_addendum.json")
-    civilcomments = load_json(ARTIFACT_DIR / "civilcomments_current_verification_report.json")
-    gait = load_json(ARTIFACT_DIR / "gaitpdb_public_locked_split_result_receipt.json")
-    gait_stats = load_json(ARTIFACT_DIR / "gaitpdb_public_locked_split_statistical_report.json")
-    reference_scope = load_json(ARTIFACT_DIR / "reference_baseline_scope_audit.json")
-    upstream = load_json(ARTIFACT_DIR / "upstream_baseline_reference_inventory.json")
-    aaai = load_json(ARTIFACT_DIR / "aaai2027_source_readiness.json")
-
-    faro_main = read_text(MAINTRACK_DIR / "faro_main.tex")
-    theory = read_text(MAINTRACK_DIR / "THEORY_TARGET.md")
-    theory_lower = theory.lower()
-    novelty = read_text(MAINTRACK_DIR / "NOVELTY_LOCK.md") + "\n" + read_text(
-        MAINTRACK_DIR / "NOVELTY_SWEEP_2026_UPDATE.md"
+def gate(key: str, title: str, passed: bool, evidence: str, required_next: str) -> Gate:
+    return Gate(
+        key=key,
+        title=title,
+        status="pass" if passed else "fail",
+        evidence=evidence,
+        required_next="None." if passed else required_next,
     )
-    algorithm = read_text(MAINTRACK_DIR / "ALGORITHM_SPEC.md")
-    venue_plan = read_text(MAINTRACK_DIR / "VENUE_FORMAT_PLAN.md")
-    github_release_readme = read_text(ROOT.parent / "GITHUB_EXPORT_README.md")
-    iclr_source = MAINTRACK_DIR / "iclr2026_template" / "iclr2026" / "faro_iclr2026_draft.tex"
-    iclr_pdf = MAINTRACK_DIR / "faro_iclr2026_draft.pdf"
-    aaai_source = MAINTRACK_DIR / "aaai2027_template" / "AuthorKit27" / "faro_aaai2027_draft.tex"
-    aaai_anonymous_source = MAINTRACK_DIR / "aaai2027_template" / "AuthorKit27" / "faro_aaai2027_anonymous.tex"
-    aaai_named_source = MAINTRACK_DIR / "aaai2027_template" / "AuthorKit27" / "faro_aaai2027_named.tex"
 
-    store_manifest = load_json(EXTERNAL_ARTIFACT_DIR / "camelyon17_resnet18_torch_full_numpy_store" / "manifest.json")
 
-    requirements: list[Requirement] = []
-    requirements.append(
-        req(
-            "novelty_locked_against_close_baselines",
-            "pass" if all(term in novelty for term in ("LEACE", "RLACE", "INLP", "TaCo", "MANCE", "SPLINCE")) else "fail",
-            "NOVELTY_LOCK.md plus NOVELTY_SWEEP_2026_UPDATE.md include LEACE/RLACE/INLP/TaCo/MANCE/SPLINCE.",
-            "Keep running recency sweeps before any real submission deadline.",
+def theory_gate() -> Gate:
+    prereg = ROOT / "prereg.json"
+    prereg_hash = ROOT / "prereg.sha256"
+    verification = load_json(ARTIFACT_DIR / "vera_robust_synthetic_verification.json")
+    synthetic = load_json(ARTIFACT_DIR / "vera_robust_synthetic_report.json")
+    proof_path = MAINTRACK_DIR / "appendix_shift_robust_theory.tex"
+    proof = proof_path.read_text(encoding="utf-8") if proof_path.is_file() else ""
+
+    hash_ok = prereg.is_file() and sha256(prereg) == sidecar_hash(prereg_hash)
+    cells = synthetic.get("cells", [])
+    cells = cells if isinstance(cells, list) else []
+    sizes = {int(c["n"]) for c in cells if isinstance(c, dict) and "n" in c}
+    deltas = {float(c["delta"]) for c in cells if isinstance(c, dict) and "delta" in c}
+    cells_ok = (
+        len(cells) == 18
+        and sizes == EXPECTED_SYNTHETIC_SIZES
+        and deltas == EXPECTED_DELTAS
+        and all(
+            isinstance(c, dict)
+            and int(c.get("replicates", 0)) == 1000
+            and c.get("coverage_pass") is True
+            for c in cells
         )
     )
-    requirements.append(
-        req(
-            "method_fully_specified",
-            "pass" if all(term.lower() in algorithm.lower() for term in ("frontier", "selection", "abstention", "output")) else "fail",
-            "ALGORITHM_SPEC.md defines inputs, frontier, selection, abstention, and output.",
-            "Convert the spec into pseudocode in the final conference template.",
-        )
+    labels = {
+        "robust_pair": "\\label{thm:robust-paired}",
+        "shift_radius": "\\label{thm:shift-radius}",
+        "worst_group": "\\label{cor:mixture}",
+        "impossibility": "\\label{thm:unsupported}",
+    }
+    proof_blocks = proof.count("\\begin{proof}")
+    proof_ok = all(label in proof for label in labels.values()) and proof_blocks >= 4
+    verification_ok = (
+        verification.get("verified") is True
+        and int(verification.get("cell_count", 0)) == 18
+        and verification.get("failures") == []
+        and verification.get("prereg_sha256") == sidecar_hash(prereg_hash)
     )
-    requirements.append(
-        req(
-            "real_theory_present",
-            "pass"
-            if "simultaneous frontier theorem" in theory_lower
-            and "finite-sample validation certificate" in theory_lower
-            and "false-acceptance control" in faro_main.lower()
-            and "proof" in faro_main.lower()
-            else "partial",
-            "Manuscript contains safe-acceptance, simultaneous frontier, finite-sample validation, and false-acceptance statements with proofs.",
-            "Tighten conservative bounds with empirical Bernstein, bootstrap simultaneous intervals, or probe-stability analysis.",
-        )
+    passed = hash_ok and proof_ok and cells_ok and verification_ok
+    return gate(
+        "goal_1_shift_aware_theory",
+        "Shift-aware certification and impossibility",
+        passed,
+        (
+            f"prereg_hash_valid={hash_ok}; proof_blocks={proof_blocks}; "
+            f"required_labels_present={proof_ok}; synthetic_cells={len(cells)}; "
+            f"synthetic_grid_valid={cells_ok}; independent_verification={verification_ok}"
+        ),
+        "Complete both proofs, valid preregistration, and independently verified 18-cell coverage simulation.",
     )
-    reference_scope_ready = (
-        baseline.get("baseline_ready") is True
-        and mance.get("waterbirds", {}).get("claim_grade_statistics") is True
-        and mance_stats.get("claim_grade_statistics") is True
-        and reference_scope.get("reference_scope_ready") is True
-        and reference_scope.get("universal_erasure_sota_claim_allowed") is False
-        and upstream.get("inventory_ready") is True
+
+
+def theory_data_gate() -> Gate:
+    report = load_json(ARTIFACT_DIR / "vera_real_theory_match_report.json")
+    passed = (
+        report.get("passed") is True
+        and int(report.get("dataset_count", 0)) == 5
+        and set_of(report, "datasets") == EXPECTED_DATASETS
+        and set_of(report, "validation_fractions") == EXPECTED_REAL_FRACTIONS
+        and int(report.get("datasets_tracking_predicted_band", 0)) >= 4
+        and report.get("false_acceptance_below_delta_every_dataset_seed") is True
+        and report.get("synthetic_overlay_verified") is True
+        and report.get("real_overlay_figure_verified") is True
     )
-    requirements.append(
-        req(
-            "strong_reference_baselines",
-            "pass" if reference_scope_ready else "partial",
-            (
-                f"baseline_ready={baseline.get('baseline_ready')}; "
-                f"mance_waterbirds_claim_grade={mance.get('waterbirds', {}).get('claim_grade_statistics')}; "
-                f"mance_camelyon_claim_grade={mance.get('camelyon17', {}).get('claim_grade_reference_row')}; "
-                f"mance_receipts={mance_stats.get('receipt_count')}; "
-                f"reference_scope_ready={reference_scope.get('reference_scope_ready')}; "
-                f"upstream_inventory_ready={upstream.get('inventory_ready')}; "
-                f"universal_erasure_sota_claim_allowed={reference_scope.get('universal_erasure_sota_claim_allowed')}"
-            ),
-            (
-                "Optional strengthening remains: add exact upstream SPLINCE/RLACE/TaCo receipts "
-                "and exact upstream LEACE receipts. Current paper claims are scoped as a "
-                "protocol contribution, not universal erasure SOTA."
-            ),
-        )
+    return gate(
+        "goal_2_theory_matched_by_data",
+        "Theory matched by synthetic and real data",
+        passed,
+        (
+            f"report_present={bool(report)}; passed={report.get('passed')}; "
+            f"dataset_count={report.get('dataset_count')}; "
+            f"tracking={report.get('datasets_tracking_predicted_band')}; "
+            f"all_false_acceptance_controlled={report.get('false_acceptance_below_delta_every_dataset_seed')}"
+        ),
+        "Run the locked real-data subsampling study and verify predicted/observed overlays on at least four datasets.",
     )
-    official_rows = [
-        name
-        for name, data in (("Waterbirds", waterbirds), ("Camelyon17", camelyon))
-        if data.get("claim_gate_passed") is True
+
+
+def killer_experiment_gate() -> Gate:
+    report = load_json(ARTIFACT_DIR / "vera_deployment_rule_report.json")
+    rules = set_of(report, "deployment_rules")
+    passed = (
+        report.get("passed") is True
+        and set_of(report, "datasets") == EXPECTED_DATASETS
+        and set_of(report, "seeds") == EXPECTED_SEEDS
+        and int(report.get("eraser_count", 0)) >= 4
+        and int(report.get("threshold_pair_count", 0)) >= 9
+        and int(report.get("validation_size_count", 0)) >= 4
+        and {"always_deploy", "point_selection", "vera", "oracle"}.issubset(rules)
+        and int(report.get("datasets_with_naive_violation_at_least_20pct", 0)) == 5
+        and float(report.get("vera_global_false_acceptance_upper", 1.0)) <= float(report.get("delta", 0.0))
+        and int(report.get("holm_mcnemar_significant_dataset_count", 0)) >= 4
+        and report.get("certification_tax_intervals_reported") is True
+    )
+    return gate(
+        "goal_3_killer_experiment",
+        "Deployment rules head to head",
+        passed,
+        (
+            f"report_present={bool(report)}; rules={sorted(map(str, rules))}; "
+            f"naive_failure_datasets={report.get('datasets_with_naive_violation_at_least_20pct')}; "
+            f"vera_upper={report.get('vera_global_false_acceptance_upper')}; delta={report.get('delta')}; "
+            f"significant_datasets={report.get('holm_mcnemar_significant_dataset_count')}"
+        ),
+        "Complete the preregistered four-rule grid, global false-acceptance analysis, McNemar tests, and retention intervals.",
+    )
+
+
+def baselines_gate() -> Gate:
+    report = load_json(ARTIFACT_DIR / "official_eraser_receipt_audit.json")
+    expected_receipts = len(EXPECTED_DATASETS) * len(EXPECTED_ERASERS) * len(EXPECTED_SEEDS)
+    passed = (
+        report.get("passed") is True
+        and set_of(report, "datasets") == EXPECTED_DATASETS
+        and set_of(report, "erasers") == EXPECTED_ERASERS
+        and set_of(report, "seeds") == EXPECTED_SEEDS
+        and int(report.get("official_run_receipt_count", 0)) >= expected_receipts
+        and int(report.get("missing_run_receipt_count", -1)) == 0
+        and int(report.get("proxy_row_count", -1)) == 0
+        and int(report.get("invalid_receipt_count", -1)) == 0
+        and report.get("all_upstream_commits_pinned") is True
+        and report.get("shared_protocol_verified") is True
+    )
+    return gate(
+        "goal_4_zero_proxy_baselines",
+        "Official baselines on five datasets",
+        passed,
+        (
+            f"report_present={bool(report)}; receipts={report.get('official_run_receipt_count')}/{expected_receipts}; "
+            f"missing={report.get('missing_run_receipt_count')}; proxies={report.get('proxy_row_count')}; "
+            f"invalid={report.get('invalid_receipt_count')}; pinned={report.get('all_upstream_commits_pinned')}"
+        ),
+        "Produce and validate all 125 official method/dataset/seed run receipts with zero proxy or missing rows.",
+    )
+
+
+def memorable_number_gate() -> Gate:
+    report = load_json(ARTIFACT_DIR / "abstract_numbers_audit.json")
+    x = report.get("point_selection_violation_rate")
+    y = report.get("vera_violation_rate")
+    z = report.get("safe_deployment_retention")
+    numeric = all(isinstance(value, (int, float)) and 0.0 <= float(value) <= 1.0 for value in (x, y, z))
+    gap = float(x) - float(y) if numeric else float("-inf")
+    passed = (
+        report.get("verified") is True
+        and numeric
+        and gap >= 0.15
+        and report.get("sentence_matches_manuscript") is True
+        and report.get("all_numbers_receipted") is True
+    )
+    return gate(
+        "goal_5_memorable_number",
+        "Receipted abstract result",
+        passed,
+        f"report_present={bool(report)}; X={x}; Y={y}; Z={z}; X_minus_Y={gap if numeric else None}; verified={report.get('verified')}",
+        "Derive X/Y/Z from locked receipts and verify the exact abstract and introduction sentence with a gap of at least 15 points.",
+    )
+
+
+def presentation_gate() -> Gate:
+    report = load_json(ARTIFACT_DIR / "presentation_readiness_audit.json")
+    passed = (
+        report.get("passed") is True
+        and int(report.get("content_page_count", 0)) == 7
+        and int(report.get("verified_reference_count", 0)) >= 40
+        and report.get("figure_1_vector") is True
+        and report.get("figure_1_colorblind_safe") is True
+        and report.get("figure_1_readable_at_half_scale") is True
+        and int(report.get("forbidden_name_hit_count", -1)) == 0
+        and report.get("anonymous_pdf_clean") is True
+        and report.get("named_pdf_clean") is True
+        and report.get("pdf_metadata_clean") is True
+        and report.get("abstract_figure1_sufficiency_reviewed") is True
+    )
+    return gate(
+        "goal_6_presentation",
+        "Top-conference presentation",
+        passed,
+        (
+            f"report_present={bool(report)}; pages={report.get('content_page_count')}; "
+            f"verified_references={report.get('verified_reference_count')}; "
+            f"forbidden_hits={report.get('forbidden_name_hit_count')}; "
+            f"anonymous_clean={report.get('anonymous_pdf_clean')}; named_clean={report.get('named_pdf_clean')}"
+        ),
+        "Finish and independently audit the seven-page paper, Figure 1, 40+ references, naming purge, both PDFs, and metadata.",
+    )
+
+
+def external_review_gate() -> Gate:
+    report = load_json(ARTIFACT_DIR / "external_review_audit.json")
+    passed = (
+        report.get("passed") is True
+        and int(report.get("completed_review_count", 0)) >= 2
+        and int(report.get("ml_publisher_reviewer_count", 0)) >= 2
+        and int(report.get("unresolved_critical_count", -1)) == 0
+        and int(report.get("unresolved_major_count", -1)) == 0
+        and int(report.get("reviewers_flagging_unaddressed_ltt_overlap", -1)) == 0
+        and report.get("response_ledger_complete") is True
+        and report.get("reviewer_identity_evidence_human_verified") is True
+    )
+    return gate(
+        "goal_7_external_adversarial_review",
+        "Two external cold reviews",
+        passed,
+        (
+            f"report_present={bool(report)}; completed={report.get('completed_review_count')}; "
+            f"ML_publishers={report.get('ml_publisher_reviewer_count')}; "
+            f"unresolved_critical={report.get('unresolved_critical_count')}; "
+            f"unresolved_major={report.get('unresolved_major_count')}; "
+            f"unaddressed_LTT={report.get('reviewers_flagging_unaddressed_ltt_overlap')}"
+        ),
+        "Obtain two real cold reviews from ML publishers and close every critical/major item in a response ledger.",
+    )
+
+
+def submission_gate() -> Gate:
+    report = load_json(ARTIFACT_DIR / "submission_machinery_audit.json")
+    required = (
+        "openreview_account_human_confirmed",
+        "single_email_human_confirmed",
+        "target_style_compiles",
+        "exact_page_limit",
+        "zero_formatting_hacks",
+        "anonymization_complete",
+        "anonymous_archive_reproduces_main_table",
+        "reproducibility_checklist_complete",
+        "supplement_ready",
+        "deadlines_human_confirmed",
+        "areas_and_keywords_selected",
+    )
+    passed = report.get("passed") is True and all(report.get(key) is True for key in required)
+    missing = [key for key in required if report.get(key) is not True]
+    return gate(
+        "submission_machinery",
+        "Venue submission machinery",
+        passed,
+        f"report_present={bool(report)}; missing_or_unconfirmed={missing}",
+        "Complete the technical packaging and obtain human confirmation for account, email, and venue-deadline items.",
+    )
+
+
+def collect_gates() -> list[Gate]:
+    return [
+        theory_gate(),
+        theory_data_gate(),
+        killer_experiment_gate(),
+        baselines_gate(),
+        memorable_number_gate(),
+        presentation_gate(),
+        external_review_gate(),
+        submission_gate(),
     ]
-    gait_ready = gait.get("claim_gate_passed") is True and gait_stats.get("claim_grade_statistics") is True
-    requirements.append(
-        req(
-            "broad_benchmark_evidence",
-            "pass" if len(official_rows) >= 2 and gait_ready else "partial" if len(official_rows) >= 2 else "fail",
-            (
-                f"claim_grade_official_rows={official_rows}; "
-                f"camelyon_full_store_examples={store_manifest.get('n_examples')}; "
-                f"camelyon_frontier_certificate={camelyon_frontier.get('claim_grade_frontier_certificate')}; "
-                f"civilcomments_status={civilcomments.get('status')}; "
-                f"public_gait_claim_grade_row={gait_ready}; "
-                f"gait_n_examples={gait.get('n_examples')}"
-            ),
-            "CivilComments remains useful for text-modality breadth, but the public gait row now supplies an additional claim-grade family.",
-        )
-    )
-    overlap = abstention.get("overlap_case", {}) if isinstance(abstention, dict) else {}
-    real_cases = real_abstention.get("cases", []) if isinstance(real_abstention, dict) else []
-    real_abstain = any(isinstance(case, dict) and case.get("decision") == "ABSTAIN" for case in real_cases)
-    camelyon_abstain = (
-        camelyon_frontier.get("claim_grade_frontier_certificate") is True
-        and camelyon_frontier.get("decision") == "ABSTAIN"
-    )
-    requirements.append(
-        req(
-            "abstention_demonstrated",
-            "pass" if overlap.get("decision") == "ABSTAIN" and real_abstain and camelyon_abstain else "partial",
-            (
-                f"synthetic_overlap={overlap.get('decision')}; "
-                f"real_abstain={real_abstain}; "
-                f"camelyon_full_frontier_abstain={camelyon_abstain}"
-            ),
-            "Expand real benchmark abstention examples and calibrate confidence intervals in the manuscript.",
-        )
-    )
-    requirements.append(
-        req(
-            "statistical_integrity",
-            "pass"
-            if waterbirds_stats.get("claim_grade_statistics")
-            and camelyon_stats.get("claim_grade_statistics")
-            and mance_stats.get("claim_grade_statistics")
-            and gait_stats.get("claim_grade_statistics")
-            and significance.get("significance_addendum_ready")
-            and "finite-sample validation certificate" in theory_lower
-            else "partial",
-            (
-                f"waterbirds_stats={waterbirds_stats.get('claim_grade_statistics')}; "
-                f"camelyon_stats={camelyon_stats.get('claim_grade_statistics')}; "
-                f"mance_claim_grade_statistics={mance_stats.get('claim_grade_statistics')}; "
-                f"gait_stats={gait_stats.get('claim_grade_statistics')}; "
-                f"significance_addendum={significance.get('significance_addendum_ready')}"
-            ),
-            "Increase seed count or use stronger resampling tests before final submission.",
-        )
-    )
-    requirements.append(
-        req(
-            "reproducibility_packet",
-            "pass" if repro.get("packet_ready") and claim_ledger.get("claim_ledger_ready") else "partial",
-            (
-                f"packet_ready={repro.get('packet_ready')}; "
-                f"claim_ledger_ready={claim_ledger.get('claim_ledger_ready')}; "
-                f"upstream_inventory_ready={upstream.get('inventory_ready')}; "
-                f"aaai_source_ready={aaai.get('source_ready')}; "
-                f"github_release_readme_present={bool(github_release_readme)}"
-            ),
-            "Package public release structure, environment lockfile, and one-command reproduction entrypoint.",
-        )
-    )
-    requirements.append(
-        req(
-            "conference_manuscript_quality",
-            "pass"
-            if materialized(iclr_source)
-            and materialized(iclr_pdf)
-            and materialized(aaai_source)
-            and materialized(aaai_anonymous_source)
-            and materialized(aaai_named_source)
-            and aaai.get("source_ready") is True
-            and bool(venue_plan)
-            else "partial",
-            (
-                "faro_main.tex compiles and contains narrative, theory, tables, figures, limitations, and references; "
-                f"venue_plan_present={bool(venue_plan)}; "
-                f"iclr2026_source_materialized={materialized(iclr_source)}; "
-                f"iclr2026_pdf_materialized={materialized(iclr_pdf)}; "
-                f"aaai_source_materialized={materialized(aaai_source)}; "
-                f"aaai_anonymous_source_materialized={materialized(aaai_anonymous_source)}; "
-                f"aaai_named_source_materialized={materialized(aaai_named_source)}; "
-                f"aaai_source_ready={aaai.get('source_ready')}; "
-                f"aaai_pdf_compile_ready={aaai.get('pdf_compile_ready')}"
-            ),
-            "Before real submission, replace ICLR-2026 style with the official target-year style and complete final human polish.",
-        )
-    )
-    requirements.append(
-        req(
-            "strict_adversarial_review",
-            "pass" if adversarial.get("submission_ready") and adversarial.get("critical_count") == 0 and adversarial.get("major_count") == 0 else "partial",
-            (
-                f"submission_ready={adversarial.get('submission_ready')}; "
-                f"critical={adversarial.get('critical_count')}; major={adversarial.get('major_count')}"
-            ),
-            "Update adversarial review to include this full-goal audit before any real submission.",
-        )
-    )
-    return requirements
 
 
-def write_markdown(path: Path, report: dict[str, object]) -> None:
+def write_markdown(path: Path, report: dict[str, Any]) -> None:
     lines = [
-        "# VERA Full Goal Completion Audit",
+        "# VERA Exact Goal Completion Audit",
         "",
         f"Generated at UTC: `{report['created_at_utc']}`",
         f"Goal complete: `{report['goal_complete']}`",
         "",
-        "| Status | Requirement | Evidence | Remaining work |",
+        "> This audit is fail-closed. It does not predict acceptance or substitute for peer review.",
+        "",
+        "| Status | Gate | Evidence | Required next |",
         "| --- | --- | --- | --- |",
     ]
-    for item in report["requirements"]:
+    for item in report["gates"]:
         lines.append(
-            f"| {item['status']} | `{item['key']}` | {item['evidence']} | {item['remaining_work']} |"
+            f"| {item['status']} | `{item['key']}`: {item['title']} | "
+            f"{item['evidence']} | {item['required_next']} |"
         )
-    lines.append("")
-    path.write_text("\n".join(lines), encoding="utf-8")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def main() -> None:
+def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--no-fail", action="store_true")
     args = parser.parse_args()
-    requirements = collect_requirements()
-    counts = {
-        status: sum(1 for item in requirements if item.status == status)
-        for status in ("pass", "partial", "fail")
-    }
+
+    gates = collect_gates()
+    pass_count = sum(item.status == "pass" for item in gates)
+    fail_count = len(gates) - pass_count
     report = {
-        "name": "VERA full user-goal completion audit",
+        "name": "VERA exact user-goal completion audit",
+        "schema_version": 2,
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "goal_complete": counts.get("partial", 0) == 0 and counts.get("fail", 0) == 0,
-        "status_counts": counts,
-        "requirements": [asdict(item) for item in requirements],
+        "goal_complete": fail_count == 0,
+        "paper_goals_complete": all(item.status == "pass" for item in gates[:7]),
+        "acceptance_guaranteed": False,
+        "pass_count": pass_count,
+        "fail_count": fail_count,
+        "gates": [asdict(item) for item in gates],
     }
+    ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
     DEFAULT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     write_markdown(DEFAULT_MD, report)
-    print(
-        "VERA full-goal completion audit complete\n"
-        f"goal_complete={str(report['goal_complete']).lower()}\n"
-        f"pass={counts.get('pass', 0)} partial={counts.get('partial', 0)} fail={counts.get('fail', 0)}\n"
-        f"report={DEFAULT_JSON}"
-    )
-    raise SystemExit(0 if args.no_fail or report["goal_complete"] else 1)
+    print("VERA exact-goal completion audit complete")
+    print(f"goal_complete={str(report['goal_complete']).lower()}")
+    print(f"pass={pass_count} fail={fail_count}")
+    print(f"report={DEFAULT_JSON}")
+    return 0 if args.no_fail or report["goal_complete"] else 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

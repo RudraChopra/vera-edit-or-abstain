@@ -1,72 +1,68 @@
 {
-  "created_at_utc": "2026-07-14T01:06:25.516956+00:00",
-  "goal_complete": true,
-  "name": "VERA full user-goal completion audit",
-  "requirements": [
+  "acceptance_guaranteed": false,
+  "created_at_utc": "2026-07-14T06:01:30.742071+00:00",
+  "fail_count": 7,
+  "gates": [
     {
-      "evidence": "NOVELTY_LOCK.md plus NOVELTY_SWEEP_2026_UPDATE.md include LEACE/RLACE/INLP/TaCo/MANCE/SPLINCE.",
-      "key": "novelty_locked_against_close_baselines",
-      "remaining_work": "Keep running recency sweeps before any real submission deadline.",
-      "status": "pass"
+      "evidence": "prereg_hash_valid=True; proof_blocks=6; required_labels_present=True; synthetic_cells=18; synthetic_grid_valid=True; independent_verification=True",
+      "key": "goal_1_shift_aware_theory",
+      "required_next": "None.",
+      "status": "pass",
+      "title": "Shift-aware certification and impossibility"
     },
     {
-      "evidence": "ALGORITHM_SPEC.md defines inputs, frontier, selection, abstention, and output.",
-      "key": "method_fully_specified",
-      "remaining_work": "Convert the spec into pseudocode in the final conference template.",
-      "status": "pass"
+      "evidence": "report_present=False; passed=None; dataset_count=None; tracking=None; all_false_acceptance_controlled=None",
+      "key": "goal_2_theory_matched_by_data",
+      "required_next": "Run the locked real-data subsampling study and verify predicted/observed overlays on at least four datasets.",
+      "status": "fail",
+      "title": "Theory matched by synthetic and real data"
     },
     {
-      "evidence": "Manuscript contains safe-acceptance, simultaneous frontier, finite-sample validation, and false-acceptance statements with proofs.",
-      "key": "real_theory_present",
-      "remaining_work": "Tighten conservative bounds with empirical Bernstein, bootstrap simultaneous intervals, or probe-stability analysis.",
-      "status": "pass"
+      "evidence": "report_present=False; rules=[]; naive_failure_datasets=None; vera_upper=None; delta=None; significant_datasets=None",
+      "key": "goal_3_killer_experiment",
+      "required_next": "Complete the preregistered four-rule grid, global false-acceptance analysis, McNemar tests, and retention intervals.",
+      "status": "fail",
+      "title": "Deployment rules head to head"
     },
     {
-      "evidence": "baseline_ready=True; mance_waterbirds_claim_grade=True; mance_camelyon_claim_grade=True; mance_receipts=5; reference_scope_ready=True; upstream_inventory_ready=True; universal_erasure_sota_claim_allowed=False",
-      "key": "strong_reference_baselines",
-      "remaining_work": "Optional strengthening remains: add exact upstream SPLINCE/RLACE/TaCo receipts and exact upstream LEACE receipts. Current paper claims are scoped as a protocol contribution, not universal erasure SOTA.",
-      "status": "pass"
+      "evidence": "report_present=True; receipts=0/125; missing=125; proxies=0; invalid=0; pinned=True",
+      "key": "goal_4_zero_proxy_baselines",
+      "required_next": "Produce and validate all 125 official method/dataset/seed run receipts with zero proxy or missing rows.",
+      "status": "fail",
+      "title": "Official baselines on five datasets"
     },
     {
-      "evidence": "claim_grade_official_rows=['Waterbirds', 'Camelyon17']; camelyon_full_store_examples=455954; camelyon_frontier_certificate=True; civilcomments_status=not_currently_claim_grade_verifiable; public_gait_claim_grade_row=True; gait_n_examples=306",
-      "key": "broad_benchmark_evidence",
-      "remaining_work": "CivilComments remains useful for text-modality breadth, but the public gait row now supplies an additional claim-grade family.",
-      "status": "pass"
+      "evidence": "report_present=False; X=None; Y=None; Z=None; X_minus_Y=None; verified=None",
+      "key": "goal_5_memorable_number",
+      "required_next": "Derive X/Y/Z from locked receipts and verify the exact abstract and introduction sentence with a gap of at least 15 points.",
+      "status": "fail",
+      "title": "Receipted abstract result"
     },
     {
-      "evidence": "synthetic_overlap=ABSTAIN; real_abstain=True; camelyon_full_frontier_abstain=True",
-      "key": "abstention_demonstrated",
-      "remaining_work": "Expand real benchmark abstention examples and calibrate confidence intervals in the manuscript.",
-      "status": "pass"
+      "evidence": "report_present=False; pages=None; verified_references=None; forbidden_hits=None; anonymous_clean=None; named_clean=None",
+      "key": "goal_6_presentation",
+      "required_next": "Finish and independently audit the seven-page paper, Figure 1, 40+ references, naming purge, both PDFs, and metadata.",
+      "status": "fail",
+      "title": "Top-conference presentation"
     },
     {
-      "evidence": "waterbirds_stats=True; camelyon_stats=True; mance_claim_grade_statistics=True; gait_stats=True; significance_addendum=True",
-      "key": "statistical_integrity",
-      "remaining_work": "Increase seed count or use stronger resampling tests before final submission.",
-      "status": "pass"
+      "evidence": "report_present=False; completed=None; ML_publishers=None; unresolved_critical=None; unresolved_major=None; unaddressed_LTT=None",
+      "key": "goal_7_external_adversarial_review",
+      "required_next": "Obtain two real cold reviews from ML publishers and close every critical/major item in a response ledger.",
+      "status": "fail",
+      "title": "Two external cold reviews"
     },
     {
-      "evidence": "packet_ready=True; claim_ledger_ready=True; upstream_inventory_ready=True; aaai_source_ready=True; github_release_readme_present=True",
-      "key": "reproducibility_packet",
-      "remaining_work": "Package public release structure, environment lockfile, and one-command reproduction entrypoint.",
-      "status": "pass"
-    },
-    {
-      "evidence": "faro_main.tex compiles and contains narrative, theory, tables, figures, limitations, and references; venue_plan_present=True; iclr2026_source_materialized=True; iclr2026_pdf_materialized=True; aaai_source_materialized=True; aaai_anonymous_source_materialized=True; aaai_named_source_materialized=True; aaai_source_ready=True; aaai_pdf_compile_ready=False",
-      "key": "conference_manuscript_quality",
-      "remaining_work": "Before real submission, replace ICLR-2026 style with the official target-year style and complete final human polish.",
-      "status": "pass"
-    },
-    {
-      "evidence": "submission_ready=True; critical=0; major=0",
-      "key": "strict_adversarial_review",
-      "remaining_work": "Update adversarial review to include this full-goal audit before any real submission.",
-      "status": "pass"
+      "evidence": "report_present=False; missing_or_unconfirmed=['openreview_account_human_confirmed', 'single_email_human_confirmed', 'target_style_compiles', 'exact_page_limit', 'zero_formatting_hacks', 'anonymization_complete', 'anonymous_archive_reproduces_main_table', 'reproducibility_checklist_complete', 'supplement_ready', 'deadlines_human_confirmed', 'areas_and_keywords_selected']",
+      "key": "submission_machinery",
+      "required_next": "Complete the technical packaging and obtain human confirmation for account, email, and venue-deadline items.",
+      "status": "fail",
+      "title": "Venue submission machinery"
     }
   ],
-  "status_counts": {
-    "fail": 0,
-    "partial": 0,
-    "pass": 10
-  }
+  "goal_complete": false,
+  "name": "VERA exact user-goal completion audit",
+  "paper_goals_complete": false,
+  "pass_count": 1,
+  "schema_version": 2
 }

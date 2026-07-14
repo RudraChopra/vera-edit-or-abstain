@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from math import log, sqrt
-from typing import Iterable, Mapping, Sequence
+from typing import Any, Iterable, Mapping, Sequence
 
 import numpy as np
 
@@ -25,6 +25,8 @@ class RiskCertificate:
     dkw_epsilon: float
     simultaneous_failure_probability: float
     upper_confidence_bound: float
+    method: str = "dkw_cvar"
+    confidence_details: Mapping[str, float | int | str] | None = None
 
     def to_dict(self) -> dict[str, float | int | str]:
         return asdict(self)
@@ -56,6 +58,7 @@ class ShiftRadiusCertificate:
     delta: float
     limiting_contracts: tuple[str, ...]
     certificates_at_radius: tuple[RiskCertificate, ...]
+    method: str = "dkw_cvar"
 
     def to_dict(self) -> dict[str, object]:
         payload = asdict(self)
@@ -148,6 +151,218 @@ def robust_risk_certificate(
         dkw_epsilon=float(epsilon),
         simultaneous_failure_probability=float(failure_probability),
         upper_confidence_bound=float(ucb),
+    )
+
+
+def _clopper_pearson_upper(successes: int, n: int, alpha: float) -> float:
+    from scipy.stats import beta
+
+    if successes >= n:
+        return 1.0
+    return float(beta.ppf(1.0 - alpha, successes + 1, n - successes))
+
+
+def _clopper_pearson_lower(successes: int, n: int, alpha: float) -> float:
+    from scipy.stats import beta
+
+    if successes <= 0:
+        return 0.0
+    return float(beta.ppf(alpha, successes, n - successes + 1))
+
+
+def exact_discrete_risk_certificate(
+    key: str,
+    values: Iterable[float],
+    *,
+    gamma: float,
+    failure_probability: float,
+    support: tuple[int, ...],
+) -> RiskCertificate:
+    """Certify Bernoulli or paired {-1,0,1} risk without a range-only bound."""
+
+    if support not in {(0, 1), (-1, 0, 1)}:
+        raise ValueError("exact discrete support must be (0, 1) or (-1, 0, 1)")
+    if not 0.0 < failure_probability < 1.0:
+        raise ValueError("failure_probability must lie in (0, 1)")
+    if gamma < 1.0 or not np.isfinite(gamma):
+        raise ValueError("gamma must be finite and at least one")
+    array = _as_bounded_array(values, lower=float(support[0]), upper=float(support[-1]))
+    if not np.isin(array, support).all():
+        raise ValueError(f"values must lie on the declared support {support}")
+    n = int(array.size)
+    empirical = empirical_reweighting_risk(array, gamma)
+
+    if support == (0, 1):
+        successes = int(np.sum(array == 1))
+        probability_upper = _clopper_pearson_upper(successes, n, failure_probability)
+        ucb = min(1.0, gamma * probability_upper)
+        details: dict[str, float | int | str] = {
+            "successes": successes,
+            "probability_upper": probability_upper,
+            "interval": "one-sided Clopper-Pearson",
+        }
+    else:
+        positive = int(np.sum(array == 1))
+        negative = int(np.sum(array == -1))
+        tail_alpha = failure_probability / 2.0
+        positive_upper = _clopper_pearson_upper(positive, n, tail_alpha)
+        negative_lower = _clopper_pearson_lower(negative, n, tail_alpha)
+        positive_probability = min(positive_upper, 1.0 - negative_lower)
+        zero_probability = max(0.0, 1.0 - negative_lower - positive_probability)
+        positive_mass = min(1.0, gamma * positive_probability)
+        remaining = 1.0 - positive_mass
+        zero_mass = min(remaining, gamma * zero_probability)
+        negative_mass = max(0.0, remaining - zero_mass)
+        ucb = min(1.0, max(-1.0, positive_mass - negative_mass))
+        details = {
+            "positive_count": positive,
+            "negative_count": negative,
+            "positive_probability_upper": positive_upper,
+            "negative_probability_lower": negative_lower,
+            "interval": "two one-sided Clopper-Pearson bounds with Bonferroni",
+        }
+    return RiskCertificate(
+        key=key,
+        n=n,
+        gamma=float(gamma),
+        lower=float(support[0]),
+        upper=float(support[-1]),
+        empirical_robust_risk=float(empirical),
+        dkw_epsilon=0.0,
+        simultaneous_failure_probability=float(failure_probability),
+        upper_confidence_bound=float(ucb),
+        method="exact_discrete_reweighting",
+        confidence_details=details,
+    )
+
+
+def simultaneous_exact_discrete_certificates(
+    samples: Mapping[str, Iterable[float]],
+    *,
+    gamma: float,
+    delta: float,
+    supports: Mapping[str, tuple[int, ...]],
+    family_size: int | None = None,
+) -> dict[str, RiskCertificate]:
+    """Certify a registered family, optionally spending alpha over a larger family."""
+
+    if not samples or set(samples) != set(supports):
+        raise ValueError("nonempty samples and supports must have identical keys")
+    if not 0.0 < delta < 1.0:
+        raise ValueError("delta must lie in (0, 1)")
+    denominator = len(samples) if family_size is None else int(family_size)
+    if denominator < len(samples):
+        raise ValueError("family_size cannot be smaller than the supplied sample family")
+    per_risk_delta = delta / denominator
+    return {
+        key: exact_discrete_risk_certificate(
+            key,
+            values,
+            gamma=gamma,
+            failure_probability=per_risk_delta,
+            support=supports[key],
+        )
+        for key, values in samples.items()
+    }
+
+
+def certify_discrete_shift_radius(
+    samples: Mapping[str, Iterable[float]],
+    *,
+    delta: float,
+    supports: Mapping[str, tuple[int, ...]],
+    thresholds: Mapping[str, float],
+    family_size: int | None = None,
+    gamma_cap: float = 32.0,
+    tolerance: float = 1e-4,
+) -> ShiftRadiusCertificate:
+    """Lower-certify a common shift radius using exact discrete intervals."""
+
+    if set(samples) != set(supports) or set(samples) != set(thresholds):
+        raise ValueError("samples, supports, and thresholds must have identical keys")
+    if gamma_cap < 1.0 or not np.isfinite(gamma_cap):
+        raise ValueError("gamma_cap must be finite and at least one")
+    if tolerance <= 0.0 or not np.isfinite(tolerance):
+        raise ValueError("tolerance must be finite and positive")
+    materialized = {
+        key: _as_bounded_array(
+            values, lower=float(supports[key][0]), upper=float(supports[key][-1])
+        )
+        for key, values in samples.items()
+    }
+
+    def evaluate(gamma: float) -> tuple[bool, dict[str, RiskCertificate]]:
+        certificates = simultaneous_exact_discrete_certificates(
+            materialized,
+            gamma=gamma,
+            delta=delta,
+            supports=supports,
+            family_size=family_size,
+        )
+        return (
+            all(certificates[key].upper_confidence_bound <= thresholds[key] for key in certificates),
+            certificates,
+        )
+
+    iid_passes, iid_certificates = evaluate(1.0)
+    if not iid_passes:
+        margins = {
+            key: thresholds[key] - certificate.upper_confidence_bound
+            for key, certificate in iid_certificates.items()
+        }
+        worst = min(margins.values())
+        return ShiftRadiusCertificate(
+            decision="ABSTAIN",
+            certified_radius=0.0,
+            gamma_cap=float(gamma_cap),
+            right_censored=False,
+            delta=float(delta),
+            limiting_contracts=tuple(sorted(key for key, value in margins.items() if value <= worst + 1e-12)),
+            certificates_at_radius=tuple(iid_certificates[key] for key in sorted(iid_certificates)),
+            method="exact_discrete_reweighting",
+        )
+
+    cap_passes, cap_certificates = evaluate(gamma_cap)
+    if cap_passes:
+        margins = {
+            key: thresholds[key] - certificate.upper_confidence_bound
+            for key, certificate in cap_certificates.items()
+        }
+        worst = min(margins.values())
+        return ShiftRadiusCertificate(
+            decision="EDIT",
+            certified_radius=float(gamma_cap),
+            gamma_cap=float(gamma_cap),
+            right_censored=True,
+            delta=float(delta),
+            limiting_contracts=tuple(sorted(key for key, value in margins.items() if value <= worst + 1e-12)),
+            certificates_at_radius=tuple(cap_certificates[key] for key in sorted(cap_certificates)),
+            method="exact_discrete_reweighting",
+        )
+
+    lower_gamma, upper_gamma = 1.0, float(gamma_cap)
+    lower_certificates = iid_certificates
+    while upper_gamma - lower_gamma > tolerance:
+        midpoint = (lower_gamma + upper_gamma) / 2.0
+        passes, certificates = evaluate(midpoint)
+        if passes:
+            lower_gamma, lower_certificates = midpoint, certificates
+        else:
+            upper_gamma = midpoint
+    margins = {
+        key: thresholds[key] - certificate.upper_confidence_bound
+        for key, certificate in lower_certificates.items()
+    }
+    worst = min(margins.values())
+    return ShiftRadiusCertificate(
+        decision="EDIT",
+        certified_radius=float(lower_gamma),
+        gamma_cap=float(gamma_cap),
+        right_censored=False,
+        delta=float(delta),
+        limiting_contracts=tuple(sorted(key for key, value in margins.items() if value <= worst + tolerance)),
+        certificates_at_radius=tuple(lower_certificates[key] for key in sorted(lower_certificates)),
+        method="exact_discrete_reweighting",
     )
 
 
