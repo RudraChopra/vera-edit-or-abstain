@@ -93,6 +93,14 @@ representation edit is certified to reduce source leakage without violating
 target utility. It therefore complements robust prediction baselines rather
 than replacing them.
 
+The closest statistical neighbors are risk-control methods. Risk-controlling
+prediction sets, Learn then Test, and Pareto Testing all use holdout evidence
+or multiple-testing corrections to select predictive systems under risk
+constraints. VERA uses the same finite-frontier discipline for representation
+editing rather than prediction-set construction. Selective classification is
+also related, but it abstains on individual examples; VERA abstains on the edit
+itself when the target/source contract is not certified.
+
 \section{Problem Formulation}
 
 Let $Z \in \mathbb{R}^{n \times d}$ be frozen representations, $Y$ target
@@ -151,40 +159,54 @@ Step & Operation \\
 
 \section{Theory}
 
-\begin{theorem}[Uniform safe acceptance and abstention]
-Let $U_{\mathrm{ext}}(a)$ be the external target utility of edit $a$, let
-$\widehat U_{\mathrm{val}}(a)$ be its validation estimate, and let $\tau$ be
-the minimum acceptable target utility. Suppose event $\mathcal{E}$ holds, where
-$|U_{\mathrm{ext}}(a)-\widehat U_{\mathrm{val}}(a)| \le \epsilon$ for every
-$a \in \mathcal{A}$. If VERA accepts only edits satisfying
-$\widehat U_{\mathrm{val}}(a)-\epsilon \ge \tau$, then every accepted edit has
-$U_{\mathrm{ext}}(a) \ge \tau$ on $\mathcal{E}$. If no edit satisfies this
-lower-confidence-bound condition, VERA returns \texttt{ABSTAIN}.
+\begin{theorem}[Validation safe acceptance and abstention]
+Let $a_0$ denote no edit. For every audited candidate $a$, let
+$[U^-_a,U^+_a]$ be a simultaneous validation interval for target utility and
+let $[L^-_a,L^+_a]$ be a simultaneous validation interval for source leakage,
+where larger $U$ is better and smaller $L$ is better. On the validation
+coverage event, if VERA accepts only edits satisfying
+\[
+U^+_{a_0}-U^-_a \le \epsilon_U
+\quad\textrm{and}\quad
+L^-_{a_0}-L^+_a \ge \epsilon_L ,
+\]
+then every accepted edit has validation target loss at most $\epsilon_U$ and
+validation source-leakage reduction at least $\epsilon_L$ relative to no edit.
+If no candidate satisfies both inequalities, VERA returns \texttt{ABSTAIN}.
 \end{theorem}
 
 \begin{proof}
-On $\mathcal{E}$, every candidate satisfies
-$U_{\mathrm{ext}}(a) \ge \widehat U_{\mathrm{val}}(a)-\epsilon$. Therefore an
-accepted edit satisfying $\widehat U_{\mathrm{val}}(a)-\epsilon \ge \tau$ also
-satisfies $U_{\mathrm{ext}}(a) \ge \tau$. If no candidate satisfies the same
-condition, the certified safe set is empty, so the deterministic VERA rule
-returns \texttt{ABSTAIN}.
+On the coverage event, no-edit validation utility is at most $U^+_{a_0}$ and
+candidate utility is at least $U^-_a$, so certified target loss is at most
+$U^+_{a_0}-U^-_a$. No-edit validation leakage is at least $L^-_{a_0}$ and
+candidate leakage is at most $L^+_a$, so certified leakage reduction is at
+least $L^-_{a_0}-L^+_a$. The abstention statement follows from the
+predeclared decision rule.
 \end{proof}
 
-This is a decision-safety theorem, not a universal erasure theorem. Its role is
-to justify safe acceptance and abstention inside a finite audited family.
+This is a validation decision-safety theorem, not a universal erasure theorem
+and not a distribution-free external-shift theorem. Its role is to justify
+safe acceptance and abstention inside a finite audited family.
 
-\begin{corollary}[False-acceptance control]
+\begin{corollary}[Validation false-acceptance control]
 If the simultaneous validation intervals cover all audited target and leakage
 quantities with probability at least $1-\delta$, then the probability that VERA
-accepts an edit violating either external constraint is at most $\delta$.
+accepts an edit violating the validation target-loss or validation
+leakage-reduction contract is at most $\delta$.
 \end{corollary}
 
 \begin{proof}
-On the coverage event, the accepted edit satisfies the certified external
-constraints by the theorem. A false acceptance is therefore contained in the
-failure of the simultaneous coverage event.
+On the coverage event, every accepted edit satisfies the validation contract by
+the theorem. A false acceptance is therefore contained in the failure of the
+simultaneous coverage event.
 \end{proof}
+
+\paragraph{External readouts.}
+If external utilities and leakages are uniformly within $\Delta_U$ and
+$\Delta_L$ of their validation counterparts, accepted edits inherit the
+external contract with that slack. We do not use this as a distribution-free
+hospital-shift claim; Camelyon17 external metrics are locked diagnostic
+readouts after selection.
 
 \section{Experiments}
 
@@ -198,9 +220,10 @@ public locked-split benchmark, not an official challenge split.
 
 \paragraph{Baselines.}
 The local packet includes ERM, source-balanced ERM, group-reweighted ERM, a
-GroupDRO-style probe, scoped erasure stress tests, and official-code MANCE++ on
-Waterbirds. SPLINCE/R-LACE/TaCo rows are scoped proxies unless exact upstream
-reference implementations are added.
+GroupDRO-style probe, real frozen-feature INLP rows, official LEACE rows using
+the pinned \texttt{concept-erasure} implementation, and official-code MANCE++.
+SPLINCE/R-LACE/TaCo rows are scoped proxies unless exact upstream reference
+implementations are added.
 
 \begin{table*}[t]
 \centering
@@ -234,9 +257,10 @@ train/validation/external examples. Validation source leakage decreases from
 $0.8492$ to $0.5635$, validation target balanced accuracy decreases from
 $0.8974$ to $0.8876$, external target balanced accuracy decreases from
 $0.8905$ to $0.8741$, and external worst target-source accuracy decreases from
-$0.8465$ to $0.8137$. The upstream inventory also pins official R-LACE, TaCo,
-and LEACE repositories locally, but those rows remain proxy stress tests until
-matched VERA receipts are added.
+$0.8465$ to $0.8137$. Real frozen-feature INLP rows and official LEACE rows
+are reported in \texttt{linear\_eraser\_reference\_report.json}. The upstream
+inventory also pins R-LACE and TaCo repositories locally, but those rows remain
+proxy stress tests until matched VERA receipts are added.
 
 \section{Abstention and Failure Analysis}
 
@@ -289,7 +313,8 @@ VERA reframes representation editing as a certified decision problem. It can
 wrap linear erasers, nonlinear erasers, and robust probes, but its contribution
 is the audited edit-or-abstain contract. The current packet supports a method
 paper with explicit boundaries; the remaining baseline work is to add more
-exact upstream erasure references beyond MANCE++ Waterbirds.
+exact upstream R-LACE, TaCo, and SPLINCE/SPLICE references beyond the completed
+MANCE++, INLP, and LEACE evidence.
 
 \appendix
 
@@ -302,8 +327,9 @@ reference receipts, and the full-goal audit.
 
 \section{Reference Boundary}
 
-VERA may claim full official-code MANCE++ evidence on Waterbirds. It must not
-claim reference parity for SPLINCE, R-LACE, TaCo, or LEACE until exact upstream
+VERA may claim full official-code MANCE++ evidence on Waterbirds and
+Camelyon17, plus real frozen-feature INLP rows and official LEACE rows. It must
+not claim reference parity for SPLINCE, R-LACE, or TaCo until exact upstream
 implementations are run and audited.
 
 \begin{thebibliography}{9}
@@ -326,6 +352,25 @@ arXiv preprint arXiv:2607.03973, 2026.
 \bibitem{koh2021wilds}
 Koh, P. W. et al. WILDS: A Benchmark of in-the-Wild Distribution Shifts. ICML,
 2021.
+
+\bibitem{angelopoulos2021ltt}
+Angelopoulos, A. N., Bates, S., Cand\`es, E. J., Jordan, M. I., and Lei, L.
+Learn then Test: Calibrating Predictive Algorithms to Achieve Risk Control.
+arXiv preprint arXiv:2110.01052, 2021.
+
+\bibitem{bates2021rcps}
+Bates, S., Angelopoulos, A., Lei, L., Malik, J., and Jordan, M. I.
+Distribution-Free, Risk-Controlling Prediction Sets. Journal of the ACM,
+68(6), 2021.
+
+\bibitem{laufer2022pareto}
+Laufer-Goldshtein, B., Fisch, A., Barzilay, R., and Jaakkola, T. Efficiently
+Controlling Multiple Risks with Pareto Testing. arXiv preprint
+arXiv:2210.07913, 2022.
+
+\bibitem{geifman2017selective}
+Geifman, Y. and El-Yaniv, R. Selective Classification for Deep Neural
+Networks. NeurIPS, 2017.
 \end{thebibliography}
 
 \end{document}

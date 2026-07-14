@@ -6,10 +6,9 @@ The local VERA packet has claim-ready official rows for Waterbirds and
 Camelyon17-WILDS, but the adversarial review is intentionally not submission
 ready after the July 2026 novelty update. The remaining issue is not the VERA
 method specification or the Camelyon evidence. The issue is baseline
-defensibility: current SPLINCE/SPLICE-style, R-LACE-style, TaCo-style, and
-MANCE-style rows are proxy stress tests unless the corresponding reference
-implementations are run or the claims are scoped so reference parity is not
-required.
+defensibility: current SPLINCE/SPLICE-style, R-LACE-style, and TaCo-style rows
+are proxy stress tests unless the corresponding reference implementations are
+run or the claims are scoped so reference parity is not required.
 
 As of July 13, 2026, the official upstream MANCE repository has been cloned and
 wired into VERA through `research/scripts/run_mance_reference_numpy_store.py`.
@@ -37,16 +36,26 @@ completed in 11,760.208 seconds, below the linear lower-bound estimate.
 The upstream inventory at
 `research/artifacts/upstream_baseline_reference_inventory.json` now pins
 official repositories and commits for MANCE++, R-LACE, TaCo, and LEACE. This
-improves reproducibility but does not convert the current R-LACE, TaCo, or
-LEACE rows into reference-parity rows. Matched receipts under VERA's locked
-splits are still required before the manuscript can claim exact upstream
-comparisons for those methods.
+improves reproducibility but does not convert the current R-LACE or TaCo rows
+into reference-parity rows. Matched receipts under VERA's locked splits are
+still required before the manuscript can claim exact upstream comparisons for
+those methods.
+
+INLP and LEACE have now been hardened separately through
+`research/scripts/run_linear_eraser_reference_rows.py`. The resulting
+`research/artifacts/linear_eraser_reference_report.json` contains real
+frozen-feature INLP rows and official LEACE rows using the pinned
+`concept-erasure` implementation on Waterbirds, Camelyon17, and GaitPDB. This
+clears the cheap-linear-eraser reviewer objection without changing the broader
+claim boundary: the paper may report these rows, but it still must not claim
+universal erasure state of the art.
 
 ## Remaining Reference-Parity Work
 
 The strongest MANCE/MANCE++ blocker is now cleared for Waterbirds and
-Camelyon17. Remaining reference-parity work is optional strengthening: exact
-matched receipts for R-LACE, TaCo, LEACE, and an identified official
+Camelyon17, and the cheap INLP/LEACE blocker is cleared for frozen-feature
+reference rows. Remaining reference-parity work is optional strengthening:
+exact matched receipts for R-LACE, TaCo, and an identified official
 SPLINCE/SPLICE implementation. Until those receipts exist, those rows remain
 proxy stress tests, and VERA should continue to be framed as a certified
 selection and abstention layer over candidate edits rather than a universal
@@ -75,6 +84,7 @@ Current diagnostic artifacts:
 | `research/artifacts/camelyon17_mancepp_reference_80k_diagnostic_receipt.json` | Largest subset diagnostic before the full no-cap claim-grade receipt |
 | `research/artifacts/camelyon17_mance_scaling_feasibility.json` | Local full no-cap runtime feasibility estimate for Camelyon17 MANCE++ |
 | `research/artifacts/upstream_baseline_reference_inventory.json` | Pinned official repository inventory for MANCE++, R-LACE, TaCo, and LEACE |
+| `research/artifacts/linear_eraser_reference_report.json` | Real frozen-feature INLP rows and official LEACE rows on Waterbirds, Camelyon17, and GaitPDB |
 | `research/artifacts/waterbirds_mancepp_reference_seed*_receipt.json` | Official upstream MANCE++ code, full Waterbirds splits, claim-grade |
 | `/Volumes/Backups/FARO/artifacts/mance_reference/camelyon17_mancepp_reference_diagnostic_receipt.json` | External-drive copy of the same diagnostic receipt |
 

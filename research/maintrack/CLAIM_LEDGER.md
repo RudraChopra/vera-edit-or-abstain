@@ -51,9 +51,10 @@ VERA may claim that MANCE++ has a full official-code reference baseline on
 Waterbirds with five seeds and claim-grade statistics, plus a full no-cap
 claim-grade Camelyon17-WILDS reference row under the frozen-representation
 protocol. The upstream inventory pins official repositories for MANCE++,
-R-LACE, TaCo, and LEACE. The current SPLINCE/SPLICE, R-LACE, TaCo, and LEACE
-rows remain matched proxy stress tests unless separate reference-implementation
-receipts are added.
+R-LACE, TaCo, and LEACE. VERA may also claim real frozen-feature INLP rows and
+official LEACE rows using the pinned `concept-erasure` implementation. The
+current SPLINCE/SPLICE, R-LACE, and TaCo rows remain matched proxy stress tests
+unless separate reference-implementation receipts are added.
 
 VERA may claim that the reproducibility packet has locked seeds, commands, an
 artifact map, release boundaries, and two durable claim-ready official rows.
@@ -65,16 +66,16 @@ that VERA is clinically safe or deployment-ready. Do not claim universal
 state-of-the-art performance across domain-generalization or concept-erasure
 benchmarks. Do not claim that VERA works without source or environment labels.
 Do not treat the Camelyon17-WILDS frozen-embedding benchmark as clinical
-deployment evidence. Do not call the current proxy baseline rows official
-reference implementations.
+deployment evidence. Do not call R-LACE, TaCo, or SPLINCE/SPLICE proxy rows
+official reference implementations.
 
 ## Current Submission Boundary
 
 The local packet now has two durable official rows, a high-stakes official
 Camelyon17-WILDS row, a claim-grade Waterbirds MANCE++ reference row, a large
 full no-cap Camelyon17 MANCE++ reference row, pinned official upstream
-repositories for close eraser baselines, and a green adversarial internal
-review. The paper remains bounded as a protocol contribution rather than a
-universal erasure
+repositories for close eraser baselines, real INLP rows, official LEACE rows,
+and a green adversarial internal review. The paper remains bounded as a
+protocol contribution rather than a universal erasure
 state-of-the-art claim. The claim ledger is meant to make that boundary
 difficult to accidentally erase while drafting.

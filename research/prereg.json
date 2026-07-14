@@ -1,0 +1,49 @@
+{
+  "project": "VERA: Verified Erasure under Reweighting Ambiguity",
+  "status": "locked_before_claim_grade_run",
+  "locked_date": "2026-07-13",
+  "lock_mechanism": "SHA-256 sidecar plus a Git commit required by the claim-grade runner",
+  "primary_claim": "VERA lower-certifies each edit's maximum common density-ratio shift budget across paired target harm and every preregistered leakage audit; deploying only within that radius controls false acceptance.",
+  "certification": {
+    "delta": 0.05,
+    "gamma_values": [1.0, 1.5, 2.0, 4.0],
+    "target_harm_metric": "paired zero-one loss difference versus identity",
+    "leakage_metric": "balanced attacker correctness",
+    "multiplicity": "Bonferroni over edits, contracts, source classes, groups, and attackers",
+    "confidence_method": "DKW upper bound on bounded-density-ratio robust risk through the CVaR dual",
+    "headline_output": "simultaneous lower confidence bound on the erasure shift radius",
+    "radius_gamma_cap": 32.0
+  },
+  "synthetic_study": {
+    "claim_grade": true,
+    "seed": 20270713,
+    "replicates": 1000,
+    "validation_sizes": [250, 500, 1000, 2000, 5000, 10000],
+    "delta_levels": [0.01, 0.05, 0.1],
+    "candidate_count": 9,
+    "attacker_probability_offsets": [-0.02, 0.0, 0.02, 0.03],
+    "gamma": 1.5,
+    "target_threshold": 0.18,
+    "leakage_threshold": 0.68,
+    "target_harm_probabilities": [0.005, 0.013, 0.021, 0.029, 0.037, 0.045, 0.053, 0.061, 0.069],
+    "leakage_probabilities": [0.48, 0.45, 0.42, 0.39, 0.36, 0.33, 0.30, 0.27, 0.24],
+    "pass_condition": "The simultaneous 95 percent Clopper-Pearson upper bound on false acceptance is at most delta in every cell, and observed abstention lies in the exact simultaneous 95 percent family-wise binomial prediction band in every cell. Bonferroni correction spans all 18 design cells."
+  },
+  "real_study": {
+    "datasets": ["Waterbirds", "Camelyon17-WILDS", "CivilComments-WILDS", "Bios", "GaitPDB"],
+    "erasers": ["INLP", "RLACE", "LEACE", "MANCE++", "TaCo_or_SPLINCE"],
+    "seeds": [0, 1, 2, 3, 4],
+    "validation_fractions": [0.05, 0.1, 0.25, 0.5, 1.0],
+    "deployment_rules": ["always_deploy", "point_selection", "iid_ltt", "vera", "oracle"],
+    "minimum_threshold_pairs": 9,
+    "primary_false_acceptance_target": 0.05,
+    "naive_failure_target": 0.2,
+    "paired_test": "exact McNemar with Holm correction",
+    "claim_grade_requires_zero_proxy_rows": true
+  },
+  "data_policy": {
+    "external_split_is_locked_until_selection_is_complete": true,
+    "receipts_required_for_every_table_cell": true,
+    "missing_or_single_class_source_split_forces_abstention": true
+  }
+}

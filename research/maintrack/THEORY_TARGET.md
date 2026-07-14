@@ -1,62 +1,88 @@
 # VERA Theory Target
 
-## Safe-Acceptance Theorem
+## Setup
 
-The current manuscript states and proves a uniform safe-acceptance and
-abstention theorem. Let `U_ext(a)` be external target utility,
-`U_val_hat(a)` be validation target utility, `tau` be the minimum acceptable
-target utility, and `epsilon` be a uniform validation-to-external uncertainty
-radius. On the event that every candidate edit is covered by this radius, any
-edit accepted by VERA has external target utility at least `tau`. If no
-candidate satisfies the lower-confidence-bound condition, VERA returns
-`ABSTAIN`.
+Let `P` be the validation distribution and let `Q` be an unknown deployment
+distribution. Candidate edit `e` and the identity edit are evaluated on the
+same example. The paired target-harm variable is
 
-## Simultaneous Frontier Theorem
+`H_e = target_loss(e(Z), Y) - target_loss(Z, Y)`.
 
-The manuscript now also states and proves a simultaneous frontier
-certification theorem. For a finite candidate frontier, VERA accepts only edits
-whose lower confidence bound on external target utility exceeds the target
-threshold and whose upper confidence bound on external source leakage remains
-below the leakage threshold. On the event that the validation intervals
-simultaneously cover all frontier target and leakage quantities, any accepted
-edit satisfies both external constraints. If the certified feasible set is
-empty, VERA returns `ABSTAIN`.
+For attacker `a`, the leakage variable `L_e,a` is its balanced correctness or
+another preregistered bounded recovery score on `e(Z)`. Attackers are trained
+without the certification fold. All variables and edit candidates used by a
+claim-grade run are fixed by the preregistration.
 
-## Why This Is Nontrivial
+The primary shift class is
 
-The theorem is not the obvious claim that erasure can hurt accuracy. The useful
-statement is about decision safety: VERA separates edit construction from edit
-deployment and proves that the abstention rule controls false acceptance of
-unsafe edits under explicit uncertainty assumptions.
+`Q_Gamma(P) = {Q << P : 0 <= dQ/dP <= Gamma}`,
 
-## False-Acceptance Control
+with `Gamma >= 1`. This expresses bounded deployment reweighting without
+requiring environment labels or a single known target density ratio.
 
-The manuscript now includes an explicit corollary: if VERA's simultaneous
-validation intervals cover every target and leakage quantity on the audited
-frontier with probability at least `1-delta`, then the probability that VERA
-accepts an edit violating either external constraint is at most `delta`. This
-turns the coverage event in the frontier theorem into the reviewer-facing risk
-statement: false acceptance is controlled by the failure probability of the
-simultaneous interval system.
+## Lemma A: Robust Paired Audit Bound
 
-## Proof Obligations
+For a bounded variable `V in [a,b]`, define
 
-The proof defines the candidate frontier, the target-preservation constraint,
-the leakage constraint, the confidence radii, and the event on which validation
-estimates uniformly cover external metrics. The cost of conservatism remains:
-VERA may abstain even when an edit would have worked, but it should not accept
-edits outside the certified region on the coverage event.
+`R_Gamma(V;P) = sup_{Q in Q_Gamma(P)} E_Q[V]`.
 
-## Finite-Sample Validation Certificate
+The population quantity equals upper-tail CVaR under `P`. A DKW event gives a
+simultaneous finite-sample upper bound on this quantity for every preregistered
+edit and attacker. This lemma is a standard concentration/DRO building block,
+not the novelty claim. Multiplicity is charged across edits, contracts, source
+classes, and attackers.
 
-The manuscript now includes a Hoeffding plus union-bound theorem for finite
-candidate frontiers. For each edit and each target class or target-source
-group, the validation recall/accuracy estimate receives a simultaneous
-high-probability confidence radius. Balanced accuracy inherits an averaged
-radius over class recalls, and worst-group accuracy inherits a conservative
-maximum group radius. These radii instantiate the abstract `epsilon_U` and
-`epsilon_L` terms in the simultaneous frontier theorem.
+The proof must state all constants, support multiclass balanced leakage through
+class-conditional certification, and keep attacker training independent of the
+certification fold.
 
-The next theory upgrade should tighten these conservative radii, for example
-with empirical Bernstein bounds, bootstrap simultaneous intervals, or a
-stability analysis for learned probes.
+## Theorem B: Certified Erasure Shift Radius
+
+For edit `e`, define its population shift radius as the largest `Gamma >= 1`
+for which paired target harm is at most `tau` and every registered leakage
+contract is at most `lambda` over the entire ambiguity class. If the IID
+contract itself fails, define the radius as zero.
+
+VERA inverts the simultaneous robust-risk bands to return a lower confidence
+bound on that common radius. With probability at least `1-delta`, every
+reported edit radius is no larger than its population radius, simultaneously
+over candidates and over the continuum of deployment budgets. Therefore the
+user may choose any deployment budget no larger than the reported radius after
+seeing the certificate without another multiplicity penalty. The proof must
+also establish monotonicity, the piecewise empirical computation, and the
+right-censoring convention at the declared numerical cap.
+
+## Corollary C: Worst-Group Mixture Shift
+
+When validated groups `g` have stable conditional distributions and deployment
+may use any mixture over those groups, simultaneous per-group upper bounds
+imply the same target and leakage contracts for every mixture. This is a
+corollary and is not presented as the primary novelty.
+
+## Theorem D: Support-Mismatch Impossibility
+
+If deployment may put positive mass outside validation support, two worlds can
+induce exactly the same validation observations but opposite edit outcomes on
+the unsupported region. Therefore no protocol can both accept nontrivially and
+uniformly control false acceptance over that unrestricted shift class. The
+proof must formalize the indistinguishable worlds and connect the result to the
+Camelyon17 single-source-class failure case without claiming that Camelyon17
+alone proves the theorem.
+
+## Corollary E: False Acceptance
+
+With simultaneous confidence level `1-delta`, the probability that VERA reports
+a radius covering a deployment budget at which any declared contract fails is
+at most `delta`.
+
+## Required Comparators
+
+The experiments must compare point selection, an IID LTT certificate, and the
+new ambiguity-robust paired certificate. This isolates the contribution from
+both ordinary validation selection and existing same-distribution risk control.
+
+## Non-Claim
+
+No finite attacker portfolio proves erasure against every measurable recovery
+algorithm. VERA certifies only the preregistered attacker class. A separate
+impossibility or limitation statement must make this boundary explicit.

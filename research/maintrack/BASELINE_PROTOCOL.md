@@ -12,16 +12,19 @@ is safe under the declared epsilon and delta thresholds.
 - GroupDRO-style, group-balanced, IRM-style, and VREx-style probes when the
   benchmark supplies group or environment labels.
 - INLP and LEACE for linear concept removal.
-- R-LACE/RLACE, TaCo, SPLINCE or SPLICE, and MANCE where faithful implementations are
+- MANCE/MANCE++ where faithful implementations are available.
+- R-LACE/RLACE, TaCo, SPLINCE or SPLICE where faithful implementations are
   available.
 - Source-probe projection and VERA frontier candidates as internal stress
   baselines.
 
 ## Proxy Labels
 
-Current SPLINCE/SPLICE-style, R-LACE/RLACE-style, TaCo-style, and MANCE-style rows are
-proxy stress tests unless the official reference implementation is actually run
-and audited. Tables and captions must say proxy when proxy code is used.
+Current SPLINCE/SPLICE-style, R-LACE/RLACE-style, and TaCo-style rows are proxy
+stress tests unless the official reference implementation is actually run and
+audited. MANCE++ now has official-code Waterbirds and Camelyon17 receipts, and
+LEACE has official frozen-feature rows using the pinned `concept-erasure`
+implementation. Tables and captions must say proxy when proxy code is used.
 
 ## Metrics
 

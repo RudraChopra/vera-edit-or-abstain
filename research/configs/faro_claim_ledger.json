@@ -99,11 +99,24 @@
     },
     {
       "key": "baseline_proxy_boundary",
-      "claim": "The upstream inventory pins official repositories for MANCE++, R-LACE, TaCo, and LEACE, while current SPLINCE/SPLICE, R-LACE, TaCo, and LEACE rows remain proxy stress tests unless matched receipts are added.",
+      "claim": "The upstream inventory pins official repositories for MANCE++, R-LACE, TaCo, and LEACE; INLP and LEACE have real frozen-feature reference rows, while current SPLINCE/SPLICE, R-LACE, and TaCo rows remain proxy stress tests unless matched receipts are added.",
       "evidence": [
         "research/maintrack/BASELINE_PROTOCOL.md",
         "research/artifacts/faro_baseline_fairness_report.json",
         "research/artifacts/upstream_baseline_reference_inventory.json",
+        "research/artifacts/linear_eraser_reference_report.json",
+        "research/maintrack/faro_main.tex"
+      ],
+      "manuscript_status": "allowed"
+    },
+    {
+      "key": "inlp_leace_reference_rows",
+      "claim": "The local packet contains real frozen-feature INLP rows and official LEACE rows using the pinned concept-erasure implementation on Waterbirds, Camelyon17, and GaitPDB.",
+      "evidence": [
+        "research/scripts/run_linear_eraser_reference_rows.py",
+        "research/artifacts/linear_eraser_reference_report.json",
+        "research/artifacts/linear_eraser_reference_rows.csv",
+        "research/artifacts/linear_eraser_reference_report.md",
         "research/maintrack/faro_main.tex"
       ],
       "manuscript_status": "allowed"
@@ -188,12 +201,11 @@
     },
     {
       "key": "reference_baseline_parity",
-      "claim": "The current proxy SPLINCE/SPLICE, R-LACE, TaCo, and MANCE rows are official reference implementations.",
+      "claim": "The current proxy SPLINCE/SPLICE, R-LACE, and TaCo rows are official reference implementations.",
       "forbidden_exact_patterns": [
         "SPLINCE reference implementation",
         "R-LACE reference implementation",
         "TaCo reference implementation",
-        "LEACE reference implementation",
         "MANCE reference implementation"
       ]
     }
@@ -207,6 +219,6 @@
   "external_blockers": [
     "CivilComments-WILDS receipt/statistical-report regeneration or rehydration remains required before it can count as a durable local official row.",
     "Local AAAI PDF compilation still requires PDFLaTeX before an actual AAAI upload.",
-    "Exact matched reference receipts for R-LACE, TaCo, LEACE, and SPLINCE/SPLICE remain optional strengthening beyond the scoped protocol claim."
+    "Exact matched reference receipts for R-LACE, TaCo, and SPLINCE/SPLICE remain optional strengthening beyond the scoped protocol claim."
   ]
 }

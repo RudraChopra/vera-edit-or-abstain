@@ -1,0 +1,163 @@
+\section{Shift-Robust Paired Certification}
+\label{app:shift-robust-theory}
+
+Let $P$ denote the validation distribution and let $V:\mathcal{X}\to[a,b]$
+be a bounded audit variable.  In the target-preservation application,
+$V=H_e$ is the paired increase in loss caused by edit $e$ relative to the
+identity edit on the same example.  For $\Gamma\geq 1$, define the ambiguity
+set
+\begin{equation}
+  \mathcal{Q}_{\Gamma}(P)=\left\{Q\ll P:
+  0\leq \frac{\mathrm{d}Q}{\mathrm{d}P}\leq\Gamma
+  \quad P\text{-almost surely}\right\}
+\end{equation}
+and the robust risk
+$\rho_{\Gamma,P}(V)=\sup_{Q\in\mathcal{Q}_{\Gamma}(P)}\mathbb{E}_Q[V]$.
+
+\begin{lemma}[Reweighting--CVaR identity]
+\label{lem:cvar-identity}
+For every bounded $V$ and $\Gamma\geq1$,
+\begin{equation}
+  \rho_{\Gamma,P}(V)
+  =\inf_{\eta\in[a,b]}
+  \left\{\eta+\Gamma\,\mathbb{E}_P[(V-\eta)_+]\right\}.
+\end{equation}
+Thus $\rho_{\Gamma,P}$ is upper-tail conditional value at risk at level
+$1-1/\Gamma$.
+\end{lemma}
+
+\begin{proof}
+Write $w=\mathrm{d}Q/\mathrm{d}P$.  The primal problem maximizes
+$\mathbb{E}_P[wV]$ subject to $0\leq w\leq\Gamma$ and
+$\mathbb{E}_P[w]=1$.  Introducing a multiplier $\eta$ for the equality
+constraint and maximizing pointwise over $w$ gives
+$\eta+\Gamma\mathbb{E}_P[(V-\eta)_+]$.  Strong duality follows because
+$w\equiv1$ is feasible and the bounded linear program has a finite optimum.
+The optimizer places the largest permitted mass on the upper tail of $V$.
+\end{proof}
+
+Given independent validation observations $V_1,\ldots,V_n$, let $\widehat P_n$
+be their empirical distribution and let
+\begin{equation}
+  \widehat\rho_{\Gamma,n}(V)
+  =\inf_{\eta\in[a,b]}
+  \left\{\eta+\frac{\Gamma}{n}\sum_{i=1}^n(V_i-\eta)_+\right\}.
+\end{equation}
+
+\begin{theorem}[Uniform robust paired-edit certificate]
+\label{thm:robust-paired}
+Fix $K$ bounded audit variables before observing their certification folds.
+Variable $k$ has range $[a_k,b_k]$ and $n_k$ independent observations.  Define
+\begin{equation}
+ \epsilon_k=\sqrt{\frac{\log(2K/\delta)}{2n_k}},\qquad
+ U_k=\min\left\{b_k,
+ \widehat\rho_{\Gamma,n_k}(V_k)
+ +\Gamma(b_k-a_k)\epsilon_k\right\}.
+\end{equation}
+Then, with probability at least $1-\delta$, simultaneously for all $k$ and
+all $Q\in\mathcal{Q}_{\Gamma}(P_k)$,
+$\mathbb{E}_Q[V_k]\leq U_k$.
+Consequently, any data-dependent edit selected only when its paired target-harm
+bound is at most $\tau$ and all of its preregistered attacker-leakage bounds
+are at most $\lambda$ satisfies those contracts for every allowed deployment
+distribution.
+\end{theorem}
+
+\begin{proof}
+For one variable, the Dvoretzky--Kiefer--Wolfowitz inequality gives
+$\sup_t|F_n(t)-F(t)|\leq\epsilon_k$ except on an event of probability
+$\delta/K$.  For every $\eta\in[a_k,b_k]$,
+\begin{align}
+ \left|\mathbb{E}_P[(V-\eta)_+]
+ -\mathbb{E}_{\widehat P_n}[(V-\eta)_+]\right|
+ &=\left|\int_{\eta}^{b_k}(F_n(t)-F(t))\,\mathrm{d}t\right|\\
+ &\leq(b_k-a_k)\epsilon_k.
+\end{align}
+Applying this inequality inside Lemma~\ref{lem:cvar-identity} and taking the
+infimum over $\eta$ yields
+$\rho_{\Gamma,P}(V)\leq\widehat\rho_{\Gamma,n}(V)
++\Gamma(b_k-a_k)\epsilon_k$.  A union bound over $K$ audit variables proves
+simultaneous validity.  On this event, every accepted edit obeys each contract;
+selection among accepted edits does not change the event.
+\end{proof}
+
+\begin{corollary}[Worst-group mixture shift]
+\label{cor:mixture}
+Let $P_g$ be validated group-conditional distributions for
+$g\in\mathcal{G}$.  If $\mathbb{E}_{P_g}[V_e]\leq c$ is simultaneously
+certified for every edit $e$ and group $g$, then for every deployment mixture
+$Q_{\pi}=\sum_g\pi_gP_g$ with $\pi$ in the probability simplex,
+$\mathbb{E}_{Q_{\pi}}[V_e]\leq c$.
+\end{corollary}
+
+\begin{proof}
+$\mathbb{E}_{Q_{\pi}}[V_e]=\sum_g\pi_g\mathbb{E}_{P_g}[V_e]\leq
+\sum_g\pi_gc=c$.
+\end{proof}
+
+\begin{corollary}[False acceptance]
+Under the conditions of Theorem~\ref{thm:robust-paired}, the probability that
+VERA accepts an edit violating at least one declared robust contract is at most
+$\delta$.
+\end{corollary}
+
+For edit $e$, let $\mathcal{K}_e$ index its paired target-harm and registered
+leakage contracts, with thresholds $c_k$. Define the population erasure shift
+radius
+\begin{equation}
+ \Gamma_e^\star=\sup\{\Gamma\geq1:
+ \rho_{\Gamma,P_k}(V_k)\leq c_k\ \text{for every }k\in\mathcal{K}_e\},
+\end{equation}
+with $\Gamma_e^\star=0$ when a contract fails at $\Gamma=1$. Let
+$\widehat\Gamma_e$ replace each population robust risk by the upper bound in
+Theorem~\ref{thm:robust-paired}, and use the same zero convention.
+
+\begin{theorem}[Certified erasure shift radius]
+\label{thm:shift-radius}
+With probability at least $1-\delta$, simultaneously for every registered edit
+$e$, $\widehat\Gamma_e\leq\Gamma_e^\star$. The statement holds uniformly over
+the continuum of $\Gamma\geq1$; consequently, a user may select any deployment
+budget $\Gamma\leq\widehat\Gamma_e$ after observing the certificate without an
+additional multiplicity correction. If computation is capped at
+$\Gamma_{\max}$, equality $\widehat\Gamma_e=\Gamma_{\max}$ is reported as
+right-censored.
+\end{theorem}
+
+\begin{proof}
+The DKW event in Theorem~\ref{thm:robust-paired} does not depend on $\Gamma$.
+On that event, for every $k$ and every $\Gamma\geq1$, the reported upper curve
+dominates $\rho_{\Gamma,P_k}(V_k)$. Hence every $\Gamma$ admitted by all
+empirical upper curves is admitted by all population contracts. Taking the
+supremum proves $\widehat\Gamma_e\leq\Gamma_e^\star$ for every edit on the same
+simultaneous event. Robust risk is nondecreasing in $\Gamma$ because the
+ambiguity sets are nested, so the feasible budgets form an interval and
+bisection is valid. Post-certificate choice within that interval leaves the
+event unchanged.
+\end{proof}
+
+\begin{theorem}[Unsupported-mass impossibility]
+\label{thm:unsupported}
+Suppose the allowed deployment class contains a distribution assigning all
+mass to a point outside the support of the validation distribution.  Any
+protocol that controls false acceptance at level $\delta$ uniformly over that
+class can accept a fixed edit with probability at most $\delta$, even in a
+world where the edit is harmless on the unsupported point.
+\end{theorem}
+
+\begin{proof}
+Let validation put all mass on $x_0$, and let $x_1$ be outside its support.
+Construct two worlds that agree on the full distribution of every observable
+validation variable.  In the safe world set the edit harm at $x_1$ to zero.
+In the unsafe world set it to one, above the declared threshold.  Let
+deployment be the point mass at $x_1$.  The protocol's observations, and hence
+its acceptance probability $p$, are identical in the two worlds.  Uniform
+false-acceptance control in the unsafe world requires $p\leq\delta$.  The same
+bound therefore holds in the safe world.  This is a two-point indistinguishability
+argument with total variation zero between the observed experiments.
+\end{proof}
+
+The same construction applies to leakage when a certification split contains
+only one sensitive class: the absent class-conditional representation law can
+be changed arbitrarily without changing any observed sample.  A balanced
+leakage certificate must therefore abstain unless every declared source class
+has validation support or an additional structural assumption is supplied.

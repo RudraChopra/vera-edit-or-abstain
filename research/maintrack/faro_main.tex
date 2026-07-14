@@ -106,6 +106,21 @@ to reduce source recoverability without violating target utility. This makes
 domain-generalization baselines relevant for comparison, but it separates the
 VERA contribution from robust prediction itself.
 
+The closest statistical neighbors are risk-control and selective-abstention
+methods. Risk-controlling prediction sets calibrate set predictors with
+finite-sample holdout guarantees \cite{bates2021rcps}. Learn then Test
+formulates calibration as multiple testing over candidate predictive
+algorithms \cite{angelopoulos2021ltt}, and Pareto Testing controls several
+risks over a frontier of candidate configurations \cite{laufer2022pareto}.
+Selective classification rejects individual examples to trade coverage for
+accuracy \cite{geifman2017selective}. VERA borrows the finite-frontier
+risk-control viewpoint, but applies it to representation editing. Its
+abstention is edit-level rather than example-level: VERA rejects an entire
+representation intervention when validation evidence does not certify the
+target/source contract. The novelty claim is therefore not the generic idea of
+finite candidate testing; it is the erasure-specific protocol, receipts, and
+claim discipline.
+
 \section{Method}
 
 Let $z_i \in \mathbb{R}^d$ be a frozen representation, $y_i$ the target label,
@@ -155,73 +170,39 @@ Step & Operation \\
 \end{tabular}
 \end{table}
 
-\begin{theorem}[Uniform safe acceptance and abstention]
-Let $U_{\mathrm{ext}}(a)$ be the external target utility of edit $a$, let
-$\widehat U_{\mathrm{val}}(a)$ be its validation estimate, and let $\tau$ be the
-minimum acceptable target utility. Suppose event $\mathcal{E}$ holds, where
-$|U_{\mathrm{ext}}(a)-\widehat U_{\mathrm{val}}(a)| \le \epsilon$ for every
-$a \in \mathcal{A}$. If VERA accepts only edits satisfying
-$\widehat U_{\mathrm{val}}(a)-\epsilon \ge \tau$, then every accepted edit has
-$U_{\mathrm{ext}}(a) \ge \tau$ on $\mathcal{E}$. If no edit satisfies this
-lower-confidence-bound condition, VERA returns \texttt{ABSTAIN}.
+\begin{theorem}[Validation safe acceptance]
+Let $a_0$ denote the no-edit representation and let
+$\mathcal{F}\subseteq\mathcal{A}$ be a finite audited frontier. For each
+$a\in \mathcal{F}\cup\{a_0\}$, let $[U^-_a,U^+_a]$ be a simultaneous
+validation confidence interval for target utility and let $[L^-_a,L^+_a]$ be a
+simultaneous validation confidence interval for source leakage, where larger
+$U$ is better and smaller $L$ is better. Assume the intervals cover their
+validation quantities for every audited candidate. If VERA accepts only edits
+satisfying
+\[
+U^+_{a_0}-U^-_a \le \epsilon_U
+\quad\textrm{and}\quad
+L^-_{a_0}-L^+_a \ge \epsilon_L ,
+\]
+then every accepted edit has validation target loss at most $\epsilon_U$ and
+validation source-leakage reduction at least $\epsilon_L$ relative to no edit.
+If no candidate satisfies both inequalities, VERA returns \texttt{ABSTAIN}.
 \end{theorem}
 
 \begin{proof}
-On $\mathcal{E}$, every candidate satisfies
-$U_{\mathrm{ext}}(a) \ge \widehat U_{\mathrm{val}}(a)-\epsilon$. Therefore, if
-VERA accepts an edit $a$ only when
-$\widehat U_{\mathrm{val}}(a)-\epsilon \ge \tau$, the accepted edit also
-satisfies $U_{\mathrm{ext}}(a) \ge \tau$. If no candidate satisfies the same
-lower-confidence-bound condition, the selection set is empty, and the VERA
-decision rule returns \texttt{ABSTAIN}. This proves both safe acceptance on the
-coverage event and abstention when no candidate is certifiable.
+On the simultaneous validation coverage event, no-edit validation utility is at
+most $U^+_{a_0}$ and candidate utility is at least $U^-_a$. Thus the validation
+target loss is at most $U^+_{a_0}-U^-_a\le\epsilon_U$. Similarly, no-edit
+validation leakage is at least $L^-_{a_0}$ and candidate leakage is at most
+$L^+_a$, so the certified leakage reduction is at least
+$L^-_{a_0}-L^+_a\ge\epsilon_L$. If the certified safe set is empty, the
+predeclared decision rule returns \texttt{ABSTAIN}.
 \end{proof}
 
-The theorem is intentionally a decision-safety statement, not a claim that
-erasure can hurt accuracy. Its role is to formalize why abstention is a useful
-output. VERA may be conservative, but under the stated coverage event it does
-not accept an edit that the available evidence cannot certify.
-
-\begin{theorem}[Simultaneous frontier certification]
-Let $U_{\mathrm{ext}}(a)$ denote external target utility and let
-$L_{\mathrm{ext}}(a)$ denote external source leakage, where larger $U$ is better
-and smaller $L$ is better. Let $\widehat U_{\mathrm{val}}(a)$ and
-$\widehat L_{\mathrm{val}}(a)$ be validation estimates on a finite candidate
-frontier $\mathcal{F}$. Fix target threshold $\tau$, leakage threshold $\lambda$,
-and nonnegative radii $\epsilon_U,\epsilon_L$. Suppose event $\mathcal{E}_{F}$
-holds, where for every $a \in \mathcal{F}$,
-\[
-|U_{\mathrm{ext}}(a)-\widehat U_{\mathrm{val}}(a)| \le \epsilon_U
-\quad\textrm{and}\quad
-|L_{\mathrm{ext}}(a)-\widehat L_{\mathrm{val}}(a)| \le \epsilon_L .
-\]
-If VERA accepts only edits satisfying
-\[
-\widehat U_{\mathrm{val}}(a)-\epsilon_U \ge \tau
-\quad\textrm{and}\quad
-\widehat L_{\mathrm{val}}(a)+\epsilon_L \le \lambda ,
-\]
-then every accepted edit has $U_{\mathrm{ext}}(a)\ge \tau$ and
-$L_{\mathrm{ext}}(a)\le \lambda$ on $\mathcal{E}_{F}$. If the feasible set is
-empty, VERA returns \texttt{ABSTAIN}.
-\end{theorem}
-
-\begin{proof}
-For any accepted edit $a$, the target condition and $\mathcal{E}_{F}$ imply
-$U_{\mathrm{ext}}(a)\ge \widehat U_{\mathrm{val}}(a)-\epsilon_U\ge\tau$. The
-leakage condition and $\mathcal{E}_{F}$ imply
-$L_{\mathrm{ext}}(a)\le \widehat L_{\mathrm{val}}(a)+\epsilon_L\le\lambda$.
-Thus every accepted edit simultaneously satisfies the external target and
-leakage constraints on the coverage event. If no candidate satisfies the two
-lower/upper confidence-bound inequalities, the certified feasible set is empty,
-and VERA's rule returns \texttt{ABSTAIN}.
-\end{proof}
-
-For a finite frontier, $\mathcal{E}_{F}$ can be obtained by any valid
-simultaneous confidence construction over the $2|\mathcal{F}|$ target and
-leakage estimates, for example Bonferroni-corrected empirical Bernstein or
-bootstrap intervals. VERA does not require these intervals to be tight; wider
-intervals simply make abstention more likely.
+The guarantee is intentionally stated over validation quantities because those
+are the quantities the holdout intervals cover. External-shift performance is
+reported as a locked diagnostic readout, not as a distribution-free consequence
+of validation intervals.
 
 \begin{theorem}[Finite-sample validation certificate]
 Assume that each validation example contributes a bounded Bernoulli success
@@ -257,20 +238,57 @@ radius. These radii can be used as $\epsilon_U$ or $\epsilon_L$ in the
 simultaneous frontier theorem.
 \end{proof}
 
-\begin{corollary}[False-acceptance control]
-If the simultaneous validation intervals used by VERA cover every target and
-leakage quantity on the audited frontier $\mathcal{F}$ with probability at
-least $1-\delta$, then the probability that VERA accepts an edit violating
-either its external target constraint or its external leakage constraint is at
-most $\delta$.
+\begin{corollary}[Validation false-acceptance control]
+If the simultaneous validation intervals used by VERA cover every validation
+target and leakage quantity on the audited frontier $\mathcal{F}$ with
+probability at least $1-\delta$, then the probability that VERA accepts an
+edit violating the validation target-loss or validation leakage-reduction
+contract is at most $\delta$.
 \end{corollary}
 
 \begin{proof}
-By the simultaneous frontier theorem, on the coverage event every accepted edit
-satisfies both external constraints. A false acceptance can therefore occur
+By the validation safe-acceptance theorem, on the coverage event every accepted edit
+satisfies both validation constraints. A false acceptance can therefore occur
 only on the complement of the coverage event, whose probability is at most
 $\delta$.
 \end{proof}
+
+\begin{corollary}[External transfer under bounded shift]
+If, in addition, external target utilities and source leakages differ from
+their validation counterparts by at most $\Delta_U$ and $\Delta_L$ uniformly
+over the accepted frontier, then an accepted edit satisfies the same external
+contract with slack $\epsilon_U+\Delta_U$ and $\epsilon_L-\Delta_L$.
+\end{corollary}
+
+This bounded-shift corollary is not used as a distribution-free claim in the
+experiments. Camelyon17 is explicitly a shifted hospital benchmark, so VERA's
+certificate controls validation quantities; the external split is a locked
+diagnostic readout. It is included not as a distribution-free claim about
+hospital-shift external performance, but as a measured diagnostic.
+
+\section{Protocol Constants}
+
+All official rows use frozen representations, locked train/validation/external
+splits, fresh ridge target/source probes after each edit, and confidence level
+$1-\delta=0.95$. For each balanced accuracy, VERA forms per-class recall
+intervals using Hoeffding radii
+\[
+r_c=\sqrt{\frac{\log(2|\mathcal{F}||\mathcal{G}|/\delta)}{2n_c}},
+\]
+where $\mathcal{G}$ is the set of target classes or target-source groups and
+$n_c$ is the validation count for group $c$. Balanced-accuracy intervals are
+formed by averaging the covered per-class recall bounds; worst-group intervals
+use the most conservative covered group bound.
+
+The full Camelyon17 projection-frontier certificate uses strengths
+$\{0,0.1,0.2,0.35,0.5,0.75,1.0\}$, target-loss budget
+$\epsilon_U=0.02$, and source-reduction target $\epsilon_L=0.05$. The broader
+frontier manifest also records rank candidates $\{1,2,4,8,16,32\}$ and a
+default source-reduction budget of $0.02$ for stress sweeps. Every receipt
+records split counts, label counts, frontier family, threshold values,
+interval construction, and whether external metrics were used in selection. In
+the corrected packet, the Camelyon17 certificate explicitly records
+\texttt{selection\_uses\_external\_metrics=false}.
 
 \section{Benchmarks and Evidence}
 
@@ -368,17 +386,63 @@ class in the external split.
 Baseline & Upstream status & Current claim status \\
 \midrule
 MANCE++ & Official code pinned and run & Waterbirds and Camelyon references \\
+INLP & Local closed-form row run & Real frozen-feature reference row \\
+LEACE & Official code pinned and run & Official frozen-feature reference row \\
 R-LACE & Official code pinned & Proxy until matched receipt \\
 TaCo & Official code pinned & Proxy until matched receipt \\
-LEACE & Official code pinned & Proxy until matched receipt \\
 SPLINCE/SPLICE & No pinned official repo & Proxy or paper-only boundary \\
 \bottomrule
 \end{tabular}
 \caption{Reference-baseline boundary recorded by the upstream inventory audit.
 Pinned code means the official repository and commit are materialized locally;
-it does not by itself create reference parity without a matched VERA receipt.}
+it does not by itself create reference parity without a matched VERA receipt.
+INLP and LEACE now have matched frozen-feature receipts in
+\texttt{linear\_eraser\_reference\_report.json}; R-LACE, TaCo, and
+SPLINCE/SPLICE remain scoped future reference-parity work.}
 \label{tab:reference-boundary}
 \end{table}
+
+\section{Reference Linear Eraser Rows}
+
+Because INLP and LEACE are cheap on frozen features, they are no longer left as
+proxy-only comparisons. The local packet includes real INLP rows and official
+LEACE rows using the pinned \texttt{concept-erasure} implementation. These rows
+are not used to claim universal erasure state of the art; they are used to show
+the target/source tradeoff that VERA is designed to audit.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Dataset & Method & Target BA & Worst group & Leak val. \\
+\midrule
+Waterbirds & No edit & $0.7560$ & $0.3988$ & $0.9065$ \\
+Waterbirds & INLP rank 4 & $0.7778$ & $0.4455$ & $0.8365$ \\
+Waterbirds & LEACE official & $0.5954$ & $0.0701$ & $0.4821$ \\
+Camelyon17 & No edit & $0.8905$ & $0.8464$ & $0.8492$ \\
+Camelyon17 & INLP rank 4 & $0.8943$ & $0.8628$ & $0.8259$ \\
+Camelyon17 & LEACE official & $0.8891$ & $0.8427$ & $0.5015$ \\
+GaitPDB & No edit & $0.6944$ & $0.6667$ & $0.7606$ \\
+GaitPDB & INLP rank 4 & $0.7042$ & $0.6667$ & $0.6152$ \\
+GaitPDB & LEACE official & $0.7239$ & $0.6667$ & $0.5515$ \\
+\bottomrule
+\end{tabular}
+\caption{Real linear eraser rows from
+\texttt{research/artifacts/linear\_eraser\_reference\_report.json}. Lower
+source leakage is better, but target and worst-group damage determine whether
+an eraser is deployable.}
+\label{tab:linear-erasers}
+\end{table}
+
+The linear rows strengthen the submission because they address the cheapest
+close baselines directly. LEACE sharply reduces Waterbirds leakage but
+collapses worst-group accuracy, so an unconditional ``erase more'' objective is
+unsafe. On Camelyon17, INLP rank 4 slightly improves target and worst-group
+metrics while reducing validation leakage, whereas LEACE reduces leakage more
+aggressively with a small target/worst-group cost. VERA's role is to expose
+that tradeoff under a registered contract and abstain when the contract is not
+certified.
 
 \section{Abstention}
 
@@ -426,11 +490,13 @@ not be read as a conventional large-sample significance claim.
 
 The most important limitation is that VERA is a selection and abstention
 protocol, not a universal erasure method. It depends on candidate erasers,
-source labels, target labels, and meaningful validation-to-external uncertainty
-estimates. Full-reference MANCE++ evidence is claim-grade for Waterbirds and
-Camelyon17. The manuscript should therefore avoid any statement that VERA is
-universally state of the art at nonlinear erasure or clinically deployable in
-medical settings.
+source labels, target labels, and a meaningful validation split. External shift
+remains a diagnostic readout unless additional bounded-shift assumptions are
+justified. Full-reference MANCE++ evidence is claim-grade for Waterbirds and
+Camelyon17, and the packet now includes real INLP plus official LEACE
+frozen-feature rows. The manuscript should therefore avoid any statement that
+VERA is universally state of the art at nonlinear erasure or clinically
+deployable in medical settings.
 
 The strongest reviewer objection is that VERA could be mistaken for an erasure
 algorithm and then judged as if it must dominate every modern eraser. The paper
@@ -460,7 +526,7 @@ abstain. This framing is compatible with linear erasers, nonlinear manifold
 erasers, and domain-shift benchmarks. The current evidence package is strong
 enough to support a method-paper draft with explicit boundaries, while the next
 scientific step is to deepen the theory and broaden full-reference erasure
-baselines beyond Waterbirds.
+baselines beyond MANCE++, INLP, and LEACE.
 
 \begin{thebibliography}{9}
 \bibitem{ravfogel2020inlp}
@@ -487,6 +553,25 @@ Koh, P. W. et al. WILDS: A Benchmark of in-the-Wild Distribution Shifts. ICML,
 Sagawa, S., Koh, P. W., Hashimoto, T. B., and Liang, P. Distributionally Robust
 Neural Networks for Group Shifts: On the Importance of Regularization for
 Worst-Case Generalization. arXiv preprint arXiv:1911.08731, 2019.
+
+\bibitem{bates2021rcps}
+Bates, S., Angelopoulos, A., Lei, L., Malik, J., and Jordan, M. I.
+Distribution-Free, Risk-Controlling Prediction Sets. Journal of the ACM,
+68(6), 2021.
+
+\bibitem{angelopoulos2021ltt}
+Angelopoulos, A. N., Bates, S., Cand\`es, E. J., Jordan, M. I., and Lei, L.
+Learn then Test: Calibrating Predictive Algorithms to Achieve Risk Control.
+arXiv preprint arXiv:2110.01052, 2021.
+
+\bibitem{laufer2022pareto}
+Laufer-Goldshtein, B., Fisch, A., Barzilay, R., and Jaakkola, T. Efficiently
+Controlling Multiple Risks with Pareto Testing. arXiv preprint
+arXiv:2210.07913, 2022.
+
+\bibitem{geifman2017selective}
+Geifman, Y. and El-Yaniv, R. Selective Classification for Deep Neural
+Networks. NeurIPS, 2017.
 \end{thebibliography}
 
 \end{document}
