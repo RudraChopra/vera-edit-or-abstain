@@ -36,6 +36,7 @@ REGISTERED_AAAI_TOPICS = {
     "ML: Adversarial Learning & Robustness",
     "ML: Representation Learning",
     "PEAI: AI Evaluation, Auditing & Red Teaming",
+    "RU: Uncertainty Representations",
 }
 
 

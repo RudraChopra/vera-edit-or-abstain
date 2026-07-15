@@ -33,10 +33,10 @@ not authors or citable sources. Because AI assistance in this project was
 extensive, both paper variants contain a full-scope disclosure. The author must
 understand and personally verify this submission.
 
-The registered primary topic is `ML: Evaluation, Benchmarking, Datasets &
-Analysis`, with secondary topics for model editing, robustness, representation
-learning, and AI evaluation/auditing. These are exact AAAI-27 labels and remain
-subject to the author's final reviewer-matching judgment.
+The registered primary topic is `ML: Machine Unlearning, Data Deletion & Model
+Editing`, with secondary topics for robustness, representation learning, AI
+evaluation/auditing, and uncertainty representations. These are exact AAAI-27
+labels and remain subject to the author's final reviewer-matching judgment.
 
 The active sources are:
 

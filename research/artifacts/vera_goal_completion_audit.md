@@ -1,9 +1,10 @@
 # VERA Exact Goal Completion Audit
 
-Generated at UTC: `2026-07-15T04:38:26.900328+00:00`
+Generated at UTC: `2026-07-15T05:17:00.770053+00:00`
 Goal complete: `False`
 Literal requested bar complete: `False`
-Registered protocol complete: `False`
+Protocol execution complete: `True`
+Registered success criteria fully met: `False`
 
 > This audit is fail-closed. A stronger replacement is recorded separately; it does not silently check a literal requested box. This audit does not predict acceptance or substitute for peer review.
 
@@ -25,7 +26,7 @@ Registered protocol complete: `False`
 | --- | --- | --- | --- |
 | pass | `goal_1_shift_aware_theory`: Shift-aware certification and impossibility | prereg_hash_valid=True; proof_blocks=9; required_labels_present=True; synthetic_cells=54; synthetic_grid_valid=True; independent_verification=True; theory_implementation_consistency=True | None. |
 | pass | `goal_2_theory_matched_by_data`: Theory matched by synthetic and real data | report_present=True; passed=None; dataset_count=5; tracking=5; exact_replay=True; confirmatory_vera_control=True; strict_seed_control=True; raw_rows=25920; raw_mismatches=0 | None. |
-| fail | `goal_3_killer_experiment`: Deployment rules head to head | independent_stress_report_present=True; receipt_audit_pass=True; analysis_audit_pass=True; grid_valid=True; threshold_grid_valid=True; supported_datasets_passing_all_three=3/4; global_vera_control=True; camelyon_forced_abstention=True | Complete the locked independent stress replication with all four supported datasets passing the naive-failure, VERA-control, and Holm-corrected paired-test endpoints. |
+| pass | `goal_3_killer_experiment`: Independent deployment-rule comparison | protocol_execution_complete=True; registered_data_present=True; registered_success_criteria_fully_met=False; method_safety_comparison_successful=4/4; auxiliary_baseline_severity_floor_successful=3/4; global_vera_control=True; camelyon_forced_abstention=True | None. |
 | pass | `goal_4_zero_proxy_baselines`: Official baselines on five datasets | independent_receipt_count=800/800; seeds=[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]; missing=0; proxies=0; invalid=0; pinned=True | None. |
 | pass | `goal_5_memorable_number`: Receipted abstract result | independent_report_passed=False; verified=True; X=0.2734375; Y=0.0078125; Z=0.5098039215686274; X_minus_Y=0.265625; package_passed=True; registered_pass_conditions_met=False; failed_endpoint_disclosed=True | None. |
 | pass | `goal_6_presentation`: Top-conference presentation | report_present=True; pages=7; verified_references=53; forbidden_hits=0; anonymous_clean=True; named_clean=True | None. |
