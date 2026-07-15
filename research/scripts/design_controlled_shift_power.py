@@ -203,6 +203,9 @@ def main() -> int:
         raise ValueError(
             "planned seeds must meet the zero-event safety bound and balance datasets"
         )
+    fresh_seed_block = list(range(45, 45 + planned))
+    if report.get("future_seed_block") != fresh_seed_block:
+        raise ValueError("design report and prospective power seed blocks disagree")
     payload = {
         "schema_version": 2,
         "name": "VERA controlled-shift prospective power analysis",
@@ -211,7 +214,7 @@ def main() -> int:
         "design_report_sha256": sha256(args.design),
         "analysis_tier": "exploratory design only; no fresh seeds read",
         "design_seeds": sorted(record["seed"] for record in clusters),
-        "fresh_seed_block": list(range(45, 45 + planned)),
+        "fresh_seed_block": fresh_seed_block,
         "planned_seed_count": planned,
         "fresh_block_disjoint_from_design": not bool(
             set(range(45, 45 + planned))
@@ -255,9 +258,17 @@ def main() -> int:
         "success_wording": {
             "paired_reduction": "positive effect and exact sign-test p < 0.05",
             "safety": "one-sided 95% upper bound at or below 0.05",
-            "usefulness": "safe-retention point estimate at least 0.20",
+            "usefulness": (
+                "seed-cluster percentile-bootstrap 95% lower confidence bound "
+                "for safe retention at least 0.20"
+            ),
             "vector_advantage": "vector/common retention ratio at least 2.0",
         },
+        "primary_multiplicity": (
+            "The overall success claim requires every primary gate to pass and is "
+            "therefore an intersection-union decision; no alpha split is applied "
+            "across those gates. Per-dataset secondary tests use Holm correction."
+        ),
         "claim_boundary": (
             "The power calculation chooses sample size and endpoints only. "
             "Seeds 45 onward must remain unread until protocol and hash commits are pushed."
