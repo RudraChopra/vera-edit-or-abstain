@@ -37,13 +37,18 @@ uniformly control false acceptance and nontrivially accept in the safe world.
 
 ### Empirical Claims
 
-Only outputs generated from the locked seeds 5--12 analysis may be called
-confirmatory. Seeds 0--4 informed protocol design and remain exploratory.
+Only outputs generated from locked post-design seeds may be called
+claim-grade. Seeds 0--4 informed early protocol design and remain exploratory.
+Seeds 5--12 form the balanced confirmatory matrix and threshold/fraction grid.
+Seeds 13--44 form the disjoint independent stress replication.
 
-The official matrix contains exactly 200 receipts: five datasets
+The balanced confirmatory official matrix contains exactly 200 receipts: five datasets
 (Waterbirds, Camelyon17-WILDS, CivilComments-WILDS, Bios, and GaitPDB), five
 pinned official erasers (INLP, R-LACE, LEACE, TaCo, and MANCE++), and eight
 untouched seeds. No proxy row may enter a claim-grade table.
+The independent stress replication contains exactly 800 additional official-code
+receipts: the same five datasets and five pinned erasers over seeds 13--44. Its
+receipt audit must pass before any independent-stress headline is eligible.
 
 The paper may report measured external contract violations as benchmark
 outcomes. It must separately report procedural support mismatch and must state
@@ -58,12 +63,15 @@ candidate/group-count extension, whose multiplicity family includes the
 identity action, may support family-size robustness only if its 432,000
 registered replicates and independent replay pass.
 
-The 32-configuration stress effect may appear in the abstract only if the
-point-selection minus VERA gap is at least 15 percentage points, the independent
-raw-NPZ audit reproduces it, and the same abstract states that the seed-blocked
-comparison did not survive Holm correction. It is a descriptive effect, not a
-successful primary inference. A stronger empirical-superiority headline may
-appear only if every preregistered primary pass condition holds.
+An empirical-superiority abstract headline may appear only if the independent
+stress replication passes every preregistered endpoint: point selection violates
+external contracts in at least 20% of decisions on every supported dataset,
+VERA-IUT remains at or below delta globally and per supported dataset,
+Holm-adjusted one-sided paired McNemar tests pass on all supported datasets, and
+Camelyon17 remains a forced support-boundary abstention case. If any endpoint
+fails, the abstract must report the failure or lead with the theory plus forced
+support-boundary abstention result; no seed, threshold, attacker, or test may be
+replaced post hoc.
 
 ## Statistical Boundaries
 
@@ -98,8 +106,9 @@ budget, or exploratory seed result.
 
 Every published number must trace to a frozen row, receipt, preregistration
 hash, and analysis audit. The anonymous package excludes private datasets and
-large derivatives but includes compact rows, all 200 JSON receipts, hashes,
-analysis code, figures, paper sources, and one-command compact reproduction.
+large derivatives but includes compact rows, all 200 balanced-confirmatory JSON
+receipts, all 800 independent-stress JSON receipts, hashes, analysis code,
+figures, paper sources, and one-command compact reproduction.
 
 Submission remains blocked until two genuine external ML-publisher reviews are
 closed, the human author completes the scientific/authorship verification gate,

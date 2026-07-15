@@ -1,8 +1,10 @@
-# VERA: Validation-Gated Edit-or-Abstain for Reliable Representation Interventions
+# VERA: Verified Erasure under Reweighting Ambiguity
 
 This repository contains the reproducibility-safe public release for VERA,
-a representation-editing protocol that selects a certified source-removing edit
-or returns an abstention certificate when no safe edit is validated.
+a shift-aware decision layer for representation editing. It certifies paired
+target-harm and retrained-attacker leakage contracts under a declared
+support-aware reweighting envelope, or returns abstention when the evidence does
+not support deployment.
 
 Included:
 
@@ -21,13 +23,12 @@ Excluded:
 Main verification commands:
 
 ```bash
-/usr/bin/python3 research/scripts/audit_claim_ledger.py --no-fail
-/tmp/faro-torch-venv/bin/python research/scripts/audit_reference_baseline_scope.py --no-fail
-/usr/bin/python3 research/scripts/audit_reproducibility_packet.py --no-fail
-/usr/bin/python3 research/scripts/audit_maintrack_readiness.py --no-fail
-/usr/bin/python3 research/scripts/audit_goal_completion.py --no-fail
+python research/scripts/reproduce_vera_submission.py
+python research/scripts/audit_goal_completion.py --no-fail
 ```
 
-The large Camelyon17 embedding store and third-party datasets are intentionally
-not committed. The release includes receipts, manifests, scripts, and claim
-boundaries so those artifacts can be regenerated or verified separately.
+The release includes the locked preregistrations, compact receipts, official
+eraser adapters, paper sources, and fail-closed audits. Large third-party
+datasets, frozen embedding stores, and raw per-example arrays are intentionally
+not committed; the anonymous archive records manifests and content hashes for
+those external artifacts.

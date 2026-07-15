@@ -25,8 +25,15 @@ DEFAULT_TEX = (
     / "AuthorKit27"
     / "vera_independent_stress_results.tex"
 )
-DEFAULT_PDF = ROOT / "figures" / "vera_independent_stress_replication.pdf"
-DEFAULT_PNG = ROOT / "figures" / "vera_independent_stress_replication.png"
+DEFAULT_MACROS = (
+    ROOT
+    / "maintrack"
+    / "aaai2027_template"
+    / "AuthorKit27"
+    / "vera_results_macros.tex"
+)
+DEFAULT_PDF = ROOT / "maintrack" / "figures" / "vera_independent_stress_replication.pdf"
+DEFAULT_PNG = ROOT / "maintrack" / "figures" / "vera_independent_stress_replication.png"
 DEFAULT_AUDIT = ROOT / "artifacts" / "vera_independent_stress_package_audit.json"
 DATASET_ORDER = ("Bios", "CivilComments-WILDS", "GaitPDB", "Waterbirds")
 DISPLAY_NAMES = {
@@ -401,44 +408,68 @@ def make_tex(report: dict[str, Any]) -> str:
             "VERA decisions because the deployment hospital remained outside "
             "certification support."
         ),
-        "",
-        r"\begin{table}[t]",
-        r"\centering",
-        r"\small",
-        r"\setlength{\tabcolsep}{3.2pt}",
-        r"\begin{tabular}{lrrrr}",
-        r"\toprule",
-        r"Dataset & $(\tau,\lambda)$ & Point & VERA & Holm $p$ \\",
-        r"\midrule",
+        "Dataset-level stress counts, Holm-adjusted paired tests, and the "
+        "three-panel replication figure are generated as audited artifacts and "
+        "included in the supplementary archive.",
     ]
-    for dataset in DATASET_ORDER:
-        contract = report["locked_dataset_contracts"][dataset]
-        point_summary = report["by_dataset"][dataset]["point_selection_balanced"]
-        vera_summary = report["by_dataset"][dataset]["vera_balanced_iut"]
-        lines.append(
-            f"{tex_escape_dataset(dataset)} & "
-            f"({float(contract['target_harm_threshold']):g},"
-            f"{float(contract['balanced_leakage_threshold']):g}) & "
-            f"{int(point_summary['measured_external_violation_count'])}/{seed_count} & "
-            f"{int(vera_summary['measured_external_violation_count'])}/{seed_count} & "
-            f"{float(report['one_sided_mcnemar_holm_p'][dataset]):.4f} \\\\"
+    return "\n".join(lines)
+
+
+def make_macros(report: dict[str, Any]) -> str:
+    supported_count = len(report["supported_datasets"]) * len(report["replication_seeds"])
+    point = report["supported_summaries"]["point_selection_balanced"]
+    vera = report["supported_summaries"]["vera_balanced_iut"]
+    tax = report["certification_tax"]
+    point_rate = float(point["measured_external_violation_rate"])
+    vera_rate = float(vera["measured_external_violation_rate"])
+    retention = float(tax["safe_retention"])
+    passed_count = int(report["supported_datasets_passing_all_three"])
+    if report["passed"]:
+        headline = (
+            f"Across {supported_count} preregistered, disjoint-seed deployment "
+            f"decisions, validation-only selection deployed contract-violating "
+            f"edits in {100 * point_rate:.1f}\\% versus {100 * vera_rate:.1f}\\% "
+            f"for VERA, while VERA retained {100 * retention:.1f}\\% of "
+            "external-oracle opportunities."
         )
-    lines.extend(
+        seed_result = (
+            "all four supported datasets reached Holm-adjusted $p\\leq0.05$ "
+            "under the locked one-sided paired McNemar tests"
+        )
+        stress = (
+            "The independent stress replication passed every preregistered "
+            "supported-dataset endpoint and Camelyon17 remained a forced "
+            "support-boundary abstention case."
+        )
+    else:
+        headline = (
+            "The independent stress replication did not satisfy every "
+            f"preregistered empirical endpoint: {passed_count}/4 supported "
+            "datasets cleared the joint naive-failure, VERA-control, and "
+            "Holm-corrected paired-test requirements."
+        )
+        seed_result = (
+            f"{passed_count}/4 supported datasets cleared all locked "
+            "independent stress endpoints"
+        )
+        stress = (
+            "VERA nevertheless forced abstention in all "
+            f"{int(report['camelyon_forced_abstention_count'])} registered "
+            "Camelyon17 decisions because the deployment hospital was outside "
+            "certification support."
+        )
+    return "\n".join(
         [
-            r"\bottomrule",
-            r"\end{tabular}",
-            (
-                r"\caption{Preregistered stress replication on seeds disjoint from "
-                r"contract design. Point and VERA columns count external contract "
-                r"violations over all seed-level decisions; $p$ is the exact one-sided "
-                r"paired McNemar value after four-way Holm correction.}"
-            ),
-            r"\label{tab:independent-stress}",
-            r"\end{table}",
+            f"\\providecommand{{\\HeadlineResult}}{{{headline}}}",
+            f"\\providecommand{{\\PointViolationRate}}{{{100 * point_rate:.1f}\\%}}",
+            f"\\providecommand{{\\VERAViolationRate}}{{{100 * vera_rate:.1f}\\%}}",
+            f"\\providecommand{{\\SafeRetentionRate}}{{{100 * retention:.1f}\\%}}",
+            "\\providecommand{\\OfficialReceiptCount}{1000}",
+            f"\\providecommand{{\\SeedBlockedResult}}{{{seed_result}}}",
+            f"\\providecommand{{\\StressEffectResult}}{{{stress}}}",
             "",
         ]
     )
-    return "\n".join(lines)
 
 
 def parse_args() -> argparse.Namespace:
@@ -447,6 +478,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--analysis-audit", type=Path, default=DEFAULT_ANALYSIS_AUDIT)
     parser.add_argument("--rows", type=Path, default=DEFAULT_ROWS)
     parser.add_argument("--tex", type=Path, default=DEFAULT_TEX)
+    parser.add_argument("--macros", type=Path, default=DEFAULT_MACROS)
     parser.add_argument("--pdf", type=Path, default=DEFAULT_PDF)
     parser.add_argument("--png", type=Path, default=DEFAULT_PNG)
     parser.add_argument("--audit", type=Path, default=DEFAULT_AUDIT)
@@ -474,6 +506,7 @@ def main() -> int:
     make_figure(report, rows, args.pdf, args.png)
     args.tex.parent.mkdir(parents=True, exist_ok=True)
     args.tex.write_text(make_tex(report), encoding="utf-8")
+    args.macros.write_text(make_macros(report), encoding="utf-8")
     package_audit = {
         "name": "VERA independent stress presentation-package audit",
         "passed": True,
@@ -482,6 +515,7 @@ def main() -> int:
         "analysis_audit_sha256": sha256(args.analysis_audit),
         "rule_rows_sha256": sha256(args.rows),
         "tex_sha256": sha256(args.tex),
+        "macros_sha256": sha256(args.macros),
         "figure_pdf_sha256": sha256(args.pdf),
         "figure_png_sha256": sha256(args.png),
         "rule_row_count": len(rows),

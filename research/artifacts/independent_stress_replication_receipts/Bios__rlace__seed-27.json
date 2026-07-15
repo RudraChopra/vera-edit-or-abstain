@@ -1,0 +1,199 @@
+{
+  "candidates": [
+    {
+      "audit_npz": "/Volumes/Backups/FARO/artifacts/vera_independent_stress_replication/Bios__rlace__seed-27/candidate-00.npz",
+      "audit_npz_sha256": "2ec42c4bf3cf141d15295c508a6987af14170aee61359b3b04f06c34a7d94b9a",
+      "candidate_key": "R-LACE::rank=1",
+      "method": "R-LACE",
+      "metrics": {
+        "attackers": {
+          "forest": {
+            "certification_balanced_accuracy": 0.9915957031221873,
+            "external_balanced_accuracy": 0.9856576492537313
+          },
+          "linear": {
+            "certification_balanced_accuracy": 0.9922679316618578,
+            "external_balanced_accuracy": 0.9870850488934637
+          },
+          "mlp": {
+            "certification_balanced_accuracy": 0.9896113578571939,
+            "external_balanced_accuracy": 0.9837115607308287
+          },
+          "rbf": {
+            "certification_balanced_accuracy": 0.9726742792875405,
+            "external_balanced_accuracy": 0.9561185183993823
+          }
+        },
+        "certification_mean_paired_target_harm": -0.0005,
+        "certification_target_balanced_accuracy": 0.5914704263220735,
+        "external_mean_paired_target_harm": -0.000875,
+        "external_target_balanced_accuracy": 0.6052955262164007
+      },
+      "provenance": {
+        "commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "iterations": 10000,
+        "official_entrypoint": "rlace.solve_adv_game",
+        "rank": 1,
+        "remote": "https://github.com/shauli-ravfogel/rlace-icml",
+        "reported_upstream_score": 0.990875,
+        "repository": "/Volumes/Backups/FARO/external/rlace-icml"
+      },
+      "strength": "rank=1"
+    },
+    {
+      "audit_npz": "/Volumes/Backups/FARO/artifacts/vera_independent_stress_replication/Bios__rlace__seed-27/candidate-01.npz",
+      "audit_npz_sha256": "ed172a09710f08533a44437d3bd1fed551157c9a57a6cb76d84ff9bf93d959b1",
+      "candidate_key": "R-LACE::rank=4",
+      "method": "R-LACE",
+      "metrics": {
+        "attackers": {
+          "forest": {
+            "certification_balanced_accuracy": 0.7172322555239861,
+            "external_balanced_accuracy": 0.7474608369788986
+          },
+          "linear": {
+            "certification_balanced_accuracy": 0.5520342207906337,
+            "external_balanced_accuracy": 0.5742670001286669
+          },
+          "mlp": {
+            "certification_balanced_accuracy": 0.8968796348376429,
+            "external_balanced_accuracy": 0.8932284965259907
+          },
+          "rbf": {
+            "certification_balanced_accuracy": 0.6698120609045568,
+            "external_balanced_accuracy": 0.683631948018528
+          }
+        },
+        "certification_mean_paired_target_harm": 0.000625,
+        "certification_target_balanced_accuracy": 0.5955026177779841,
+        "external_mean_paired_target_harm": 0.007,
+        "external_target_balanced_accuracy": 0.5970348131441214
+      },
+      "provenance": {
+        "commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "iterations": 10000,
+        "official_entrypoint": "rlace.solve_adv_game",
+        "rank": 4,
+        "remote": "https://github.com/shauli-ravfogel/rlace-icml",
+        "reported_upstream_score": 0.51975,
+        "repository": "/Volumes/Backups/FARO/external/rlace-icml"
+      },
+      "strength": "rank=4"
+    }
+  ],
+  "claim_configuration_verified": true,
+  "claim_grade": true,
+  "created_at": "2026-07-14T22:49:21.739117+00:00",
+  "dataset": "Bios",
+  "environment_classes": {
+    "certification": [
+      0,
+      1
+    ],
+    "construction": [
+      0,
+      1
+    ],
+    "external": [
+      0,
+      1
+    ],
+    "train": [
+      0,
+      1
+    ]
+  },
+  "external_labels_locked_during_edit_construction": true,
+  "git_commit": "9cea1d469bc0fd1a83616f17bba4fa015afec409",
+  "indices": {
+    "certification": {
+      "n": 8000,
+      "sha256": "a3aa085c95524b6b2feaba8057d9ae8e75d12ee37cfa61f0a2061a63d8177748"
+    },
+    "construction": {
+      "n": 2000,
+      "sha256": "3941804d1e9ce131b96f3bc779b7f82d77c3dd56e522f5f981696c8c3f4e296e"
+    },
+    "external": {
+      "n": 8000,
+      "sha256": "ea20facdb515696f3f08922494b8c143f4b5862236cbf5182261cfeb5ef2a3af"
+    },
+    "train": {
+      "n": 8000,
+      "sha256": "97c3e90715efe66ec5828d7133b8aacf1cf87f185a916090e57220da32171e23"
+    }
+  },
+  "locked_configuration": {
+    "dataset_manifest_sha256": "a2f0d7cd2d67eb2cb01a05fccbd32c24519cd916ac9ceb508ca680ce1f3aa1e4",
+    "method": {
+      "candidate_configuration": {
+        "batch_size": 256,
+        "epsilon": 0.002,
+        "evaluate_every": 1000,
+        "iterations": 10000,
+        "optimizer": "SGD",
+        "predictor_optimizer": {
+          "lr": 0.005,
+          "momentum": 0.9,
+          "weight_decay": 1e-05
+        },
+        "projection_optimizer": {
+          "lr": 0.005,
+          "momentum": 0.0,
+          "weight_decay": 0.0001
+        },
+        "ranks": [
+          1,
+          4
+        ]
+      },
+      "candidate_count": 2,
+      "display_name": "RLACE",
+      "upstream_commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+      "upstream_remote": "https://github.com/shauli-ravfogel/rlace-icml"
+    },
+    "runner_parameters": {
+      "max_certification": 8000,
+      "max_construction": 2000,
+      "max_external": 8000,
+      "max_train": 8000,
+      "pca_dimension": 128
+    }
+  },
+  "method_family": "rlace",
+  "method_name": "RLACE",
+  "preprocessing": {
+    "explained_variance_ratio_sum": 0.8444172143936157,
+    "input_dimension": 768,
+    "output_dimension": 128,
+    "pca_fit_on_train_only": true,
+    "standardized_from_train_only": true
+  },
+  "prereg_sha256": "348c2784ec8d6bc9cef3c8449dccd4a07c394f1e3b54f8231b7c9c88b52caad3",
+  "preregistration_path": "/Volumes/Backups/FARO/github_export/vera-edit-or-abstain/research/prereg_independent_stress_replication.json",
+  "seed": 27,
+  "smoke": false,
+  "source_classes": {
+    "certification": [
+      0,
+      1
+    ],
+    "construction": [
+      0,
+      1
+    ],
+    "external": [
+      0,
+      1
+    ],
+    "train": [
+      0,
+      1
+    ]
+  },
+  "split_policy": "eraser train/construction are disjoint group-stratified partitions of official train; certification is untouched official validation",
+  "store_dir": "/Volumes/Backups/FARO/artifacts/bios_rlace_numpy_store",
+  "store_manifest_sha256": "a2f0d7cd2d67eb2cb01a05fccbd32c24519cd916ac9ceb508ca680ce1f3aa1e4"
+}

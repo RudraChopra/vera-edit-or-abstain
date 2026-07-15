@@ -1,0 +1,178 @@
+{
+  "candidates": [
+    {
+      "audit_npz": "/Volumes/Backups/FARO/artifacts/vera_independent_stress_replication/CivilComments-WILDS__mance__seed-37/candidate-00.npz",
+      "audit_npz_sha256": "b0d189f90f5cbad6ca1f6f6214e3e7cd04bbdb902cbcf904c0401e280a881787",
+      "candidate_key": "MANCE++::epsilon=0.05,steps=3",
+      "method": "MANCE++",
+      "metrics": {
+        "attackers": {
+          "forest": {
+            "certification_balanced_accuracy": 0.639930271247111,
+            "external_balanced_accuracy": 0.6413564514468129
+          },
+          "linear": {
+            "certification_balanced_accuracy": 0.49257988908863304,
+            "external_balanced_accuracy": 0.49014262176912776
+          },
+          "mlp": {
+            "certification_balanced_accuracy": 0.7513256189102608,
+            "external_balanced_accuracy": 0.7449361548759139
+          },
+          "rbf": {
+            "certification_balanced_accuracy": 0.6710693030850343,
+            "external_balanced_accuracy": 0.655448717948718
+          }
+        },
+        "certification_mean_paired_target_harm": 0.0135,
+        "certification_target_balanced_accuracy": 0.6231077694235589,
+        "external_mean_paired_target_harm": 0.0195,
+        "external_target_balanced_accuracy": 0.6090671059408159
+      },
+      "provenance": {
+        "commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+        "epsilon": 0.05,
+        "external_label_adapter": "dummy labels are supplied because stop_at_floor=False; edited representations do not depend on evaluation labels",
+        "external_labels_hidden": true,
+        "history": [
+          {
+            "concept_acc": 0.8781874775886536,
+            "control_acc": 0.9986875057220459,
+            "scorer_val_acc": NaN,
+            "step": 0
+          },
+          {
+            "concept_acc": 0.8839374780654907,
+            "control_acc": 0.9986875057220459,
+            "scorer_val_acc": 0.7630000114440918,
+            "step": 1
+          },
+          {
+            "concept_acc": 0.8956249952316284,
+            "control_acc": 0.9986249804496765,
+            "scorer_val_acc": 0.7630000114440918,
+            "step": 2
+          },
+          {
+            "concept_acc": 0.9039999842643738,
+            "control_acc": 0.9985625147819519,
+            "scorer_val_acc": 0.7630000114440918,
+            "step": 3
+          }
+        ],
+        "n_neighbors": 8,
+        "official_entrypoint": "mance.MANCE(variant='mance++').fit_erase",
+        "remote": "https://github.com/MatanAvitan/mance.git",
+        "repository": "/Volumes/Backups/FARO/external/mance",
+        "steps_completed": 3,
+        "steps_requested": 3,
+        "tangent_rank": 7
+      },
+      "strength": "epsilon=0.05,steps=3"
+    }
+  ],
+  "claim_configuration_verified": true,
+  "claim_grade": true,
+  "created_at": "2026-07-14T22:20:41.330942+00:00",
+  "dataset": "CivilComments-WILDS",
+  "environment_classes": {
+    "certification": [
+      0,
+      1
+    ],
+    "construction": [
+      0,
+      1
+    ],
+    "external": [
+      0,
+      1
+    ],
+    "train": [
+      0,
+      1
+    ]
+  },
+  "external_labels_locked_during_edit_construction": true,
+  "git_commit": "9cea1d469bc0fd1a83616f17bba4fa015afec409",
+  "indices": {
+    "certification": {
+      "n": 8000,
+      "sha256": "87e86612624b8367f4aac998ce3e1b1dc1acca8e2ba22c62523159af3fa718d1"
+    },
+    "construction": {
+      "n": 2000,
+      "sha256": "3babf1a13859cb41e0143919657c2864811430349740d7c6ebc9f2c53bb48f64"
+    },
+    "external": {
+      "n": 8000,
+      "sha256": "e774806864c08c6a0554dcc893d7080a2bcd75345cb492783db9ab1d799ad85d"
+    },
+    "train": {
+      "n": 8000,
+      "sha256": "7b1ccfe553aa7732abdc92b1b6d36118bda547dbfd491801672fbbed01b2f703"
+    }
+  },
+  "locked_configuration": {
+    "dataset_manifest_sha256": "bfe7394a8189cfeaa12efbaf038306b0463c70d9e05508eed6f154823b0e5c10",
+    "method": {
+      "candidate_configuration": {
+        "epsilon": 0.05,
+        "eval_hidden": 64,
+        "eval_steps": 80,
+        "n_neighbors": 8,
+        "scorer_hidden": 128,
+        "scorer_refit_every": 3,
+        "scorer_steps": 120,
+        "steps": 3,
+        "stop_at_floor": false,
+        "variant": "mance++"
+      },
+      "candidate_count": 1,
+      "display_name": "MANCE++",
+      "upstream_commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+      "upstream_remote": "https://github.com/MatanAvitan/mance.git"
+    },
+    "runner_parameters": {
+      "max_certification": 8000,
+      "max_construction": 2000,
+      "max_external": 8000,
+      "max_train": 8000,
+      "pca_dimension": 128
+    }
+  },
+  "method_family": "mance",
+  "method_name": "MANCE++",
+  "preprocessing": {
+    "explained_variance_ratio_sum": 0.5691702365875244,
+    "input_dimension": 256,
+    "output_dimension": 128,
+    "pca_fit_on_train_only": true,
+    "standardized_from_train_only": true
+  },
+  "prereg_sha256": "348c2784ec8d6bc9cef3c8449dccd4a07c394f1e3b54f8231b7c9c88b52caad3",
+  "preregistration_path": "/Volumes/Backups/FARO/github_export/vera-edit-or-abstain/research/prereg_independent_stress_replication.json",
+  "seed": 37,
+  "smoke": false,
+  "source_classes": {
+    "certification": [
+      0,
+      1
+    ],
+    "construction": [
+      0,
+      1
+    ],
+    "external": [
+      0,
+      1
+    ],
+    "train": [
+      0,
+      1
+    ]
+  },
+  "split_policy": "eraser train/construction are disjoint group-stratified partitions of official train; certification is untouched official validation",
+  "store_dir": "/Volumes/Backups/FARO/artifacts/civilcomments_lexical_numpy_store",
+  "store_manifest_sha256": "bfe7394a8189cfeaa12efbaf038306b0463c70d9e05508eed6f154823b0e5c10"
+}

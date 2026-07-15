@@ -27,6 +27,8 @@ Included:
 - The locked 216-cell theorem coverage grid over validation size, candidate
   count, validated-group count, and delta in
   `research/prereg_exact_family_grid.json`
+- The locked disjoint-seed independent stress replication in
+  `research/prereg_independent_stress_replication.json`
 - The shift-aware theory and manuscript material under `research/maintrack/`
 - Official-code adapters, analysis, and fail-closed audits under
   `research/scripts/`
@@ -62,6 +64,15 @@ python research/scripts/audit_vera_confirmatory_compact.py
 python research/scripts/analyze_vera_learning_curve_diagnostic.py
 python research/scripts/analyze_vera_confirmatory_ablations.py
 python research/scripts/build_vera_confirmatory_results.py
+python research/scripts/audit_official_eraser_receipts.py \
+  --prereg research/prereg_independent_stress_replication.json \
+  --hash-file research/prereg_independent_stress_replication.sha256 \
+  --receipt-dir research/artifacts/independent_stress_replication_receipts \
+  --output research/artifacts/independent_stress_replication_receipt_audit.json
+python research/scripts/analyze_vera_independent_stress_replication.py
+python research/scripts/audit_vera_independent_stress_replication.py
+python research/scripts/audit_vera_independent_stress_compact.py
+python research/scripts/build_vera_independent_stress_package.py
 python research/scripts/verify_reference_manifest.py
 python -m unittest research.tests.test_vera_robust_certificate \
   research.tests.test_vera_analysis -v
@@ -71,7 +82,8 @@ python research/scripts/audit_goal_completion.py --no-fail
 The five claim-grade eraser families are INLP, R-LACE, LEACE, TaCo, and MANCE++.
 The real study spans Waterbirds, Camelyon17-WILDS, CivilComments-WILDS, Bios,
 and GaitPDB. Seeds 0--4 are disclosed pilot evidence; the locked 200-run
-confirmation uses untouched seeds 5--12. Large third-party datasets, frozen
+confirmation uses untouched seeds 5--12, and the independent stress replication
+uses disjoint seeds 13--44. Large third-party datasets, frozen
 embedding stores, generated audit arrays, and local environments are
 intentionally kept off GitHub; their hashes and compact receipts remain
 auditable here.

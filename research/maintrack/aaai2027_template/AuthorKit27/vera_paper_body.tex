@@ -24,8 +24,9 @@ nontrivially certify unconstrained deployment mass outside its support.
 Finite-family testing and abstention are inherited from Learn Then Test style
 risk control, not claimed as new. The empirical protocol combines a 54-cell
 exact abstention study, a 216-cell candidate-family/group-count coverage grid,
-and a preregistered 200-run official-code matrix spanning five erasers, five
-datasets, and eight untouched seeds. \HeadlineResult
+and preregistered official-code matrices spanning five erasers, five datasets,
+and \OfficialReceiptCount audited receipts when the final independent
+replication is included. \HeadlineResult
 \StressEffectResult
 \end{abstract}
 
@@ -459,16 +460,19 @@ require magnitude symmetry.
   \input{vera_main_results_narrative}
   \input{vera_main_results_table}
 
-  \paragraph{Prespecified stress family.}
-  Across 32 pilot-selected, preregistered stress configurations, point
-  selection deployed externally violating edits in 7/32 cases (21.9\%), while
-  VERA-IUT deployed none. Waterbirds contributed 3/8 and CivilComments 2/8 at
-  their locked stress thresholds; GaitPDB contributed 1/8, and Bios 0/8. The
-  effect direction is consistent---there were no VERA-only violations---but
-  only three seed blocks were nonzero for Waterbirds and CivilComments. Their
-  one-sided seed-blocked raw values were therefore $p=0.125$ and Holm-adjusted
-  values were $p=0.5$. We report the effect size because it is prespecified and
-  receipted, but do not call the paired comparison statistically significant.
+  \IfFileExists{vera_independent_stress_results.tex}{}{
+    \paragraph{Prespecified stress family.}
+    Across 32 pilot-selected, preregistered stress configurations, point
+    selection deployed externally violating edits in 7/32 cases (21.9\%), while
+    VERA-IUT deployed none. Waterbirds contributed 3/8 and CivilComments 2/8 at
+    their locked stress thresholds; GaitPDB contributed 1/8, and Bios 0/8. The
+    effect direction is consistent---there were no VERA-only violations---but
+    only three seed blocks were nonzero for Waterbirds and CivilComments. Their
+    one-sided seed-blocked raw values were therefore $p=0.125$ and
+    Holm-adjusted values were $p=0.5$. We report the effect size because it is
+    prespecified and receipted, but do not call the paired comparison
+    statistically significant.
+  }
 
   \paragraph{What the certificate costs.}
   Over all nine primary threshold pairs, point selection deployed in 45.8\% of
@@ -479,6 +483,10 @@ require magnitude symmetry.
   conservative simultaneous envelope deployed in 10.0\% of configurations.
   At $\Gamma=1.01$, IUT deployment fell to 10.3\% with 0/288 measured
   violations; no edit certified at $\Gamma\ge1.25$ under the locked thresholds.
+
+  \IfFileExists{vera_independent_stress_results.tex}{
+    \input{vera_independent_stress_results}
+  }{}
 
   \paragraph{The attacker portfolio matters.}
   The full four-attacker audit deployed in 12.5\% of configurations with zero
@@ -554,16 +562,14 @@ declared sensitivity parameter, not an empirically discovered fact. A finite
 attacker portfolio cannot prove that no measurable algorithm recovers the
 concept, and suppressing registered leakage does not establish fairness for
 unmeasured concepts. The Camelyon17 experiment is not clinical validation.
-Finally, eight algorithmic seeds quantify fitting and split variation but do
-not make the five benchmark datasets a random sample of deployment domains.
-The primary sign-flip analysis relies on paired sign symmetry; a sign-only
-sensitivity is also reported. Both were fixed before those seeds were run, and
-all four adjusted values are reported regardless of outcome.
-The observed point-versus-VERA differences did not survive Holm correction, so
-the empirical comparison is evidence of a practically relevant failure regime,
-not a definitive population-level superiority claim. Neither internal audits,
-exact synthetic coverage, nor a polished artifact predicts conference
-acceptance.
+Finally, algorithmic seeds quantify fitting and split variation but do not make
+the five benchmark datasets a random sample of deployment domains.
+The primary paired comparison is reported through its locked seed-blocked
+analysis: \SeedBlockedResult. Its sign-flip version relies on paired sign
+symmetry; a sign-only sensitivity is also reported. Both tests were fixed before
+the relevant seeds were run, and all adjusted values are reported regardless of
+outcome. Neither internal audits, exact synthetic coverage, nor a polished
+artifact predicts conference acceptance.
 
 Within those boundaries, VERA changes the output of representation erasure
 from ``apply this edit'' to a falsifiable statement: this edit meets these

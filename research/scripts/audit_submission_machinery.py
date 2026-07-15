@@ -28,6 +28,7 @@ PREREGISTRATIONS = (
     ROOT / "prereg_confirmatory_secondary_ablations.json",
     ROOT / "prereg_real_learning_curve_diagnostic.json",
     ROOT / "prereg_exact_family_grid.json",
+    ROOT / "prereg_independent_stress_replication.json",
 )
 REGISTERED_AAAI_TOPICS = {
     "ML: Evaluation, Benchmarking, Datasets & Analysis",

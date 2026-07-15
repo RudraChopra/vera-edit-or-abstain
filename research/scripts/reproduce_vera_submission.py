@@ -88,9 +88,27 @@ def main() -> int:
         )
     )
     if args.full:
+        steps.append(
+            run(
+                "audit_official_eraser_receipts.py",
+                "--prereg",
+                "research/prereg_independent_stress_replication.json",
+                "--hash-file",
+                "research/prereg_independent_stress_replication.sha256",
+                "--receipt-dir",
+                "research/artifacts/independent_stress_replication_receipts",
+                "--output",
+                "research/artifacts/independent_stress_replication_receipt_audit.json",
+            )
+        )
+        steps.append(run("analyze_vera_independent_stress_replication.py"))
+        steps.append(run("audit_vera_independent_stress_replication.py"))
+    steps.append(run("audit_vera_independent_stress_compact.py"))
+    if args.full:
         steps.append(run("analyze_vera_learning_curve_diagnostic.py"))
         steps.append(run("analyze_vera_confirmatory_ablations.py"))
     steps.append(run("build_vera_confirmatory_results.py"))
+    steps.append(run("build_vera_independent_stress_package.py"))
     steps.append(run("audit_frozen_references.py"))
 
     expected = (

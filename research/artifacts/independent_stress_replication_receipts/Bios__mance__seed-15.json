@@ -1,0 +1,178 @@
+{
+  "candidates": [
+    {
+      "audit_npz": "/Volumes/Backups/FARO/artifacts/vera_independent_stress_replication/Bios__mance__seed-15/candidate-00.npz",
+      "audit_npz_sha256": "e352c238257f70ce0b760c189e05daa0c4088010b17fa2d18b5bc480613d033e",
+      "candidate_key": "MANCE++::epsilon=0.05,steps=3",
+      "method": "MANCE++",
+      "metrics": {
+        "attackers": {
+          "forest": {
+            "certification_balanced_accuracy": 0.6578344000046615,
+            "external_balanced_accuracy": 0.6963424098763056
+          },
+          "linear": {
+            "certification_balanced_accuracy": 0.47231892510957907,
+            "external_balanced_accuracy": 0.5124266015305385
+          },
+          "mlp": {
+            "certification_balanced_accuracy": 0.8518397942307081,
+            "external_balanced_accuracy": 0.8520599701593108
+          },
+          "rbf": {
+            "certification_balanced_accuracy": 0.6448724120242859,
+            "external_balanced_accuracy": 0.6592115079174087
+          }
+        },
+        "certification_mean_paired_target_harm": 0.042375,
+        "certification_target_balanced_accuracy": 0.5822340912683407,
+        "external_mean_paired_target_harm": 0.03175,
+        "external_target_balanced_accuracy": 0.603871481561682
+      },
+      "provenance": {
+        "commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+        "epsilon": 0.05,
+        "external_label_adapter": "dummy labels are supplied because stop_at_floor=False; edited representations do not depend on evaluation labels",
+        "external_labels_hidden": true,
+        "history": [
+          {
+            "concept_acc": 0.6132500171661377,
+            "control_acc": 0.0008125000167638063,
+            "scorer_val_acc": NaN,
+            "step": 0
+          },
+          {
+            "concept_acc": 0.6166250109672546,
+            "control_acc": 0.0005624999757856131,
+            "scorer_val_acc": 0.8930000066757202,
+            "step": 1
+          },
+          {
+            "concept_acc": 0.6256250143051147,
+            "control_acc": 0.0006874999962747097,
+            "scorer_val_acc": 0.8930000066757202,
+            "step": 2
+          },
+          {
+            "concept_acc": 0.6358749866485596,
+            "control_acc": 0.0008125000167638063,
+            "scorer_val_acc": 0.8930000066757202,
+            "step": 3
+          }
+        ],
+        "n_neighbors": 8,
+        "official_entrypoint": "mance.MANCE(variant='mance++').fit_erase",
+        "remote": "https://github.com/MatanAvitan/mance.git",
+        "repository": "/Volumes/Backups/FARO/external/mance",
+        "steps_completed": 3,
+        "steps_requested": 3,
+        "tangent_rank": 7
+      },
+      "strength": "epsilon=0.05,steps=3"
+    }
+  ],
+  "claim_configuration_verified": true,
+  "claim_grade": true,
+  "created_at": "2026-07-14T21:42:37.407402+00:00",
+  "dataset": "Bios",
+  "environment_classes": {
+    "certification": [
+      0,
+      1
+    ],
+    "construction": [
+      0,
+      1
+    ],
+    "external": [
+      0,
+      1
+    ],
+    "train": [
+      0,
+      1
+    ]
+  },
+  "external_labels_locked_during_edit_construction": true,
+  "git_commit": "9cea1d469bc0fd1a83616f17bba4fa015afec409",
+  "indices": {
+    "certification": {
+      "n": 8000,
+      "sha256": "0e067902623899902cf2b5c1b9ed43dff2d6f04a9fe38e1ffa49613305f11b51"
+    },
+    "construction": {
+      "n": 2000,
+      "sha256": "be78fc776ca8bec9cb1d4552042e75df0e850879648fddff62b8df4097464af3"
+    },
+    "external": {
+      "n": 8000,
+      "sha256": "5ed31ffd7d6899e290d34eacd6ae578172c3723e1092931676be3831c850edb2"
+    },
+    "train": {
+      "n": 8000,
+      "sha256": "159ad16199f9705e026c77415d38bc82e66fc2514af1dd4fffe8f53654af9989"
+    }
+  },
+  "locked_configuration": {
+    "dataset_manifest_sha256": "a2f0d7cd2d67eb2cb01a05fccbd32c24519cd916ac9ceb508ca680ce1f3aa1e4",
+    "method": {
+      "candidate_configuration": {
+        "epsilon": 0.05,
+        "eval_hidden": 64,
+        "eval_steps": 80,
+        "n_neighbors": 8,
+        "scorer_hidden": 128,
+        "scorer_refit_every": 3,
+        "scorer_steps": 120,
+        "steps": 3,
+        "stop_at_floor": false,
+        "variant": "mance++"
+      },
+      "candidate_count": 1,
+      "display_name": "MANCE++",
+      "upstream_commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+      "upstream_remote": "https://github.com/MatanAvitan/mance.git"
+    },
+    "runner_parameters": {
+      "max_certification": 8000,
+      "max_construction": 2000,
+      "max_external": 8000,
+      "max_train": 8000,
+      "pca_dimension": 128
+    }
+  },
+  "method_family": "mance",
+  "method_name": "MANCE++",
+  "preprocessing": {
+    "explained_variance_ratio_sum": 0.8427640795707703,
+    "input_dimension": 768,
+    "output_dimension": 128,
+    "pca_fit_on_train_only": true,
+    "standardized_from_train_only": true
+  },
+  "prereg_sha256": "348c2784ec8d6bc9cef3c8449dccd4a07c394f1e3b54f8231b7c9c88b52caad3",
+  "preregistration_path": "/Volumes/Backups/FARO/github_export/vera-edit-or-abstain/research/prereg_independent_stress_replication.json",
+  "seed": 15,
+  "smoke": false,
+  "source_classes": {
+    "certification": [
+      0,
+      1
+    ],
+    "construction": [
+      0,
+      1
+    ],
+    "external": [
+      0,
+      1
+    ],
+    "train": [
+      0,
+      1
+    ]
+  },
+  "split_policy": "eraser train/construction are disjoint group-stratified partitions of official train; certification is untouched official validation",
+  "store_dir": "/Volumes/Backups/FARO/artifacts/bios_rlace_numpy_store",
+  "store_manifest_sha256": "a2f0d7cd2d67eb2cb01a05fccbd32c24519cd916ac9ceb508ca680ce1f3aa1e4"
+}

@@ -27,6 +27,9 @@ DEFAULT_ANONYMOUS_ARCHIVE = REPOSITORY / "dist" / "vera_anonymous_submission.zip
 DEFAULT_REFERENCES = ROOT / "artifacts" / "reference_verification_report.json"
 DEFAULT_VISUAL = ROOT / "artifacts" / "vera_figure1_visual_audit.json"
 DEFAULT_RESULTS = ROOT / "artifacts" / "vera_confirmatory_results_package_audit.json"
+DEFAULT_INDEPENDENT_RESULTS = (
+    ROOT / "artifacts" / "vera_independent_stress_package_audit.json"
+)
 DEFAULT_OUTPUT = ROOT / "artifacts" / "presentation_readiness_audit.json"
 
 ACTIVE_SOURCES = (
@@ -265,6 +268,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--references", type=Path, default=DEFAULT_REFERENCES)
     parser.add_argument("--visual-audit", type=Path, default=DEFAULT_VISUAL)
     parser.add_argument("--results-audit", type=Path, default=DEFAULT_RESULTS)
+    parser.add_argument(
+        "--independent-results-audit",
+        type=Path,
+        default=DEFAULT_INDEPENDENT_RESULTS,
+    )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     return parser.parse_args()
 
@@ -274,6 +282,22 @@ def main() -> int:
     references = load_json(args.references)
     visual = load_json(args.visual_audit)
     results = load_json(args.results_audit)
+    independent_results = load_json(args.independent_results_audit)
+    active_results = independent_results if independent_results else results
+    active_results_kind = "independent_stress" if independent_results else "confirmatory"
+    active_macros_sha = (
+        active_results.get("macros_sha256")
+        or active_results.get("outputs", {}).get(
+            "maintrack/aaai2027_template/AuthorKit27/vera_results_macros.tex"
+        )
+    )
+    macros_hash_ok = (
+        not active_macros_sha
+        or (
+            (AUTHOR_KIT / "vera_results_macros.tex").is_file()
+            and sha256(AUTHOR_KIT / "vera_results_macros.tex") == active_macros_sha
+        )
+    )
     missing = [
         str(path)
         for path in (args.anonymous, args.named, args.figure)
@@ -365,7 +389,8 @@ def main() -> int:
         and named_pdf_clean
         and metadata_clean
         and ai_assistance_disclosed
-        and results.get("passed") is True
+        and active_results.get("passed") is True
+        and macros_hash_ok
     )
     report = {
         "name": "VERA presentation readiness audit",
@@ -419,7 +444,9 @@ def main() -> int:
         "figure_1_sha256": (
             None if not args.figure.is_file() else sha256(args.figure)
         ),
-        "results_package_passed": results.get("passed") is True,
+        "results_package_kind": active_results_kind,
+        "results_package_passed": active_results.get("passed") is True,
+        "results_package_macros_hash_matches": macros_hash_ok,
     }
     args.output.write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"

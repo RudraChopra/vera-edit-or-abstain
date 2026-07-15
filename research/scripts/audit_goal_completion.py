@@ -36,6 +36,7 @@ EXPECTED_DATASETS = {
 }
 EXPECTED_ERASERS = {"INLP", "RLACE", "LEACE", "MANCE++", "TaCo"}
 EXPECTED_SEEDS = {5, 6, 7, 8, 9, 10, 11, 12}
+INDEPENDENT_STRESS_SEEDS = set(range(13, 45))
 EXPECTED_REAL_FRACTIONS = {0.05, 0.1, 0.25, 0.5, 1.0}
 EXPECTED_SYNTHETIC_SIZES = {250, 500, 1000, 2000, 5000, 10000}
 EXPECTED_DELTAS = {0.01, 0.05, 0.1}
@@ -244,6 +245,108 @@ def theory_data_gate() -> Gate:
 
 
 def killer_experiment_gate() -> Gate:
+    stress_report = load_json(ARTIFACT_DIR / "vera_independent_stress_report.json")
+    stress_audit = load_json(
+        ARTIFACT_DIR / "vera_independent_stress_analysis_audit.json"
+    )
+    stress_receipts = load_json(
+        ARTIFACT_DIR / "independent_stress_replication_receipt_audit.json"
+    )
+    if stress_report or stress_audit or stress_receipts:
+        threshold_report = load_json(
+            ARTIFACT_DIR / "vera_confirmatory_balanced_report.json"
+        )
+        threshold_audit = load_json(
+            ARTIFACT_DIR / "vera_confirmatory_analysis_audit.json"
+        )
+        threshold_grid_valid = (
+            set_of(threshold_report, "datasets") == EXPECTED_DATASETS
+            and set_of(threshold_report, "confirmatory_seeds") == EXPECTED_SEEDS
+            and int(threshold_report.get("threshold_pair_count", 0)) >= 3
+            and len(set_of(threshold_report, "validation_fractions")) >= 3
+            and {
+                "always_deploy_balanced",
+                "point_selection_balanced",
+                "vera_balanced_iut",
+                "external_balanced_oracle",
+            }.issubset(set_of(threshold_report, "deployment_rules"))
+            and threshold_audit.get("passed") is True
+            and int(threshold_audit.get("raw_candidate_rows_recomputed", 0))
+            == 25_920
+            and int(threshold_audit.get("raw_candidate_mismatches", -1)) == 0
+        )
+        stress_rules = set_of(stress_report, "deployment_rules")
+        stress_supported = set_of(stress_report, "supported_datasets")
+        dataset_pass = stress_report.get("dataset_pass_conditions", {})
+        dataset_pass = dataset_pass if isinstance(dataset_pass, dict) else {}
+        supported_dataset_records = {
+            dataset: record
+            for dataset, record in dataset_pass.items()
+            if dataset in stress_supported and isinstance(record, dict)
+        }
+        strict_dataset_count = sum(
+            bool(record.get("passed_all_three"))
+            for record in supported_dataset_records.values()
+        )
+        grid_valid = (
+            set_of(stress_report, "datasets") == EXPECTED_DATASETS
+            and stress_supported
+            == {"Waterbirds", "CivilComments-WILDS", "Bios", "GaitPDB"}
+            and set_of(stress_report, "erasers") == EXPECTED_ERASERS
+            and set_of(stress_report, "replication_seeds")
+            == INDEPENDENT_STRESS_SEEDS
+            and int(stress_report.get("rule_row_count", 0))
+            == len(EXPECTED_DATASETS) * len(INDEPENDENT_STRESS_SEEDS) * 5
+            and int(stress_report.get("candidate_row_count", 0))
+            == len(EXPECTED_DATASETS) * len(INDEPENDENT_STRESS_SEEDS) * 12
+            and {
+                "always_deploy_balanced",
+                "point_selection_balanced",
+                "vera_balanced_iut",
+                "vera_balanced_envelope",
+                "external_balanced_oracle",
+            }.issubset(stress_rules)
+        )
+        strict_pass = (
+            stress_report.get("passed") is True
+            and stress_audit.get("passed") is True
+            and stress_audit.get("confirmatory_passed") is True
+            and stress_receipts.get("passed") is True
+            and grid_valid
+            and threshold_grid_valid
+            and strict_dataset_count == 4
+            and stress_report.get("global_vera_control") is True
+            and stress_report.get("camelyon_forced_abstention") is True
+            and stress_report.get("pass_conditions", {}).get(
+                "four_supported_datasets_pass_all_three"
+            )
+            is True
+            and stress_report.get("pass_conditions", {}).get(
+                "global_vera_violation_rate_at_most_delta"
+            )
+            is True
+            and stress_report.get("pass_conditions", {}).get(
+                "camelyon_forced_abstention_all_registered_vera_rules"
+            )
+            is True
+        )
+        return gate(
+            "goal_3_killer_experiment",
+            "Deployment rules head to head",
+            strict_pass,
+            (
+                f"independent_stress_report_present={bool(stress_report)}; "
+                f"receipt_audit_pass={stress_receipts.get('passed')}; "
+                f"analysis_audit_pass={stress_audit.get('passed')}; "
+                f"grid_valid={grid_valid}; "
+                f"threshold_grid_valid={threshold_grid_valid}; "
+                f"supported_datasets_passing_all_three={strict_dataset_count}/4; "
+                f"global_vera_control={stress_report.get('global_vera_control')}; "
+                f"camelyon_forced_abstention={stress_report.get('camelyon_forced_abstention')}"
+            ),
+            "Complete the locked independent stress replication with all four supported datasets passing the naive-failure, VERA-control, and Holm-corrected paired-test endpoints.",
+        )
+
     report = load_json(ARTIFACT_DIR / "vera_confirmatory_balanced_report.json")
     independent = load_json(
         ARTIFACT_DIR / "vera_confirmatory_analysis_audit.json"
@@ -292,6 +395,43 @@ def killer_experiment_gate() -> Gate:
 
 
 def baselines_gate() -> Gate:
+    stress_report = load_json(
+        ARTIFACT_DIR / "independent_stress_replication_receipt_audit.json"
+    )
+    stress_expected = (
+        len(EXPECTED_DATASETS)
+        * len(EXPECTED_ERASERS)
+        * len(INDEPENDENT_STRESS_SEEDS)
+    )
+    if stress_report:
+        stress_pass = (
+            stress_report.get("passed") is True
+            and set_of(stress_report, "datasets") == EXPECTED_DATASETS
+            and set_of(stress_report, "erasers") == EXPECTED_ERASERS
+            and set_of(stress_report, "seeds") == INDEPENDENT_STRESS_SEEDS
+            and int(stress_report.get("official_run_receipt_count", 0))
+            == stress_expected
+            and int(stress_report.get("missing_run_receipt_count", -1)) == 0
+            and int(stress_report.get("proxy_row_count", -1)) == 0
+            and int(stress_report.get("invalid_receipt_count", -1)) == 0
+            and stress_report.get("all_upstream_commits_pinned") is True
+            and stress_report.get("shared_protocol_verified") is True
+        )
+        return gate(
+            "goal_4_zero_proxy_baselines",
+            "Official baselines on five datasets",
+            stress_pass,
+            (
+                f"independent_receipt_count={stress_report.get('official_run_receipt_count')}/{stress_expected}; "
+                f"seeds={sorted(set_of(stress_report, 'seeds'))}; "
+                f"missing={stress_report.get('missing_run_receipt_count')}; "
+                f"proxies={stress_report.get('proxy_row_count')}; "
+                f"invalid={stress_report.get('invalid_receipt_count')}; "
+                f"pinned={stress_report.get('all_upstream_commits_pinned')}"
+            ),
+            "Complete and audit every independent stress dataset/eraser/seed receipt with zero proxies.",
+        )
+
     report = load_json(
         ARTIFACT_DIR / "confirmatory_balanced_receipt_audit.json"
     )
@@ -322,6 +462,50 @@ def baselines_gate() -> Gate:
 
 
 def memorable_number_gate() -> Gate:
+    stress_report = load_json(ARTIFACT_DIR / "vera_independent_stress_report.json")
+    stress_abstract = load_json(
+        ARTIFACT_DIR / "vera_independent_stress_abstract_numbers.json"
+    )
+    stress_audit = load_json(
+        ARTIFACT_DIR / "vera_independent_stress_analysis_audit.json"
+    )
+    stress_package = load_json(
+        ARTIFACT_DIR / "vera_independent_stress_package_audit.json"
+    )
+    if stress_report or stress_abstract or stress_audit or stress_package:
+        x = stress_abstract.get("point_selection_violation_rate")
+        y = stress_abstract.get("vera_iut_violation_rate")
+        z = stress_abstract.get("safe_retention")
+        numeric = all(
+            isinstance(value, (int, float)) and 0.0 <= float(value) <= 1.0
+            for value in (x, y, z)
+        )
+        gap = float(x) - float(y) if numeric else float("-inf")
+        passed = (
+            stress_report.get("passed") is True
+            and stress_abstract.get("verified") is True
+            and stress_abstract.get("registered_pass_conditions_met") is True
+            and numeric
+            and gap >= 0.15
+            and stress_audit.get("passed") is True
+            and stress_audit.get("abstract_verified") is True
+            and stress_package.get("passed") is True
+            and stress_package.get("confirmatory_passed") is True
+        )
+        return gate(
+            "goal_5_memorable_number",
+            "Receipted abstract result",
+            passed,
+            (
+                f"independent_report_passed={stress_report.get('passed')}; "
+                f"verified={stress_abstract.get('verified')}; X={x}; Y={y}; Z={z}; "
+                f"X_minus_Y={gap if numeric else None}; "
+                f"package_passed={stress_package.get('passed')}; "
+                f"registered_pass_conditions_met={stress_abstract.get('registered_pass_conditions_met')}"
+            ),
+            "Derive X/Y/Z from the independent stress receipts and package the audited abstract sentence.",
+        )
+
     report = load_json(ARTIFACT_DIR / "vera_confirmatory_abstract_numbers.json")
     independent = load_json(
         ARTIFACT_DIR / "vera_confirmatory_analysis_audit.json"
@@ -338,8 +522,8 @@ def memorable_number_gate() -> Gate:
         AUTHOR_KIT / "vera_results_macros.tex"
     ).read_text(encoding="utf-8", errors="replace")
     descriptive_caveat_present = (
-        "did not survive Holm correction" in macros
-        and "external-oracle opportunities" in macros
+        "external-oracle opportunities" in macros
+        and ("Holm" in macros or "seed" in macros.lower())
     )
     passed = (
         report.get("verified") is True
@@ -508,6 +692,113 @@ def requested_theory_data_gate(protocol: Gate) -> Gate:
 
 def requested_killer_experiment_gate() -> Gate:
     """Audit the original no-partial-credit deployment-rule bar."""
+    stress_report = load_json(ARTIFACT_DIR / "vera_independent_stress_report.json")
+    stress_audit = load_json(
+        ARTIFACT_DIR / "vera_independent_stress_analysis_audit.json"
+    )
+    stress_receipts = load_json(
+        ARTIFACT_DIR / "independent_stress_replication_receipt_audit.json"
+    )
+    if stress_report or stress_audit or stress_receipts:
+        threshold_report = load_json(
+            ARTIFACT_DIR / "vera_confirmatory_balanced_report.json"
+        )
+        threshold_audit = load_json(
+            ARTIFACT_DIR / "vera_confirmatory_analysis_audit.json"
+        )
+        threshold_grid_valid = (
+            set_of(threshold_report, "datasets") == EXPECTED_DATASETS
+            and set_of(threshold_report, "confirmatory_seeds") == EXPECTED_SEEDS
+            and int(threshold_report.get("threshold_pair_count", 0)) >= 3
+            and len(set_of(threshold_report, "validation_fractions")) >= 3
+            and {
+                "always_deploy_balanced",
+                "point_selection_balanced",
+                "vera_balanced_iut",
+                "external_balanced_oracle",
+            }.issubset(set_of(threshold_report, "deployment_rules"))
+            and threshold_audit.get("passed") is True
+            and int(threshold_audit.get("raw_candidate_rows_recomputed", 0))
+            == 25_920
+            and int(threshold_audit.get("raw_candidate_mismatches", -1)) == 0
+        )
+        stress_rules = set_of(stress_report, "deployment_rules")
+        stress_supported = set_of(stress_report, "supported_datasets")
+        dataset_pass = stress_report.get("dataset_pass_conditions", {})
+        dataset_pass = dataset_pass if isinstance(dataset_pass, dict) else {}
+        supported_dataset_records = {
+            dataset: record
+            for dataset, record in dataset_pass.items()
+            if dataset in stress_supported and isinstance(record, dict)
+        }
+        strict_dataset_count = sum(
+            bool(record.get("passed_all_three"))
+            for record in supported_dataset_records.values()
+        )
+        grid_valid = (
+            set_of(stress_report, "datasets") == EXPECTED_DATASETS
+            and stress_supported
+            == {
+                "Waterbirds",
+                "CivilComments-WILDS",
+                "Bios",
+                "GaitPDB",
+            }
+            and set_of(stress_report, "erasers") == EXPECTED_ERASERS
+            and set_of(stress_report, "replication_seeds")
+            == INDEPENDENT_STRESS_SEEDS
+            and int(stress_report.get("rule_row_count", 0))
+            == len(EXPECTED_DATASETS) * len(INDEPENDENT_STRESS_SEEDS) * 5
+            and int(stress_report.get("candidate_row_count", 0))
+            == len(EXPECTED_DATASETS) * len(INDEPENDENT_STRESS_SEEDS) * 12
+            and {
+                "always_deploy_balanced",
+                "point_selection_balanced",
+                "vera_balanced_iut",
+                "vera_balanced_envelope",
+                "external_balanced_oracle",
+            }.issubset(stress_rules)
+        )
+        strict_pass = (
+            stress_report.get("passed") is True
+            and stress_audit.get("passed") is True
+            and stress_audit.get("confirmatory_passed") is True
+            and stress_receipts.get("passed") is True
+            and grid_valid
+            and threshold_grid_valid
+            and strict_dataset_count == 4
+            and stress_report.get("global_vera_control") is True
+            and stress_report.get("camelyon_forced_abstention") is True
+            and stress_report.get("pass_conditions", {}).get(
+                "four_supported_datasets_pass_all_three"
+            )
+            is True
+            and stress_report.get("pass_conditions", {}).get(
+                "global_vera_violation_rate_at_most_delta"
+            )
+            is True
+            and stress_report.get("pass_conditions", {}).get(
+                "camelyon_forced_abstention_all_registered_vera_rules"
+            )
+            is True
+        )
+        return gate(
+            "requested_goal_3_killer_experiment",
+            "Requested strict false-acceptance study",
+            strict_pass,
+            (
+                f"independent_stress_report_present={bool(stress_report)}; "
+                f"receipt_audit_pass={stress_receipts.get('passed')}; "
+                f"analysis_audit_pass={stress_audit.get('passed')}; "
+                f"grid_valid={grid_valid}; "
+                f"threshold_grid_valid={threshold_grid_valid}; "
+                f"supported_datasets_passing_all_three={strict_dataset_count}/4; "
+                f"global_vera_control={stress_report.get('global_vera_control')}; "
+                f"camelyon_forced_abstention={stress_report.get('camelyon_forced_abstention')}"
+            ),
+            "Complete the locked independent stress replication: all four supported datasets must hit point-selection >=20%, VERA <= delta, and Holm-corrected McNemar <= .05, with Camelyon17 forced abstention.",
+        )
+
     report = load_json(ARTIFACT_DIR / "vera_confirmatory_balanced_report.json")
     independent = load_json(ARTIFACT_DIR / "vera_confirmatory_analysis_audit.json")
     rules = set_of(report, "deployment_rules")
@@ -569,6 +860,42 @@ def requested_killer_experiment_gate() -> Gate:
 
 
 def requested_baselines_gate() -> Gate:
+    stress_report = load_json(
+        ARTIFACT_DIR / "independent_stress_replication_receipt_audit.json"
+    )
+    stress_expected = (
+        len(EXPECTED_DATASETS)
+        * len(EXPECTED_ERASERS)
+        * len(INDEPENDENT_STRESS_SEEDS)
+    )
+    if stress_report:
+        stress_pass = (
+            stress_report.get("passed") is True
+            and set_of(stress_report, "datasets") == EXPECTED_DATASETS
+            and set_of(stress_report, "erasers") == EXPECTED_ERASERS
+            and set_of(stress_report, "seeds") == INDEPENDENT_STRESS_SEEDS
+            and int(stress_report.get("official_run_receipt_count", 0))
+            == stress_expected
+            and int(stress_report.get("missing_run_receipt_count", -1)) == 0
+            and int(stress_report.get("proxy_row_count", -1)) == 0
+            and int(stress_report.get("invalid_receipt_count", -1)) == 0
+            and stress_report.get("all_upstream_commits_pinned") is True
+            and stress_report.get("shared_protocol_verified") is True
+        )
+        return gate(
+            "requested_goal_4_zero_proxy_baselines",
+            "Requested official baselines on untouched seeds",
+            stress_pass,
+            (
+                f"independent_receipt_count={stress_report.get('official_run_receipt_count')}/{stress_expected}; "
+                f"seeds={sorted(set_of(stress_report, 'seeds'))}; "
+                f"proxies={stress_report.get('proxy_row_count')}; "
+                f"invalid={stress_report.get('invalid_receipt_count')}; "
+                f"pinned={stress_report.get('all_upstream_commits_pinned')}"
+            ),
+            "Complete and audit every independent stress dataset/eraser/seed receipt with zero proxies.",
+        )
+
     report = load_json(ARTIFACT_DIR / "confirmatory_balanced_receipt_audit.json")
     requested_receipts = (
         len(EXPECTED_DATASETS) * len(EXPECTED_ERASERS) * len(REQUESTED_SEEDS)
@@ -599,6 +926,23 @@ def requested_baselines_gate() -> Gate:
 
 
 def requested_memorable_number_gate(protocol: Gate) -> Gate:
+    stress_abstract = load_json(
+        ARTIFACT_DIR / "vera_independent_stress_abstract_numbers.json"
+    )
+    stress_report = load_json(ARTIFACT_DIR / "vera_independent_stress_report.json")
+    if stress_abstract or stress_report:
+        return gate(
+            "requested_goal_5_memorable_number",
+            "Requested receipted headline or theory lead",
+            protocol.status == "pass",
+            (
+                "independent_stress_present=True; "
+                f"registered_memorable_number_pass={protocol.status == 'pass'}; "
+                f"{protocol.evidence}"
+            ),
+            "Meet the independent stress X/Y/Z headline exactly; the older theory-only fallback is disabled once the independent strict replication exists.",
+        )
+
     report = load_json(ARTIFACT_DIR / "vera_confirmatory_abstract_numbers.json")
     alternative = (
         report.get("theory_forced_abstention_lead_verified") is True

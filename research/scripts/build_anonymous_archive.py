@@ -28,6 +28,8 @@ CORE_FILES = (
     "research/prereg_real_learning_curve_diagnostic.sha256",
     "research/prereg_confirmatory_secondary_ablations.json",
     "research/prereg_confirmatory_secondary_ablations.sha256",
+    "research/prereg_independent_stress_replication.json",
+    "research/prereg_independent_stress_replication.sha256",
     "research/reference_manifest.json",
     "research/maintrack/appendix_shift_robust_theory.tex",
     "research/maintrack/references_verified.bib",
@@ -51,7 +53,13 @@ SCRIPT_FILES = (
     "research/scripts/audit_vera_confirmatory_compact.py",
     "research/scripts/analyze_vera_learning_curve_diagnostic.py",
     "research/scripts/analyze_vera_confirmatory_ablations.py",
+    "research/scripts/analyze_vera_secondary_ablations.py",
     "research/scripts/analyze_vera_real_study.py",
+    "research/scripts/run_parallel_real_study_matrix.py",
+    "research/scripts/analyze_vera_independent_stress_replication.py",
+    "research/scripts/audit_vera_independent_stress_replication.py",
+    "research/scripts/audit_vera_independent_stress_compact.py",
+    "research/scripts/build_vera_independent_stress_package.py",
     "research/scripts/build_vera_confirmatory_results.py",
     "research/scripts/audit_frozen_references.py",
     "research/scripts/official_eraser_adapters.py",
@@ -77,6 +85,14 @@ ARTIFACT_FILES = (
     "research/artifacts/vera_learning_curve_diagnostic.json",
     "research/artifacts/vera_confirmatory_ablation_rows.csv",
     "research/artifacts/vera_confirmatory_ablation_report.json",
+    "research/artifacts/independent_stress_replication_receipt_audit.json",
+    "research/artifacts/vera_independent_stress_rule_rows.csv",
+    "research/artifacts/vera_independent_stress_candidate_rows.csv",
+    "research/artifacts/vera_independent_stress_report.json",
+    "research/artifacts/vera_independent_stress_abstract_numbers.json",
+    "research/artifacts/vera_independent_stress_analysis_audit.json",
+    "research/artifacts/vera_independent_stress_compact_audit.json",
+    "research/artifacts/vera_independent_stress_package_audit.json",
     "research/artifacts/reference_verification_report.json",
 )
 
@@ -93,6 +109,7 @@ PAPER_FILES = (
     "research/maintrack/aaai2027_template/AuthorKit27/vera_supplement_results.tex",
     "research/maintrack/aaai2027_template/AuthorKit27/vera_ablation_results.tex",
     "research/maintrack/aaai2027_template/AuthorKit27/vera_family_grid_results.tex",
+    "research/maintrack/aaai2027_template/AuthorKit27/vera_independent_stress_results.tex",
     "research/maintrack/aaai2027_template/AuthorKit27/aaai2027.sty",
     "research/maintrack/aaai2027_template/AuthorKit27/aaai2027.bst",
 )
@@ -106,6 +123,8 @@ FIGURE_FILES = (
     "research/maintrack/figures/vera_deployment_rules.png",
     "research/maintrack/figures/vera_real_learning_curve.pdf",
     "research/maintrack/figures/vera_real_learning_curve.png",
+    "research/maintrack/figures/vera_independent_stress_replication.pdf",
+    "research/maintrack/figures/vera_independent_stress_replication.png",
 )
 
 
@@ -131,7 +150,16 @@ def required_paths() -> list[Path]:
     )
     if len(receipts) != 200:
         raise RuntimeError(f"expected 200 confirmatory receipts, found {len(receipts)}")
-    paths = [REPOSITORY / value for value in relative] + receipts
+    independent_receipts = sorted(
+        (RESEARCH / "artifacts" / "independent_stress_replication_receipts").glob(
+            "*.json"
+        )
+    )
+    if len(independent_receipts) != 800:
+        raise RuntimeError(
+            f"expected 800 independent stress receipts, found {len(independent_receipts)}"
+        )
+    paths = [REPOSITORY / value for value in relative] + receipts + independent_receipts
     missing = [str(path.relative_to(REPOSITORY)) for path in paths if not path.is_file()]
     if missing:
         raise FileNotFoundError("anonymous archive inputs are missing:\n" + "\n".join(missing))
@@ -142,9 +170,10 @@ def generated_files() -> dict[str, bytes]:
     readme = """# VERA Anonymous Reproduction Archive
 
 This archive contains the locked preregistrations, the independently replayed
-216-cell theorem coverage grid, 200 official-code run receipts, frozen
-candidate- and decision-level rows, independent audits, anonymous paper,
-supplement, and figures.
+216-cell theorem coverage grid, 200 design-stage official-code receipts, the
+800-run disjoint-seed independent stress replication, frozen candidate- and
+decision-level rows, independent audits, anonymous paper, supplement, and
+figures.
 
 OpenAI Codex assisted extensively with research ideation, literature discovery,
 theorem and proof drafting, implementation, experiment orchestration,
@@ -203,6 +232,12 @@ def build(output: Path) -> dict[str, object]:
             )
             for entry in entries
         ),
+        "independent_stress_receipt_count": sum(
+            entry["path"].startswith(
+                "research/artifacts/independent_stress_replication_receipts/"
+            )
+            for entry in entries
+        ),
         "entries": entries,
     }
     manifest_bytes = (
@@ -219,6 +254,9 @@ def build(output: Path) -> dict[str, object]:
         "archive_sha256": sha256(output.read_bytes()),
         "payload_file_count": len(entries),
         "confirmatory_receipt_count": manifest["confirmatory_receipt_count"],
+        "independent_stress_receipt_count": manifest[
+            "independent_stress_receipt_count"
+        ],
         "source_commit": manifest["source_commit"],
     }
 

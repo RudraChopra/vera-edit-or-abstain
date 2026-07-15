@@ -20,6 +20,11 @@ DEFAULT_HASH = ROOT / "prereg_real.sha256"
 DEFAULT_RECEIPTS = ROOT / "artifacts" / "real_study_receipts"
 DEFAULT_REPORT = ROOT / "artifacts" / "official_eraser_receipt_audit.json"
 REQUIRED_ATTACKERS = {"linear", "rbf", "forest", "mlp"}
+MATERIAL_RUNNER_FILES = (
+    "research/scripts/run_official_eraser_frontier.py",
+    "research/scripts/run_parallel_real_study_matrix.py",
+    "research/scripts/official_eraser_adapters.py",
+)
 
 
 def sha256(path: Path) -> str:
@@ -36,6 +41,19 @@ def load_json(path: Path) -> dict[str, Any]:
     except (OSError, json.JSONDecodeError):
         return {}
     return value if isinstance(value, dict) else {}
+
+
+def git_blob_sha256(commit: str, relative_path: str) -> str | None:
+    try:
+        blob = subprocess.run(
+            ["git", "show", f"{commit}:{relative_path}"],
+            cwd=REPOSITORY,
+            check=True,
+            capture_output=True,
+        ).stdout
+    except subprocess.CalledProcessError:
+        return None
+    return hashlib.sha256(blob).hexdigest()
 
 
 def audit(args: argparse.Namespace) -> dict[str, Any]:
@@ -255,8 +273,24 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
     ]
     if mismatched_splits:
         errors.append(f"method families used different split indices: {mismatched_splits}")
-    if len(runner_commits) > 1:
-        errors.append(f"claim-grade runs span multiple runner commits: {sorted(runner_commits)}")
+    material_runner_hashes: dict[str, dict[str, str | None]] = {}
+    material_runner_equivalent = False
+    if runner_commits:
+        for commit in sorted(runner_commits):
+            material_runner_hashes[commit] = {
+                relative_path: git_blob_sha256(commit, relative_path)
+                for relative_path in MATERIAL_RUNNER_FILES
+            }
+        material_runner_equivalent = all(
+            len({hashes.get(relative_path) for hashes in material_runner_hashes.values()}) == 1
+            and next(iter({hashes.get(relative_path) for hashes in material_runner_hashes.values()})) is not None
+            for relative_path in MATERIAL_RUNNER_FILES
+        )
+    if len(runner_commits) > 1 and not material_runner_equivalent:
+        errors.append(
+            "claim-grade runs span materially different runner code commits: "
+            f"{sorted(runner_commits)}"
+        )
     for repository, (commit, remote) in sorted(upstream_repositories.items()):
         path = Path(repository)
         try:
@@ -292,21 +326,20 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
             errors.append(f"could not verify upstream checkout {repository}: {exc}")
 
     runner_commit_contains_prereg = False
-    if len(runner_commits) == 1:
-        runner_commit = next(iter(runner_commits))
+    if runner_commits:
         try:
-            prereg_relative = args.prereg.resolve().relative_to(REPOSITORY.resolve())
-            committed_prereg = subprocess.run(
-                ["git", "show", f"{runner_commit}:{prereg_relative.as_posix()}"],
-                cwd=REPOSITORY,
-                check=True,
-                capture_output=True,
-            ).stdout
-            runner_commit_contains_prereg = hashlib.sha256(committed_prereg).hexdigest() == actual_hash
-        except subprocess.CalledProcessError:
-            runner_commit_contains_prereg = False
+            prereg_relative = args.prereg.resolve().relative_to(REPOSITORY.resolve()).as_posix()
+        except ValueError:
+            prereg_relative = ""
+        prereg_hashes = {
+            commit: git_blob_sha256(commit, prereg_relative)
+            for commit in sorted(runner_commits)
+        }
+        runner_commit_contains_prereg = bool(prereg_relative) and all(
+            value == actual_hash for value in prereg_hashes.values()
+        )
         if not runner_commit_contains_prereg:
-            errors.append("runner commit does not contain the locked preregistration")
+            errors.append("runner commits do not all contain the locked preregistration")
 
     expected_count = len(datasets) * len(methods) * len(seeds)
     passed = (
@@ -317,7 +350,8 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         and not invalid
         and not errors
         and proxy_rows == 0
-        and len(runner_commits) == 1
+        and bool(runner_commits)
+        and material_runner_equivalent
         and runner_commit_contains_prereg
     )
     return {
@@ -346,6 +380,9 @@ def audit(args: argparse.Namespace) -> dict[str, Any]:
         "shared_protocol_verified": not mismatched_splits and not invalid,
         "runner_commits": sorted(runner_commits),
         "runner_commit_contains_locked_preregistration": runner_commit_contains_prereg,
+        "runner_material_files": list(MATERIAL_RUNNER_FILES),
+        "runner_material_file_sha256_by_commit": material_runner_hashes,
+        "runner_material_code_equivalent_across_commits": material_runner_equivalent,
         "upstream_repository_count": len(upstream_repositories),
         "missing_receipts": missing,
         "invalid_receipts": invalid,

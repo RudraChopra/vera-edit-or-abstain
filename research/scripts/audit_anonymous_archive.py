@@ -98,6 +98,7 @@ def main() -> int:
     }
     payload_count = 0
     receipt_count = 0
+    independent_stress_receipt_count = 0
     manifest: dict[str, Any] = {}
 
     if not args.archive.is_file():
@@ -137,14 +138,32 @@ def main() -> int:
                         )
                         for name in actual
                     )
+                    independent_stress_receipt_count = sum(
+                        name.startswith(
+                            "research/artifacts/independent_stress_replication_receipts/"
+                        )
+                        for name in actual
+                    )
                     if receipt_count != 200:
                         failures.append(
                             f"expected 200 confirmatory receipts, found {receipt_count}"
+                        )
+                    if independent_stress_receipt_count != 800:
+                        failures.append(
+                            "expected 800 independent stress receipts, found "
+                            f"{independent_stress_receipt_count}"
                         )
                     if manifest.get("payload_file_count") != payload_count:
                         failures.append("manifest payload count is inconsistent")
                     if manifest.get("confirmatory_receipt_count") != receipt_count:
                         failures.append("manifest receipt count is inconsistent")
+                    if (
+                        manifest.get("independent_stress_receipt_count")
+                        != independent_stress_receipt_count
+                    ):
+                        failures.append(
+                            "manifest independent stress receipt count is inconsistent"
+                        )
                     for name in sorted(actual):
                         data = archive.read(name)
                         entry = declared.get(name, {})
@@ -219,6 +238,7 @@ def main() -> int:
         "archive_sha256": sha256(args.archive.read_bytes()) if args.archive.is_file() else None,
         "payload_file_count": payload_count,
         "confirmatory_receipt_count": receipt_count,
+        "independent_stress_receipt_count": independent_stress_receipt_count,
         "identity_hits": identity_hits,
         "legacy_name_hits": sorted(set(legacy_name_hits)),
         "source_commit": manifest.get("source_commit"),
