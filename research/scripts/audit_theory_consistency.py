@@ -23,6 +23,10 @@ from vera_robust_certificate import (
     empirical_reweighting_risk,
     exact_balanced_leakage_certificate,
 )
+from vera_controlled_shift import (
+    bernoulli_testing_lower_bound,
+    dkw_sufficient_sample_size,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -422,6 +426,53 @@ def check_group_shift_envelope(
     return not failures, maximum_error, checks, failures
 
 
+def check_sample_complexity_formulas() -> tuple[bool, int, list[str]]:
+    failures: list[str] = []
+    checks = 0
+    for gamma in (1.0, 1.1, 1.5, 2.0):
+        for width in (1.0, 2.0):
+            for margin in (0.05, 0.1, 0.2):
+                alpha, beta = 0.01, 0.1
+                observed = dkw_sufficient_sample_size(
+                    robust_range=gamma * width,
+                    margin=margin,
+                    coverage_error=alpha,
+                    power_error=beta,
+                )
+                expected = int(np.ceil(
+                    (gamma * width) ** 2
+                    * (
+                        np.sqrt(np.log(2.0 / alpha))
+                        + np.sqrt(np.log(2.0 / beta))
+                    )
+                    ** 2
+                    / (2.0 * margin**2)
+                ))
+                if observed != expected:
+                    failures.append("DKW sufficient-size implementation mismatch")
+                checks += 1
+    for safe, unsafe in ((0.2, 0.3), (0.4, 0.5), (0.45, 0.55)):
+        alpha, beta = 0.05, 0.1
+        observed = bernoulli_testing_lower_bound(
+            safe_probability=safe,
+            unsafe_probability=unsafe,
+            type_one_error=alpha,
+            type_two_error=beta,
+        )
+        divergence = (
+            safe * np.log(safe / unsafe)
+            + (1.0 - safe) * np.log((1.0 - safe) / (1.0 - unsafe))
+        )
+        expected = max(
+            0,
+            int(np.ceil(np.log(1.0 / (2.0 * (alpha + beta))) / divergence)),
+        )
+        if observed != expected:
+            failures.append("Bernoulli lower-bound implementation mismatch")
+        checks += 1
+    return not failures, checks, failures
+
+
 def main() -> int:
     rng = np.random.default_rng(20270713)
     failures: list[str] = []
@@ -435,8 +486,11 @@ def main() -> int:
         "\\label{prop:source-prior}",
         "\\label{thm:iut}",
         "\\label{cor:mixture}",
-        "\\label{cor:shift-envelope}",
+        "\\label{thm:shift-envelope}",
+        "\\label{cor:common-radius}",
         "\\label{thm:shift-radius}",
+        "\\label{thm:sample-complexity-upper}",
+        "\\label{thm:sample-complexity-lower}",
         "\\label{thm:unsupported}",
         "B_{e,a}(\\eta_0,\\eta_1)",
         "Q_s\\in\\mathcal Q_{\\eta_s}(P_s)",
@@ -468,6 +522,9 @@ def main() -> int:
         balanced_envelope_checks,
         balanced_envelope_failures,
     ) = check_balanced_shift_envelope(rng)
+    sample_complexity_ok, sample_complexity_checks, sample_complexity_failures = (
+        check_sample_complexity_formulas()
+    )
     if not cvar_ok:
         failures.append("empirical CVaR dual does not match the reweighting program")
     if not paired_ok:
@@ -480,6 +537,7 @@ def main() -> int:
     failures.extend(radius_failures)
     failures.extend(envelope_failures)
     failures.extend(balanced_envelope_failures)
+    failures.extend(sample_complexity_failures)
     head = subprocess.run(
         ["git", "rev-parse", "HEAD"],
         cwd=REPOSITORY,
@@ -496,6 +554,7 @@ def main() -> int:
             and balanced_envelope_ok
             and balanced_ok
             and balanced_certificate_ok
+            and sample_complexity_ok
         ),
         "formal_proof_verified": False,
         "novelty_verified": False,
@@ -540,6 +599,10 @@ def main() -> int:
             "passed": balanced_envelope_ok,
             "checks": balanced_envelope_checks,
             "maximum_common_radius_error": balanced_envelope_error,
+        },
+        "sample_complexity": {
+            "passed": sample_complexity_ok,
+            "checks": sample_complexity_checks,
         },
         "failures": failures,
     }

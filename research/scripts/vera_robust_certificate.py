@@ -157,6 +157,28 @@ class IUTFixedProfileCertificate:
         return payload
 
 
+@dataclass(frozen=True)
+class BalancedProfileCertificate:
+    decision: str
+    target_profile: Mapping[str, float]
+    source_profile: Mapping[str, float]
+    delta: float
+    candidate_count: int
+    candidate_failure_probability: float
+    limiting_contracts: tuple[str, ...]
+    certificates: tuple[RiskCertificate, ...]
+    method: str = "candidate_iut_exact_balanced_vector_profile"
+
+    def to_dict(self) -> dict[str, object]:
+        payload = asdict(self)
+        payload["target_profile"] = dict(self.target_profile)
+        payload["source_profile"] = dict(self.source_profile)
+        payload["certificates"] = [
+            certificate.to_dict() for certificate in self.certificates
+        ]
+        return payload
+
+
 def _as_bounded_array(
     values: Iterable[float], *, lower: float, upper: float
 ) -> np.ndarray:
@@ -379,6 +401,206 @@ def exact_balanced_leakage_certificate(
         method="exact_balanced_leakage",
         confidence_details=details,
     )
+
+
+def exact_balanced_leakage_profile_certificate(
+    key: str,
+    correct: Iterable[float],
+    source: Iterable[int],
+    *,
+    source_profile: Mapping[str | int, float],
+    failure_probability: float,
+) -> RiskCertificate:
+    """Certify balanced leakage under separate source-conditional budgets."""
+
+    profile = {str(key): float(value) for key, value in source_profile.items()}
+    if set(profile) != {"0", "1"}:
+        raise ValueError("source_profile must provide source classes 0 and 1")
+    if any(value < 1.0 or not np.isfinite(value) for value in profile.values()):
+        raise ValueError("source-profile budgets must be finite and at least one")
+    correctness = _as_bounded_array(correct, lower=0.0, upper=1.0)
+    source_array = np.asarray(list(source), dtype=np.int64)
+    if source_array.ndim != 1 or len(source_array) != len(correctness):
+        raise ValueError("source must be one-dimensional and match correctness")
+    if set(map(int, np.unique(source_array))) != {0, 1}:
+        raise ValueError("balanced leakage requires represented source classes {0, 1}")
+    if not 0.0 < failure_probability < 1.0:
+        raise ValueError("failure_probability must lie in (0, 1)")
+
+    class_alpha = failure_probability / 2.0
+    empirical_components: list[float] = []
+    upper_components: list[float] = []
+    details: dict[str, float | int | str] = {
+        "interval": "two class-conditional one-sided Clopper-Pearson bounds",
+        "aggregation": "equal-weight robust class recall",
+    }
+    for source_class in (0, 1):
+        values = correctness[source_array == source_class]
+        successes = int(np.sum(values == 1))
+        n_class = int(len(values))
+        gamma = profile[str(source_class)]
+        probability_upper = _clopper_pearson_upper(
+            successes, n_class, class_alpha
+        )
+        empirical_components.append(empirical_reweighting_risk(values, gamma))
+        upper_components.append(min(1.0, gamma * probability_upper))
+        details[f"class_{source_class}_n"] = n_class
+        details[f"class_{source_class}_successes"] = successes
+        details[f"class_{source_class}_probability_upper"] = probability_upper
+        details[f"class_{source_class}_gamma"] = gamma
+    return RiskCertificate(
+        key=key,
+        n=int(len(correctness)),
+        gamma=max(profile.values()),
+        lower=0.0,
+        upper=1.0,
+        empirical_robust_risk=float(np.mean(empirical_components)),
+        dkw_epsilon=0.0,
+        simultaneous_failure_probability=float(failure_probability),
+        upper_confidence_bound=float(np.mean(upper_components)),
+        method="exact_balanced_leakage_vector_profile",
+        confidence_details=details,
+    )
+
+
+def balanced_profile_contract_certificates(
+    target_samples: Mapping[str, Iterable[float]],
+    leakage_correct: Mapping[str, Iterable[float]],
+    source: Iterable[int],
+    *,
+    target_profile: Mapping[str, float],
+    source_profile: Mapping[str | int, float],
+    local_failure_probability: float,
+) -> dict[str, RiskCertificate]:
+    """Evaluate every contract at one anisotropic deployment profile."""
+
+    normalized_target = {str(key): float(value) for key, value in target_profile.items()}
+    if set(normalized_target) != set(target_samples):
+        raise ValueError("target_profile and target_samples must have identical keys")
+    if any(
+        value < 1.0 or not np.isfinite(value)
+        for value in normalized_target.values()
+    ):
+        raise ValueError("target-profile budgets must be finite and at least one")
+    certificates = {
+        key: exact_discrete_risk_certificate(
+            key,
+            values,
+            gamma=normalized_target[key],
+            failure_probability=local_failure_probability,
+            support=(-1, 0, 1),
+        )
+        for key, values in target_samples.items()
+    }
+    for attacker, values in leakage_correct.items():
+        key = f"balanced_leakage::{attacker}"
+        certificates[key] = exact_balanced_leakage_profile_certificate(
+            key,
+            values,
+            source,
+            source_profile=source_profile,
+            failure_probability=local_failure_probability,
+        )
+    return certificates
+
+
+def certify_balanced_iut_profile(
+    target_samples: Mapping[str, Iterable[float]],
+    leakage_correct: Mapping[str, Iterable[float]],
+    source: Iterable[int],
+    *,
+    target_profile: Mapping[str, float],
+    source_profile: Mapping[str | int, float],
+    delta: float,
+    candidate_count: int,
+    target_threshold: float,
+    leakage_threshold: float,
+) -> BalancedProfileCertificate:
+    """Candidate-wise IUT at a fixed anisotropic shift profile."""
+
+    if candidate_count <= 0:
+        raise ValueError("candidate_count must be positive")
+    if not 0.0 < delta < 1.0:
+        raise ValueError("delta must lie in (0, 1)")
+    candidate_alpha = delta / candidate_count
+    certificates = balanced_profile_contract_certificates(
+        target_samples,
+        leakage_correct,
+        source,
+        target_profile=target_profile,
+        source_profile=source_profile,
+        local_failure_probability=candidate_alpha,
+    )
+    thresholds = {
+        key: target_threshold if key.startswith("target::") else leakage_threshold
+        for key in certificates
+    }
+    margins = {
+        key: thresholds[key] - certificate.upper_confidence_bound
+        for key, certificate in certificates.items()
+    }
+    worst = min(margins.values())
+    return BalancedProfileCertificate(
+        decision="EDIT" if all(margin >= 0.0 for margin in margins.values()) else "ABSTAIN",
+        target_profile={str(key): float(value) for key, value in target_profile.items()},
+        source_profile={str(key): float(value) for key, value in source_profile.items()},
+        delta=float(delta),
+        candidate_count=int(candidate_count),
+        candidate_failure_probability=float(candidate_alpha),
+        limiting_contracts=tuple(
+            sorted(key for key, margin in margins.items() if margin <= worst + 1e-12)
+        ),
+        certificates=tuple(certificates[key] for key in sorted(certificates)),
+    )
+
+
+def balanced_profile_in_envelope(
+    envelope: BalancedShiftEnvelopeCertificate,
+    *,
+    target_profile: Mapping[str | int, float],
+    source_profile: Mapping[str | int, float],
+    tolerance: float = 1e-12,
+) -> bool:
+    """Return whether a full profile satisfies the reported joint envelope."""
+
+    if envelope.unsupported_target_environments:
+        return False
+    target = {str(key): float(value) for key, value in target_profile.items()}
+    source = {str(key): float(value) for key, value in source_profile.items()}
+    if set(target) != set(envelope.target_environment_radii):
+        raise ValueError("target profile must provide every registered environment")
+    if set(source) != {"0", "1"}:
+        raise ValueError("source profile must provide source classes 0 and 1")
+    if any(
+        value < 1.0 or not np.isfinite(value)
+        for value in (*target.values(), *source.values())
+    ):
+        raise ValueError("profile budgets must be finite and at least one")
+    if any(
+        target[group] > float(radius) + tolerance
+        for group, radius in envelope.target_environment_radii.items()
+    ):
+        return False
+
+    leakage_curves = {
+        key: details
+        for key, details in envelope.simultaneous_curve_parameters.items()
+        if key.startswith("balanced_leakage::")
+    }
+    if not leakage_curves:
+        return False
+    for details in leakage_curves.values():
+        upper = 0.5 * sum(
+            min(
+                1.0,
+                source[str(source_class)]
+                * float(details[f"class_{source_class}_probability_upper"]),
+            )
+            for source_class in (0, 1)
+        )
+        if upper > float(details["threshold"]) + tolerance:
+            return False
+    return True
 
 
 def balanced_contract_certificates(

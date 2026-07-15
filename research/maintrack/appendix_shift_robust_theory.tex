@@ -53,6 +53,25 @@ be their empirical distribution and let
   \left\{\eta+\frac{\Gamma}{n}\sum_{i=1}^n(V_i-\eta)_+\right\}.
 \end{equation}
 
+\paragraph{Probability space and protocol contract.}
+Let $\mathcal F_0$ contain everything fixed before certification: the
+construction data and randomness, the finite candidate edits, whether identity
+is selectable, target probes, registered attackers, audit variables, required
+environment and source cells, thresholds, confidence level, candidate utility
+rule, and the ambiguity model and profile caps (but not the eventual profile
+chosen inside a reported envelope). Conditional on
+$\mathcal F_0$, certification examples are independent draws from the declared
+reference law. Within a represented cell, their audit values are therefore
+i.i.d. from its conditional law; validity may be conditioned on the realized
+cell count. Candidates and components may share examples, and no independence
+across candidates, environments, or attackers is assumed. Probability below is
+over the certification draw and any protocol randomness not already included
+in $\mathcal F_0$. The guarantees hold conditionally for every admissible
+realization of $\mathcal F_0$ and hence also unconditionally by iterated
+expectation. A candidate, attacker, threshold, or screening rule chosen using
+certification outcomes is outside this contract unless its adaptivity is
+explicitly covered by the confidence construction.
+
 \begin{theorem}[Uniform robust paired-edit certificate]
 \label{thm:robust-paired}
 Fix $K$ bounded audit variables before observing their certification folds.
@@ -229,13 +248,33 @@ Profiles that place deployment mass on an unobserved required environment are
 excluded. A missing source class excludes balanced-leakage certification
 unless a structural assumption identifies its conditional recall.
 
-\begin{corollary}[Support-aware erasure shift envelope]
-\label{cor:shift-envelope}
+\begin{theorem}[Support-aware erasure shift envelope]
+\label{thm:shift-envelope}
 With probability at least $1-\delta$, simultaneously for every registered edit
 $e$, every deployment profile in its certified envelope satisfies every
 registered target and balanced-leakage contract. Environment mixture weights
 and source-class prevalences may be chosen arbitrarily after certification.
-The largest certified common budget is
+Profiles may also be chosen after inspecting the envelope without another
+multiplicity correction. A required target environment or source class with
+zero certification observations is excluded rather than extrapolated.
+\end{theorem}
+
+\begin{proof}
+The simultaneous event used for the individual curves already ranges over
+every edit, target environment, source class, and attacker, and each curve is
+valid for every value of its density-ratio argument. On that event, membership
+in Eq.~\eqref{eq:envelope} controls target harm for every allowed $Q_g$ and
+balanced leakage for every allowed $Q_s$. Arbitrary environment mixing
+preserves the target threshold by Corollary~\ref{cor:mixture}; source prevalence
+does not enter Eq.~\eqref{eq:balanced-leakage}. Inspecting or intersecting
+objects valid on this same event does not spend additional error probability.
+An unobserved required conditional law has no confidence curve and therefore
+contributes no admissible envelope coordinate.
+\end{proof}
+
+\begin{corollary}[Common radius and post-certification profile choice]
+\label{cor:common-radius}
+Under Theorem~\ref{thm:shift-envelope}, the largest certified common budget is
 \begin{equation}
  \widehat\Gamma_e=\sup\{\Gamma\geq1:
  (\Gamma\mathbf 1_{|\mathcal G|},\Gamma,\Gamma)
@@ -247,15 +286,9 @@ after certification.
 \end{corollary}
 
 \begin{proof}
-The simultaneous event used for the individual curves already ranges over
-every edit, target environment, source class, and attacker. On that event,
-membership in Eq.~\eqref{eq:envelope} controls target harm for every allowed
-$Q_g$ and balanced leakage for every allowed $Q_s$. Arbitrary environment
-mixing preserves the target threshold by Corollary~\ref{cor:mixture}; source
-prevalence does not enter Eq.~\eqref{eq:balanced-leakage}. Restricting to the
-diagonal profile gives the common radius. Inspecting or intersecting objects
-that are all valid on the same event does not spend additional error
-probability.
+Restrict Theorem~\ref{thm:shift-envelope} to the diagonal profile. Both the
+diagonal supremum and any later anisotropic profile choice are functions of the
+same simultaneous confidence event.
 \end{proof}
 
 \begin{corollary}[False acceptance]
@@ -296,6 +329,75 @@ simultaneous event. Robust risk is nondecreasing in $\Gamma$ because the
 ambiguity sets are nested, so the feasible budgets form an interval and
 bisection is valid. Post-certificate choice within that interval leaves the
 event unchanged.
+\end{proof}
+
+\begin{theorem}[Sufficient certification sample size]
+\label{thm:sample-complexity-upper}
+Fix a component with range length $R=b-a$, declared budget $\Gamma_0$, and
+threshold $c$. Construct its DKW upper curve with component undercoverage
+probability $\alpha$. If its population robust risk obeys
+$\rho_{\Gamma_0,P}(V)\leq c-m$ for margin $m>0$, then
+\begin{equation}
+ n\geq \frac{\Gamma_0^2R^2}{2m^2}
+ \left(\sqrt{\log\frac{2}{\alpha}}+
+       \sqrt{\log\frac{2J}{\beta}}\right)^2
+ \label{eq:sample-complexity-upper}
+\end{equation}
+is sufficient for that component to pass with probability at least
+$1-\beta/J$. Consequently, if all $J$ components of a fixed candidate have
+positive margins and satisfy Eq.~\eqref{eq:sample-complexity-upper}, the
+candidate passes every component with probability at least $1-\beta$.
+For an envelope, any $\Gamma_0>1$ satisfying these margins yields a nontrivial
+certified coordinate with the same probability. Exact discrete intervals can
+improve this sufficient bound but do not weaken it.
+\end{theorem}
+
+\begin{proof}
+Besides the coverage penalty built into the reported upper curve, a second DKW
+event at error $\beta/J$ gives
+$\widehat\rho_{\Gamma_0,n}(V)\leq
+\rho_{\Gamma_0,P}(V)+\Gamma_0R
+\sqrt{\log(2J/\beta)/(2n)}$.
+Thus the reported upper bound is at most $c$ whenever the sum of this sampling
+term and the built-in term
+$\Gamma_0R\sqrt{\log(2/\alpha)/(2n)}$ is at most $m$.
+Solving gives Eq.~\eqref{eq:sample-complexity-upper}; a union bound over the
+$J$ power events proves the joint statement.
+\end{proof}
+
+\begin{theorem}[Bernoulli lower bound]
+\label{thm:sample-complexity-lower}
+Let $L\sim\mathrm{Bernoulli}(p)$ and choose $0<p_0<p_1<1$ such that
+$\Gamma_0p_1\leq1$, $\Gamma_0p_0\leq c$, and
+$\Gamma_0p_1>c$. Consider any possibly randomized protocol based on $n$ i.i.d.
+observations that accepts with probability at least $1-\beta$ at $p_0$ and
+falsely accepts with probability at most $\alpha$ at $p_1$. If
+$\alpha+\beta<1/2$, then
+\begin{equation}
+ n\geq
+ \frac{\log\{1/[2(\alpha+\beta)]\}}
+ {d_{\mathrm{KL}}(\mathrm{Bern}(p_0)\Vert
+                  \mathrm{Bern}(p_1))}.
+ \label{eq:sample-complexity-lower}
+\end{equation}
+In particular, taking robust-risk-separated alternatives
+$p_0=(c-m)/\Gamma_0$ and $p_1=(c+m)/\Gamma_0$ in an interior parameter region
+requires $n=\Omega(\Gamma_0^2m^{-2}\log(1/(\alpha+\beta)))$.
+Thus the quadratic dependence on the shift budget and inverse margin in
+Theorem~\ref{thm:sample-complexity-upper} cannot generally be improved.
+\end{theorem}
+
+\begin{proof}
+Let $A$ be the event that the protocol accepts. The two testing errors satisfy
+$P_{p_0}(A^c)\leq\beta$ and $P_{p_1}(A)\leq\alpha$. The
+Bretagnolle--Huber inequality applied to the product Bernoulli laws gives
+\begin{equation}
+ P_{p_0}(A^c)+P_{p_1}(A)
+ \geq\tfrac12\exp\{-n\,d_{\mathrm{KL}}(p_0\Vert p_1)\}.
+\end{equation}
+Rearranging proves Eq.~\eqref{eq:sample-complexity-lower}. In an interior
+region Bernoulli KL is quadratic in $p_1-p_0=2m/\Gamma_0$, proving the stated
+order lower bound.
 \end{proof}
 
 \begin{theorem}[Unsupported-cell impossibility]
