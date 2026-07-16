@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import hashlib
+import json
 import sys
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -15,11 +18,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from cap8_evaluator import evaluate_configuration_cap  # noqa: E402
 from independent_replay import (  # noqa: E402
     ATTACKERS,
+    EXPECTED_ARRAYS,
     construct_shift,
     envelope_geometry,
     evaluate_configuration,
     integer_allocation,
     infer_primary,
+    load_candidate_frontier,
     leakage_curve,
     target_curve,
 )
@@ -296,6 +301,136 @@ def test_cap_regimes() -> None:
     assert common5["requested_common_profile_in_envelope"]
 
 
+def test_frontier_loader_accepts_multiclass_target_metadata() -> None:
+    study = {
+        "heldout_attacker": "boosted_tree",
+        "methods": {
+            "inlp": {
+                "candidate_count": 3,
+                "candidate_configuration": {"ranks": [1, 2, 3]},
+            },
+            "rlace": {
+                "candidate_count": 3,
+                "candidate_configuration": {"ranks": [1, 2, 3]},
+            },
+            "leace": {
+                "candidate_count": 1,
+                "candidate_configuration": {"candidate": "closed_form"},
+            },
+            "taco": {
+                "candidate_count": 4,
+                "candidate_configuration": {"removals": [1, 2, 3, 4]},
+            },
+            "mance": {
+                "candidate_count": 1,
+                "candidate_configuration": {"epsilon": 0.1, "steps": 5},
+            },
+        },
+    }
+    method_labels = {
+        "inlp": "INLP",
+        "rlace": "R-LACE",
+        "leace": "LEACE",
+        "taco": "TaCo",
+        "mance": "MANCE++",
+    }
+    strengths = {
+        "inlp": ("rank=1", "rank=2", "rank=3"),
+        "rlace": ("rank=1", "rank=2", "rank=3"),
+        "leace": ("closed_form",),
+        "taco": (
+            "components_removed=1",
+            "components_removed=2",
+            "components_removed=3",
+            "components_removed=4",
+        ),
+        "mance": ("epsilon=0.1,steps=5",),
+    }
+    prereg_hash = "a" * 64
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        receipt_root = root / "receipts"
+        audit_root = root / "arrays"
+        receipt_root.mkdir()
+        audit_root.mkdir()
+        n = 4
+        base_arrays = {
+            "source_certification": np.asarray([0, 1, 0, 1], dtype=np.int8),
+            "source_external": np.asarray([0, 1, 0, 1], dtype=np.int8),
+            "environment_certification": np.asarray([0, 0, 1, 1], dtype=np.int8),
+            "environment_external": np.asarray([0, 0, 1, 1], dtype=np.int8),
+            "target_certification": np.asarray([0, 2, 4, 2], dtype=np.int16),
+            "target_external": np.asarray([4, 2, 0, 2], dtype=np.int16),
+            "identity_target_error_certification": np.zeros(n, dtype=np.int8),
+            "identity_target_error_external": np.zeros(n, dtype=np.int8),
+            "edited_target_error_certification": np.zeros(n, dtype=np.int8),
+            "edited_target_error_external": np.zeros(n, dtype=np.int8),
+            "target_harm_certification": np.zeros(n, dtype=np.int8),
+            "target_harm_external": np.zeros(n, dtype=np.int8),
+        }
+        for split in ("certification", "external"):
+            for attacker in ATTACKERS:
+                base_arrays[f"leakage_correct_{split}__{attacker}"] = np.zeros(
+                    n, dtype=np.int8
+                )
+            base_arrays[f"heldout_leakage_correct_{split}__boosted_tree"] = np.zeros(
+                n, dtype=np.int8
+            )
+        assert set(base_arrays) == EXPECTED_ARRAYS
+
+        for method_key, method in method_labels.items():
+            candidates = []
+            run_dir = audit_root / f"Bios__{method_key}__seed-45"
+            run_dir.mkdir()
+            for strength in strengths[method_key]:
+                candidate_key = f"{method}::{strength}"
+                archive = run_dir / f"{candidate_key.replace('/', '_')}.npz"
+                np.savez(archive, **base_arrays)
+                digest = archive.read_bytes()
+                candidates.append(
+                    {
+                        "method": method,
+                        "strength": strength,
+                        "candidate_key": candidate_key,
+                        "audit_npz": str(archive),
+                        "audit_npz_sha256": hashlib.sha256(digest).hexdigest(),
+                    }
+                )
+            receipt = {
+                "dataset": "Bios",
+                "seed": 45,
+                "method_family": method_key,
+                "prereg_sha256": prereg_hash,
+                "claim_grade": True,
+                "smoke": False,
+                "claim_configuration_verified": True,
+                "external_labels_locked_during_edit_construction": True,
+                "heldout_attacker": "boosted_tree",
+                "indices": {
+                    split: {"n": n, "sha256": f"{index}" * 64}
+                    for index, split in enumerate(
+                        ("train", "construction", "certification", "external"), start=1
+                    )
+                },
+                "source_classes": {
+                    "certification": [0, 1],
+                    "external": [0, 1],
+                },
+                "environment_classes": {
+                    "certification": [0, 1],
+                    "external": [0, 1],
+                },
+                "candidates": candidates,
+            }
+            (receipt_root / f"Bios__{method_key}__seed-45.json").write_text(
+                json.dumps(receipt), encoding="utf-8"
+            )
+
+        loaded = load_candidate_frontier(receipt_root, study, "Bios", 45, prereg_hash)
+        assert len(loaded) == 12
+        assert set(np.unique(loaded[0]["certification"]["target"])) == {0, 2, 4}
+
+
 def compare_nested(left, right, path="root") -> None:
     if isinstance(right, dict):
         assert isinstance(left, dict), path
@@ -376,6 +511,8 @@ def main() -> None:
     print("PASS independent nine-rule decisions and cap-8 geometry")
     test_cap_regimes()
     print("PASS below-4, between-4-and-8, above-8, anisotropic, and common fixtures")
+    test_frontier_loader_accepts_multiclass_target_metadata()
+    print("PASS independent loader accepts multiclass target metadata")
     test_primary_inference()
     print("PASS independent primary inference and 20,000-cluster bootstrap")
 

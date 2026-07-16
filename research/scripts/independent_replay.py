@@ -629,7 +629,7 @@ def load_candidate_frontier(
                     or not np.isin(
                         environment_values, receipt["environment_classes"][split]
                     ).all()
-                    or not np.isin(target_values, (0, 1)).all()
+                    or not np.array_equal(target_values, np.rint(target_values))
                 ):
                     raise RuntimeError(f"metadata leaves declared support: {key}/{split}")
             metadata = {
