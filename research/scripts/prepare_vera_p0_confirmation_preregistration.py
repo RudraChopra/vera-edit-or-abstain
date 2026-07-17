@@ -21,9 +21,10 @@ ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = ROOT.parent
 DEFAULT_PARENT = ROOT / "prereg_controlled_shift_followup.json"
 DEFAULT_PARENT_RESULT = ROOT / "maintrack" / "CONTROLLED_SHIFT_FOLLOWUP_RESULT_SUMMARY.json"
-DEFAULT_OUTPUT = ROOT / "prereg_vera_p0_confirmation.json"
-P0_RECEIPT_DIR = Path("/Volumes/Backups/FARO/artifacts/vera_p0_confirmation_receipts")
-P0_AUDIT_DIR = Path("/Volumes/Backups/FARO/artifacts/vera_p0_confirmation_audit_arrays")
+SUPERSEDED_PROTOCOL = ROOT / "prereg_vera_p0_confirmation.json"
+DEFAULT_OUTPUT = ROOT / "prereg_vera_p0_confirmation_v2.json"
+P0_RECEIPT_DIR = Path("/Volumes/Backups/FARO/artifacts/vera_p0_confirmation_v2_receipts")
+P0_AUDIT_DIR = Path("/Volumes/Backups/FARO/artifacts/vera_p0_confirmation_v2_audit_arrays")
 P0_SEEDS = list(range(173, 237))
 DEVELOPMENT_SEEDS = list(range(45, 173))
 SUPPORTED_DATASETS = ("Bios", "CivilComments-WILDS", "GaitPDB", "Waterbirds")
@@ -74,6 +75,20 @@ def verify_outcomes_absent() -> None:
     for directory in (P0_RECEIPT_DIR, P0_AUDIT_DIR):
         if directory.exists() and any(directory.iterdir()):
             raise RuntimeError(f"P0 outcome directory is not empty: {directory}")
+
+
+def verify_superseded_protocol_unused() -> None:
+    """Do not amend an already-observed protocol under a new label."""
+    previous = load_json(SUPERSEDED_PROTOCOL)
+    freshness = previous.get("real_study", {}).get("freshness_guard", {})
+    if not isinstance(freshness, dict):
+        raise RuntimeError("superseded P0 protocol lacks its freshness guard")
+    for key in ("fresh_receipt_dir", "fresh_audit_dir"):
+        directory = Path(str(freshness.get(key, "")))
+        if directory.exists() and any(directory.iterdir()):
+            raise RuntimeError(
+                "cannot supersede P0 protocol after outcomes exist: " f"{directory}"
+            )
 
 
 def validate_parent(parent: dict[str, Any], result: dict[str, Any]) -> None:
@@ -147,10 +162,15 @@ def build_payload(
             "caps, never the global Gamma label alone"
         ),
         "stress_design_rule": (
-            "on construction-only data, choose the lexicographically tied cell "
-            "with the largest estimated positive contract surplus for a fixed "
-            "design-fold utility-best edit under the declared Gamma; certification "
-            "and external outcomes cannot enter this choice"
+            "On construction-only data, first select the edit with the largest "
+            "construction target balanced accuracy (ties: candidate key). Among "
+            "(environment, source, target) cells present in both construction and "
+            "certification, select the lexicographically tied cell with the largest "
+            "positive surplus: the maximum of mean paired target harm minus that "
+            "dataset's target-harm threshold and, across the five registered "
+            "attackers, mean source-correctness minus that dataset's balanced-"
+            "leakage threshold. Certification, external, and held-out KNN outcomes "
+            "cannot enter either selection."
         ),
         "weight_rule": (
             "assign the selected supported cell density ratio Gamma and assign the "
@@ -173,6 +193,31 @@ def build_payload(
             "this validates the controlled finite-reference stress family, not "
             "membership of future people, images, comments, recordings, or hospitals"
         ),
+    }
+    study["construction_receipt_schema"] = {
+        "purpose": (
+            "make the construction-only design decision independently replayable "
+            "without revealing certification or external outcomes"
+        ),
+        "required_arrays": [
+            "target_harm_construction",
+            "identity_target_error_construction",
+            "edited_target_error_construction",
+            "source_construction",
+            "environment_construction",
+            "target_construction",
+            *[
+                f"leakage_correct_construction__{name}"
+                for name in EXPANDED_REGISTERED_ATTACKER_CONFIG
+            ],
+        ],
+        "forbidden_for_design": [
+            "target_harm_certification",
+            "target_harm_external",
+            "heldout_leakage_correct_construction__knn_distance",
+            "heldout_leakage_correct_certification__knn_distance",
+            "heldout_leakage_correct_external__knn_distance",
+        ],
     }
     study["natural_group_mixture_protocol"] = {
         "purpose": "practical relevance diagnostic distinct from the exact controlled study",
@@ -264,7 +309,7 @@ def build_payload(
         ],
     }
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "project": "VERA",
         "phase": "final P0 IID-LTT, attacker-portfolio, and natural-mixture confirmation",
         "status": "locked_before_claim_grade_runs",
@@ -281,6 +326,16 @@ def build_payload(
             "result_path": str(result_path.relative_to(REPOSITORY)),
             "result_sha256": sha256(result_path),
             "result_canonical_sha256": canonical_sha256(result),
+        },
+        "supersedes": {
+            "path": str(SUPERSEDED_PROTOCOL.relative_to(REPOSITORY)),
+            "sha256": sha256(SUPERSEDED_PROTOCOL),
+            "reason": (
+                "No P0 outcome was generated under version 1. Version 2 adds the "
+                "construction-fold audit arrays required to independently replay "
+                "the preregistered stress-design decision."
+            ),
+            "outcomes_present_before_supersession": False,
         },
         "data_policy": {
             "development_seeds": DEVELOPMENT_SEEDS,
@@ -314,6 +369,7 @@ def main() -> int:
         raise FileExistsError(f"refusing to overwrite preregistration: {args.output}")
     if not args.skip_freshness_check:
         verify_outcomes_absent()
+        verify_superseded_protocol_unused()
     payload = build_payload(
         load_json(args.parent),
         load_json(args.parent_result),

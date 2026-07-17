@@ -47,10 +47,24 @@ review before that clarification can be treated as verified.
 
 ## P0 Repair Plan
 
-The new protocol at `research/prereg_vera_p0_confirmation.json` is generated
-only after its code is committed and before any seed 173--236 outcome is created.
-It uses the prior completed blocks only as development evidence and never pools
-them with the final block. The protocol registers all four requested budgets
+The original unused protocol at `research/prereg_vera_p0_confirmation.json`
+is transparently superseded before any seed 173--236 outcome is created because
+its receipts did not retain construction-fold outcomes needed to replay its
+stress-design decision. Version 2, at
+`research/prereg_vera_p0_confirmation_v2.json`, is generated only after the
+receipt code is committed and before any fresh outcome is created. It retains
+the original file and its hash as an immutable pre-outcome record rather than
+rewriting it in place.
+
+Version 2 selects the fixed design edit by construction target balanced
+accuracy, then selects the supported stress cell from construction-only target
+harm and five registered attacker surplus values. The required construction
+arrays are recorded in every receipt, so an independent analyzer can replay
+that choice without looking at certification or external outcomes.
+
+The final protocol uses the prior completed blocks only as development evidence
+and never pools them with the final block.
+The protocol registers all four requested budgets
 Gamma = 1, 1.1, 1.25, and 1.5, fixes Gamma = 1.25 as the primary profile, and
 selects its supported stress cell on construction-only data. It requires the
 same candidate edits, construction data, contracts, utility tie-break, and

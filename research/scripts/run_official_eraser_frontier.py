@@ -619,14 +619,18 @@ def paired_target_error_arrays(
 def evaluate_candidate(
     candidate: EditedCandidate,
     identity_train: np.ndarray,
+    identity_construction: np.ndarray,
     identity_certification: np.ndarray,
     identity_external: np.ndarray,
     y_train: np.ndarray,
+    y_construction: np.ndarray,
     y_certification: np.ndarray,
     y_external: np.ndarray,
     s_train: np.ndarray,
+    s_construction: np.ndarray,
     s_certification: np.ndarray,
     s_external: np.ndarray,
+    g_construction: np.ndarray,
     g_certification: np.ndarray,
     g_external: np.ndarray,
     *,
@@ -640,12 +644,17 @@ def evaluate_candidate(
     candidate_external = candidate.external[split_at:]
     identity_target = make_target_probe(seed + 101)
     identity_target.fit(identity_train, y_train)
+    identity_construction_prediction = identity_target.predict(identity_construction)
     identity_cert_prediction = identity_target.predict(identity_certification)
     identity_external_prediction = identity_target.predict(identity_external)
     candidate_target = make_target_probe(seed + 101)
     candidate_target.fit(candidate.train, y_train)
+    candidate_construction_prediction = candidate_target.predict(candidate.validation)
     candidate_cert_prediction = candidate_target.predict(candidate_certification)
     candidate_external_prediction = candidate_target.predict(candidate_external)
+    construction_target_errors = paired_target_error_arrays(
+        identity_construction_prediction, candidate_construction_prediction, y_construction
+    )
     certification_target_errors = paired_target_error_arrays(
         identity_cert_prediction, candidate_cert_prediction, y_certification
     )
@@ -654,16 +663,22 @@ def evaluate_candidate(
     )
 
     arrays: dict[str, np.ndarray] = {
+        "target_harm_construction": construction_target_errors["harm"],
         "target_harm_certification": certification_target_errors["harm"],
         "target_harm_external": external_target_errors["harm"],
+        "identity_target_error_construction": construction_target_errors["identity"],
         "identity_target_error_certification": certification_target_errors["identity"],
         "identity_target_error_external": external_target_errors["identity"],
+        "edited_target_error_construction": construction_target_errors["edited"],
         "edited_target_error_certification": certification_target_errors["edited"],
         "edited_target_error_external": external_target_errors["edited"],
+        "source_construction": s_construction.astype(np.int16),
         "source_certification": s_certification.astype(np.int16),
         "source_external": s_external.astype(np.int16),
+        "environment_construction": g_construction.astype(np.int16),
         "environment_certification": g_certification.astype(np.int16),
         "environment_external": g_external.astype(np.int16),
+        "target_construction": y_construction.astype(np.int16),
         "target_certification": y_certification.astype(np.int16),
         "target_external": y_external.astype(np.int16),
     }
@@ -672,8 +687,12 @@ def evaluate_candidate(
         seed, candidate.train.shape[1], registered_attackers
     ).items():
         attacker.fit(candidate.train, s_train)
+        construction_prediction = attacker.predict(candidate.validation)
         cert_prediction = attacker.predict(candidate_certification)
         external_prediction = attacker.predict(candidate_external)
+        arrays[f"leakage_correct_construction__{name}"] = (
+            construction_prediction == s_construction
+        ).astype(np.int8)
         arrays[f"leakage_correct_certification__{name}"] = (
             cert_prediction == s_certification
         ).astype(np.int8)
@@ -692,9 +711,13 @@ def evaluate_candidate(
     if heldout_attacker_config is not None:
         heldout = make_heldout_attacker(seed, heldout_attacker_config)
         heldout.fit(candidate.train, s_train)
+        heldout_construction_prediction = heldout.predict(candidate.validation)
         heldout_cert_prediction = heldout.predict(candidate_certification)
         heldout_external_prediction = heldout.predict(candidate_external)
         heldout_name = str(heldout_attacker_config["name"])
+        arrays[f"heldout_leakage_correct_construction__{heldout_name}"] = (
+            heldout_construction_prediction == s_construction
+        ).astype(np.int8)
         arrays[f"heldout_leakage_correct_certification__{heldout_name}"] = (
             heldout_cert_prediction == s_certification
         ).astype(np.int8)
@@ -922,14 +945,18 @@ def main() -> None:
             evaluate_candidate(
                 candidate,
                 train,
+                construction,
                 certification,
                 external,
                 y_train,
+                y_construction,
                 y_certification,
                 y_external,
                 s_train,
+                s_construction,
                 s_certification,
                 s_external,
+                g_construction,
                 g_certification,
                 g_external,
                 seed=args.seed,

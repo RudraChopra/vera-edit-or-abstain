@@ -33,12 +33,18 @@ def test_p0_protocol_freezes_fresh_seeds_and_expanded_attackers() -> None:
 
     study = payload["real_study"]
     assert payload["status"] == "locked_before_claim_grade_runs"
+    assert payload["schema_version"] == 2
+    assert payload["supersedes"]["outcomes_present_before_supersession"] is False
     assert payload["data_policy"]["confirmatory_seeds"] == P0_SEEDS
     assert set(P0_SEEDS).isdisjoint(payload["data_policy"]["development_seeds"])
     assert study["leakage_attackers"] == EXPANDED_REGISTERED_ATTACKER_CONFIG
     assert study["heldout_attacker"] == EXPANDED_HELDOUT_ATTACKER_CONFIG
     assert study["controlled_shift_protocol"]["primary_requested_gamma"] == 1.25
     assert set(GAMMA_GRID) == {1.0, 1.1, 1.25, 1.5}
+    required = study["construction_receipt_schema"]["required_arrays"]
+    assert "target_harm_construction" in required
+    assert "leakage_correct_construction__boosted_tree" in required
+    assert "certification" in study["controlled_shift_protocol"]["stress_design_rule"]
 
 
 def test_p0_protocol_scopes_the_natural_mixture_study_honestly() -> None:
