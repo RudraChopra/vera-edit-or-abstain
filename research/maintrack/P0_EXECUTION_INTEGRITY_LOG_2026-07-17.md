@@ -43,3 +43,9 @@ When the CivilComments-WILDS--MANCE++ worker completed, its bounded capacity
 was reassigned to the likewise disjoint Waterbirds--R-LACE cells, with the
 same immutable execution inputs. This replacement uses no result-dependent
 criterion and does not alter the protocol or analysis sources.
+
+The initial Waterbirds--R-LACE shell stopped before invoking a study run because
+its external store path was mistyped; it created no receipt or audit array. The
+worker was restarted with the store path recorded in the version-4
+preregistration. This is an execution correction with no scientific outcome
+available from the failed invocation.
