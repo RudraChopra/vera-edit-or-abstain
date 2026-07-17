@@ -82,7 +82,7 @@ Prompt Risk Control applies related candidate-wise bounds to LLM prompts and
 includes an estimated covariate-shift correction \cite{zollo2024prompt}.
 Weighted risk control and robust validation already address important forms of
 covariate and distribution shift
-\cite{tibshirani2019covariate,almeida2025hprc,cauchois2024robust,ai2024finegrained}.
+\cite{tibshirani2019covariate,almeida2025hprc,zecchin2025wcrc,cauchois2024robust,ai2024finegrained}.
 VERA uses these foundations. Its proposed contribution is the
 representation-intervention object they do not report: a simultaneous,
 support-aware envelope of groupwise reweighting budgets for paired edit harm
@@ -154,11 +154,13 @@ probe's result depends on its hypothesis class and training protocol
 LTT turns calibration into testing over a finite family, and Pareto Testing
 extends the view to multiple risks and objectives
 \cite{angelopoulos2025ltt,laufer2023pareto}. Conformal Risk Control treats
-general monotone losses \cite{angelopoulos2024crc}. Joint adaptive certificates
-couple risk, acceptance, and utility, while group-conditional PAC methods
+general monotone losses \cite{angelopoulos2024crc}. Selective conformal risk
+control and joint adaptive certificates couple risk, acceptance, and utility at
+the example or prediction-set level, while group-conditional PAC methods
 control routing risk within registered groups
-\cite{yu2026joint,huang2026conditional}. These works invalidate any claim that
-VERA invents finite-family, joint, or groupwise acceptance. Prompt Risk Control
+\cite{xu2025scrc,yu2026joint,huang2026conditional}. These works invalidate any
+claim that VERA invents finite-family, joint, selective, or groupwise
+acceptance. Prompt Risk Control
 is a particularly close application template: it selects LLM prompts using
 high-probability bounds on mean, tail, and dispersion risks and corrects
 covariate shift using unlabeled target data \cite{zollo2024prompt}. VERA instead
@@ -174,7 +176,7 @@ support-scoped sensitivity certificate.
 \paragraph{Shift-robust evaluation.}
 Known importance weights can restore conformal or high-probability risk control
 under a specified covariate shift
-\cite{tibshirani2019covariate,almeida2025hprc}. Robust validation and
+\cite{tibshirani2019covariate,almeida2025hprc,zecchin2025wcrc}. Robust validation and
 fine-grained robust conformal inference provide ambiguity-set guarantees
 \cite{cauchois2024robust,ai2024finegrained}, while robust model evaluation and
 CVaR concentration supply closely related technical tools

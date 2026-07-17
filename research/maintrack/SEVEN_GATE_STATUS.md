@@ -148,10 +148,11 @@ figure, controlled result table, controlled budget figure, explicit constants,
 and named and anonymous wrappers. The successful independent follow-up is now
 inserted into the main result story, and fresh official-style pdfTeX builds
 exist for anonymous/named main and supplement PDFs. The main paper is 9 pages
-total with references beginning on page 7. It still requires source/archive
-anonymization, official venue-policy checks, refreshed literature collision
-review, full human rendered inspection, and human/external review before it can
-be called submission-ready.
+total with references beginning on page 7. A July 17 targeted literature
+collision refresh added selective CRC and weighted CRC under covariate shift. It
+still requires source/archive anonymization, official venue-policy checks,
+additive-allocation literature review, full human rendered inspection, and
+human/external review before it can be called submission-ready.
 
 Authoritative evidence:
 
@@ -169,13 +170,15 @@ Authoritative evidence:
 - `FIGURE1_IMPLEMENTATION_AUDIT.md`
 - final presentation, anonymity, reference, license, and clean-room audits
 - `VENUE_FORMAT_PLAN.md`
+- `LITERATURE_COLLISION_REFRESH_2026-07-17.md`
 
 ## Gate 7: External Adversarial Review
 
 **Status: HUMAN ONLY, 0/5 COMPLETE.** Four role-specific cold reviews and one
 fresh post-revision review are required. Every reviewer must address overlap
-with Learn Then Test and Prompt Risk Control. Internal hostile-review documents
-prepare the paper but do not count as external review.
+with Learn Then Test, Prompt Risk Control, selective CRC, and weighted CRC under
+covariate shift. Internal hostile-review documents prepare the paper but do not
+count as external review.
 
 Authoritative evidence:
 
@@ -188,7 +191,7 @@ Authoritative evidence:
 **NOT SUBMISSION READY.** The independent follow-up removes the failed
 usefulness result as the main empirical blocker, and the local pdfTeX build
 blocker is resolved. Gates 1, 2, 6, and 7 still require proof review, final
-theory/data audit updates, source/archive readiness, fresh literature collision
-review, and external human adversarial review. The overall state may change to
-`PASS` only when every gate above passes with its listed evidence. Conference
-acceptance is never a guaranteed or auditable project outcome.
+theory/data audit updates, source/archive readiness, additive-allocation
+literature review, and external human adversarial review. The overall state may
+change to `PASS` only when every gate above passes with its listed evidence.
+Conference acceptance is never a guaranteed or auditable project outcome.

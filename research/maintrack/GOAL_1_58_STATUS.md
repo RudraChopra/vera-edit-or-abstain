@@ -23,7 +23,7 @@ Status meanings:
 | Goal | Status | Current evidence and remaining condition |
 | --- | --- | --- |
 | 1. No category below 8/10 | PENDING | The first controlled-shift primary failed usefulness, but the independently locked post-failure follow-up passed all registered gates and fresh pdfTeX PDFs now build. A self-score still cannot override incomplete licenses, external reviews, proof checks, source/archive checks, and human verification. |
-| 2. Eliminate fatal rejection paths | PENDING | The theorem, controlled design, scalar baseline, vector output, claim boundaries, successful independent follow-up, and fresh pdfTeX PDFs address the previous empirical and local-format fatal paths. Remaining rejection paths are proof/novelty review, final literature collision search, source/archive readiness, external review, and human verification. |
+| 2. Eliminate fatal rejection paths | PENDING | The theorem, controlled design, scalar baseline, vector output, claim boundaries, successful independent follow-up, fresh pdfTeX PDFs, and July 17 targeted literature-collision refresh address the previous empirical, local-format, and obvious-neighbor fatal paths. Remaining rejection paths are proof/novelty review, additive-allocation completion, source/archive readiness, external review, and human verification. |
 | 3. Repair theory appendix | PENDING | One authoritative source has balanced theorem/proof blocks and unique labels. A fresh implementation-consistency run passes 4,314 CVaR, paired-risk, mixture, leakage, radius, envelope, and sample-complexity checks with zero failures. Fresh official-style pdfTeX supplement builds produce 12-page anonymous and named PDFs with resolved references and no overfull horizontal boxes. V2 mapping, full PDF inspection, and independent mathematical review remain. |
 | 4. Fix audit semantics | PASS | The prior study is explicitly recorded as execution-complete with method safety successful on 4/4 datasets and the auxiliary baseline-severity floor successful on 3/4. |
 | 5. Human submission confirmations | HUMAN ONLY | OpenReview, email, deadlines, scientific verification, authorship, and AI-disclosure confirmations are unfilled. |
@@ -31,7 +31,7 @@ Status meanings:
 | 7. Shift envelope central | PASS | The vector envelope, fixed-profile decision, common radius, limiting coordinates, support boundary, and abstention are central in the abstract, method, theorem, and deterministic three-panel Figure 1 now included in all three venue sources. |
 | 8. Strong title | PASS | The title remains the support-aware branch after the successful follow-up: **VERA: Support-Aware Certification of Representation Edits Under Deployment Shift**. The evidence-efficient title remains inactive because the additive allocator is not the main empirical contribution. |
 | 9. Four explicit contributions | PASS | The introduction names exactly four contributions and does not present VERA as an eraser. |
-| 10. Nearest-work matrix | PENDING | The 16-capability matrix exists. AAAI, ICLR, and NeurIPS now explicitly position VERA against LTT/Pareto/CRC, robust validation, certified fair representations, group-shift evaluation, selective prediction, and support-impossibility work, with 45/41/41 distinct locally verified citations. A frozen final primary-source search, including additive allocation, must still be executed and incorporated. |
+| 10. Nearest-work matrix | PENDING | The 16-capability matrix exists. AAAI, ICLR, and NeurIPS now explicitly position VERA against LTT/Pareto/CRC, selective CRC, weighted CRC under covariate shift, robust validation, certified fair representations, group-shift evaluation, selective prediction, and support-impossibility work, with 47/43/43 distinct locally verified citations. `LITERATURE_COLLISION_REFRESH_2026-07-17.md` records the targeted search and the added citations. A cold expert novelty review and additive-allocation-specific search still remain. |
 | 11. Three novelty examples | PASS | The main paper gives concrete IID-versus-shift, scalar-pooling, and unsupported-cell examples. |
 | 12. Four cold novelty reviews | HUMAN ONLY | Zero of four are complete. |
 | 13. Scope escalation | PENDING | The evidence-efficient additive multi-cell extension and cell-level evidence-requirement diagnostic are theory- and protocol-frozen; the additive optimizer now also has a frozen primal-dual/KKT audit contract. Implementation, tests, and empirical comparison remain. They cannot rescue failed primary gates. |
@@ -101,8 +101,9 @@ Status meanings:
 - **AAAI-27:** official format available; the failed first primary and
   successful independent follow-up are inserted, and fresh pdfTeX anonymous and
   named PDFs build for the main paper and supplement. The paper still is not
-  submission-ready because source/archive packaging, literature refresh,
-  external review, full human rendered inspection, and human verification remain.
+  submission-ready because source/archive packaging, additive-allocation
+  literature review, external review, full human rendered inspection, and human
+  verification remain.
 - **ICLR 2027:** a scientifically complete content variant is required, but
   a full scientific-content source now exists with controlled results, figure,
   and tables inserted. Result-dependent supplement sections, review, and
