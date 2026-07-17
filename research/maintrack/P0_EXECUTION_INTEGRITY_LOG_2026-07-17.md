@@ -31,9 +31,10 @@ seed, profile, rule, or analysis source; the matrix had produced receipts but
 no scientific outcome was accessed before the second reader was sealed.
 
 To reduce wall-clock time without altering the study, bounded workers were
-subsequently assigned only the disjoint Bios--MANCE++, GaitPDB--MANCE++, and
-Waterbirds--MANCE++ cells using the same version-4 preregistration, runner,
-external directories, and claim-grade mode. The original resumable matrix
-remains the authoritative scheduler and verifies then reuses any matching
-parallel receipt when it reaches that cell. This is execution parallelism only;
-it changes no data or statistical choice and reads no outcome.
+subsequently assigned only the disjoint Bios--MANCE++, CivilComments-WILDS--
+MANCE++, GaitPDB--MANCE++, Waterbirds--MANCE++, and GaitPDB--R-LACE cells using
+the same version-4 preregistration, runner, external directories, and
+claim-grade mode. The original resumable matrix remains the authoritative
+scheduler and verifies then reuses any matching parallel receipt when it
+reaches that cell. This is execution parallelism only; it changes no data or
+statistical choice and reads no outcome.
