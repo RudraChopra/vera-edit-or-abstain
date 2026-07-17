@@ -113,10 +113,13 @@ Both live trackers intentionally remain red until every empirical,
 presentation, and human-only condition has direct evidence; a green
 file-presence audit cannot override them.
 
-Current paper source remains authoritative. The tracked AAAI PDFs were rebuilt
-with local TeX Live/pdfTeX on July 17, 2026 and their rendered text includes
-the 24/186 versus 0/59 follow-up result. Any submission still requires a final
-human page-by-page PDF inspection and source/archive check.
+Current paper source remains authoritative. The tracked named AAAI PDFs were
+rebuilt with local TeX Live/pdfTeX on July 17, 2026 and their rendered text
+includes the 24/186 versus 0/59 follow-up result. Fresh anonymous PDFs were also
+built and copied to a private review location outside the named checkout, but
+are intentionally not tracked in this named branch per the double-blind release
+boundary. Any submission still requires a final human page-by-page PDF
+inspection and source/archive check.
 
 ## Three-Venue Scientific Record
 

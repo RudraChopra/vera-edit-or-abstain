@@ -24,7 +24,7 @@ Status meanings:
 | --- | --- | --- |
 | 1. No category below 8/10 | PENDING | The first controlled-shift primary failed usefulness, but the independently locked post-failure follow-up passed all registered gates and fresh pdfTeX PDFs now build. A self-score still cannot override incomplete licenses, external reviews, proof checks, source/archive checks, and human verification. |
 | 2. Eliminate fatal rejection paths | PENDING | The theorem, controlled design, scalar baseline, vector output, claim boundaries, successful independent follow-up, fresh pdfTeX PDFs, and July 17 targeted literature-collision refresh address the previous empirical, local-format, and obvious-neighbor fatal paths. Remaining rejection paths are proof/novelty review, additive-allocation completion, source/archive readiness, external review, and human verification. |
-| 3. Repair theory appendix | PENDING | One authoritative source has balanced theorem/proof blocks and unique labels. A fresh implementation-consistency run passes 4,314 CVaR, paired-risk, mixture, leakage, radius, envelope, and sample-complexity checks with zero failures. Fresh official-style pdfTeX supplement builds produce 12-page anonymous and named PDFs with resolved references and no overfull horizontal boxes. V2 mapping, full PDF inspection, and independent mathematical review remain. |
+| 3. Repair theory appendix | PENDING | One authoritative source has balanced theorem/proof blocks and unique labels. A fresh implementation-consistency run passes 4,314 CVaR, paired-risk, mixture, leakage, radius, envelope, and sample-complexity checks with zero failures. Fresh official-style pdfTeX supplement builds produce 12-page tracked named PDFs and private local anonymous PDFs with resolved references and no overfull horizontal boxes. V2 mapping, full PDF inspection, and independent mathematical review remain. |
 | 4. Fix audit semantics | PASS | The prior study is explicitly recorded as execution-complete with method safety successful on 4/4 datasets and the auxiliary baseline-severity floor successful on 3/4. |
 | 5. Human submission confirmations | HUMAN ONLY | OpenReview, email, deadlines, scientific verification, authorship, and AI-disclosure confirmations are unfilled. |
 | 6. One thesis | PASS | The manuscript states that VERA certifies deployment of a registered representation edit under declared supported reweighting while controlling paired harm and registered-attacker recovery. |
@@ -99,11 +99,12 @@ Status meanings:
 ## Three-Venue Content Variants
 
 - **AAAI-27:** official format available; the failed first primary and
-  successful independent follow-up are inserted, and fresh pdfTeX anonymous and
-  named PDFs build for the main paper and supplement. The paper still is not
-  submission-ready because source/archive packaging, additive-allocation
-  literature review, external review, full human rendered inspection, and human
-  verification remain.
+  successful independent follow-up are inserted, and fresh pdfTeX named PDFs
+  build for the main paper and supplement. Fresh anonymous PDFs also build as
+  private local review artifacts, but are intentionally untracked on this named
+  branch. The paper still is not submission-ready because source/archive
+  packaging, additive-allocation literature review, external review, full human
+  rendered inspection, and human verification remain.
 - **ICLR 2027:** a scientifically complete content variant is required, but
   a full scientific-content source now exists with controlled results, figure,
   and tables inserted. Result-dependent supplement sections, review, and

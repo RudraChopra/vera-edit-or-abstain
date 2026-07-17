@@ -46,8 +46,8 @@ outcome-access ledger only after the final package is frozen.
 ## Existing Tracked Artifacts
 
 The current history already contains an old anonymous ZIP and anonymous PDFs.
-Before the next ordinary commit, retain local copies if needed but remove these
-artifacts from the named branch's tracked file set. This does not erase prior
+The named branch should retain local copies if needed but remove these artifacts
+from the named branch's tracked file set going forward. This does not erase prior
 history and is not represented as doing so. The final visibility and exposure
 decision remains a human venue-compliance gate.
 

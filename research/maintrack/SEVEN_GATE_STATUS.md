@@ -147,8 +147,8 @@ dedicated related-work section, more than 40 active references, the teaching
 figure, controlled result table, controlled budget figure, explicit constants,
 and named and anonymous wrappers. The successful independent follow-up is now
 inserted into the main result story, and fresh official-style pdfTeX builds
-exist for anonymous/named main and supplement PDFs. The main paper is 9 pages
-total with references beginning on page 7. A July 17 targeted literature
+exist for tracked named PDFs and private local anonymous PDFs. The main paper is
+9 pages total with references beginning on page 7. A July 17 targeted literature
 collision refresh added selective CRC and weighted CRC under covariate shift. It
 still requires source/archive anonymization, official venue-policy checks,
 additive-allocation literature review, full human rendered inspection, and
@@ -156,8 +156,8 @@ human/external review before it can be called submission-ready.
 
 Authoritative evidence:
 
-- named and anonymous manuscript sources and fresh pdfTeX PDFs with the
-  follow-up result rendered
+- named manuscript PDFs plus private local anonymous builds with the follow-up
+  result rendered; anonymous PDFs are intentionally untracked on the named branch
 - `CONTROLLED_SHIFT_REPORTING_SPEC.md`
 - `AAAI_SOURCE_FINALIZATION_SPEC.md`
 - `DOUBLE_BLIND_RELEASE_BOUNDARY.md`
