@@ -1,0 +1,810 @@
+{
+  "data_policy": {
+    "confirmatory_seeds": [
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236
+    ],
+    "development_seeds": [
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172
+    ],
+    "external_outcomes_may_not_change_construction_or_certification_choices": true,
+    "prior_results_may_choose_protocol_but_not_be_pooled": true,
+    "seed_blocks_disjoint": true
+  },
+  "human_only_gates_not_satisfied": [
+    "independent proof review",
+    "external cold ML and statistics reviews",
+    "human authorship and AAAI policy verification",
+    "submission to AAAI"
+  ],
+  "locked_at_utc": "2026-07-17T16:16:11.168557+00:00",
+  "parent": {
+    "path": "research/prereg_controlled_shift_followup.json",
+    "result_canonical_sha256": "ed8b45dffc70f8f2fa1d7fb7551a2ee4f17759d8e857a258252048d7b11aa335",
+    "result_path": "research/maintrack/CONTROLLED_SHIFT_FOLLOWUP_RESULT_SUMMARY.json",
+    "result_sha256": "0197874b6aba222a35837780cf6261a1c1502914abf24ee0420e4f0edb3e7829",
+    "sha256": "cb21ea305a5de5aa34af25c84968a0cdfd2bd45ca25589ab083926563d59d44c"
+  },
+  "phase": "final P0 IID-LTT, attacker-portfolio, and natural-mixture confirmation",
+  "primary_claim": "On fresh data, VERA evaluates a representation edit against a declared supported shift and five registered retrained attacker families; IID LTT is evaluated against the same edits, evidence, contracts, and shifts.",
+  "project": "VERA",
+  "protocol_generator_git_commit": "68d8080541c40c56b33574f299cbdf5074a70761",
+  "real_study": {
+    "analysis_tiers": {
+      "development": "all completed seeds 45-172 may choose this protocol, but are never pooled with P0 confirmation",
+      "primary": "independent P0 confirmation on seeds 173-236 at Gamma=1.25 with the expanded registered attacker portfolio",
+      "secondary": "predeclared Gamma=1, 1.1, and 1.5 profiles, evidence budgets, and natural group-mixture diagnostics on the same fresh seeds"
+    },
+    "candidate_count_total": 12,
+    "construction_receipt_schema": {
+      "forbidden_for_design": [
+        "target_harm_certification",
+        "target_harm_external",
+        "heldout_leakage_correct_construction__knn_distance",
+        "heldout_leakage_correct_certification__knn_distance",
+        "heldout_leakage_correct_external__knn_distance"
+      ],
+      "purpose": "make the construction-only design decision independently replayable without revealing certification or external outcomes",
+      "required_arrays": [
+        "target_harm_construction",
+        "identity_target_error_construction",
+        "edited_target_error_construction",
+        "source_construction",
+        "environment_construction",
+        "target_construction",
+        "leakage_correct_construction__linear",
+        "leakage_correct_construction__rbf",
+        "leakage_correct_construction__forest",
+        "leakage_correct_construction__mlp",
+        "leakage_correct_construction__boosted_tree"
+      ]
+    },
+    "contracts": {
+      "confidence": "Exact one-sided Clopper-Pearson bounds for binary class recalls and exact positive-upper/negative-lower Clopper-Pearson bounds for paired {-1,0,1} target harm.",
+      "envelope_multiplicity": "The reported post-selection shift envelope uses simultaneous Bonferroni coverage over every registered candidate-contract pair.",
+      "leakage": "For every preregistered attacker, leakage is one half of the robust class-conditional recall for source class 0 plus one half of the robust class-conditional recall for source class 1. It is therefore invariant to source-class prior shift and equals 0.5 for a constant binary attacker.",
+      "primary_multiplicity": "Each candidate is an intersection-union test: every component contract must reject violation at alpha delta/12. A union bound over the 12 registered candidates controls selection of any unsafe candidate. No multiplicity penalty across component contracts is required for the intersection-union test; each balanced-leakage component splits its candidate alpha across two class recalls.",
+      "shift_model": "Target contracts permit arbitrary changes in environment mixture weights and bound the within-environment deployment-to-certification density ratio by Gamma. Balanced leakage fixes source-class weights at one half and separately bounds each within-source-class density ratio by Gamma. The guarantee applies to any external law satisfying these support and density-ratio assumptions; benchmark external results test, but do not prove, assumption membership.",
+      "support_rule": "A declared deployment environment absent from certification, or a missing source class required by balanced leakage, makes the contract non-identifiable and forces VERA to abstain. Camelyon17 center 2 is the preregistered unsupported case and its external balanced leakage is reported as NA.",
+      "target": "Maximum environment-conditional mean paired increase in zero-one target loss versus the identity edit."
+    },
+    "controlled_shift_protocol": {
+      "certification_stream": "independent with-replacement draws from the finite reference law under the locked evidence allocation",
+      "claim_boundary": "this validates the controlled finite-reference stress family, not membership of future people, images, comments, recordings, or hospitals",
+      "final_evaluation": "exact Q-weighted risks are primary labels; a separate 50,000-draw stream is a sampling diagnostic only",
+      "membership_receipt": "record the Q probability hash, selected construction-only cell, exact induced profiles, and machine-checked density-ratio membership",
+      "primary_requested_gamma": 1.25,
+      "profile": "use the exact induced environment-conditional and source-conditional caps, never the global Gamma label alone",
+      "scientific_object": "each seed's finite empirical reference law over untouched official validation audit atoms",
+      "secondary_requested_gammas": [
+        1.0,
+        1.1,
+        1.5
+      ],
+      "shift_profile_family": "bounded density-ratio reweightings with Gamma in {1, 1.1, 1.25, 1.5}",
+      "stress_design_rule": "On construction-only data, first select the edit with the largest construction target balanced accuracy (ties: candidate key). Among (environment, source, target) cells present in both construction and certification, select the lexicographically tied cell with the largest positive surplus: the maximum of mean paired target harm minus that dataset's target-harm threshold and, across the five registered attackers, mean source-correctness minus that dataset's balanced-leakage threshold. Certification, external, and held-out KNN outcomes cannot enter either selection.",
+      "weight_rule": "assign the selected supported cell density ratio Gamma and assign the unique nonnegative residual ratio to every other atom in that environment; all other environments retain ratio one"
+    },
+    "datasets": {
+      "Bios": {
+        "environment": "gender label",
+        "force_abstain_for_unsupported_environment": false,
+        "manifest_sha256": "a2f0d7cd2d67eb2cb01a05fccbd32c24519cd916ac9ceb508ca680ce1f3aa1e4",
+        "modality": "text",
+        "source_concept": "gender label",
+        "store_dir": "/Volumes/Backups/FARO/artifacts/bios_rlace_numpy_store",
+        "target": "profession (28-way)"
+      },
+      "CivilComments-WILDS": {
+        "environment": "identity mention",
+        "force_abstain_for_unsupported_environment": false,
+        "manifest_sha256": "bfe7394a8189cfeaa12efbaf038306b0463c70d9e05508eed6f154823b0e5c10",
+        "modality": "text",
+        "source_concept": "identity mention",
+        "store_dir": "/Volumes/Backups/FARO/artifacts/civilcomments_lexical_numpy_store",
+        "target": "toxicity"
+      },
+      "GaitPDB": {
+        "environment": "recording site indicator",
+        "force_abstain_for_unsupported_environment": false,
+        "manifest_sha256": "8ff97ea9c25d32e58dc5551dbadfd63f12e3582b0623808713ad3a3a81c7d8bc",
+        "modality": "time series",
+        "source_concept": "recording site indicator",
+        "store_dir": "/Volumes/Backups/FARO/artifacts/gaitpdb_numpy_store",
+        "target": "Parkinson patient versus control"
+      },
+      "Waterbirds": {
+        "environment": "background/place",
+        "force_abstain_for_unsupported_environment": false,
+        "manifest_sha256": "fd4c17004512e9b38afc086eab8544dd9a15d187323747f666f3ae38d5d8c41f",
+        "modality": "vision",
+        "source_concept": "background/place",
+        "store_dir": "/Volumes/Backups/FARO/artifacts/waterbirds_official_numpy_store",
+        "target": "bird type"
+      }
+    },
+    "delta": 0.05,
+    "deployment_gamma": 1.25,
+    "deployment_rules": [
+      "always_deploy",
+      "validation_point_selection",
+      "iid_ltt",
+      "robust_point_estimate",
+      "generic_scalar_robust_certificate",
+      "vera_fixed_profile",
+      "vera_vector_envelope",
+      "vera_common_radius",
+      "external_oracle"
+    ],
+    "evidence_allocation": {
+      "allocation_may_not_read": [
+        "certification outcomes",
+        "external outcomes",
+        "held-out KNN outcomes"
+      ],
+      "minimum_fraction_per_registered_cell": 0.15,
+      "primary_rule": "targeted_floor_0.15",
+      "primary_total_contract_observation_budget": 12000,
+      "score_rule": "use construction-only margins for the fixed design edit and allocate the remaining integer budget by squared Gamma-over-margin scores with deterministic largest-remainder rounding",
+      "secondary_budgets": [
+        4000,
+        8000,
+        16000
+      ]
+    },
+    "exclusions_and_missingness": {
+      "allowed_exclusion": "only a mechanically corrupt or unverifiable receipt, reported by seed, dataset, and method with no replacement",
+      "missing_run_policy": "the matrix is incomplete until restored; missing runs may not be counted as abstentions, safe decisions, or violations",
+      "no_replacement": [
+        "seed",
+        "dataset",
+        "candidate",
+        "attacker",
+        "threshold",
+        "Gamma"
+      ],
+      "performance_based_exclusions": "none",
+      "unsupported_cell_policy": "force abstention and report non-identifiability"
+    },
+    "external_evaluation": "After every representation, probe, attacker, candidate, and rule is fixed, evaluate the same target and balanced-leakage contracts on the untouched external split. External balanced leakage is NA when either source class is absent. Naive deployment into a preregistered unsupported environment is counted separately as procedurally unsupported, not relabeled as a measured contract violation.",
+    "freshness_guard": {
+      "fresh_audit_dir": "/Volumes/Backups/FARO/artifacts/vera_p0_confirmation_v2_audit_arrays",
+      "fresh_receipt_dir": "/Volumes/Backups/FARO/artifacts/vera_p0_confirmation_v2_receipts",
+      "required_order": [
+        "commit and push this protocol with its SHA-256 sidecar",
+        "run only fresh seeds 173-236 into the P0 directories",
+        "seal two independent analyzers before reading scientific outcomes",
+        "report failed and successful endpoints without pooling prior seeds"
+      ]
+    },
+    "gamma_cap": 8.0,
+    "headline_stress_family": {
+      "regimes": [
+        {
+          "balanced_leakage_threshold": 0.7,
+          "dataset": "Bios",
+          "target_harm_threshold": 0.4
+        },
+        {
+          "balanced_leakage_threshold": 0.8,
+          "dataset": "CivilComments-WILDS",
+          "target_harm_threshold": 0.075
+        },
+        {
+          "balanced_leakage_threshold": 0.55,
+          "dataset": "GaitPDB",
+          "target_harm_threshold": 0.2
+        },
+        {
+          "balanced_leakage_threshold": 0.9,
+          "dataset": "Waterbirds",
+          "target_harm_threshold": 0.1
+        }
+      ],
+      "source": "deterministic design on seeds 5-12, frozen before seeds 13-44"
+    },
+    "heldout_attacker": {
+      "class": "sklearn.neighbors.KNeighborsClassifier",
+      "formal_guarantee": false,
+      "n_neighbors": 25,
+      "name": "knn_distance",
+      "p": 2,
+      "standardize": true,
+      "usage": "external stress evaluation only; never used by certification or selection",
+      "weights": "distance"
+    },
+    "heldout_attacker_analysis": {
+      "formal_guarantee": false,
+      "reported_outputs": [
+        "portfolio-safe edits remaining safe under boosted-tree stress",
+        "registered attacker most predictive of held-out failure",
+        "registered-attacker complementarity and redundancy"
+      ],
+      "selection_use": "prohibited"
+    },
+    "leakage_attackers": {
+      "boosted_tree": {
+        "class": "sklearn.ensemble.HistGradientBoostingClassifier",
+        "class_weight": "balanced",
+        "early_stopping": true,
+        "l2_regularization": 0.01,
+        "learning_rate": 0.05,
+        "max_features": 0.8,
+        "max_iter": 150,
+        "max_leaf_nodes": 31,
+        "min_samples_leaf": 20,
+        "n_iter_no_change": 10,
+        "seed_offset": 29,
+        "validation_fraction": 0.15
+      },
+      "forest": {
+        "class": "sklearn.ensemble.RandomForestClassifier",
+        "class_weight": "balanced_subsample",
+        "min_samples_leaf": 3,
+        "n_estimators": 200,
+        "n_jobs": 8,
+        "seed_offset": 19
+      },
+      "linear": {
+        "C": 1.0,
+        "class": "sklearn.linear_model.LogisticRegression",
+        "class_weight": "balanced",
+        "max_iter": 2000,
+        "seed_offset": 11,
+        "solver": "lbfgs"
+      },
+      "mlp": {
+        "alpha": 0.0001,
+        "batch_size": 256,
+        "class": "sklearn.neural_network.MLPClassifier",
+        "early_stopping": true,
+        "hidden_layer_sizes": [
+          128,
+          64
+        ],
+        "learning_rate_init": 0.001,
+        "max_iter": 150,
+        "n_iter_no_change": 12,
+        "seed_offset": 23,
+        "standardize": true,
+        "validation_fraction": 0.15
+      },
+      "rbf": {
+        "C": 1.0,
+        "class": "Nystroem-RBF plus LogisticRegression",
+        "class_weight": "balanced",
+        "gamma": "1 / representation_dimension",
+        "logistic_seed_offset": 17,
+        "max_iter": 1500,
+        "n_components": "min(256, max(32, 2 * representation_dimension))",
+        "nystroem_seed_offset": 13,
+        "standardize_after_features": true
+      }
+    },
+    "leakage_thresholds": [
+      0.55,
+      0.7,
+      0.8,
+      0.9
+    ],
+    "locked_dataset_contracts": {
+      "Bios": {
+        "balanced_leakage_threshold": 0.7,
+        "source": "frozen before the controlled-shift study; no fresh outcome may change this threshold",
+        "target_harm_threshold": 0.4
+      },
+      "CivilComments-WILDS": {
+        "balanced_leakage_threshold": 0.8,
+        "source": "frozen before the controlled-shift study; no fresh outcome may change this threshold",
+        "target_harm_threshold": 0.075
+      },
+      "GaitPDB": {
+        "balanced_leakage_threshold": 0.55,
+        "source": "frozen before the controlled-shift study; no fresh outcome may change this threshold",
+        "target_harm_threshold": 0.2
+      },
+      "Waterbirds": {
+        "balanced_leakage_threshold": 0.9,
+        "source": "frozen before the controlled-shift study; no fresh outcome may change this threshold",
+        "target_harm_threshold": 0.1
+      }
+    },
+    "max_certification": 8000,
+    "max_construction": 2000,
+    "max_external": 8000,
+    "max_train": 8000,
+    "methods": {
+      "inlp": {
+        "candidate_configuration": {
+          "alpha": 0.0001,
+          "by_class": false,
+          "classifier": "SGDClassifier",
+          "dropout_rate": 0,
+          "fit_intercept": true,
+          "loss": "log_loss",
+          "max_iter": 5000,
+          "n_iter_no_change": 20,
+          "ranks": [
+            1,
+            2,
+            4,
+            8
+          ],
+          "tol": 0.0001
+        },
+        "candidate_count": 4,
+        "display_name": "INLP",
+        "upstream_commit": "e1edcc19d808108ab71cbb3afb0389db0206a7eb",
+        "upstream_remote": "https://github.com/shauli-ravfogel/nullspace_projection.git"
+      },
+      "leace": {
+        "candidate_configuration": {
+          "candidate": "closed_form",
+          "method": "leace"
+        },
+        "candidate_count": 1,
+        "display_name": "LEACE",
+        "upstream_commit": "9f51753821316a1edacf78b52b464ab26d40e60a",
+        "upstream_remote": "https://github.com/EleutherAI/concept-erasure"
+      },
+      "mance": {
+        "candidate_configuration": {
+          "epsilon": 0.05,
+          "eval_hidden": 64,
+          "eval_steps": 80,
+          "n_neighbors": 8,
+          "scorer_hidden": 128,
+          "scorer_refit_every": 3,
+          "scorer_steps": 120,
+          "steps": 3,
+          "stop_at_floor": false,
+          "variant": "mance++"
+        },
+        "candidate_count": 1,
+        "display_name": "MANCE++",
+        "upstream_commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+        "upstream_remote": "https://github.com/MatanAvitan/mance.git"
+      },
+      "rlace": {
+        "candidate_configuration": {
+          "batch_size": 256,
+          "epsilon": 0.002,
+          "evaluate_every": 1000,
+          "iterations": 10000,
+          "optimizer": "SGD",
+          "predictor_optimizer": {
+            "lr": 0.005,
+            "momentum": 0.9,
+            "weight_decay": 1e-05
+          },
+          "projection_optimizer": {
+            "lr": 0.005,
+            "momentum": 0.0,
+            "weight_decay": 0.0001
+          },
+          "ranks": [
+            1,
+            4
+          ]
+        },
+        "candidate_count": 2,
+        "display_name": "RLACE",
+        "upstream_commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+        "upstream_remote": "https://github.com/shauli-ravfogel/rlace-icml"
+      },
+      "taco": {
+        "candidate_configuration": {
+          "components": 20,
+          "head_learning_rate": 0.002,
+          "head_optimizer": "AdamW",
+          "head_steps": 250,
+          "head_weight_decay": 0.0001,
+          "pca_fit": "eraser_train_only",
+          "removals": [
+            1,
+            2,
+            3,
+            5
+          ],
+          "sobol_design": 8,
+          "sobol_sampled": 500
+        },
+        "candidate_count": 4,
+        "display_name": "TaCo",
+        "upstream_commit": "35995e44b95dc1722b03d18b9b16c5b9f8322db5",
+        "upstream_remote": "https://github.com/fanny-jourdan/TaCo"
+      }
+    },
+    "missingness": {
+      "outcome_reporting": "all predeclared primary and secondary results are reported regardless of success",
+      "policy": "a missing or corrupt receipt fails the matrix and is restored with the same seed; no performance-based replacement or exclusion is allowed"
+    },
+    "natural_group_mixture_protocol": {
+      "deployment_split": "the untouched native external split supplied by each public benchmark",
+      "estimand": "observed target harm and portfolio leakage under its naturally occurring environment mixture, together with the validation-to-external mixture shift",
+      "interpretation": "the observed natural split is a realistic supported-mixture evaluation only to the degree that the stated conditional-stability assumption is credible; it is reported separately from the exact guarantee",
+      "purpose": "practical relevance diagnostic distinct from the exact controlled study",
+      "required_reporting": [
+        "validation and external environment mixtures",
+        "mixture-ratio cap and support overlap",
+        "per-environment observed risks",
+        "separate within-environment discrepancy diagnostics",
+        "IID LTT versus VERA deployment, safety, and retention",
+        "one accepted, one abstained, and one unsupported-support case"
+      ],
+      "supported_shift_assumption": "within-environment conditional laws are stable and only environment mixture weights change"
+    },
+    "paired_harm_component_arrays_required": true,
+    "pass_conditions": {
+      "camelyon_forced_abstention": "all registered configurations",
+      "global_vera_violation_rate": "<= 0.05",
+      "holm_adjusted_mcnemar_each_supported_dataset": "<= 0.05",
+      "minimum_supported_datasets_passing_all_three": 4,
+      "point_selection_violation_rate_each_supported_dataset": ">= 0.20",
+      "report_certification_tax": true,
+      "vera_measured_violation_rate_each_supported_dataset": "<= 0.05"
+    },
+    "pca_dimension": 128,
+    "post_failure_reporting": {
+      "failed_followup_wording": "independent follow-up failed; no secondary or exploratory result may replace it",
+      "original_primary_result_remains_failed": true,
+      "pooling_with_original_seed_block_for_primary_claim": false,
+      "successful_followup_wording": "independent follow-up passed after increasing the locked evidence budget; the first controlled-shift primary remains a mixed result"
+    },
+    "preprocessing": "Standardize from eraser-train only and fit randomized PCA from eraser-train only.",
+    "primary_endpoints": {
+      "heldout_knn_stress": {
+        "scope": "outside the formal guarantee",
+        "success": "report all deployments and a one-sided 95% interval; do not describe zero events as universal erasure"
+      },
+      "iid_ltt_exposure": {
+        "estimand": "fraction of IID LTT deployments that satisfy the IID certificate but violate the exact declared shifted contract",
+        "success": "at least 20% IID LTT shifted violations in at least one of the four predeclared Gamma profiles, reported with a one-sided interval",
+        "unit": "dataset-seed deployment decision"
+      },
+      "paired_comparison": {
+        "success": "positive effect with p < 0.05",
+        "test": "two-sided exact sign test for IID LTT minus VERA shifted violations",
+        "unit": "seed cluster aggregated across four supported datasets"
+      },
+      "vera_safety": {
+        "event": "a deployed VERA edit violates any registered target or five-attacker leakage contract",
+        "interval": "one-sided 95% Clopper-Pearson upper bound",
+        "success": "upper bound <= 0.05 and zero observed sentinel events",
+        "unit": "one prespecified rotating dataset decision per seed at Gamma=1.25"
+      },
+      "vera_usefulness": {
+        "estimand": "VERA vector safe deployments divided by exact shifted-law safe opportunities",
+        "interval": "95% percentile bootstrap over 64 seeds with 20,000 fixed resamples",
+        "success": "lower confidence bound >= 0.20 at Gamma=1.1 and Gamma=1.25",
+        "unit": "whole seed cluster"
+      }
+    },
+    "primary_multiplicity": "The overall confirmatory claim is made only if every primary endpoint gate passes. This is an intersection-union decision, so no alpha split is applied across the gates. Every within-rule candidate and contract correction remains as specified by the certificate.",
+    "primary_validation_fraction": 1.0,
+    "registered_ablations": [
+      "paired target harm versus edited-only target error",
+      "balanced leakage versus ordinary source accuracy",
+      "single registered attacker versus the full registered portfolio",
+      "IID versus Gamma-greater-than-one certification",
+      "generic scalar pooled certificate versus vector contracts",
+      "common radius versus anisotropic profile",
+      "uniform versus prospective evidence allocation",
+      "full 12-candidate frontier versus one lowest-strength candidate per eraser",
+      "one target environment versus all registered target environments",
+      "1000, 2000, 4000, and 8000 observation budgets",
+      "exact discrete bounds versus generic bounded-loss bounds",
+      "registered portfolio versus held-out boosted-tree stress attacker",
+      "support-aware abstention versus the prior Camelyon17 unsupported case"
+    ],
+    "secondary_endpoints": {
+      "diagnostics": [
+        "limiting contract and dimension",
+        "per-contract bound-to-threshold margin",
+        "per-cell evidence requirement",
+        "held-out boosted-tree attacker stress"
+      ],
+      "effect_sizes": [
+        "absolute and relative violation reduction",
+        "exact violation-rate confidence intervals",
+        "safe-retention and deployment-rate cluster-bootstrap intervals",
+        "common-radius distribution",
+        "vector-versus-common retention difference and ratio",
+        "cross-dataset heterogeneity"
+      ],
+      "per_dataset_paired_effects": "two-sided exact sign tests with Holm correction over four datasets"
+    },
+    "seeds": [
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      207,
+      208,
+      209,
+      210,
+      211,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229,
+      230,
+      231,
+      232,
+      233,
+      234,
+      235,
+      236
+    ],
+    "selection_utility": "Among candidates eligible for a rule, minimize maximum validation balanced leakage, then maximum environment-conditional paired target harm, then the stable candidate key.",
+    "shifted_sensitivity_gamma": 1.01,
+    "split_policy": "Group-stratify official train into 80% eraser-train and 20% construction before caps; use untouched official validation for certification; lock official external/test until all selections are complete.",
+    "statistical_tests": {
+      "familywise_alpha": 0.05,
+      "minimum_clean_point_only_discordances_for_four_way_holm": 7,
+      "multiplicity": "Holm correction over four externally estimable datasets",
+      "primary": "exact one-sided paired McNemar test, equivalent to a binomial sign test on point-only versus VERA-only external contract violations",
+      "stopping_rule": "run all 32 seeds; no interim testing, optional stopping, seed removal, or threshold changes",
+      "unit": "algorithmic seed; one paired binary outcome per supported dataset"
+    },
+    "target_harm_thresholds": [
+      0.075,
+      0.1,
+      0.2,
+      0.4
+    ],
+    "target_probe": {
+      "C": 1.0,
+      "class": "sklearn.linear_model.LogisticRegression",
+      "class_weight": "balanced",
+      "max_iter": 2000,
+      "seed_offset": 101,
+      "solver": "lbfgs"
+    },
+    "threshold_pair_count": 4,
+    "validation_fractions": [
+      1.0
+    ]
+  },
+  "schema_version": 2,
+  "status": "locked_before_claim_grade_runs",
+  "supersedes": {
+    "outcomes_present_before_supersession": false,
+    "path": "research/prereg_vera_p0_confirmation.json",
+    "reason": "No P0 outcome was generated under version 1. Version 2 adds the construction-fold audit arrays required to independently replay the preregistered stress-design decision.",
+    "sha256": "4d1967471bd8473bbad93b900f1338b111e2974e9d14ed915db0330ad75302cb"
+  }
+}
