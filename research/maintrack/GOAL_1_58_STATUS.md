@@ -22,9 +22,9 @@ Status meanings:
 
 | Goal | Status | Current evidence and remaining condition |
 | --- | --- | --- |
-| 1. No category below 8/10 | PENDING | The first controlled-shift primary failed usefulness, but the independently locked post-failure follow-up passed all registered gates. A self-score still cannot override incomplete clean PDF builds, licenses, external reviews, proof checks, and human verification. |
-| 2. Eliminate fatal rejection paths | PENDING | The theorem, controlled design, scalar baseline, vector output, claim boundaries, and successful independent follow-up address the previous empirical fatal path. Remaining rejection paths are proof/novelty review, final literature collision search, page-fit/source readiness, external review, and human verification. |
-| 3. Repair theory appendix | PENDING | One authoritative source has balanced theorem/proof blocks and unique labels. A fresh implementation-consistency run passes 4,314 CVaR, paired-risk, mixture, leakage, radius, envelope, and sample-complexity checks with zero failures. A close official-style layout build exposed and removed a duplicate `placeins` option clash, then compiled the 15-page supplement with resolved references and no overfull horizontal box; the official style itself was not modified in the repository. A clean unmodified PDFLaTeX build, final PDF inspection, V2 mapping, and independent mathematical review remain. |
+| 1. No category below 8/10 | PENDING | The first controlled-shift primary failed usefulness, but the independently locked post-failure follow-up passed all registered gates and fresh pdfTeX PDFs now build. A self-score still cannot override incomplete licenses, external reviews, proof checks, source/archive checks, and human verification. |
+| 2. Eliminate fatal rejection paths | PENDING | The theorem, controlled design, scalar baseline, vector output, claim boundaries, successful independent follow-up, and fresh pdfTeX PDFs address the previous empirical and local-format fatal paths. Remaining rejection paths are proof/novelty review, final literature collision search, source/archive readiness, external review, and human verification. |
+| 3. Repair theory appendix | PENDING | One authoritative source has balanced theorem/proof blocks and unique labels. A fresh implementation-consistency run passes 4,314 CVaR, paired-risk, mixture, leakage, radius, envelope, and sample-complexity checks with zero failures. Fresh official-style pdfTeX supplement builds produce 12-page anonymous and named PDFs with resolved references and no overfull horizontal boxes. V2 mapping, full PDF inspection, and independent mathematical review remain. |
 | 4. Fix audit semantics | PASS | The prior study is explicitly recorded as execution-complete with method safety successful on 4/4 datasets and the auxiliary baseline-severity floor successful on 3/4. |
 | 5. Human submission confirmations | HUMAN ONLY | OpenReview, email, deadlines, scientific verification, authorship, and AI-disclosure confirmations are unfilled. |
 | 6. One thesis | PASS | The manuscript states that VERA certifies deployment of a registered representation edit under declared supported reweighting while controlling paired harm and registered-attacker recovery. |
@@ -68,7 +68,7 @@ Status meanings:
 
 | Goal | Status | Current evidence and remaining condition |
 | --- | --- | --- |
-| 37. Self-contained seven-page paper | PENDING | An evidence-preserving compression removed a redundant algorithm float and condensed repeated exposition while retaining the central assumptions, theorem boundaries, protocol constants, negative results, and responsible-use statement. The refreshed close official-style pre-result build starts references at the top of page 7. A conservative synthetic layout probe then inserted a nine-rule full-width table, a 7-inch three-panel figure taller than the planned result figure, and deliberately long result prose; it compiled without overfull boxes and still ended all technical content on page 7 before references. The actual follow-up result table and budget figure are now inserted, but an unmodified official pdfTeX build, exact page-fit check, and final rendered inspection remain. |
+| 37. Self-contained seven-page paper | PENDING | An evidence-preserving compression removed a redundant algorithm float and condensed repeated exposition while retaining the central assumptions, theorem boundaries, protocol constants, negative results, and responsible-use statement. The actual follow-up result table and budget figure are inserted. Fresh official-style pdfTeX builds produce 9-page anonymous and named main PDFs; rendered text confirms the follow-up numbers on pages 1, 6, and 7, references begin on page 7, and page-7 visual inspection shows no overlap. A full human page-by-page inspection, source/archive packaging, and venue-policy check remain. |
 | 38. Two-result abstract | PASS | The abstract now reports the prior IID result separately from controlled-shift evidence, discloses the failed first primary, and gives the successful independent follow-up numbers. |
 | 39. One memorable result figure | PASS | The follow-up budget-retention figure is generated from sealed outputs and marks the successful locked 8,000-observation follow-up primary point. |
 | 40. One main result table | PASS | The main result table is generated from audited outputs and reports all nine matched deployment rules at the primary profile. |
@@ -99,9 +99,10 @@ Status meanings:
 ## Three-Venue Content Variants
 
 - **AAAI-27:** official format available; the failed first primary and
-  successful independent follow-up are inserted. The paper still is not
-  submission-ready because final page fit, clean pdfTeX compilation, source
-  packaging, literature refresh, external review, and human verification remain.
+  successful independent follow-up are inserted, and fresh pdfTeX anonymous and
+  named PDFs build for the main paper and supplement. The paper still is not
+  submission-ready because source/archive packaging, literature refresh,
+  external review, full human rendered inspection, and human verification remain.
 - **ICLR 2027:** a scientifically complete content variant is required, but
   a full scientific-content source now exists with controlled results, figure,
   and tables inserted. Result-dependent supplement sections, review, and
@@ -125,7 +126,7 @@ Status meanings:
 ## Overall Decision
 
 **NOT MAIN-TRACK SUBMISSION READY.** The controlled follow-up and first-read
-replay are clean and empirically successful, but the package remains red for
-clean pdfTeX builds, references and licenses, final source/archive readiness,
-external reviews, independent reproduction, proof review, human verification,
-and venue actions. Conference acceptance can never be guaranteed.
+replay are clean and empirically successful, and fresh pdfTeX PDFs now build.
+The package remains red for references and licenses, final source/archive
+readiness, external reviews, independent reproduction, proof review, human
+verification, and venue actions. Conference acceptance can never be guaranteed.

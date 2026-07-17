@@ -146,15 +146,17 @@ Authoritative evidence:
 dedicated related-work section, more than 40 active references, the teaching
 figure, controlled result table, controlled budget figure, explicit constants,
 and named and anonymous wrappers. The successful independent follow-up is now
-inserted into the main result story. It still requires exact page fit, pdfTeX
-compilation, rendered inspection, archive anonymization, official venue-policy
-checks, refreshed literature collision review, and human/external review before
-it can be called submission-ready.
+inserted into the main result story, and fresh official-style pdfTeX builds
+exist for anonymous/named main and supplement PDFs. The main paper is 9 pages
+total with references beginning on page 7. It still requires source/archive
+anonymization, official venue-policy checks, refreshed literature collision
+review, full human rendered inspection, and human/external review before it can
+be called submission-ready.
 
 Authoritative evidence:
 
-- named and anonymous manuscript sources; tracked PDFs are not authoritative
-  until rebuilt with pdfTeX and inspected for the follow-up result
+- named and anonymous manuscript sources and fresh pdfTeX PDFs with the
+  follow-up result rendered
 - `CONTROLLED_SHIFT_REPORTING_SPEC.md`
 - `AAAI_SOURCE_FINALIZATION_SPEC.md`
 - `DOUBLE_BLIND_RELEASE_BOUNDARY.md`
@@ -184,9 +186,9 @@ Authoritative evidence:
 ## Overall Decision
 
 **NOT SUBMISSION READY.** The independent follow-up removes the failed
-usefulness result as the main empirical blocker, but Gates 1, 2, 6, and 7 still
-require proof review, final theory/data audit updates, format/source readiness,
-fresh literature collision review, and external human adversarial review. The
-overall state may change to `PASS` only when every gate above passes with its
-listed evidence. Conference acceptance is never a guaranteed or auditable
-project outcome.
+usefulness result as the main empirical blocker, and the local pdfTeX build
+blocker is resolved. Gates 1, 2, 6, and 7 still require proof review, final
+theory/data audit updates, source/archive readiness, fresh literature collision
+review, and external human adversarial review. The overall state may change to
+`PASS` only when every gate above passes with its listed evidence. Conference
+acceptance is never a guaranteed or auditable project outcome.
