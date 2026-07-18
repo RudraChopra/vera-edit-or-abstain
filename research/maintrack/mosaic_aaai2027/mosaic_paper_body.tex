@@ -1,0 +1,303 @@
+\begin{abstract}
+Deploying an edited representation requires more than showing that one probe
+fails on one validation split: the released representation may face an
+arbitrary downstream attacker and a shifted deployment population. We present
+MOSAIC, Minimax-Optimized Source-Agnostic Invariant Channels, a software-only
+method that jointly selects a stochastic representation-release channel and a
+task decoder while certifying privacy and utility under a structured
+pre-release shift. A single multinomial confidence event over fine-token laws
+simultaneously covers the continuum of channels selected on that same table,
+so the certificate incurs no candidate-count correction. We derive an exact
+multiclass attacker envelope, a shift-transfer theorem combining common drift
+with bounded differential contamination, a matching utility certificate, and
+a no-free-lunch result for unrestricted differential shift. The resulting
+finite problem is solved globally by decoder enumeration and branch-aware
+mixed-integer linear optimization. The empirical claims in this draft are
+populated only from a hash-locked confirmatory study and independently replayed
+receipts.
+\end{abstract}
+
+\section{Introduction}
+
+Representation editing is often evaluated by fitting a probe to a frozen
+embedding and checking whether a designated source attribute remains
+predictable. That evaluation leaves two deployment gaps. First, failure of a
+particular probe does not prevent a different downstream rule from recovering
+the attribute. Second, an edit chosen on a validation table can exploit
+sampling noise, while the deployed population can change after certification.
+These gaps are especially consequential when the released representation is a
+public interface: the designer controls the release mechanism but not the
+future attacker.
+
+This paper studies a finite but expressive release model. A tokenizer fixed
+without the certification fold maps an internal representation to a fine token
+$C\in[K]$. A source-blind row-stochastic channel $M\in\mathrm{Stoch}(K,L)$
+releases the only public token $Z$. For each task label, privacy is measured by
+the balanced accuracy of the Bayes-optimal source attacker on $Z$, not by a
+chosen probe family. The deployment shift occurs before the software-enforced
+channel and decomposes into a common Markov transformation plus a bounded
+fraction of source-specific contamination. This model permits large
+source-blind drift while explicitly charging the component that can create new
+source differences.
+
+MOSAIC, or Minimax-Optimized Source-Agnostic Invariant Channels, turns this
+model into a certifying release rule. Its first ingredient is an exact robust
+attacker envelope built from simultaneous multinomial confidence regions over
+the fine-token table. Because the confidence event is stated before applying
+$M$, it covers every stochastic channel at once, including one optimized on the
+same data. Its second ingredient is an exact channel capacity for arbitrary
+differential shift together with a computable defect for common drift. The
+same event also certifies a jointly selected task decoder. Finally, the
+piecewise-linear certificate is optimized globally for finite output and
+decoder alphabets, and the method abstains when no release satisfies the
+registered privacy and utility contract.
+
+The contribution is not the individual use of randomized channels,
+distributional confidence regions, contraction coefficients, or
+accept-or-abstain decisions, all of which have substantial prior literatures.
+The technical claim is their specific combination: continuum-wide same-table
+selection, an exact arbitrary-attacker metric, structured pre-release shift,
+simultaneous task utility, and a globally checked optimizer. We also prove that
+unrestricted source-specific shift forces a constant-row release and quantify
+the resulting privacy--utility obstruction. A hash-locked experiment compares
+MOSAIC with plug-in selection, held-out fixed-channel certification, finite
+Learn-Then-Test certification, deterministic release, a shift-unaware
+ablation, and an exact population oracle.
+
+\section{Related Work}
+
+Universal fair-representation certificates protect against downstream
+classifiers by constraining statistical distances or Bayes distinguishability
+on a finite representation. Randomized preprocessing and privacy-funnel work
+optimize stochastic mappings under population privacy and utility constraints.
+MOSAIC adopts those established objects but asks a different statistical
+question: can the stochastic post-channel itself be selected from an
+uncountable family on the table used to certify it? The answer comes from
+placing the simultaneous confidence event on the sufficient fine-token laws
+rather than testing channels one by one.
+
+Risk-control and Learn-Then-Test procedures certify members of registered
+candidate families and abstain when no candidate passes. They are essential
+baselines and the closest decision-layer precedent. MOSAIC does not claim a
+new multiple-testing principle. Its envelope instead covers all stochastic
+post-channels pointwise on one event, avoiding a candidate-family correction
+and permitting a global continuum optimizer. Work on Dobrushin contraction and
+domain generalization likewise establishes that stochastic representations
+can contract distribution shift. Here the contraction quantity enters an
+exact source-inference capacity and is combined with a separate invariance
+defect for common pre-release drift.
+
+Robust fair learning and impossibility results show that arbitrary population
+shift can destroy nontrivial fairness guarantees. Our shift assumption is
+therefore explicit rather than implicit. The common transformation and retained
+mass are shared across sources; only a bounded contamination fraction may vary
+by source. We certify performance conditionally on membership in this class
+and do not infer real-world membership from an ordinary benchmark split.
+
+\section{Problem Setup}
+
+Let $S\in[G]$ denote source, $Y\in[J]$ task label, and $C\in[K]$ the fine token.
+For a fixed label, write $p_s(c)=\Pr(C=c\mid S=s,Y=y)$. The source-blind release
+channel $M$ produces $Z\in[L]$. The balanced accuracy of the strongest
+downstream source attacker is
+\begin{equation}
+ A(P,M)=\frac{1}{G}\sum_{z=1}^{L}\max_{s\in[G]}(p_sM)(z),
+ \label{eq:attacker}
+\end{equation}
+with normalized advantage
+$\operatorname{Adv}_G(A)=(GA-1)/(G-1)$. This is chance-normalized and ranges
+from zero to one.
+
+For each supported source--label stratum, the certification table supplies an
+empirical law $\widehat p_{s,y}$ and radius $\epsilon_{s,y}$. The simultaneous
+event
+\begin{equation}
+ \mathcal E=\bigcap_{s,y}
+ \{\|\widehat p_{s,y}-p_{s,y}\|_1\leq\epsilon_{s,y}\}
+ \label{eq:event}
+\end{equation}
+has probability at least $1-\delta$ after a fixed allocation across strata. We
+use the Weissman multinomial radius in the confirmation, although any valid
+simultaneous region can replace it. The tokenizer and fine alphabet must be
+fixed without these observations.
+
+The external law for label $y$ belongs to the structured class
+\begin{equation}
+ q_s=t_y p_sT_y+(1-t_y)r_s,
+ \qquad t_y\geq 1-\eta_y,
+ \label{eq:shift}
+\end{equation}
+where $T_y$ is a source-independent fine-token channel from a registered
+convex uncertainty set and each residual $r_s$ is arbitrary. Both components
+pass through the same release channel $M$. This placement is crucial: a
+constant-row software channel cannot leak information that appears before it.
+
+\section{Adaptive Universal-Attacker Certificate}
+
+For a bounded vector $v$, define the exact confidence-set support function
+\begin{equation}
+ \Phi(\widehat p,\epsilon;v)=
+ \max_{p\in\Delta_K:\|p-\widehat p\|_1\leq\epsilon}p^\top v.
+ \label{eq:phi}
+\end{equation}
+It is obtained by moving at most $\epsilon/2$ mass from low to high
+coordinates of $v$, or from an equivalent linear-program dual. For attacker
+assignment $a\in[G]^L$, let
+$v_{M,a,s}(c)=\sum_zM(c,z)\mathbf 1\{a(z)=s\}$. We then define
+\begin{equation}
+ \overline A(\widehat P,M)=\frac{1}{G}\max_{a\in[G]^L}
+ \sum_s\Phi(\widehat p_s,\epsilon_s;v_{M,a,s}).
+ \label{eq:abar}
+\end{equation}
+
+\begin{theorem}[Adaptive exact envelope]
+On $\mathcal E$, simultaneously for every row-stochastic $M$, including a
+channel selected as an arbitrary function of the same table,
+$A(P,M)\leq\overline A(\widehat P,M)$. For fixed $M$, the right-hand side is the
+exact supremum over the product of the stated $\ell_1$ confidence sets.
+\end{theorem}
+
+The proof writes the Bayes attacker as a maximum over deterministic assignments.
+For a fixed assignment the source confidence sets separate, giving one support
+function per source; all maxima are finite and commute. The implication is
+pointwise over the complete stochastic-channel space, which is why adaptive
+selection needs no channel-count correction.
+
+\section{Certification under Pre-Release Shift}
+
+Define the arbitrary differential-shift capacity
+\begin{equation}
+ \operatorname{Cap}_G(M)=\frac{1}{G}\max_{a\in[G]^L}
+ \sum_s\max_c v_{M,a,s}(c).
+ \label{eq:capacity}
+\end{equation}
+This equals $\sup_{r_1,\ldots,r_G}A(R,M)$. For $G=2$, its normalized value is
+the Dobrushin coefficient, the largest total variation distance between two
+rows of $M$.
+
+For common transformation $T$, define
+$\rho_T(M)=\max_c\operatorname{TV}((TM)(c,\cdot),M(c,\cdot))$ and take the
+maximum over registered extremes. The retained common component obeys
+$A(P,TM)\leq\min\{\operatorname{Cap}_G(M),A(P,M)+\rho_T(M)\}$. Combining this
+transfer with the contamination decomposition gives the main certificate.
+
+\begin{theorem}[Structured-shift certificate]
+On $\mathcal E$, every adaptively selected $M$ and every external law in
+Eq.~\eqref{eq:shift} satisfy
+\begin{equation}
+ A(Q,M)\leq(1-\eta_y)B_y(M)+\eta_y\operatorname{Cap}_G(M),
+ \label{eq:mainbound}
+\end{equation}
+where
+$B_y(M)=\min\{\operatorname{Cap}_G(M),
+\overline A_y(\widehat P,M)+\rho_{\mathcal T_y}(M)\}$.
+\end{theorem}
+
+Bayes accuracy is convex in the source experiment. The common component is
+bounded by invariance transfer and the residual by channel capacity. Since the
+common bound cannot exceed capacity, the worst retained mass occurs at
+$t_y=1-\eta_y$. When $\eta_y=0$ and $TM=M$, the external certificate equals the
+reference certificate despite common drift. When $\eta_y=1$, it reduces to the
+exact distribution-free capacity rather than an assumed external validation
+event.
+
+For decoder $g:[L]\to[J]$, let
+$u_y(c)=\sum_zM(c,z)\mathbf 1\{g(z)\neq y\}$. Replacing attacker scores by this
+bounded loss yields a simultaneous conditional-error certificate. Its common
+defect is the maximum positive increase in $u_y$ under $T$, and its differential
+capacity is $\max_cu_y(c)$. Thus $M$, $g$, privacy, and worst-stratum utility can
+all be selected on the same event.
+
+\begin{theorem}[No free lunch]
+$\operatorname{Cap}_G(M)=1/G$ if and only if all rows of $M$ are identical.
+For two sources, if two fine tokens carry different task labels and incur
+row-wise decoder errors at most $e_0$ and $e_1$, then the normalized capacity is
+at least $1-e_0-e_1$.
+\end{theorem}
+
+Consequently, unrestricted source-specific shift permits exact erasure only by
+making the public token independent of the fine token. A bounded $\eta_y$ is
+therefore an identifiable assumption of the deployment contract, not a hidden
+technical convenience.
+
+\section{Global Optimization and Abstention}
+
+For fixed output size, decoder, finite transform extremes, and attacker
+assignments, every support-function dual and certificate branch has a linear
+epigraph. Binary variables choose between capacity and coupled-shift branches;
+the implementation enumerates all finite decoders and solves one mixed-integer
+linear program per decoder. A release is accepted only when the solver reports
+zero numerical MIP gap, its dual bound matches, all primal residuals pass, and
+independently recomputed certificates agree with the objective. Otherwise the
+rule returns an explicit abstention.
+
+The optimizer is checked against exhaustive stochastic-channel grids on random
+small problems and against exact population-risk enumeration. A constructed
+witness also tests whether stochastic release is genuinely necessary: its
+globally certified stochastic error is compared with every deterministic
+channel. These checks validate the finite encoding but do not replace the
+algebraic certificate.
+
+The locked analysis also predicts abstention as sample size changes. A
+finite-sample envelope follows by enlarging population-centered confidence
+balls: whenever the enlarged problem remains feasible, a Weissman union bound
+controls the probability that the empirical optimizer abstains. Because this
+bound can be loose near a decision boundary, we separately preregister a local
+delta-method power curve. Under a unique stable branch and strong regularity of
+the parametric linear program, centered simplex finite differences estimate the
+value gradient and the stratified multinomial central limit theorem predicts
+the deployment probability. A two-step gradient-stability check is required;
+the approximation is rejected if it fails.
+
+\section{Hash-Locked Evaluation}
+
+The synthetic confirmation fixes two source--label populations, two structured
+shift regimes, eight deployment rules, five possible per-stratum sample sizes,
+and 1,000 independent tables per registered cell. Pilot seeds are permanently
+excluded. Before confirmatory outcomes, the complete protocol, method code,
+theorem text, evaluators, pilot history, pass criteria, and theory predictions
+are SHA-256 locked and pushed to a public branch. Every selected channel is
+graded by a separately implemented exact population evaluator that enumerates
+common-transform extremes, attacker assignments, and residual simplex
+vertices. The confirmation stores every channel, decoder, seed, decision,
+confidence-event marker, and exact risk, then an independent script replays all
+rows and aggregate intervals.
+
+The primary safety contrast compares the plug-in continuum rule with MOSAIC at
+a near-boundary shift contract. The primary usefulness contrast compares safe
+retention against a held-out fixed-channel certificate, a finite-grid
+Learn-Then-Test rule with simultaneous one-sided bounds, and deterministic
+MOSAIC. The final gate additionally requires the preregistered theory curve to
+track deployment across sample sizes. All methods and cells remain reportable
+if any gate fails.
+
+\input{mosaic_results}
+
+\section{Limitations and Scope}
+
+The statistical guarantee is conditional on the shift class in
+Eq.~\eqref{eq:shift}. An ordinary benchmark split cannot prove that a real
+hospital, text domain, or sensor environment belongs to that class. Such a
+claim requires an engineering specification or separate bridge data with its
+own confidence allocation. The current finite-token theorem also assumes that
+the tokenizer and alphabet are fixed independently of the certification table.
+Large alphabets may require structured confidence regions or column generation
+rather than full assignment enumeration.
+
+MOSAIC certifies source inference from the released token, not every possible
+harm associated with representation use. It does not protect information that
+is released through a separate interface, and it cannot recover utility that
+the privacy contract makes information-theoretically impossible. Finally, the
+novelty claim concerns the complete adaptive and shift-aware construction; its
+classical ingredients must remain attributed to their respective literatures.
+
+\section{Conclusion}
+
+MOSAIC treats representation editing as release-mechanism design rather than a
+probe contest. By certifying fine-token laws before a stochastic post-channel,
+it can optimize over a continuum on the same table while retaining a single
+finite-sample event. The structured shift theorem separates common drift that
+the channel can absorb from differential drift that its capacity must pay for,
+and the no-free-lunch result states when abstention is unavoidable. The locked
+evaluation determines whether those guarantees retain enough safe utility to
+justify the method in practice.

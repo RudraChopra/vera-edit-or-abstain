@@ -1,0 +1,340 @@
+\section{Notation and Exact Support Functions}
+
+For one task label, let $P=(p_1,\ldots,p_G)$ collect the conditional fine-token
+laws and let $M\in\mathrm{Stoch}(K,L)$ be a source-blind release channel. For an
+attacker assignment $a\in[G]^L$, define
+\begin{equation}
+ v_{M,a,s}(c)=\sum_{z=1}^{L}M(c,z)\mathbf 1\{a(z)=s\}.
+ \label{supp:eq:v}
+\end{equation}
+Every $v_{M,a,s}$ lies in $[0,1]^K$. The balanced Bayes accuracy has the two
+equivalent forms
+\begin{equation}
+ A(P,M)=\frac{1}{G}\sum_z\max_s(p_sM)(z)
+ =\frac{1}{G}\max_{a\in[G]^L}\sum_sp_s^\top v_{M,a,s}.
+ \label{supp:eq:bayes}
+\end{equation}
+The second identity follows because a finite-alphabet Bayes rule can be chosen
+deterministically at each released token.
+
+For empirical law $\widehat p$, radius $\epsilon$, and bounded score $v$, the
+confidence-set support function is
+\begin{equation}
+ \Phi(\widehat p,\epsilon;v)=
+ \max_{p\geq0,\,\mathbf 1^\top p=1,\,
+ \|p-\widehat p\|_1\leq\epsilon}p^\top v.
+ \label{supp:eq:support}
+\end{equation}
+Introducing positive and negative displacement variables gives a linear
+program. Its compact dual is
+\begin{align}
+ \min_{\nu,\lambda,\theta}\quad
+ &\nu+\widehat p^\top\theta+\epsilon\lambda,\\
+ \text{s.t.}\quad
+ &\nu+\theta_c\geq v_c\quad\forall c,\\
+ &-\lambda\leq\theta_c\leq\lambda\quad\forall c,
+ \qquad \lambda\geq0.
+ \label{supp:eq:supportdual}
+\end{align}
+Strong duality holds because the primal confidence set is nonempty and compact.
+The implementation also evaluates Eq.~\eqref{supp:eq:support} independently by
+moving at most $\epsilon/2$ probability mass from low-score to high-score
+coordinates, respecting simplex boundaries.
+
+\section{Adaptive Confidence Envelope}
+
+Let $\mathcal C_s=\{p\in\Delta_K:
+\|p-\widehat p_s\|_1\leq\epsilon_s\}$ and define
+\begin{equation}
+ \overline A(\widehat P,M)=\frac{1}{G}
+ \max_{a\in[G]^L}\sum_s
+ \Phi(\widehat p_s,\epsilon_s;v_{M,a,s}).
+ \label{supp:eq:abar}
+\end{equation}
+
+\begin{theorem}[Exact adaptive universal-attacker envelope]
+On the event $\mathcal E=\{p_s\in\mathcal C_s\ \forall s,y\}$,
+$A(P,M)\leq\overline A(\widehat P,M)$ simultaneously for every stochastic
+release channel $M$, including one selected from the same table. For fixed
+$M$, $\overline A$ is the exact supremum of $A(P,M)$ over
+$\mathcal C_1\times\cdots\times\mathcal C_G$.
+\end{theorem}
+
+\begin{proof}
+Using Eq.~\eqref{supp:eq:bayes}, take the supremum over the product confidence
+set. The assignment family is finite, so the supremum and assignment maximum
+commute. For a fixed assignment, the objective is additive in sources and the
+confidence set is a Cartesian product, so each source maximization separates
+and equals the support function in Eq.~\eqref{supp:eq:support}. This proves
+exactness for every fixed $M$. On $\mathcal E$, the true law is one feasible
+point in every confidence set, giving the upper bound. The statement is
+pointwise over the complete channel space, so it remains true after any
+measurable same-table selection of $M$.
+\end{proof}
+
+For positive stratum count $n_{s,y}$ and fixed allocation $\delta_{s,y}$, the
+confirmation uses
+\begin{equation}
+ \epsilon_{s,y}=\min\left\{2,
+ \sqrt{\frac{2\log((2^K-2)/\delta_{s,y})}{n_{s,y}}}\right\}.
+ \label{supp:eq:weissman}
+\end{equation}
+A union bound gives $\Pr(\mathcal E)\geq1-\sum_{s,y}\delta_{s,y}$. A zero-count
+stratum receives radius two and is covered deterministically.
+
+\section{Channel Capacity and Common-Shift Transfer}
+
+Define
+\begin{equation}
+ \operatorname{Cap}_G(M)=\frac{1}{G}
+ \max_{a\in[G]^L}\sum_s\max_c v_{M,a,s}(c).
+ \label{supp:eq:cap}
+\end{equation}
+
+\begin{lemma}[Exact arbitrary-shift capacity]
+$\operatorname{Cap}_G(M)=\sup_{r_1,\ldots,r_G\in\Delta_K}A(R,M)$.
+\end{lemma}
+
+\begin{proof}
+Expand $A(R,M)$ by Eq.~\eqref{supp:eq:bayes}. For fixed assignment $a$, each
+source law $r_s$ can concentrate all mass on a token maximizing
+$v_{M,a,s}(c)$. The source suprema separate and the finite maxima commute,
+yielding Eq.~\eqref{supp:eq:cap}.
+\end{proof}
+
+For two sources, uniform-prior Bayes accuracy is
+$(1+\operatorname{TV}(r_1M,r_2M))/2$. The diameter of the convex hull of channel
+rows is attained by two rows, hence
+$2\operatorname{Cap}_2(M)-1=max_{c,c'}
+\operatorname{TV}(M(c,\cdot),M(c',\cdot))$, the Dobrushin coefficient.
+
+For common pre-release channel $T$, define
+\begin{equation}
+ \rho_T(M)=\max_c\operatorname{TV}((TM)(c,\cdot),M(c,\cdot)).
+ \label{supp:eq:rho}
+\end{equation}
+
+\begin{lemma}[Approximate invariance transfer]
+For every source experiment $P$,
+\begin{equation}
+ A(P,TM)\leq
+ \min\{\operatorname{Cap}_G(M),A(P,M)+\rho_T(M)\}.
+ \label{supp:eq:transfer}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For source $s$, convexity of total variation gives
+$\operatorname{TV}(p_sTM,p_sM)\leq
+\sum_cp_s(c)\operatorname{TV}((TM)(c,\cdot),M(c,\cdot))\leq\rho_T(M)$.
+The success probability of any attacker changes by at most this distance.
+Averaging over sources and maximizing the attacker gives the additive bound.
+The capacity bound follows by treating $p_sT$ as an arbitrary fine-token law
+and applying the preceding lemma.
+\end{proof}
+
+\section{Structured External Shift}
+
+For label $y$, suppose
+\begin{equation}
+ q_s=t_yp_sT_y+(1-t_y)r_s,
+ \qquad t_y\geq1-\eta_y,
+ \label{supp:eq:model}
+\end{equation}
+with common $T_y\in\mathcal T_y$ and common retained mass $t_y$ across sources.
+Let
+\begin{equation}
+ B_y(M)=\min\{\operatorname{Cap}_G(M),
+ \overline A_y(\widehat P,M)+\rho_{\mathcal T_y}(M)\}.
+\end{equation}
+
+\begin{theorem}[Post-selection-safe structured-shift certificate]
+On $\mathcal E$, simultaneously for every selected $M$ and every external law
+in Eq.~\eqref{supp:eq:model},
+\begin{equation}
+ A(Q,M)\leq(1-\eta_y)B_y(M)
+ +\eta_y\operatorname{Cap}_G(M).
+ \label{supp:eq:shiftbound}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Balanced Bayes accuracy is convex in the collection of source laws. The
+retained experiment is bounded by Eq.~\eqref{supp:eq:transfer}, the adaptive
+envelope bounds its unknown reference term, and the residual experiment is
+bounded by capacity. Thus the right-hand side before optimizing $t_y$ is
+$t_yB_y(M)+(1-t_y)\operatorname{Cap}_G(M)$. Since $B_y(M)$ cannot exceed
+capacity, this expression is largest at the smallest allowed retained mass,
+$t_y=1-\eta_y$.
+\end{proof}
+
+For known population laws and a convex hull of listed transform extremes, the
+matching exact worst external privacy risk is
+\begin{equation}
+ \frac{1}{G}\max_{T\in\operatorname{ext}(\mathcal T_y)}
+ \max_{a\in[G]^L}\sum_s\left[(1-\eta_y)p_{s,y}^\top T
+ v_{M,a,s}+\eta_y\max_cv_{M,a,s}(c)\right].
+ \label{supp:eq:exactprivacy}
+\end{equation}
+This is the ground-truth synthetic evaluator, not the deployable certificate.
+The residual vertex is optimal because its score is at least the common score
+source by source; a convex function of $T$ attains its maximum at a listed
+extreme.
+
+\section{Utility Certificate}
+
+Fix decoder $g:[L]\to[J]$, let
+$\ell_y(z)=\mathbf 1\{g(z)\neq y\}$, and write
+$u_y=M\ell_y$. Define
+\begin{align}
+ \overline E_{s,y}(M,g)&=
+ \Phi(\widehat p_{s,y},\epsilon_{s,y};u_y),\\
+ \kappa_y(M,g)&=\sup_{T\in\mathcal T_y}
+ \max\{0,\max_c((TM-M)\ell_y)(c)\},\\
+ U_y(M,g)&=\max_cu_y(c).
+\end{align}
+
+\begin{corollary}[Adaptive shifted-utility certificate]
+On $\mathcal E$, every selected $(M,g)$ satisfies
+\begin{equation}
+ \operatorname{Err}_{s,y}(Q,M,g)\leq
+ (1-\eta_y)D_{s,y}(M,g)+\eta_yU_y(M,g),
+ \label{supp:eq:utility}
+\end{equation}
+where
+$D_{s,y}=\min\{U_y,\overline E_{s,y}+\kappa_y\}$.
+\end{corollary}
+
+\begin{proof}
+Apply the structured-shift proof to the bounded loss $\ell_y$. The common
+component differs from its reference expectation by at most the largest
+positive directional defect $\kappa_y$, while the arbitrary residual
+concentrates on a row with maximal error $U_y$.
+\end{proof}
+
+The exact population utility risk used in the independent evaluator is
+\begin{equation}
+ \max_{T\in\operatorname{ext}(\mathcal T_y)}
+ \left[(1-\eta_y)p_{s,y}^\top TM\ell_y
+ +\eta_y\max_c(M\ell_y)(c)\right].
+ \label{supp:eq:exactutility}
+\end{equation}
+
+\section{No-Free-Lunch Boundary}
+
+\begin{theorem}[Unrestricted differential shift]
+For $G\geq2$, $\operatorname{Cap}_G(M)=1/G$ if and only if all rows of $M$ are
+identical.
+\end{theorem}
+
+\begin{proof}
+Identical rows make every released source law identical. Conversely, if two
+rows differ, choose two residual source laws concentrated on those rows and
+place every remaining source on either row. The released source laws are not
+all identical, so uniform-prior Bayes accuracy is strictly above chance.
+Exactness of Eq.~\eqref{supp:eq:cap} completes the argument.
+\end{proof}
+
+For two fine tokens $c_0,c_1$ with different task labels, suppose a decoder has
+row-wise errors at most $e_0,e_1$. The decoder decision event occurs with
+probability at least $1-e_0$ under $M(c_0,\cdot)$ and at most $e_1$ under
+$M(c_1,\cdot)$. Total variation is therefore at least $1-e_0-e_1$, giving
+\begin{equation}
+ 2\operatorname{Cap}_2(M)-1\geq1-e_0-e_1.
+ \label{supp:eq:utilitylower}
+\end{equation}
+Thus a nontrivial task contract is incompatible with chance-level source
+capacity under unrestricted differential shift.
+
+\section{Abstention Theory}
+
+Let $V(P,e)$ be the globally optimal certified worst conditional error for
+confidence balls centered at $P$ with common radius $e$. With deployed radius
+$e_n$, define
+$r_n^*=\sup\{r\geq0:V(P,e_n+r)\leq\tau_U\}$.
+
+\begin{proposition}[Finite-sample abstention envelope]
+For $H$ registered strata of size $n$,
+\begin{equation}
+ \Pr(\text{MOSAIC abstains})\leq
+ \min\{1,H(2^K-2)e^{-n(r_n^*)^2/2}\}.
+ \label{supp:eq:abstain}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+If every empirical stratum is within distance $r$ of its population law, each
+radius-$e_n$ ball around the empirical law is contained in the
+radius-$(e_n+r)$ ball around the population law. A feasible population-centered
+pair for the larger balls remains feasible for the empirical problem. Apply
+the Weissman bound and a stratum union bound, then let $r$ approach $r_n^*$.
+\end{proof}
+
+For the preregistered local power curve, write $V_n(P)=V(P,e_n)$. Under local
+uniqueness of the decoder and certificate branches together with strong
+regularity of the resulting parametric linear program, the value is
+differentiable. If $h_{n,s,y}$ is its simplex gradient and
+$\Sigma_{s,y}=\operatorname{diag}(p_{s,y})-p_{s,y}p_{s,y}^\top$, the finite-$n$
+delta-method prediction is
+\begin{equation}
+ \Phi_{\mathrm N}\!\left(
+ \frac{\tau_U-V_n(P)}{
+ \sqrt{n^{-1}\sum_{s,y}h_{n,s,y}^\top\Sigma_{s,y}h_{n,s,y}}}
+ \right).
+ \label{supp:eq:power}
+\end{equation}
+The locked analysis estimates each gradient by centered simplex-preserving
+finite differences at step sizes $10^{-4}$ and $5\times10^{-5}$ and rejects the
+approximation if their maximum discrepancy exceeds $5\times10^{-3}$.
+
+\section{Optimization Certificate}
+
+For fixed decoder, every attacker assignment, transform extreme, support
+function dual, capacity term, invariance defect, and utility loss has a linear
+epigraph in the channel and auxiliary variables. The minimum between a
+capacity branch and a coupled-shift branch is represented as a finite
+disjunction with binary variables. The implementation solves one mixed-integer
+linear program per decoder and takes the best globally certified objective.
+This global claim is made only when all decoder and attacker assignments are
+enumerated, the solver reports numerical zero MIP gap, the primal residual is
+at most $2\times10^{-7}$, and independently recomputed certificates match the
+objective at the same tolerance. A timeout, nonzero gap, oversized assignment
+family, or post-hoc mismatch cannot return a deployment.
+
+The numerical audit compares 30 randomized small instances with exhaustive
+$21^K$ channel grids, recomputes every certificate, checks explicit abstention,
+and includes a witness in which the best stochastic certified error is
+$0.371588$ while every deterministic release has certified error $1$. Separate
+exact-risk and population-optimizer audits enumerate all transformation,
+attacker, residual, and channel-grid extrema.
+
+\section{Locked Experimental Protocol}
+
+The synthetic population has two labels, two sources, and three fine tokens.
+For label zero the source laws are $(0.80,0.15,0.05)$ and
+$(0.65,0.30,0.05)$; for label one they are $(0.05,0.20,0.75)$ and
+$(0.05,0.35,0.60)$. The common-transform set is the convex hull of identity and
+a nearest-neighbor smoothing channel. The hard safety scenario uses
+$\eta=0.20$, privacy-advantage threshold $0.30$, and worst conditional error
+threshold $0.40$. The retention scenario uses $\eta=0.10$, thresholds $0.35$
+and $0.45$. Every source--label stratum contains exactly $n$ independent draws.
+
+The confirmation fixes 1,000 replicates in each of three hard-scenario and five
+retention-scenario sample-size cells. It compares eight rules and stores 64,000
+method-level receipts. The preregistration fixes all seeds, methods, intervals,
+and pass criteria, hashes the theorem and implementation, and was pushed before
+the confirmation began. Pilot seeds zero through 199 are excluded. The oldest
+aggregate-only pilot is retained as design history but cannot support a
+channel-level claim; every later pilot row is replayed by the exact evaluator.
+
+\input{mosaic_supplement_results}
+
+\section{Reproducibility Manifest}
+
+The named package reports the exact preregistration hash, Git commit, software
+versions, and artifact hashes. The anonymous package retains the same internal
+identifiers while replacing public authorship and repository metadata as
+required by double-blind review. Raw synthetic receipts contain no private or
+human-subject data. Real-domain experiments, if included, retain dataset terms,
+official split definitions, preprocessing hashes, and method-specific code
+provenance in a separate manifest.
