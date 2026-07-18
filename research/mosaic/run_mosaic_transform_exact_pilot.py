@@ -86,7 +86,17 @@ def result_for_solution(
         )
         and utility <= scenario.utility_threshold + 1e-9
     )
-    deployed = bool(selection.criterion <= scenario.utility_threshold + 1e-10)
+    privacy_certificates = tuple(
+        float(certificate.normalized_advantage)
+        for certificate in solution.privacy_certificates
+    )
+    deployed = bool(
+        all(
+            value <= scenario.privacy_thresholds[label] + 1e-10
+            for label, value in enumerate(privacy_certificates)
+        )
+        and selection.criterion <= scenario.utility_threshold + 1e-10
+    )
     false_acceptance = bool(deployed and not safe)
     return RefinementResult(
         seed=seed,
@@ -99,10 +109,7 @@ def result_for_solution(
         exact_worst_privacy_advantage=float(max(privacy_by_label)),
         exact_worst_conditional_error=float(utility),
         certified_worst_conditional_error=selection.criterion,
-        certified_privacy_advantages=tuple(
-            float(certificate.normalized_advantage)
-            for certificate in solution.privacy_certificates
-        ),
+        certified_privacy_advantages=privacy_certificates,
         release_channel=tuple(
             tuple(float(value) for value in row) for row in selection.channel
         ),

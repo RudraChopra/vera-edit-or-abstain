@@ -84,7 +84,9 @@ def main() -> None:
     payload["template_sha256"] = sha256(args.template)
     payload["repository_head_at_lock"] = git_head()
     payload["locked_at"] = datetime.now(timezone.utc).isoformat()
-    payload["status"] = "locked_before_confirmatory_outcomes"
+    payload["status"] = str(
+        payload.pop("lock_status", "locked_before_confirmatory_outcomes")
+    )
     atomic_json(payload, args.output)
     digest = sha256(args.output)
     try:

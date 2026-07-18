@@ -216,7 +216,7 @@ def main() -> None:
     add_intervals(cells)
     gates = evaluate_gates(all_rows, cells, config)
     report: dict[str, object] = {
-        "name": "MOSAIC transform-exact locked confirmation v1",
+        "name": str(config["confirmation_name"]),
         "status": "complete_confirmatory_result",
         "preregistration": str(args.prereg),
         "preregistration_sha256": prereg_hash,

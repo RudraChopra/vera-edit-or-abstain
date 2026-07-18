@@ -346,7 +346,7 @@ def main() -> None:
     )
     passed = not mismatches and coverage and paired_dominance and retention125 and retention250
     output = {
-        "name": "MOSAIC transform-exact independent confirmation replay v1",
+        "name": str(prereg["audit_name"]),
         "pass": passed,
         "report_sha256": sha256(args.report),
         "preregistration_sha256": expected_prereg_hash,
