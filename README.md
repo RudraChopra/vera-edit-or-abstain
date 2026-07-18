@@ -52,6 +52,11 @@ Included:
   `research/scripts/`
 - Per-run JSON receipts and small verification artifacts under
   `research/artifacts/`
+- The complete final P0 matrix (seeds 173--236) and lossless compressed primary
+  artifact. Its independently audited result is a negative confirmation for
+  VERA's planned superiority-over-IID-LTT headline; see
+  `research/maintrack/P0_RESULT_SUMMARY_2026-07-18.md` before relying on any
+  earlier controlled-shift result.
 
 Excluded:
 
@@ -95,6 +100,13 @@ python research/scripts/verify_reference_manifest.py
 python -m unittest research.tests.test_vera_robust_certificate \
   research.tests.test_vera_analysis -v
 python research/scripts/audit_goal_completion.py --no-fail
+
+# Final P0 integrity and independent-reader gates. The full per-example arrays
+# remain on the mounted external drive.
+python research/scripts/audit_vera_p0_receipts.py
+python research/scripts/analyze_vera_p0_confirmation.py
+python research/scripts/replay_vera_p0_exact_risks.py
+python research/scripts/audit_vera_p0_reader_agreement.py
 ```
 
 The five claim-grade eraser families are INLP, R-LACE, LEACE, TaCo, and MANCE++.
