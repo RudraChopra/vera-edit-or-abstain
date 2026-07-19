@@ -22,7 +22,7 @@ from run_mosaic_real_pilot import DATASETS
 
 ROOT = Path(__file__).resolve().parent
 REPOSITORY = ROOT.parents[1]
-DEFAULT_OUTPUT = ROOT / "prereg_mosaic_bridge_corrected_confirmation_v1.json"
+DEFAULT_OUTPUT = ROOT / "prereg_mosaic_bridge_corrected_confirmation_v2.json"
 DEFAULT_SEED_START = 1220
 DEFAULT_SEED_COUNT = 5
 STRICT_AMENDMENT = ROOT / "prereg_mosaic_bridge_strict_amendment_v2.json"
@@ -155,7 +155,14 @@ def main() -> None:
     payload: dict[str, object] = {
         "project": "MOSAIC: Minimax-Optimized Source-Agnostic Invariant Channels",
         "phase": "fresh corrected strict-v2 bridge confirmation",
-        "status": "locked_before_corrected_confirmation_outcomes",
+        "status": "locked_before_confirmatory_outcomes",
+        "supersedes_preflight_only": {
+            "path": "research/mosaic/prereg_mosaic_bridge_corrected_confirmation_v1.json",
+            "reason": (
+                "The v1 status label was incompatible with the frozen frontier runner. "
+                "The runner rejected it before loading data or writing an outcome."
+            ),
+        },
         "locked_at": datetime.now(timezone.utc).isoformat(),
         "repository_head_at_lock": git("rev-parse", "HEAD"),
         "confirmation_seeds": seeds,
