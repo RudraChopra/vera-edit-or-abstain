@@ -36,12 +36,16 @@ construction:
 | [Equivalent Comparisons of Experiments](https://doi.org/10.1214/aoms/1177729032), [Sufficiency and Approximate Sufficiency](https://doi.org/10.1214/aoms/1177700372), and [Comparison of Statistical Experiments](https://doi.org/10.1017/CBO9780511666353) | Blackwell garbling, approximate sufficiency, deficiency, and Markov-kernel comparison are classical. | MOSAIC does not claim experiment comparison as new. Its bridge is a finite-sample one-sided contamination certificate over simultaneous empirical confidence regions, composed with same-table release optimization. |
 | [Weighted Garbling](https://arxiv.org/abs/2410.21694) | Generalizes Blackwell order using state-independent signal weights and characterizes conditional informativeness. | This is a close population-level neighbor and must be cited. MOSAIC instead certifies a common Markov transform plus arbitrary state-specific residual mixture from finite reference and bridge samples, maximizes uniform retained mass, and propagates that event to source leakage and task utility. |
 | [Testable Learning with Distribution Shift](https://proceedings.mlr.press/v247/klivans24a.html) | Uses target data to test whether a learner can guarantee shifted-distribution performance. | Supplies the test-or-abstain paradigm, not the finite-experiment bridge LP, universal finite-token attacker, or joint stochastic release optimizer. |
+| [Equivalence of Coarse and Fine-Grained Models for Learning with Distribution Shift](https://proceedings.mlr.press/v336/patel26a.html) | Proves an equivalence between pointwise PQ rejection and whole-domain testable-distribution-shift rejection in the distribution-free setting, with hardness consequences. | Concerns classifier learnability and rejection granularity. It does not estimate a common Markov bridge, bound differential contamination, or certify an adaptively selected release channel. |
+| [Testing Noise Assumptions of Learning Algorithms](https://proceedings.mlr.press/v336/goel26a.html) | Tests whether data satisfy registered noise assumptions and returns a certificate of classifier optimality when the test accepts. | Tests structured label-noise assumptions for learning halfspaces. MOSAIC instead certifies finite categorical experiment comparison and propagates that bridge through a source-leakage and utility release contract. |
 | [Data-Driven Robust Optimization](https://arxiv.org/abs/1401.0212) | Builds statistically calibrated uncertainty sets and optimizes decisions robustly over them. | Supplies broad robust-optimization precedent. MOSAIC's claim is the exact finite-experiment geometry and its composition with adaptive source-leakage release, not data-driven uncertainty sets in general. |
 
 The sweep also included conformal risk control under covariate or likelihood-ratio
 shift, privacy funnels, distributionally robust fair representation learning,
-concept-erasure methods, and 2025--2026 OpenReview results on representation
-drift and robust erasure.
+concept-erasure methods, conditional shift-detection martingales, and 2025--2026
+OpenReview results on representation drift, Wasserstein fairness audits, and
+robust erasure. None uses MOSAIC's jointly learned finite-experiment bridge and
+same-table stochastic release certificate.
 
 ## Verdict
 
