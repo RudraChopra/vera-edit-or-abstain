@@ -18,6 +18,7 @@ DATASETS = (
     "gaitpdb",
     "waterbirds",
     "acs_income_ca_tx",
+    "acs_multistate",
 )
 REQUIRED = ("x.npy", "y.npy", "s.npy", "split.npy")
 

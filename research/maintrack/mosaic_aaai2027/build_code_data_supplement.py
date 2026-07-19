@@ -38,6 +38,11 @@ CORE_SOURCES = (
     "research/mosaic/mosaic_strict_certification_v2.py",
     "research/mosaic/mosaic_rational_certificate.py",
     "research/mosaic/mosaic_real.py",
+    "research/mosaic/audit_mosaic_acs_natural_shift.py",
+)
+
+REAL_PREP_SOURCES = (
+    "research/scripts/prepare_acs_natural_shift_stores.py",
 )
 
 FROZEN_ARTIFACTS = {
@@ -53,6 +58,7 @@ ORIGINAL_CERTIFICATES = REPOSITORY / "research/artifacts/mosaic_bridge_confirmat
 STRICT_CERTIFICATES = REPOSITORY / "research/artifacts/mosaic_bridge_strict_v2_receipts_v1"
 DIRECT_RECEIPTS = REPOSITORY / "research/artifacts/mosaic_direct_target_receipts_v1"
 COMPARATOR_RECEIPTS = REPOSITORY / "research/artifacts/mosaic_bridge_comparator_receipts_v1"
+NATURAL_SHIFT_RECEIPTS = REPOSITORY / "research/artifacts/mosaic_acs_natural_shift_v1_receipts"
 
 DROP_KEYS = {
     "acknowledgement",
@@ -135,6 +141,22 @@ def copy_core_sources(root: Path) -> None:
             sanitize_text(source.read_text(encoding="utf-8")),
             encoding="utf-8",
         )
+
+
+def copy_real_preparation_sources(root: Path) -> None:
+    destination = root / "data/real"
+    destination.mkdir(parents=True, exist_ok=True)
+    for relative in REAL_PREP_SOURCES:
+        source = REPOSITORY / relative
+        text = source.read_text(encoding="utf-8")
+        text = text.replace(
+            'Path("/Volumes/Backups/FARO/artifacts/acs_folktables_raw")',
+            'Path("data/real/raw/acs")',
+        ).replace(
+            'Path("/Volumes/Backups/FARO/artifacts/acs_natural_shift_stores")',
+            'Path("data/real/processed/acs_natural_shift")',
+        )
+        (destination / source.name).write_text(sanitize_text(text), encoding="utf-8")
 
 
 def git_blob(commit: str, relative: str) -> bytes:
@@ -347,6 +369,37 @@ def copy_certificate_pairs(root: Path) -> None:
         write_json(strict_output / original_path.name, strict_payload)
 
 
+def copy_natural_shift_evidence(root: Path) -> None:
+    prereg_source = REPOSITORY / "research/mosaic/prereg_mosaic_acs_natural_shift_v1.json"
+    data_lock_source = REPOSITORY / "research/mosaic/prereg_mosaic_acs_natural_shift_data_v1.json"
+    prereg = sanitize_value(json.loads(prereg_source.read_text(encoding="utf-8")))
+    destination = root / "artifacts/natural_shift"
+    prereg_output = destination / "preregistration.json"
+    write_json(prereg_output, prereg)
+    prereg_sha = sha256(prereg_output)
+
+    data_lock = sanitize_value(json.loads(data_lock_source.read_text(encoding="utf-8")))
+    data_lock["preregistration_sha256"] = prereg_sha
+    data_lock_output = root / "data/real/acs_natural_shift_data_lock.json"
+    write_json(data_lock_output, data_lock)
+
+    receipt_output = destination / "receipts"
+    receipts = sorted(NATURAL_SHIFT_RECEIPTS.glob("ACS-*.json"))
+    if len(receipts) != 60:
+        raise RuntimeError(f"expected 60 natural-shift receipts, found {len(receipts)}")
+    for source in receipts:
+        payload = sanitize_value(json.loads(source.read_text(encoding="utf-8")))
+        payload["preregistration_sha256"] = prereg_sha
+        write_json(receipt_output / source.name, payload)
+
+    for name, relative in (
+        ("summary.json", "research/artifacts/mosaic_acs_natural_shift_v1_summary.json"),
+        ("audit.json", "research/artifacts/mosaic_acs_natural_shift_v1_audit.json"),
+    ):
+        source = REPOSITORY / relative
+        write_json(destination / name, json.loads(source.read_text(encoding="utf-8")))
+
+
 def write_manifest(root: Path) -> None:
     manifest = root / "MANIFEST_SHA256.txt"
     rows = []
@@ -383,6 +436,11 @@ def verify_python(root: Path) -> None:
         "print('core implementation imports: pass')"
     )
     subprocess.run([sys.executable, "-c", smoke], check=True)
+
+
+def remove_python_caches(root: Path) -> None:
+    for cache in sorted(root.rglob("__pycache__"), reverse=True):
+        shutil.rmtree(cache)
 
 
 def verify_manifest(root: Path) -> None:
@@ -441,12 +499,15 @@ def build(output: Path) -> dict[str, Any]:
         root = Path(temporary) / PACKAGE_NAME
         shutil.copytree(TEMPLATE, root)
         copy_core_sources(root)
+        copy_real_preparation_sources(root)
         write_full_synthetic_generator(root)
         copy_frozen_artifacts(root)
         copy_certificate_pairs(root)
+        copy_natural_shift_evidence(root)
+        verify_python(root)
+        remove_python_caches(root)
         write_manifest(root)
         scan_anonymity(root)
-        verify_python(root)
         verify_manifest(root)
         write_zip(root, output)
         tree = tree_summary(root)

@@ -19,6 +19,7 @@ SCRIPTS = (
     "run_utility_table.py",
     "run_scaling.py",
     "run_acs_ca_tx.py",
+    "run_acs_multistate.py",
     "run_bridge_power.py",
 )
 
@@ -37,10 +38,12 @@ def main() -> None:
         run([sys.executable, str(ROOT / "scripts" / script)])
     if not args.skip_exact_rational:
         run([sys.executable, str(ROOT / "verify" / "audit_exact_rational.py"), "--workers", str(args.workers)])
+        run([sys.executable, str(ROOT / "verify" / "audit_acs_natural_shift.py")])
     summary = {
         "status": "pass",
         "entry_points_replayed": len(SCRIPTS),
         "exact_rational_replayed": not args.skip_exact_rational,
+        "natural_shift_exact_rational_replayed": not args.skip_exact_rational,
     }
     output = ROOT / "artifacts" / "reproduced" / "replay_all.json"
     output.parent.mkdir(parents=True, exist_ok=True)

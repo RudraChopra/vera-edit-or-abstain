@@ -1,0 +1,20 @@
+\paragraph{Natural multi-state geographic transfer.}
+Before downloading the four target states, we locked 60 ACS jobs spanning income, employment, and public-coverage tasks; Washington, Illinois, New York, and Florida targets; five seeds; and whole-PUMA holdouts. Every job runs the same 13-candidate official frontier at $K\in\{4,8\}$. At the primary $.40$ contract, $K=4$ MOSAIC releases 15/60 with 0/15 held-out violations and 0/1,500 violating operational batches. The releases span all four targets (FL=4, IL=2, NY=5, WA=4) and two tasks: employment=13 and income=2. The direct table releases 47/60 with 0/47 held-out violations. At $K=8$, MOSAIC abstains on all 60 jobs while the direct table releases 47/60 with 0/47 held-out violations, exposing the confidence cost of the larger token table. The final column of Table~\ref{tab:acs-natural-shift} repeats the held-out diagnostic 100 times, sampling one certified public token per person in each replay.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{clrrr}
+\hline
+$K$ & Rule & Releases & Diagnostic viol. & Batch viol. \\
+\hline
+4 & MOSAIC & 15/60 & 0/15 & 0/1500 \\
+4 & Direct table & 47/60 & 0/47 & 2/4700 \\
+8 & MOSAIC & 0/60 & -- & -- \\
+8 & Direct table & 47/60 & 0/47 & 0/4700 \\
+\hline
+\end{tabular}
+\caption{Fresh natural geographic shift across 60 registered ACS jobs (three tasks, four target states, five seeds). Diagnostic violations are among released jobs with complete held-out PUMA support. Batch violations count 100 operational batch replays per primary release, each sampling one public token per held-out person.}
+\label{tab:acs-natural-shift}
+\end{table}

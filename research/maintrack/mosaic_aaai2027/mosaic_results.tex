@@ -76,28 +76,6 @@ Waterbirds deployments at $.49$; the supplement enumerates every threshold.
 These untouched diagnostics show the practical effect of each selection rule
 alongside the finite-sample bridge guarantee.
 
-\begin{table*}[t]
-\centering
-\scriptsize
-\setlength{\tabcolsep}{3.2pt}
-\begin{tabular}{lcccccl}
-\hline
-Dataset & Strict & Bridge & Validation & Unconditional & Strict diagnostic & Bridge status \\
-\hline
-BiasBios-Clinical & 20/0 & 20/0 & 20/0 & 20/0 & 20 estimable & median $t=.797$ \\
-Camelyon17-WILDS & 0/0 & 0/0 & 20/-- & 20/-- & none & missing support \\
-CivilComments-WILDS & 0/0 & 0/0 & 0/0 & 20/20 & none & no joint feasibility \\
-GaitPDB & 0/0 & 7/7 & 20/18 & 20/18 & none & missing support \\
-Waterbirds & 0/0 & 20/0 & 20/0 & 20/0 & none & no joint feasibility \\
-\hline
-\end{tabular}
-\caption{Dataset-grouped primary results, 20 seeds per benchmark. Entries are
-deployments/diagnostic violations among estimable deployments; ``--'' marks a
-diagnostic with missing source support. The 20 strict MOSAIC deployments occur
-on BiasBios-Clinical.}
-\label{tab:dataset-grouped}
-\end{table*}
-
 The primary releases concentrate on BiasBios-Clinical, where the bridge has
 strong support and certified median retained mass is $.797$. The other four
 benchmarks map the operational boundary of the method: missing source support
@@ -140,22 +118,14 @@ numerical interface utility, and threshold frontier.
 \paragraph{Numerical verification and fresh confirmations.}
 The main table uses the strict-v2 arithmetic: deterministic replay matches all
 100 receipts, and exact-rational checks verify 1,300 bridge certificates and
-1,400 outward release bounds. The archive also preserves the earlier raw and
-strict-v1 outputs, together with the scoped structural-zero repair that
-produced v2. A new pre-outcome confirmation on seeds 1220--1224 repeats the
-corrected pipeline, with 325 candidate and 350 global-optimization replays.
-It releases all five BiasBios jobs with no diagnostic violation and abstains on
-the other benchmark jobs at the primary contract. A second pre-outcome
-confirmation uses the Folktables ACSIncome task \citep{ding2021folktables} to
-transfer from California to Texas. Its strict replay covers 65 official-candidate
-rows and 70 global optimizations. At the registered $.45$ sensitivity contract,
-it releases all five jobs: three R-LACE releases and two degenerate identity
-interfaces that leave the four-bin score unchanged. All five untouched Texas
-diagnostics meet the contract. At the $.40$ primary contract, the best certified
-errors are $.4023$--$.4145$; decomposition attributes $.161$--$.211$ to bridge
-residual capacity and at most $1.6\times10^{-7}$ to sampling in the active worst
-stratum. Thus the abstention is caused by the admitted shift class, not a loose
-multinomial radius.
+1,400 outward release bounds. A pre-outcome rerun on seeds 1220--1224 releases
+all five BiasBios jobs without a diagnostic violation. A separate ACSIncome
+California-to-Texas confirmation abstains at the $.40$ primary contract but
+releases all five jobs at the registered $.45$ sensitivity contract; its best
+$.40$ bounds are $.4023$--$.4145$. The supplement preserves every earlier
+receipt, the structural-zero correction history, and the decomposed bounds.
+
+\input{mosaic_acs_natural_shift_results}
 
 \paragraph{Alphabet sensitivity.}
 Reoptimizing the best covered candidate with four release tokens is no worse

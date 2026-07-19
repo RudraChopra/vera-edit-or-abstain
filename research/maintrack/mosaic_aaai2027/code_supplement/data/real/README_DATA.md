@@ -17,6 +17,7 @@ processed feature-store schema and arrays, not a private path or machine name.
 | `gaitpdb` | GaitPDB upstream terms; subject-disjoint native split, binary task, and recorded source label | `8ff97ea9c25d32e58dc5551dbadfd63f12e3582b0623808713ad3a3a81c7d8bc` |
 | `waterbirds` | Waterbirds, CUB, and Places image terms; official train, validation, and test metadata split | `fd4c17004512e9b38afc086eab8544dd9a15d187323747f666f3ae38d5d8c41f` |
 | `acs_income_ca_tx` | Folktables ACS 2018 one-year PUMS terms; California reference and Texas target, income above 50,000 task | `d37d371760fd813e47d08bd91baea49dc66ac8efa2bbbb0bdcdd789ea2549ae3` |
+| `acs_multistate` | Folktables ACS 2018 one-year PUMS terms; California reference; Washington, Illinois, New York, and Florida targets; income, employment, and public-coverage tasks | See `acs_natural_shift_data_lock.json` for all 12 manifest and array hashes |
 
 ## Shared feature-store schema
 
@@ -29,14 +30,21 @@ then divided at construction-score quartiles into four fine tokens.
 
 Certification sampling is balanced over represented source-label strata. Real
 confirmation caps are 8,000 eraser-training rows, 2,000 tokenizer-construction
-rows, 8,000 certification rows, and 8,000 external diagnostic rows. The ACS
-diagnostic cap is 12,000. Missing required source-label strata are preserved as
-missing and force abstention; they are never imputed.
+rows, 8,000 certification rows, and 8,000 external diagnostic rows. The earlier
+ACS diagnostic cap is 12,000. The multistate confirmation caps reference,
+bridge, and diagnostic tables at 24,000 rows each and partitions complete
+target-state PUMAs two-thirds/one-third before fitting any candidate. Missing
+required source-label strata are preserved as missing and force abstention;
+they are never imputed.
 
 ## Retrieval
 
 `download_public_data.py` invokes the standard dataset-package downloader for
-WILDS and Folktables when those optional packages are installed. BiasBios,
+WILDS and Folktables when those optional packages are installed. Run
+`prepare_acs_natural_shift_stores.py` after acquiring the five registered ACS
+states; it creates the twelve task/state stores whose hashes appear in
+`acs_natural_shift_data_lock.json`. Verify all 84 store files with
+`python data/real/verify_acs_store_hashes.py`. BiasBios,
 GaitPDB, and Waterbirds require the reviewer to obtain the upstream release
 under its own terms and pass the resulting directory with `--source`. No raw
 data are embedded in this archive.

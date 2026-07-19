@@ -29,7 +29,8 @@ python verify/replay_all.py --workers 2
 ```
 
 `replay_all.py` runs every entry point below, asserts each paper value, and
-then checks 1,300 bridge certificates and 1,400 release bounds using exact
+then checks 1,300 original bridge certificates and 1,400 release bounds, plus
+1,560 multistate bridges and 3,120 multistate release bounds, using exact
 rational arithmetic. Each command writes a new receipt under
 `artifacts/reproduced/`. For a quick table-only check, add
 `--skip-exact-rational`; that option does not validate the serialized
@@ -57,8 +58,10 @@ writes the complete report to `artifacts/reproduced/`, and asserts the primary
 | Released-interface utility | `scripts/run_utility_table.py --seed 1200` | BiasBios .863 [.857,.868], .873 four-bin, .901 full edited, .903 unedited; Waterbirds row |
 | Scaling study | `scripts/run_scaling.py --seed 4100` | 75/75 certify at .40; K=64,G=4 median 0.359 seconds; n-for-radius 2000 to 12817 |
 | ACS California to Texas | `scripts/run_acs_ca_tx.py --seed 1305` | abstain 5/5 at .40; release 5/5 at .45 and .49; two identity no-ops; best error .4023 to .4145 |
+| ACS natural multistate transfer | `scripts/run_acs_multistate.py --seed 1400` | K=4 MOSAIC 15/60 releases across four states and two tasks; 0/15 held-out and 0/1,500 operational violations; complete K=4/K=8 threshold frontier |
 | Bridge power and validity | `scripts/run_bridge_power.py --seed 930000000` | valid acceptance 0%, 31%, 100%, 100%; both invalid mechanisms rejected |
 | Exact certificate audit | `verify/audit_exact_rational.py --seed 1200 --workers 2` | 1,300 bridge certificates and 1,400 outward bounds, zero failures |
+| Multistate exact audit | `verify/audit_acs_natural_shift.py` | 1,560 bridge certificates, 3,120 outward bounds, and 1,200 selections, zero failures |
 
 The `--seed` choices are restricted to the locked seed families. The aggregate
 scripts replay all trials in their claim cell; the supplied seed identifies
@@ -76,6 +79,8 @@ the locked family and is recorded in the new audit receipt.
 - `artifacts/frozen/`: immutable compact outcomes and summary receipts.
 - `artifacts/certificates/`: sanitized per-job token tables and strict release
   certificates used by the exact-rational audit.
+- `artifacts/natural_shift/`: the locked 60-job multistate receipts, compact
+  summary, and independent audit.
 - `verify/`: full replay and SHA-256 verification.
 - `MANIFEST_SHA256.txt`: SHA-256 for every immutable archive member except the
   manifest itself. Newly generated files under `artifacts/reproduced/` are not
