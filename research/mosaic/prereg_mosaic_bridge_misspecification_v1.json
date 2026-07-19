@@ -1,0 +1,157 @@
+{
+  "audit_scope": "A separately executed, prelocked audit regenerates every table from its seed and recomputes all bridge decisions and aggregates.",
+  "claim_boundary": "This synthetic stress study tests finite-sample bridge behavior under one correctly specified and two deliberately misspecified target laws. It does not prove that arbitrary real-world misspecification is detectable.",
+  "code_sha256": {
+    "research/mosaic/audit_mosaic_bridge_misspecification.py": "6bb51e993c5c367070550d8a0717b086526e6cb885325548092df32b64a89bb2",
+    "research/mosaic/lock_mosaic_bridge_misspecification.py": "bb542b97ef637037bae4cfbac249d59e042857ab65009db2c980eb80026e2f4c",
+    "research/mosaic/mosaic_bridge.py": "a4db7cf4752ec463fc01bd8ad436c06846c74d3feefe0aeb62d5dd87e4df32a4",
+    "research/mosaic/mosaic_channel.py": "a69c82b9182be32d28d30e83795ac77c9512fa09f95f8bad7e1ed5732e60ecc4",
+    "research/mosaic/mosaic_envelope.py": "e45d2e0168321a5fa953fba0c980fbdd0418386463ed55127069943134f87540",
+    "research/mosaic/run_mosaic_bridge_misspecification.py": "25c182f2d8feec6da5be44679a40adacd2760b73d29142f406d09ee99f9eb92c",
+    "research/mosaic/run_mosaic_synthetic_pilot.py": "4538cdf6862c32f2e886ab6bae236b97b3d90fe918c86b67658949e555e45503",
+    "research/tests/test_mosaic_bridge_misspecification.py": "4caf242a06d234caf65ac6e7bf2770f64a0e301bc0cb1fdede18b8d971aaecc9"
+  },
+  "confidence_allocation": "delta/2 to simultaneous reference strata and delta/2 to simultaneous target strata",
+  "familywise_delta": 0.05,
+  "locked_at": "2026-07-19T03:52:17.380821+00:00",
+  "maximum_declared_contamination": 0.2,
+  "minimum_retained_mass": 0.8,
+  "numerical_margin": 1e-07,
+  "pass_conditions": {
+    "comparison_gate": "None. Report every acceptance curve and confidence interval regardless of ordering.",
+    "complete_rows": 12000,
+    "confidence_event_failures": 0,
+    "maximum_invalid_false_acceptance_rate": 0.05
+  },
+  "pilot_disclosure": "Twenty exploratory tables per scenario-size cell with seeds 100*n+replicate were used to choose the locked scenarios and sample sizes. Those seeds are excluded from confirmation.",
+  "project": "MOSAIC bridge model-misspecification confirmation",
+  "reference_laws": [
+    [
+      [
+        0.8,
+        0.2
+      ],
+      [
+        0.6,
+        0.4
+      ]
+    ],
+    [
+      [
+        0.2,
+        0.8
+      ],
+      [
+        0.4,
+        0.6
+      ]
+    ]
+  ],
+  "replicates_per_cell": 1000,
+  "repository_head_before_lock": "95e6e31f882425bc0534ab0bad18c65f4de4c130",
+  "sample_sizes_per_stratum": [
+    500,
+    1000,
+    2000,
+    5000
+  ],
+  "scenarios": [
+    {
+      "description": "One source-blind Markov transform and no differential contamination.",
+      "name": "compatible_common_transform",
+      "population_minimum_retained_mass": 0.999999999999,
+      "population_retained_masses": [
+        0.999999999999,
+        0.999999999999
+      ],
+      "target_laws": [
+        [
+          [
+            0.7400000000000001,
+            0.26
+          ],
+          [
+            0.5800000000000001,
+            0.42000000000000004
+          ]
+        ],
+        [
+          [
+            0.26,
+            0.7400000000000001
+          ],
+          [
+            0.42000000000000004,
+            0.58
+          ]
+        ]
+      ]
+    },
+    {
+      "description": "True differential contamination is 0.25 while the contract permits 0.20.",
+      "name": "underdeclared_contamination",
+      "population_minimum_retained_mass": 0.774999999999,
+      "population_retained_masses": [
+        0.774999999999,
+        0.9749999999990002
+      ],
+      "target_laws": [
+        [
+          [
+            0.805,
+            0.195
+          ],
+          [
+            0.43500000000000005,
+            0.5650000000000001
+          ]
+        ],
+        [
+          [
+            0.445,
+            0.555
+          ],
+          [
+            0.31500000000000006,
+            0.6849999999999999
+          ]
+        ]
+      ]
+    },
+    {
+      "description": "The two sources undergo different transformations before release.",
+      "name": "source_specific_transform",
+      "population_minimum_retained_mass": 0.499999999999,
+      "population_retained_masses": [
+        0.499999999999,
+        0.6666666666656668
+      ],
+      "target_laws": [
+        [
+          [
+            0.9,
+            0.1
+          ],
+          [
+            0.3,
+            0.7
+          ]
+        ],
+        [
+          [
+            0.6000000000000001,
+            0.4
+          ],
+          [
+            0.2,
+            0.8
+          ]
+        ]
+      ]
+    }
+  ],
+  "seed_base": 930000000,
+  "seed_formula": "seed_base + scenario_index*100000000 + sample_index*1000000 + replicate",
+  "status": "locked_before_confirmation_outcomes",
+  "stopping_rule": "Run all 12,000 locked tables with no seed replacement, scenario change, threshold change, or selective omission."
+}
