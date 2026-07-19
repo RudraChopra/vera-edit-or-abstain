@@ -1,0 +1,428 @@
+{
+  "created_at": "2026-07-19T00:02:00.087757+00:00",
+  "dataset": "Waterbirds",
+  "fit_counts": {
+    "certification": 532,
+    "eraser_train": 3836,
+    "external": 2568,
+    "tokenizer_construction": 959
+  },
+  "name": "MOSAIC paired exact-certificate exploratory pilot",
+  "preprocessing": {
+    "explained_variance_ratio_sum": 0.8243933916091919,
+    "input_dimension": 512,
+    "output_dimension": 128,
+    "pca_fit_on_train_only": true,
+    "standardized_from_train_only": true
+  },
+  "prereg_sha256": null,
+  "protocol": {
+    "certificate_variants": [
+      "capacity_transfer",
+      "transform_exact"
+    ],
+    "contamination": 0.05,
+    "familywise_delta": 0.05,
+    "frontier_candidate_count": 13,
+    "maximum_worst_conditional_error": 0.49,
+    "ordered_smoothing": 0.1,
+    "per_candidate_delta": 0.0038461538461538464,
+    "privacy_advantage_threshold": 0.35
+  },
+  "results": [
+    {
+      "candidate": "Identity::unedited",
+      "capacity_transfer": {
+        "certificate_method": "global_decoder_enumeration_plus_exact_branch_milp",
+        "certified_privacy_advantages": [
+          2.220446049250313e-16,
+          0.0
+        ],
+        "certified_worst_conditional_error": 0.5000000000000002,
+        "decoder": [
+          0,
+          1
+        ],
+        "deployed": false,
+        "external_estimable": true,
+        "external_safe": false,
+        "external_worst_conditional_error": 0.5000000000000001,
+        "external_worst_privacy_advantage": 0.0,
+        "false_acceptance": false,
+        "max_constraint_violation": 7.771561172376096e-16,
+        "missing_external_strata": [],
+        "release_channel": [
+          [
+            0.5000000000000001,
+            0.4999999999999999
+          ],
+          [
+            0.4999999999999998,
+            0.5000000000000002
+          ],
+          [
+            0.49999999999999967,
+            0.5000000000000003
+          ],
+          [
+            0.5,
+            0.49999999999999994
+          ]
+        ],
+        "solver_dual_bound": 0.4999999999999995,
+        "solver_mip_gap": 9.992007221626409e-16,
+        "solver_objective": 0.5,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+      },
+      "certification_stratum_counts": [
+        [
+          133,
+          133
+        ],
+        [
+          133,
+          133
+        ]
+      ],
+      "certification_token_counts": [
+        [
+          [
+            53,
+            46,
+            29,
+            5
+          ],
+          [
+            3,
+            18,
+            48,
+            64
+          ]
+        ],
+        [
+          [
+            3,
+            15,
+            37,
+            78
+          ],
+          [
+            1,
+            0,
+            10,
+            122
+          ]
+        ]
+      ],
+      "external_stratum_counts": [
+        [
+          642,
+          642
+        ],
+        [
+          642,
+          642
+        ]
+      ],
+      "external_token_counts": [
+        [
+          [
+            220,
+            220,
+            163,
+            39
+          ],
+          [
+            17,
+            60,
+            268,
+            297
+          ]
+        ],
+        [
+          [
+            16,
+            47,
+            175,
+            404
+          ],
+          [
+            2,
+            3,
+            39,
+            598
+          ]
+        ]
+      ],
+      "l1_radii": [
+        [
+          0.3796720651019866,
+          0.3796720651019866
+        ],
+        [
+          0.3796720651019866,
+          0.3796720651019866
+        ]
+      ],
+      "method": "Identity",
+      "provenance": {
+        "official_entrypoint": "none (unedited control)",
+        "transformation": "identity"
+      },
+      "strength": "unedited",
+      "tokenizer_thresholds": [
+        0.00015455671770157244,
+        0.0034064606143591604,
+        0.23151352507387948
+      ],
+      "transform_exact": {
+        "certificate_method": "global_decoder_enumeration_transform_exact_lp",
+        "certified_privacy_advantages": [
+          4.440892098500626e-16,
+          2.220446049250313e-16
+        ],
+        "certified_worst_conditional_error": 0.5000000000000002,
+        "decoder": [
+          0,
+          1
+        ],
+        "deployed": false,
+        "external_estimable": true,
+        "external_safe": false,
+        "external_worst_conditional_error": 0.5000000000000002,
+        "external_worst_privacy_advantage": 0.0,
+        "false_acceptance": false,
+        "max_constraint_violation": 7.771561172376096e-16,
+        "missing_external_strata": [],
+        "release_channel": [
+          [
+            0.49999999999999944,
+            0.5000000000000006
+          ],
+          [
+            0.5000000000000001,
+            0.4999999999999999
+          ],
+          [
+            0.49999999999999994,
+            0.5
+          ],
+          [
+            0.5000000000000002,
+            0.49999999999999983
+          ]
+        ],
+        "solver_dual_bound": 0.4999999999999999,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.4999999999999999,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+      }
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "capacity_transfer": {
+        "certificate_method": "global_decoder_enumeration_plus_exact_branch_milp",
+        "certified_privacy_advantages": [
+          2.220446049250313e-16,
+          2.220446049250313e-16
+        ],
+        "certified_worst_conditional_error": 0.5000000000000002,
+        "decoder": [
+          0,
+          1
+        ],
+        "deployed": false,
+        "external_estimable": true,
+        "external_safe": false,
+        "external_worst_conditional_error": 0.5,
+        "external_worst_privacy_advantage": 0.0,
+        "false_acceptance": false,
+        "max_constraint_violation": 3.3306690738754696e-16,
+        "missing_external_strata": [],
+        "release_channel": [
+          [
+            0.5000000000000002,
+            0.49999999999999983
+          ],
+          [
+            0.5000000000000002,
+            0.49999999999999983
+          ],
+          [
+            0.4999999999999999,
+            0.5000000000000001
+          ],
+          [
+            0.4999999999999999,
+            0.5000000000000001
+          ]
+        ],
+        "solver_dual_bound": 0.4999999999999999,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.4999999999999999,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+      },
+      "certification_stratum_counts": [
+        [
+          133,
+          133
+        ],
+        [
+          133,
+          133
+        ]
+      ],
+      "certification_token_counts": [
+        [
+          [
+            34,
+            31,
+            33,
+            35
+          ],
+          [
+            75,
+            35,
+            13,
+            10
+          ]
+        ],
+        [
+          [
+            4,
+            27,
+            16,
+            86
+          ],
+          [
+            30,
+            27,
+            29,
+            47
+          ]
+        ]
+      ],
+      "external_stratum_counts": [
+        [
+          642,
+          642
+        ],
+        [
+          642,
+          642
+        ]
+      ],
+      "external_token_counts": [
+        [
+          [
+            151,
+            171,
+            148,
+            172
+          ],
+          [
+            378,
+            130,
+            72,
+            62
+          ]
+        ],
+        [
+          [
+            49,
+            69,
+            111,
+            413
+          ],
+          [
+            133,
+            118,
+            141,
+            250
+          ]
+        ]
+      ],
+      "l1_radii": [
+        [
+          0.3796720651019866,
+          0.3796720651019866
+        ],
+        [
+          0.3796720651019866,
+          0.3796720651019866
+        ]
+      ],
+      "method": "LEACE",
+      "provenance": {
+        "commit": "9f51753821316a1edacf78b52b464ab26d40e60a",
+        "official_entrypoint": "concept_erasure.LeaceFitter.fit(method='leace')",
+        "remote": "https://github.com/EleutherAI/concept-erasure",
+        "repository": "/Volumes/Backups/FARO/external/concept-erasure"
+      },
+      "strength": "closed_form",
+      "tokenizer_thresholds": [
+        0.19817120153974713,
+        0.3933865434710565,
+        0.6276001622695885
+      ],
+      "transform_exact": {
+        "certificate_method": "global_decoder_enumeration_transform_exact_lp",
+        "certified_privacy_advantages": [
+          0.0,
+          0.0
+        ],
+        "certified_worst_conditional_error": 0.5000000000000001,
+        "decoder": [
+          0,
+          1
+        ],
+        "deployed": false,
+        "external_estimable": true,
+        "external_safe": false,
+        "external_worst_conditional_error": 0.5000000000000001,
+        "external_worst_privacy_advantage": 0.0,
+        "false_acceptance": false,
+        "max_constraint_violation": 5.551115123125783e-17,
+        "missing_external_strata": [],
+        "release_channel": [
+          [
+            0.4999999999999999,
+            0.5000000000000001
+          ],
+          [
+            0.4999999999999999,
+            0.5000000000000001
+          ],
+          [
+            0.4999999999999999,
+            0.5000000000000001
+          ],
+          [
+            0.4999999999999999,
+            0.5000000000000001
+          ]
+        ],
+        "solver_dual_bound": 0.5000000000000001,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.5000000000000001,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+      }
+    }
+  ],
+  "seed": 5,
+  "selection": {
+    "capacity_transfer": {
+      "candidate": null,
+      "decision": "abstain",
+      "reason": "no candidate satisfied the registered privacy and utility contract"
+    },
+    "transform_exact": {
+      "candidate": null,
+      "decision": "abstain",
+      "reason": "no candidate satisfied the registered privacy and utility contract"
+    }
+  },
+  "smoke": true,
+  "status": "exploratory_not_confirmatory",
+  "store_manifest_sha256": "fd4c17004512e9b38afc086eab8544dd9a15d187323747f666f3ae38d5d8c41f"
+}
