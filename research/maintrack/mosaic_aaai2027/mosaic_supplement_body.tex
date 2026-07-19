@@ -89,8 +89,8 @@ not implied by source--label-balanced sampling. The primary experiments instead
 register the maximum label-conditional advantage, which removes the prevalence
 channel by design.
 
-For fixed-size i.i.d. or exchangeable categorical observations within each
-stratum, positive count $n_{s,y}$, and an outcome-independent allocation
+For conditionally i.i.d. categorical observations within each stratum,
+positive fixed count $n_{s,y}$, and an outcome-independent allocation
 $\delta_{s,y}$, the confirmation uses
 \begin{equation}
  \epsilon_{s,y}=\min\left\{2,
@@ -98,7 +98,10 @@ $\delta_{s,y}$, the confirmation uses
  \label{supp:eq:weissman}
 \end{equation}
 A union bound gives $\Pr(\mathcal E)\geq1-\sum_{s,y}\delta_{s,y}$. A zero-count
-stratum receives radius two and is covered deterministically.
+stratum receives radius two and is covered deterministically. The locked bridge
+protocol used ``exchangeable'' informally for randomized held-out rows from the
+same stratum; arbitrary exchangeability alone does not imply this concentration
+bound, and is not claimed here.
 
 \section{Data-Certified Shift Bridge}
 
@@ -686,8 +689,9 @@ zero optimization errors, zero primary diagnostic contract violations, at
 least 16 estimable primary deployments, BiasBios deployment on at least 16/20
 seeds at threshold $0.40$ and 14/20 at $0.35$, pointwise noninferiority of the
 globally optimized $L=4$ objective, and zero retained mass for every Camelyon
-job with missing bridge support. The claim is restricted to populations
-exchangeable with the bridge fold and is not a clinical-safety claim.
+job with missing bridge support. The claim is restricted to populations drawn
+i.i.d. from the same target stratum laws as the bridge fold and is not a
+clinical-safety claim.
 
 After 27 of 100 raw receipts had been written, but before any receipt contents
 or outcomes were inspected, an adversarial proof audit identified that the

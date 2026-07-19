@@ -165,8 +165,8 @@ For each supported source--label stratum, the certification table supplies an
 empirical law $\widehat p_{s,y}$ and radius $\epsilon_{s,y}$. The simultaneous
 confidence set is
 $\mathcal C_{s,y}=\{p\in\Delta_K:\|p-\widehat p_{s,y}\|_1\leq
-\epsilon_{s,y}\}$. Under fixed-size i.i.d. or exchangeable sampling within
-each registered stratum, the simultaneous event
+\epsilon_{s,y}\}$. Under conditionally i.i.d. categorical sampling within each
+registered source--label stratum, the simultaneous event
 \begin{equation}
  \mathcal E=\bigcap_{s,y}
  \{\|\widehat p_{s,y}-p_{s,y}\|_1\leq\epsilon_{s,y}\}
@@ -442,8 +442,8 @@ metadata, mutable identifiers, or another side channel is outside scope.
 
 \section{Limitations and Scope}
 
-The bridge requires fixed-size i.i.d. or exchangeable reference and target data
-for every required source--label stratum and does not cover later drift.
+The bridge requires conditionally i.i.d. reference and target observations for
+every required source--label stratum and does not cover later drift.
 Tokenizers are fixed independently of certification; large alphabets may need
 structured regions or column generation. MOSAIC trades reusable embeddings for
 a certifiable task interface and durable persistence state. It certifies
