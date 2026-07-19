@@ -94,6 +94,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--seed-start", type=int, default=1300)
     parser.add_argument("--seed-count", type=int, default=5)
+    parser.add_argument("--supersedes", type=Path)
     args = parser.parse_args()
     if args.seed_count < 1:
         raise ValueError("seed count must be positive")
@@ -112,6 +113,24 @@ def main() -> None:
         raise ValueError("the ACS target split is too small for the registered cap")
 
     seeds = list(range(args.seed_start, args.seed_start + args.seed_count))
+    supersession: dict[str, str] | None = None
+    if args.supersedes is not None:
+        previous_sidecar = args.supersedes.with_suffix(args.supersedes.suffix + ".sha256")
+        if not args.supersedes.is_file() or not previous_sidecar.is_file():
+            raise FileNotFoundError("the superseded lock and its hash sidecar are required")
+        previous_sha = sha256(args.supersedes)
+        if previous_sidecar.read_text(encoding="utf-8").strip() != previous_sha:
+            raise ValueError("the superseded lock hash sidecar does not match")
+        supersession = {
+            "supersedes": str(args.supersedes),
+            "superseded_lock_sha256": previous_sha,
+            "reason": (
+                "The initial no-output ACS invocation stopped before writing a receipt "
+                "because TaCo requested 20 PCA components for a 9-feature table. "
+                "This lock records the dimension-safe adapter rule; datasets, seeds, "
+                "candidate family, thresholds, selection rule, and stopping rule are unchanged."
+            ),
+        }
     payload: dict[str, Any] = {
         "project": "MOSAIC: Minimax-Optimized Source-Agnostic Invariant Channels",
         "phase": "fresh ACSIncome California-to-Texas bridge confirmation",
@@ -155,6 +174,8 @@ def main() -> None:
         "claim_boundary": "This is a fresh, preregistered confirmation on one public tabular geographic shift. The finite-sample statement is per registered reference/bridge event, not a population-wide privacy or fairness guarantee; it does not cover post-certification drift or unregistered outputs.",
         "stopping_rule": "Run all five seeds and all candidates. No outcome-based threshold changes, data replacement, early stopping, or selective reporting.",
     }
+    if supersession is not None:
+        payload["supersession"] = supersession
     atomic_write(args.output, payload)
     sidecar.write_text(sha256(args.output) + "\n", encoding="utf-8")
     print(json.dumps({"lock": str(args.output), "seeds": seeds}, indent=2))
