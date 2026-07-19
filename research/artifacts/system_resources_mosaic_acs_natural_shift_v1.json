@@ -1,0 +1,83 @@
+{
+  "timestamp": "2026-07-19T13:09:19.668546",
+  "os": {
+    "system": "Darwin",
+    "release": "25.2.0",
+    "version": "Darwin Kernel Version 25.2.0: Tue Nov 18 21:08:48 PST 2025; root:xnu-12377.61.12~1/RELEASE_ARM64_T8132",
+    "machine": "arm64",
+    "python_version": "3.12.13"
+  },
+  "cpu": {
+    "physical_cores": 10,
+    "logical_cores": 10,
+    "max_frequency_mhz": 4,
+    "architecture": "arm64",
+    "processor": "arm",
+    "current_frequency_mhz": 4
+  },
+  "memory": {
+    "total_gb": 16.0,
+    "available_gb": 4.41,
+    "used_gb": 7.09,
+    "percent_used": 72.4,
+    "swap_total_gb": 6.0,
+    "swap_available_gb": 0.97
+  },
+  "disk": {
+    "path": "/Volumes/Backups/FARO/github_export/vera-edit-or-abstain",
+    "total_gb": 1862.98,
+    "available_gb": 1808.3,
+    "used_gb": 45.33,
+    "percent_used": 2.4
+  },
+  "gpu": {
+    "nvidia_gpus": [],
+    "amd_gpus": [],
+    "apple_silicon": {
+      "name": "Apple M4",
+      "type": "Apple Silicon",
+      "backend": "Metal",
+      "unified_memory": true,
+      "chipset": "Apple M4",
+      "gpu_cores": "10"
+    },
+    "total_gpus": 1,
+    "available_backends": [
+      "Metal"
+    ]
+  },
+  "recommendations": {
+    "parallel_processing": {
+      "strategy": "high_parallelism",
+      "suggested_workers": 8,
+      "libraries": [
+        "joblib",
+        "multiprocessing",
+        "dask"
+      ]
+    },
+    "memory_strategy": {
+      "strategy": "moderate_memory",
+      "libraries": [
+        "dask",
+        "zarr"
+      ],
+      "note": "Consider chunking for datasets > 2GB"
+    },
+    "gpu_acceleration": {
+      "available": true,
+      "backends": [
+        "Metal"
+      ],
+      "suggested_libraries": [
+        "pytorch-mps",
+        "tensorflow-metal",
+        "jax-metal"
+      ]
+    },
+    "large_data_handling": {
+      "strategy": "disk_abundant",
+      "note": "Sufficient space for large intermediate files"
+    }
+  }
+}
