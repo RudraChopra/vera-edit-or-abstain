@@ -1,0 +1,54 @@
+{
+  "claim_rule": "Version 2 is disclosed post-audit corrective evidence, not an original preregistered outcome. Any paper claim must identify that status and retain the v1 record.",
+  "code_sha256": {
+    "research/mosaic/audit_mosaic_bridge_strict_v2.py": "14bf1c67f70a5b71bb8cb23126e899884a2e6f15229f0af0ecf2dfe753b3dab4",
+    "research/mosaic/lock_mosaic_bridge_strict_correction_v2.py": "7848d5c812555f662a95147ff8a37553876bf6c4ef4693f37b45a0b1040a2f07",
+    "research/mosaic/mosaic_strict_certification.py": "0e51f5461fc3e109a65ac071d610b28f43b577303adacda9dfba87e85480611d",
+    "research/mosaic/mosaic_strict_certification_v2.py": "2cd9ebf580817d89f94b067899cbfc540e69cebe064ed597036c9de8dd84f5c8",
+    "research/mosaic/replay_mosaic_bridge_strict_v2.py": "48750c4afaa48aec3b758c6248689b79042159401013ce42c8c7da993caee64f",
+    "research/tests/test_mosaic_strict_certification_v2.py": "c806c7964d007a640f57be761faacf803ed105a081bb17f69fe96cea0f724c33"
+  },
+  "correction": {
+    "expected_direction_only": "The correction may restore positive retained mass when exact-zero outputs occur; no deployment count or favorable outcome is locked.",
+    "scope": "Skip guard-ratio contraction only for output columns whose full serialized transform column is exactly zero.",
+    "unchanged_checks": "Recompute every original bridge slack, including structural-zero columns, and require every slack to be nonnegative.",
+    "unchanged_components": [
+      "datasets and stored token tables",
+      "all 100 dataset-seed receipts",
+      "13 candidates per receipt and their ordering",
+      "source and utility thresholds",
+      "confidence radii and multiplicity allocation",
+      "release optimization and outward risk guards",
+      "diagnostic splits and comparator rules"
+    ]
+  },
+  "locked_at": "2026-07-19T05:30:28.597006+00:00",
+  "original_preregistration_sha256": "d1fd9c04bd5b6dd76f35b6bc2e1bf8badb23dceeb32a19edf36fcfd611b8bf02",
+  "project": "MOSAIC disclosed strict numerical correction v2",
+  "repository_head_before_v2_replay": "39f9678fc8d820269f8eb6ee338611172f8e7a48",
+  "required_outputs": {
+    "candidate_rows": 1300,
+    "deterministic_replay_of_every_receipt": true,
+    "exact_rational_audit_of_every_bridge_and_release": true,
+    "global_optimizations": 1400,
+    "maximum_decision_tolerance": 0.0,
+    "minimum_membership_slack": 0.0,
+    "strict_receipts": 100
+  },
+  "status": "locked_after_v1_outcome_inspection_before_any_v2_replay",
+  "stopping_rule": "Rerun and audit all 100 receipts regardless of interim outcomes; preserve and report v1 as the superseded failed repair.",
+  "timing_disclosure": {
+    "specific_failure_inspected": "A BiasBios INLP rank-4 receipt retained about 0.80 before the v1 repair and zero afterward because an exactly zero transform output column received an artificial positive denominator.",
+    "v1_matrix_complete": true,
+    "v1_outcomes_inspected": true,
+    "v1_primary_deployments_seen": 0
+  },
+  "trigger": "The completed v1 audit exposed a repair-layer implementation error: adding the feasibility guard to an identically zero transform column changed the vacuous inequality lower >= retained * 0 into a false retained-mass restriction.",
+  "v1_evidence_sha256": {
+    "research/artifacts/mosaic_bridge_evidence_summary_v1.json": "e980e6032778e8a595124a87314b2b625e8a2ceaeab358c37de4a37e8c0ddff3",
+    "research/artifacts/mosaic_bridge_rational_audit_v1.json": "30a9e606cc26699c2bd50b7772d7d646c145535d55ae4367be0961620f2bea7b",
+    "research/artifacts/mosaic_bridge_strict_audit_v1.json": "12c8031197a2d5fd792eb95d099e21a7ac3ebc6cea5c0dc25e2fca26b147d311",
+    "research/artifacts/mosaic_bridge_strict_manifest_v1.json": "ccc91fd21b89cc93e5a384ef1f076c879111cb970c560c592d8a6aeac22aaaa2"
+  },
+  "v1_strict_amendment_sha256": "719daeb4dc34b6662327d0d874edc828aecdb7cb0d259b3fe282be7c337cdc77"
+}
