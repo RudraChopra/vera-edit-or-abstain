@@ -153,14 +153,14 @@ def collect_checks() -> tuple[list[Check], dict[str, Any]]:
                 materialized_file(NAMED_SOURCE)
                 and "\\author{Rudra Chopra}" in named_source
                 and "Contra Costa County" in named_source
-                and "https://github.com/RudraChopra/vera-edit-or-abstain" in named_source
+                and "https://github.com/RudraChopra/mosaic-certified-release" in named_source
                 and "\\section{Reproducibility}" in named_source
                 and "\\newcommand{\\CodeAvailabilityText}" in named_source
             ),
             evidence=(
                 f"path={NAMED_SOURCE}; materialized={materialized_file(NAMED_SOURCE)}; "
                 f"has_author={'Rudra Chopra' in named_source}; "
-                f"has_repo={'https://github.com/RudraChopra/vera-edit-or-abstain' in named_source}"
+                f"has_repo={'https://github.com/RudraChopra/mosaic-certified-release' in named_source}"
             ),
             requirement="Named AAAI source must contain author metadata and the public release URL.",
         ),

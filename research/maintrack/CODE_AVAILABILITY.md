@@ -2,7 +2,7 @@
 
 Named repository URL:
 
-`https://github.com/RudraChopra/vera-edit-or-abstain`
+`https://github.com/RudraChopra/mosaic-certified-release`
 
 The repository contains the VERA manuscript sources, reproducibility scripts,
 configuration files, audit scripts, and small JSON/CSV/Markdown receipts needed
