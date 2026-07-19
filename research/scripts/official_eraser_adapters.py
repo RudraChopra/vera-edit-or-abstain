@@ -294,9 +294,14 @@ def taco_candidates(
     )
     from sklearn.decomposition import PCA
 
+    requested_components = int(components)
+    components = min(requested_components, int(train.shape[0]), int(train.shape[1]))
     removals = sorted(set(int(value) for value in removals))
     if not removals or removals[-1] >= components:
-        raise ValueError("TaCo removals must be in [1, components)")
+        raise ValueError(
+            "TaCo removals must be in [1, effective components); "
+            f"requested={requested_components}, effective={components}"
+        )
     pca = PCA(n_components=components, random_state=seed)
     u_train = pca.fit_transform(train)
     u_validation = pca.transform(validation)
@@ -366,6 +371,8 @@ def taco_candidates(
                     ],
                     "protocol_adapter": "PCA is fit on train only to keep certification and external splits locked",
                     "components": components,
+                    "requested_components": requested_components,
+                    "component_rule": "min(requested_components, train_samples, input_dimension)",
                     "components_removed": removal,
                     "sobol_sampled": min(sobol_sampled, len(train)),
                     "sobol_design": sobol_design,
