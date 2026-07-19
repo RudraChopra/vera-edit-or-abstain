@@ -1,0 +1,20 @@
+{
+  "code_sha256": {
+    "research/mosaic/audit_mosaic_bridge_comparator_extension.py": "6b9003529b7f510343951a0e388c3ff7ddc22e6e764d27cf9d3540661c7670ac",
+    "research/mosaic/audit_mosaic_direct_target_comparator_v2.py": "e38eb7e8f86c0ad0cc6d0d6167646ca34e8d397abcdc34724a47d73225e28e03",
+    "research/mosaic/lock_mosaic_direct_target_audit_repair.py": "6d7e3ebdc05ed674036c04cb1be5b30d596ba75ae3d7b1d1b2e5ddacfeb64375",
+    "research/mosaic/run_mosaic_direct_target_comparator.py": "db1ebfce746f8eb03881156c39273a321bacdfc6516acf69c7d63e560dcce327"
+  },
+  "direct_target_lock_sha256": "c6e693e6eb35c9a95909d755a5b56b7761315a8c61422169fcf8d44bd65fd41c",
+  "direct_target_receipt_count": 100,
+  "locked_at": "2026-07-19T16:06:42.388687+00:00",
+  "project": "MOSAIC direct target-table audit import repair",
+  "repair": {
+    "change": "v2 changes only that import and otherwise preserves the v1 replay logic.",
+    "classification": "post-outcome mechanical audit-repair disclosure",
+    "prediction_before_replay": "The corrected audit should process 100 receipts and 1300 candidates with no mismatch if the generator is correct.",
+    "root_cause": "v1 imported audit_release from the generator module instead of the comparator audit module.",
+    "trigger": "The first audit invocation raised ImportError before reading any receipt values."
+  },
+  "status": "locked_audit_import_repair_before_replay"
+}
