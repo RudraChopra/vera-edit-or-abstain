@@ -1,11 +1,12 @@
-# MOSAIC: Certifiable Stochastic Representation Release under Structured Deployment Shift
+# MOSAIC: Data-Certified Stochastic Release under Structured Deployment Shift
 
 MOSAIC (Minimax-Optimized Source-Agnostic Invariant Channels) is a
 software-only method for deciding whether an edited representation is safe to
-release. It jointly selects a stochastic finite-token channel and a task
-decoder, certifies them against the strongest downstream source attacker, and
-returns `ABSTAIN` when privacy or worst-stratum utility cannot be certified
-under a registered deployment-shift model.
+expose through a task-specific interface. It jointly selects a stochastic
+finite-token channel and a task decoder, certifies them against the strongest
+downstream source attacker, and returns `ABSTAIN` when source leakage or
+worst-stratum utility cannot be certified under a registered deployment-shift
+model.
 
 This branch contains the AAAI 2027 research candidate, its theorem and proof
 record, hash-locked protocols, official-method real-feature confirmation,
@@ -18,9 +19,9 @@ guaranteed.
 - One multinomial confidence event over fine-token laws covers every stochastic
   release channel selected from the same table, including a continuum of
   channels, without a channel-count correction.
-- An exact structured-shift certificate handles a common pre-release transform
-  plus bounded source-specific contamination and matches it with a task-utility
-  certificate.
+- A labeled target-bridge program certifies the largest mass explained by one
+  common pre-release transform. An exact envelope charges the remaining
+  source-specific contamination and matches it with a task-utility certificate.
 - A finite-alphabet optimizer globally selects the channel and decoder by linear
   optimization and abstains on unsupported, infeasible, or numerically
   inconsistent cases.
@@ -40,8 +41,15 @@ combination and the transform-exact certificate.
   deploys on 53.0%, versus 0.3% for the capacity-transfer fallback. At the next
   sample size, the rates are 99.9% and 57.8%.
 - The transform-exact audit independently replays 10,000 decisions, 20,000
-  privacy certificates, 40,000 utility certificates, and 20,000 external risks
+  source-leakage certificates, 40,000 utility certificates, and 20,000 external risks
   with zero mismatch.
+- In a registered 100-job real-data bridge study, unconditional deployment,
+  validation-only selection, and a bridge plug-in violate 38/80, 18/60, and
+  7/47 estimable external diagnostics at the primary contract. Strict MOSAIC
+  deploys 20/100 with 0/20 observed violations and abstains on all 20
+  missing-support Camelyon jobs. These v2 outcomes are transparently labeled
+  post-audit corrective evidence; deterministic, exact-rational, and
+  correction-scope audits all pass.
 - A fresh paired real-feature study evaluates 325 official-method rows across
   Waterbirds, Camelyon17-WILDS, CivilComments-WILDS, BiasBios, and GaitPDB.
   Transform-exact is pointwise no worse on every row and strictly improves 135,
@@ -50,7 +58,7 @@ combination and the transform-exact certificate.
   unsupported and utility-limited cases are reported as abstentions or
   unestimable, not safe. An independent replay of 650 global optima has zero
   mismatch, and all ten preregistered real-feature gates pass.
-- The repository-wide test run passes 158 tests plus 14 subtests.
+- The repository-wide test run passes 217 tests plus 14 subtests.
 
 These empirical statements are scoped to their locked studies. Favorable
 benchmark behavior does not prove that a deployment population belongs to the
@@ -58,6 +66,7 @@ paper's structured shift class.
 
 ## Start Here
 
+- Final release PDFs: `output/pdf/`
 - Main paper: `research/maintrack/mosaic_aaai2027/mosaic_aaai2027_named.pdf`
 - Anonymous paper: `research/maintrack/mosaic_aaai2027/mosaic_aaai2027_anonymous.pdf`
 - Supplement: `research/maintrack/mosaic_aaai2027/mosaic_aaai2027_supplement_named.pdf`
@@ -70,6 +79,10 @@ paper's structured shift class.
 - Fresh paired real confirmation: `research/artifacts/mosaic_real_exact_confirmation_manifest_v1.json`
 - Fresh paired real audit: `research/artifacts/mosaic_real_exact_confirmation_audit_v1.json`
 - Fresh paired real summary: `research/artifacts/mosaic_real_exact_confirmation_summary_v1.json`
+- Data-certified bridge summary: `research/artifacts/mosaic_bridge_evidence_summary_v2.json`
+- Strict bridge replay audit: `research/artifacts/mosaic_bridge_strict_v2_audit_v1.json`
+- Exact-rational bridge audit: `research/artifacts/mosaic_bridge_rational_v2_audit_v1.json`
+- Bridge correction-scope audit: `research/artifacts/mosaic_bridge_strict_correction_v2_audit_v1.json`
 - Exploratory real exact analysis: `research/artifacts/mosaic_real_transform_exact_exploratory_v1.json`
 - Exploratory real exact audit: `research/artifacts/mosaic_real_transform_exact_exploratory_audit_v1.json`
 

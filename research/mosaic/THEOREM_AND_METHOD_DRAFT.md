@@ -217,7 +217,7 @@ External code-support monitoring can catch unconditional novel tokens, but it
 cannot certify an unobserved label-conditional stratum without labels. The
 paper must say that plainly.
 
-## Algorithm: Monotone Optimized Shift-Aware Information Coarsening
+## Algorithm: Minimax-Optimized Source-Agnostic Invariant Channels
 
 1. Train one high-utility fine tokenizer on a development split only. The
    planned implementation uses frozen pathology embeddings, task-aware vector

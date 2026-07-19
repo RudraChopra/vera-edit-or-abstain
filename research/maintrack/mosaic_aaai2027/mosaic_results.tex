@@ -1,4 +1,4 @@
-\section{Locked Synthetic Results}
+\section{Audited Results}
 
 All preregistered gates pass. Figure~\ref{fig:confirmation} reports every
 implementable rule in the primary cells; ``fallback'' is MOSAIC's generic
@@ -35,3 +35,95 @@ the same tables. At $n=125$, transform-exact certification safely deploys on
 The exact objective is no larger on all 5,000 pairs, as theory requires, and all
 10,000 method-cell decisions have zero false acceptances. Full cell tables,
 threshold sensitivity, amendment history, and audits are in the supplement.
+
+\paragraph{Matched finite-family baselines.}
+A separately locked replay places four rules on the same 1,000 tables in each
+primary scenario. In the retention cell, continuum MOSAIC certifies 579/1,000
+deployments (57.9\%, exact 95\% interval $[54.77,60.98]$), versus 283/1,000
+(28.3\%, $[25.53,31.20]$) for Holm LTT over all 500 fixed
+channel--decoder pairs. MOSAIC alone deploys on 312 paired tables, LTT alone on
+16, and both on 267, a 29.6-point paired difference. The exact McNemar value
+is $2.28\times10^{-72}$; it is a post-audit descriptive statistic, not a
+preregistered gate. The confidence-region grid and matched deterministic
+restricted-encoder adaptation both abstain throughout this cell. All four
+rules have zero observed false acceptance. The deterministic row tests FARE's
+finite-encoder principle under MOSAIC's shift contract, not FARE's official
+end-to-end training objective.
+
+\paragraph{Bridge validity and power.}
+Across a separate 12,000-table locked stress study, a correctly specified
+common transform is accepted on 0\%, 31\%, 100\%, and 100\% of tables as the
+bridge stratum size rises through 500, 1,000, 2,000, and 5,000. Underdeclared
+contamination has population retained mass $.775<.80$; a source-specific
+transform has minimum retained mass $.50$. Both violating populations are
+rejected on every table at every sample size. Independent replay finds no
+failure on the joint confidence event and no invalid false acceptance. This
+supports power against the two registered violations, not detection of
+arbitrary misspecification.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/figure3_mosaic_final_evidence.pdf}
+  \caption{Audited evidence beyond the primary synthetic comparison.
+  (a) One table-wide event certifies 57.9\% of low-data trials versus 28.3\%
+  for Holm LTT over 500 matched candidates. (b) Bridge evidence gains power
+  for a valid common transform while rejecting two registered violations.
+  (c) Across 100 real dataset--seed jobs, strict MOSAIC deploys 20\% through
+  the $.45$ utility contract and 23\% at $.49$. (d) It records no external
+  diagnostic violation; plug-in rules violate 14.9--36.1\% of their estimable
+  deployments. Validation-only and unconditional rules additionally deploy
+  all 20 unestimable Camelyon jobs.}
+  \label{fig:final-evidence}
+\end{figure*}
+
+\paragraph{Real data-certified bridge.}
+At the primary error contract $.40$, strict MOSAIC deploys on 20/100 jobs
+(20.0\%, exact 95\% interval $[12.67,29.18]$), all externally estimable, with
+0/20 observed violations (one-sided 95\% upper bound 13.91\%). The selected
+official edits comprise six INLP, five LEACE, and nine MANCE++ candidates.
+Capacity transfer deploys none. The bridge plug-in deploys 47 and violates
+7/47 estimable diagnostics (14.9\%); validation-only selection deploys 80,
+including 20 unestimable Camelyon jobs, and violates 18/60 estimable
+diagnostics (30.0\%). Unconditional deployment violates 38/80 estimable jobs
+(47.5\%) and also releases all 20 unestimable jobs. MOSAIC retains 20 safe
+deployments at every stronger threshold $.30$--$.45$ and adds three safe
+Waterbirds deployments at $.49$; Figure~\ref{fig:final-evidence} reports every
+threshold. These untouched diagnostics expose concrete selection failures but
+do not replace the finite-sample bridge guarantee or establish clinical safety.
+
+\paragraph{What the real ablations remove.}
+The primary rows form a diagnostic ladder rather than unrelated baselines.
+Capacity transfer keeps simultaneous regions but replaces the learned shift
+geometry by a worst-case channel-capacity charge; its 0/100 deployments versus
+MOSAIC's 20/100 show that the exact bridge is decision-relevant. The bridge
+plug-in retains target data and the fitted transform but removes confidence
+regions, gaining 27 deployments at the cost of seven observed violations.
+Validation-only selection removes the target-membership gate, adding 60
+deployments but producing 18 estimable violations and 20 unsupported releases.
+Unconditional deployment additionally removes contract-based abstention and
+produces 38 violations. Thus intervals, bridge membership, exact geometry, and
+abstention each change a measured deployment outcome.
+
+\paragraph{Corrective numerical audit.}
+The original raw rule produced the same 20 primary deployments, but its
+tolerance-qualified inequalities could not support an exact software claim.
+A pre-inspection strict v1 replay then overcorrected: it replaced an exactly
+zero transform-output denominator by the positive numerical guard, making a
+vacuous constraint force retained mass to zero and yielding 0/100 deployments.
+After all v1 outcomes were visible, we hash-locked one structural correction
+before any v2 rerun. A scope audit compares 2,600 label certificates: every one
+of the 918 changed labels, and no unchanged-condition label, contains the
+required exactly zero output column. All original inequalities are still
+rechecked. Deterministic replay matches 100/100 v2 receipts, and exact rational
+arithmetic verifies all 1,300 bridge slacks and 1,400 outward release bounds.
+We report v2 as post-audit corrective evidence and preserve raw, v1, and v2
+receipts; it is not presented as an untouched preregistered outcome.
+
+\paragraph{Alphabet sensitivity.}
+Reoptimizing the best covered candidate with four release tokens is no worse
+than its two-token solution on all 100 jobs within the registered $10^{-7}$
+solver criterion (largest serialized difference $1.07\times10^{-8}$), but is
+strictly better on only five. The real result therefore comes mainly from
+certifying shift geometry, not from hiding utility in a larger alphabet. It
+also reinforces the intended scope: MOSAIC is a compact task-specific release
+interface, not a generally reusable edited embedding.

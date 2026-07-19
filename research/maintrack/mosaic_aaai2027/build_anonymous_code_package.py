@@ -54,6 +54,7 @@ ARTIFACT_PATTERNS = (
     "research/artifacts/mosaic_*.sha256",
     "research/artifacts/mosaic_bridge_confirmation_receipts_v1/*.json",
     "research/artifacts/mosaic_bridge_strict_receipts_v1/*.json",
+    "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/*.json",
     "research/artifacts/mosaic_bridge_comparator_receipts_v1/*.json",
     "research/artifacts/mosaic_real_confirmation_v1/*.json",
     "research/artifacts/mosaic_real_exact_confirmation_v1/*.json",
@@ -162,10 +163,11 @@ PYTHONPATH=research/mosaic:research/scripts \
   --output /tmp/mosaic_bridge_misspecification_audit.json
 ```
 
-The external-shift evidence has three independent replay layers. The first
-recomputes every raw finite-confidence bridge and global optimum; the next two
-replay the outward-rounded strict receipts in floating-point and exact rational
-arithmetic:
+The external-shift evidence has four independent replay layers. The first
+recomputes every raw finite-confidence bridge and global optimum. The next two
+replay the corrected outward-rounded v2 receipts in floating-point and exact
+rational arithmetic. The last compares v1 and v2 and verifies that every change
+is exactly the disclosed structural-zero correction:
 
 ```bash
 PYTHONPATH=research/mosaic:research/scripts \
@@ -173,19 +175,28 @@ PYTHONPATH=research/mosaic:research/scripts \
   research/artifacts/mosaic_bridge_confirmation_receipts_v1/*.json \
   --output /tmp/mosaic_bridge_raw_audit.json
 PYTHONPATH=research/mosaic:research/scripts \
-  python research/mosaic/audit_mosaic_bridge_strict.py \
+  python research/mosaic/audit_mosaic_bridge_strict_v2.py \
   --original-dir research/artifacts/mosaic_bridge_confirmation_receipts_v1 \
-  --strict-dir research/artifacts/mosaic_bridge_strict_receipts_v1 \
+  --strict-dir research/artifacts/mosaic_bridge_strict_v2_receipts_v1 \
   --prereg research/mosaic/prereg_mosaic_bridge_v1.json \
-  --amendment research/mosaic/prereg_mosaic_bridge_strict_amendment_v1.json \
-  --output /tmp/mosaic_bridge_strict_audit.json
+  --amendment research/mosaic/prereg_mosaic_bridge_strict_amendment_v2.json \
+  --output /tmp/mosaic_bridge_strict_v2_audit.json
 PYTHONPATH=research/mosaic:research/scripts \
   python research/mosaic/audit_mosaic_bridge_rational.py \
   --original-dir research/artifacts/mosaic_bridge_confirmation_receipts_v1 \
-  --strict-dir research/artifacts/mosaic_bridge_strict_receipts_v1 \
-  --strict-amendment research/mosaic/prereg_mosaic_bridge_strict_amendment_v1.json \
-  --rational-lock research/mosaic/prereg_mosaic_bridge_rational_audit_v1.json \
-  --output /tmp/mosaic_bridge_rational_audit.json
+  --strict-dir research/artifacts/mosaic_bridge_strict_v2_receipts_v1 \
+  --strict-amendment research/mosaic/prereg_mosaic_bridge_strict_amendment_v2.json \
+  --rational-lock research/mosaic/prereg_mosaic_bridge_rational_audit_v2.json \
+  --output /tmp/mosaic_bridge_rational_v2_audit.json
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/audit_mosaic_bridge_strict_correction_v2.py \
+  --v1-dir research/artifacts/mosaic_bridge_strict_receipts_v1 \
+  --v2-dir research/artifacts/mosaic_bridge_strict_v2_receipts_v1 \
+  --v1-audit research/artifacts/mosaic_bridge_strict_audit_v1.json \
+  --v2-audit research/artifacts/mosaic_bridge_strict_v2_audit_v1.json \
+  --v2-rational-audit research/artifacts/mosaic_bridge_rational_v2_audit_v1.json \
+  --v2-amendment research/mosaic/prereg_mosaic_bridge_strict_amendment_v2.json \
+  --output /tmp/mosaic_bridge_strict_correction_v2_audit.json
 ```
 
 The comparator extension additionally verifies that its protocol lock was
@@ -214,11 +225,13 @@ redistributed. Their complete token tables and replayable decisions are included
 
 ## Scope
 
-External benchmark diagnostics do not prove that a deployment environment is a
-member of the paper's structured shift class. Missing source-label strata are
-unestimable, not evidence of safety. The preserved v1 transform-exact report and
-audit document a two-row numerical decision mismatch; the pre-rerun v2 amendment,
-strict decision layer, and zero-mismatch v2 audit are the claim-grade record.
+External benchmark diagnostics do not prove safety outside the target population
+represented by the labeled bridge sample. Missing source-label strata are
+unestimable, not evidence of safety. The preserved v1 strict bridge receipts show
+an overconservative structural-zero implementation discovered after their audit.
+The pre-rerun v2 amendment, deterministic and exact-rational replay, and explicit
+v1-to-v2 scope audit are the claim-grade record. The v2 evidence is therefore
+labeled post-audit corrective evidence rather than preregistered confirmation.
 
 `MANIFEST.sha256` authenticates every other file in the archive. Public authorship
 and repository metadata are intentionally omitted for double-blind review.

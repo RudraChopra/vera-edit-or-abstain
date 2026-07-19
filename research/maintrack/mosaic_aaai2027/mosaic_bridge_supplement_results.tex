@@ -1,0 +1,146 @@
+\section{Matched Baselines and Bridge-Validity Stress}
+
+\begingroup\raggedright
+\paragraph{Matched baseline receipts.}
+The paired-baseline lock has SHA-256 digest
+\texttt{3acbaf34e4487905bd7aef622ef9998e}\allowbreak
+\texttt{410707cf850f3e7b2a6dd6673a6d7845}. The schema-repaired report preserves
+every numerical field from its immutable predecessor and has digest
+\texttt{891ab17e0da31491c95806f09ab7497a}\allowbreak
+\texttt{4a7e782e6e6f60d85e472fb2e6201add}. Its deterministic audit replays 2,000
+tables, 8,000 method rows, 12,000 diagnostics, and all aggregate cells with no
+failure; the audit digest is
+\texttt{fe7cb389343a6dae56a2be8e9c04c034}\allowbreak
+\texttt{64f7caf4397c7d102ef2bad02a230462}. This is a code-independent entry point
+and row-level recomputation, but not independent human review.\par
+\endgroup
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{3.0pt}
+\begin{tabular}{lrrrr}
+\hline
+& \multicolumn{2}{c}{Hard boundary} & \multicolumn{2}{c}{Retention} \\
+Rule & Deploy & False & Deploy & False \\
+\hline
+MOSAIC continuum & 0.0 & 0.0 & 57.9 & 0.0 \\
+Holm LTT grid & 0.0 & 0.0 & 28.3 & 0.0 \\
+Table-region grid & 0.0 & 0.0 & 0.0 & 0.0 \\
+Deterministic adaptation & 0.0 & 0.0 & 0.0 & 0.0 \\
+\hline
+\end{tabular}
+\caption{Complete matched-baseline outcomes (percent of 1,000 paired tables
+per scenario). The LTT and table-region families contain the same 500 fixed
+channel--decoder pairs.}
+\label{supp:tab:matched-baselines}
+\end{table}
+
+MOSAIC's exact 95\% deployment interval is $[54.77,60.98]$ and Holm LTT's is
+$[25.53,31.20]$. Their discordances are 312 MOSAIC-only and 16 LTT-only, with
+267 joint deployments and 405 joint abstentions. The paired difference is
+29.6 points. The exact two-sided McNemar value, computed only after the locked
+audit, is $2.279\times10^{-72}$ and is descriptive. Zero false acceptances in
+1,000 trials has exact 95\% upper endpoint 0.3682\% for each method--scenario
+cell.
+
+\begingroup\raggedright
+\paragraph{Bridge misspecification receipts.}
+The stress-study lock, report, and audit digests are respectively
+\texttt{fd4ca4fb4fdc21d5283005bca7baa2d}\allowbreak
+\texttt{babae4e3a54bfab27c921f12dce6e0bbd},
+\texttt{9721ab7dcbdcfad7189ef3ce857fac570}\allowbreak
+\texttt{8c8deb40880df5c8fcf486d5bd2ce4d}, and
+\texttt{9f5e10d8b1736e11ea186ace5bc3865a}\allowbreak
+\texttt{310430b340ac0baaa5b23738ffb6f538}. The audit replays 12,000 tables,
+216,000 replicate fields, and 228 aggregate checks. It finds no failure of a
+claimed bridge implication on the simultaneous confidence event.\par
+\endgroup
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{5.2pt}
+\begin{tabular}{lrrrrrr}
+\hline
+Target mechanism & Population min. $t$ & $n=500$ & $n=1000$ & $n=2000$ & $n=5000$ & Invalid false \\
+\hline
+Common source-blind transform & 1.000 & 0.0 & 31.0 & 100.0 & 100.0 & -- \\
+Underdeclared contamination & .775 & 0.0 & 0.0 & 0.0 & 0.0 & 0/4,000 \\
+Source-specific transforms & .500 & 0.0 & 0.0 & 0.0 & 0.0 & 0/4,000 \\
+\hline
+\end{tabular}
+\caption{Bridge acceptance rates (percent of 1,000 tables per cell) for the
+registered minimum retained mass $t\geq.80$. The two invalid mechanisms are
+specific stress tests, not an exhaustive misspecification class.}
+\label{supp:tab:bridge-misspecification}
+\end{table*}
+
+For the valid mechanism, the exact 95\% intervals are $[0,.368]$,
+$[28.14,33.97]$, $[99.63,100]$, and $[99.63,100]$ percent as $n$ increases.
+For every invalid cell, the exact 95\% upper endpoint is 0.3682\%. This power
+transition is consistent with shrinking multinomial regions: evidence for a
+valid common transform becomes decisive, while the registered violations stay
+below the required retained mass.
+
+\section{Real Data-Certified Bridge Study}
+
+\begingroup\raggedright
+The v2 strict amendment digest is
+\texttt{b009bcbecfecc9eea699b5104305a99c}\allowbreak
+\texttt{734803978663eb88ef229b51d14e2e80}. Its 100-receipt manifest, deterministic
+audit, exact-rational audit, correction-scope audit, comparator audit, and final
+summary have respective digests
+\texttt{1a8bbe430649f18b816faa5c67c4d3eb}\allowbreak
+\texttt{6105e333c9842f33ce6a1e0489a9b5cd},
+\texttt{94ea89ee6773b46f04ffe4380e795c196}\allowbreak
+\texttt{728436fe2e3364c53211f55fec8e814},
+\texttt{457e51515212899a28fd52440cce0c19}\allowbreak
+\texttt{b8e62e7ca80d131bb0c55c1237a539a0},
+\texttt{7181ddbc0464223d06b703b4a4f7c53c}\allowbreak
+\texttt{9a84ac81ffa17a545f5fd9a73ad677cd},
+\texttt{9243be640b864ab039915ae386528d08c}\allowbreak
+\texttt{b72cd4121bf10da5fc3cef018842172}, and
+\texttt{dbd5cc804909b9ee232efa84a233ecca}\allowbreak
+\texttt{02afded0fd695489afd20862f2327342}.\par
+\endgroup
+
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4.6pt}
+\begin{tabular}{lrrrrr}
+\hline
+Rule & $.30$ & $.35$ & $.40$ & $.45$ & $.49$ \\
+\hline
+Strict MOSAIC & 20/0 & 20/0 & 20/0 & 20/0 & 23/0 \\
+Capacity transfer & 0/-- & 0/-- & 0/-- & 0/-- & 19/0 \\
+Bridge plug-in & 38/6 & 47/7 & 47/7 & 62/18 & 77/16 \\
+Validation plug-in & 68/15 & 76/15 & 80/18 & 92/26 & 100/18 \\
+Always deploy validation & 100/47 & 100/39 & 100/38 & 100/34 & 100/18 \\
+\hline
+\end{tabular}
+\caption{Deployments/observed diagnostic violations across 100 real jobs at
+each worst-stratum error contract. Violation denominators include only
+estimable deployments. Validation-only and unconditional rules deploy 20
+unestimable Camelyon jobs at every threshold; strict MOSAIC abstains on them.}
+\label{supp:tab:real-bridge-thresholds}
+\end{table*}
+
+At the primary $.40$ threshold, the bridge plug-in violation interval is
+$[6.20,28.31]$ percent for 7/47, validation-only is $[18.85,43.21]$ for 18/60,
+and unconditional deployment is $[36.21,58.98]$ for 38/80. Strict MOSAIC's
+0/20 interval is $[0,16.84]$ percent, with one-sided 95\% upper bound 13.91\%.
+Its 20 selections are six INLP, five LEACE, and nine MANCE++; at $.49$, three
+Waterbirds jobs join the 20 BiasBios jobs. CivilComments and GaitPDB abstain
+throughout, and all Camelyon jobs certify zero retained mass because a required
+target source--label stratum is absent. This is the theorem's missing-support
+case, whereas treating those 20 releases as safe would be statistically
+unidentifiable.
+
+The original v1 strict repair produced zero deployments at all five thresholds.
+The locked scope audit finds 918 zero-to-positive retained-mass corrections,
+all and only on label transforms with an identically zero output column. The
+largest restoration is .857614. Every corrected original inequality has
+nonnegative exact-rational slack. Thus v2 fixes a documented software
+over-abstention bug; it does not weaken the certificate or erase the v1 record.

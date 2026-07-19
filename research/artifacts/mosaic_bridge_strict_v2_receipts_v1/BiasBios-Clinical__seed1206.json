@@ -1,0 +1,2597 @@
+{
+  "dataset": "BiasBios-Clinical",
+  "l4_candidate": "MANCE++::epsilon=0.05,steps=3",
+  "minimum_membership_slack": -0.0,
+  "numerical_policy": {
+    "bridge_feasibility_guard": 1e-09,
+    "decision_tolerance": 0.0,
+    "release_optimization_guard": 1e-06,
+    "reported_value_guard": 1e-09,
+    "structural_zero_output_rule": "skip guard-ratio contraction only when the complete transform output column is exactly zero; recheck every original inequality"
+  },
+  "original_receipt": "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1206.json",
+  "original_receipt_sha256": "d00e8c6d516e746b385591f1e904e2b3fcf880901cdea266579e06fb775eae21",
+  "preregistration_sha256": "d1fd9c04bd5b6dd76f35b6bc2e1bf8badb23dceeb32a19edf36fcfd611b8bf02",
+  "primary_selection": {
+    "bridge_contaminations": [
+      0.22407954753671255,
+      0.1544138518727053
+    ],
+    "candidate": "MANCE++::epsilon=0.05,steps=3",
+    "certified_source_advantage_upper": [
+      0.22407956861793682,
+      0.19624059060997573
+    ],
+    "certified_worst_conditional_error_upper": 0.27469625489662025,
+    "decision": "deploy",
+    "diagnostic_estimable": true,
+    "diagnostic_safe": true,
+    "diagnostic_worst_conditional_error": 0.19368769766087632,
+    "diagnostic_worst_source_advantage": 0.024381688951168545,
+    "false_acceptance": false,
+    "method": "MANCE++",
+    "released_token_count": 2,
+    "strength": "epsilon=0.05,steps=3",
+    "utility_threshold": 0.4
+  },
+  "project": "MOSAIC strict numerical bridge replay v2",
+  "protocol": {
+    "bridge_fraction": 0.6666666666666666,
+    "familywise_delta": 0.05,
+    "fine_token_count": 4,
+    "frontier_candidate_count": 13,
+    "l4_policy": "reoptimize the minimum-error L2 candidate on the same covered table",
+    "per_candidate_table_delta": 0.0019230769230769232,
+    "primary_released_token_count": 2,
+    "primary_utility_threshold": 0.4,
+    "privacy_advantage_threshold": 0.35,
+    "secondary_released_token_count": 4,
+    "utility_thresholds": [
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.49
+    ]
+  },
+  "results": [
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.26807954755575625,
+          0.2418864104629973
+        ],
+        "labels": [
+          {
+            "contamination": 0.26807954755575625,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7319205598044267,
+            "retained_mass": 0.7319204524442438,
+            "transform": [
+              [
+                0.3980034296977859,
+                0.3296912124007887,
+                0.2723053579014254,
+                0.0
+              ],
+              [
+                0.3980034296977859,
+                0.3296912124007887,
+                0.2723053579014254,
+                0.0
+              ],
+              [
+                0.3980034296977859,
+                0.3296871200966146,
+                0.27230945020559955,
+                0.0
+              ],
+              [
+                0.3980034296977859,
+                0.3296871200966146,
+                0.2723094502055995,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.0000040923041742
+          },
+          {
+            "contamination": 0.2418864104629973,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7581137065362847,
+            "retained_mass": 0.7581135895370027,
+            "transform": [
+              [
+                -0.0,
+                0.0,
+                0.10988674710836582,
+                0.8901132528916341
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.10988750134901513,
+                0.8901124986509849
+              ],
+              [
+                0.0,
+                0.0,
+                0.10988750134901488,
+                0.8901124986509851
+              ],
+              [
+                0.0,
+                0.0,
+                0.10988674710836582,
+                0.8901132528916341
+              ]
+            ],
+            "transform_trace": 1.000000754240649
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7319204524442438,
+          0.7581135895370027
+        ]
+      },
+      "candidate": "Identity::unedited",
+      "method": "Identity",
+      "provenance": {
+        "official_entrypoint": "none (unedited control)",
+        "transformation": "identity"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.2535957532142272,
+          0.22881787289893601
+        ],
+        "certified_worst_conditional_error_upper": 0.3076237291399804,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.26392619471671497,
+          "worst_privacy_advantage": 0.11824650300928097
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 2.498001805406602e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            0.945972024074247,
+            0.054027975925753036
+          ],
+          [
+            0.945972024074247,
+            0.054027975925753036
+          ],
+          [
+            0.9459720240742472,
+            0.054027975925752814
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.30762372813998007,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.30762372813998007,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.25359575221422714,
+          0.228817871898936
+        ],
+        "unguarded_worst_conditional_error": 0.3076237281399803,
+        "value_guard": 1e-09
+      },
+      "strength": "unedited"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.27407954761050934,
+          0.24438640983405335
+        ],
+        "labels": [
+          {
+            "contamination": 0.27407954761050934,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7259205598044269,
+            "retained_mass": 0.7259204523894907,
+            "transform": [
+              [
+                0.4074948002318915,
+                0.32346085593372376,
+                0.26904434383438475,
+                0.0
+              ],
+              [
+                0.4074904800013428,
+                0.32346085593372376,
+                0.26904866406493344,
+                0.0
+              ],
+              [
+                0.40749048000134286,
+                0.3234608559337238,
+                0.2690486640649334,
+                0.0
+              ],
+              [
+                0.4074904800013428,
+                0.32346085593372376,
+                0.26904866406493344,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.0000043202305486
+          },
+          {
+            "contamination": 0.24438640983405335,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7556137065362847,
+            "retained_mass": 0.7556135901659466,
+            "transform": [
+              [
+                -0.0,
+                0.0,
+                0.11422061862587271,
+                0.8857793813741273
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.11422061862587271,
+                0.8857793813741273
+              ],
+              [
+                0.0,
+                0.0,
+                0.11422133250158643,
+                0.8857786674984136
+              ],
+              [
+                0.0,
+                0.0,
+                0.11422061862587271,
+                0.8857793813741273
+              ]
+            ],
+            "transform_trace": 1.0000007138757137
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7259204523894907,
+          0.7556135901659466
+        ]
+      },
+      "candidate": "INLP::rank=1",
+      "method": "INLP",
+      "provenance": {
+        "commit": "e1edcc19d808108ab71cbb3afb0389db0206a7eb",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "official_entrypoint": "src.debias.get_debiasing_projection",
+        "rank": 1,
+        "remote": "https://github.com/shauli-ravfogel/nullspace_projection.git",
+        "repository": "/Volumes/Backups/FARO/external/nullspace_projection"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.25939427544209637,
+          0.23129220048920102
+        ],
+        "certified_worst_conditional_error_upper": 0.3129746074896448,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.2649975070266865,
+          "worst_privacy_advantage": 0.10978468148248433
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 2.220446049250313e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            0.9464196679524518,
+            0.053580332047548196
+          ],
+          [
+            0.9464196679524518,
+            0.053580332047548196
+          ],
+          [
+            0.9464196679524518,
+            0.053580332047548196
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.31297460648964465,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.31297460648964465,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.2593942744420963,
+          0.231292199489201
+        ],
+        "unguarded_worst_conditional_error": 0.3129746064896447,
+        "value_guard": 1e-09
+      },
+      "strength": "rank=1"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.2490795474473999,
+          0.2373892995992637
+        ],
+        "labels": [
+          {
+            "contamination": 0.2490795474473999,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7509205598044268,
+            "retained_mass": 0.7509204525526001,
+            "transform": [
+              [
+                0.40524512189666173,
+                0.3146903750078682,
+                0.2800645030954701,
+                0.0
+              ],
+              [
+                0.40524512189666173,
+                0.3146903750078682,
+                0.2800645030954701,
+                0.0
+              ],
+              [
+                0.40524512189666184,
+                0.31468767851280466,
+                0.2800671995905336,
+                0.0
+              ],
+              [
+                0.4052451218966618,
+                0.31468767851280466,
+                0.28006719959053367,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.0000026964950637
+          },
+          {
+            "contamination": 0.2373892995992637,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7626108155788864,
+            "retained_mass": 0.7626107004007363,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                2.5008357277139275e-05,
+                0.9999749916427229
+              ],
+              [
+                -0.0,
+                -0.0,
+                2.5008357277139275e-05,
+                0.9999749916427229
+              ],
+              [
+                0.0,
+                -0.0,
+                2.5008357277139275e-05,
+                0.9999749916427229
+              ],
+              [
+                -0.0,
+                0.0,
+                0.1803718353567576,
+                0.8196281646432425
+              ]
+            ],
+            "transform_trace": 0.8196531730005197
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7509204525526001,
+          0.7626107004007363
+        ]
+      },
+      "candidate": "INLP::rank=2",
+      "method": "INLP",
+      "provenance": {
+        "commit": "e1edcc19d808108ab71cbb3afb0389db0206a7eb",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "official_entrypoint": "src.debias.get_debiasing_projection",
+        "rank": 2,
+        "remote": "https://github.com/shauli-ravfogel/nullspace_projection.git",
+        "repository": "/Volumes/Backups/FARO/external/nullspace_projection"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.24907964326658888,
+          0.25710872555288855
+        ],
+        "certified_worst_conditional_error_upper": 0.3132846827419822,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.20298217014230652,
+          "worst_privacy_advantage": 0.07955487359300228
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 2.220446049250313e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            0.6947075106116728,
+            0.3052924893883272
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.3132846817419821,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.3132846817419821,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.24907964226658885,
+          0.25710872455288847
+        ],
+        "unguarded_worst_conditional_error": 0.3132846817419821,
+        "value_guard": 1e-09
+      },
+      "strength": "rank=2"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.23757954732262954,
+          0.1772544651821093
+        ],
+        "labels": [
+          {
+            "contamination": 0.23757954732262954,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7624205598044269,
+            "retained_mass": 0.7624204526773705,
+            "transform": [
+              [
+                0.4017565121478389,
+                0.2876450981695586,
+                0.31059838968260256,
+                0.0
+              ],
+              [
+                0.4017553470929877,
+                0.2876462632244098,
+                0.31059838968260256,
+                0.0
+              ],
+              [
+                0.4017553470929877,
+                0.2876450981695586,
+                0.3105995547374537,
+                0.0
+              ],
+              [
+                0.4017553470929879,
+                0.28764626322440934,
+                0.31059838968260267,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.0000023301097025
+          },
+          {
+            "contamination": 0.1772544651821093,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.8227456499247494,
+            "retained_mass": 0.8227455348178907,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                1.4149220161149695e-06,
+                0.9999985850779839
+              ],
+              [
+                0.0,
+                -0.0,
+                1.414922016114965e-06,
+                0.9999985850779839
+              ],
+              [
+                0.0,
+                -0.0,
+                1.4149220161149674e-06,
+                0.9999985850779838
+              ],
+              [
+                -0.0,
+                0.0,
+                0.19265056467095712,
+                0.8073494353290429
+              ]
+            ],
+            "transform_trace": 0.807350850251059
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7624204526773705,
+          0.8227455348178907
+        ]
+      },
+      "candidate": "INLP::rank=4",
+      "method": "INLP",
+      "provenance": {
+        "commit": "e1edcc19d808108ab71cbb3afb0389db0206a7eb",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "official_entrypoint": "src.debias.get_debiasing_projection",
+        "rank": 4,
+        "remote": "https://github.com/shauli-ravfogel/nullspace_projection.git",
+        "repository": "/Volumes/Backups/FARO/external/nullspace_projection"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.23757956916128958,
+          0.21054955736778797
+        ],
+        "certified_worst_conditional_error_upper": 0.28334666153801796,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.20102725267209676,
+          "worst_privacy_advantage": 0.050597207111573894
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 5.551115123125783e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            0.8067323239249847,
+            0.19326767607501535
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.2833466605380179,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.2833466605380179,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.23757956816128956,
+          0.21054955636778794
+        ],
+        "unguarded_worst_conditional_error": 0.2833466605380179,
+        "value_guard": 1e-09
+      },
+      "strength": "rank=4"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.28407954703685956,
+          0.15773028226128483
+        ],
+        "labels": [
+          {
+            "contamination": 0.28407954703685956,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7159205598044269,
+            "retained_mass": 0.7159204529631404,
+            "transform": [
+              [
+                0.3887492872153916,
+                0.3174934239852448,
+                0.2937572887993637,
+                -0.0
+              ],
+              [
+                0.3887344059076682,
+                0.3175083052929681,
+                0.29375728879936364,
+                0.0
+              ],
+              [
+                0.38873440590766833,
+                0.3175083052929681,
+                0.29375728879936364,
+                0.0
+              ],
+              [
+                0.3887344059076679,
+                0.31750830529296775,
+                0.2937572887993643,
+                0.0
+              ]
+            ],
+            "transform_trace": 1.0000148813077232
+          },
+          {
+            "contamination": 0.15773028226128483,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.8422698331990239,
+            "retained_mass": 0.8422697177387152,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                7.426035686255237e-07,
+                0.9999992573964314
+              ],
+              [
+                -0.0,
+                -0.0,
+                7.426035686255287e-07,
+                0.9999992573964314
+              ],
+              [
+                0.0,
+                0.0,
+                7.426035715913216e-07,
+                0.9999992573964284
+              ],
+              [
+                0.0,
+                0.0,
+                0.19947252909634156,
+                0.8005274709036584
+              ]
+            ],
+            "transform_trace": 0.80052821350723
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7159204529631404,
+          0.8422697177387152
+        ]
+      },
+      "candidate": "INLP::rank=8",
+      "method": "INLP",
+      "provenance": {
+        "commit": "e1edcc19d808108ab71cbb3afb0389db0206a7eb",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "official_entrypoint": "src.debias.get_debiasing_projection",
+        "rank": 8,
+        "remote": "https://github.com/shauli-ravfogel/nullspace_projection.git",
+        "repository": "/Volumes/Backups/FARO/external/nullspace_projection"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.28407954803685964,
+          0.20674842734146787
+        ],
+        "certified_worst_conditional_error_upper": 0.2931346237714737,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.22795813620483554,
+          "worst_privacy_advantage": 0.05154577982702668
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 2.886579864025407e-15,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            0.9569435057373121,
+            0.04305649426268787
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.2931346227714736,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.2931346227714736,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.28407954703685956,
+          0.20674842634146784
+        ],
+        "unguarded_worst_conditional_error": 0.2931346227714736,
+        "value_guard": 1e-09
+      },
+      "strength": "rank=8"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.2730795470945083,
+          0.15906554326554878
+        ],
+        "labels": [
+          {
+            "contamination": 0.2730795470945083,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7269205598044268,
+            "retained_mass": 0.7269204529054917,
+            "transform": [
+              [
+                0.38217722760511175,
+                0.3250715498947036,
+                0.29275122250018465,
+                -0.0
+              ],
+              [
+                0.3821651458303632,
+                0.3250836316694522,
+                0.29275122250018465,
+                0.0
+              ],
+              [
+                0.38216514583036315,
+                0.32508363166945214,
+                0.29275122250018465,
+                0.0
+              ],
+              [
+                0.38216514583036315,
+                0.32508363166945214,
+                0.2927512225001847,
+                0.0
+              ]
+            ],
+            "transform_trace": 1.0000120817747487
+          },
+          {
+            "contamination": 0.15906554326554878,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.8409345730158083,
+            "retained_mass": 0.8409344567344512,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                8.412157280286025e-07,
+                0.9999991587842719
+              ],
+              [
+                0.0,
+                -0.0,
+                8.412157280285993e-07,
+                0.999999158784272
+              ],
+              [
+                -0.0,
+                0.0,
+                8.412157280286072e-07,
+                0.9999991587842719
+              ],
+              [
+                0.0,
+                0.0,
+                0.18289106531510996,
+                0.81710893468489
+              ]
+            ],
+            "transform_trace": 0.8171097759006181
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7269204529054917,
+          0.8409344567344512
+        ]
+      },
+      "candidate": "LEACE::closed_form",
+      "method": "LEACE",
+      "provenance": {
+        "commit": "9f51753821316a1edacf78b52b464ab26d40e60a",
+        "official_entrypoint": "concept_erasure.LeaceFitter.fit(method='leace')",
+        "remote": "https://github.com/EleutherAI/concept-erasure",
+        "repository": "/Volumes/Backups/FARO/external/concept-erasure"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.2730795480945085,
+          0.20229641960145045
+        ],
+        "certified_worst_conditional_error_upper": 0.28372317870786573,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.22284686347344723,
+          "worst_privacy_advantage": 0.05129916565303527
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 1.1102230246251565e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            0.9499845491302819,
+            0.050015450869718224
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.28372317770786565,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.28372317770786565,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.27307954709450843,
+          0.20229641860145042
+        ],
+        "unguarded_worst_conditional_error": 0.28372317770786565,
+        "value_guard": 1e-09
+      },
+      "strength": "closed_form"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.2705795476216081,
+          0.2438864100289524
+        ],
+        "labels": [
+          {
+            "contamination": 0.2705795476216081,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7294205598044269,
+            "retained_mass": 0.7294204523783919,
+            "transform": [
+              [
+                0.4007409944985181,
+                0.33013449243349674,
+                0.2691245130679853,
+                0.0
+              ],
+              [
+                0.4007370075861175,
+                0.3301344924334967,
+                0.26912849998038574,
+                0.0
+              ],
+              [
+                0.40073700758611747,
+                0.3301344924334967,
+                0.26912849998038585,
+                0.0
+              ],
+              [
+                0.4007370075861175,
+                0.3301344924334967,
+                0.26912849998038574,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.0000039869124007
+          },
+          {
+            "contamination": 0.2438864100289524,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7561137065362846,
+            "retained_mass": 0.7561135899710476,
+            "transform": [
+              [
+                -0.0,
+                0.0,
+                0.11282251862860615,
+                0.8871774813713939
+              ],
+              [
+                0.0,
+                -0.0,
+                0.1128232477645034,
+                0.8871767522354966
+              ],
+              [
+                0.0,
+                0.0,
+                0.11282324776450378,
+                0.8871767522354963
+              ],
+              [
+                0.0,
+                0.0,
+                0.11282251862860615,
+                0.8871774813713939
+              ]
+            ],
+            "transform_trace": 1.0000007291358977
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7294204523783919,
+          0.7561135899710476
+        ]
+      },
+      "candidate": "R-LACE::rank=1",
+      "method": "R-LACE",
+      "provenance": {
+        "commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "iterations": 10000,
+        "official_entrypoint": "rlace.solve_adv_game",
+        "rank": 1,
+        "remote": "https://github.com/shauli-ravfogel/rlace-icml",
+        "reported_upstream_score": 0.992375,
+        "repository": "/Volumes/Backups/FARO/external/rlace-icml"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.2555980006222245,
+          0.23038291296132923
+        ],
+        "certified_worst_conditional_error_upper": 0.3109663687456523,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.26071833039793396,
+          "worst_privacy_advantage": 0.10863263766580578
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 3.3306690738754696e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            0.9446316318765721,
+            0.055368368123427936
+          ],
+          [
+            0.9446316318765721,
+            0.055368368123427936
+          ],
+          [
+            0.9446316318765723,
+            0.055368368123427714
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.3109663677456522,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.3109663677456522,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.2555979996222244,
+          0.2303829119613292
+        ],
+        "unguarded_worst_conditional_error": 0.31096636774565223,
+        "value_guard": 1e-09
+      },
+      "strength": "rank=1"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.2570795474871581,
+          0.23488641048272663
+        ],
+        "labels": [
+          {
+            "contamination": 0.2570795474871581,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7429205598044267,
+            "retained_mass": 0.7429204525128419,
+            "transform": [
+              [
+                0.3894210617271266,
+                0.3335577180542009,
+                0.27702122021867254,
+                0.0
+              ],
+              [
+                0.38941677310629796,
+                0.3335577180542009,
+                0.2770255088395011,
+                0.0
+              ],
+              [
+                0.38941677310629785,
+                0.33355771805420087,
+                0.27702550883950117,
+                0.0
+              ],
+              [
+                0.38941677310629796,
+                0.3335577180542009,
+                0.27702550883950117,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.0000042886208287
+          },
+          {
+            "contamination": 0.23488641048272663,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7651137065362847,
+            "retained_mass": 0.7651135895172734,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                0.11018910962355499,
+                0.889810890376445
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.1101891096235548,
+                0.8898108903764452
+              ],
+              [
+                0.0,
+                0.0,
+                0.11018910962355447,
+                0.8898108903764456
+              ],
+              [
+                0.0,
+                0.0,
+                0.11018839886071222,
+                0.8898116011392878
+              ]
+            ],
+            "transform_trace": 1.0000007107628424
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7429204525128419,
+          0.7651135895172734
+        ]
+      },
+      "candidate": "R-LACE::rank=4",
+      "method": "R-LACE",
+      "provenance": {
+        "commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+        "compatibility_change": "SGDClassifier loss='log_loss' replaces removed alias loss='log'",
+        "iterations": 10000,
+        "official_entrypoint": "rlace.solve_adv_game",
+        "rank": 4,
+        "remote": "https://github.com/shauli-ravfogel/rlace-icml",
+        "reported_upstream_score": 0.991375,
+        "repository": "/Volumes/Backups/FARO/external/rlace-icml"
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.24204522083334984,
+          0.22115005988797692
+        ],
+        "certified_worst_conditional_error_upper": 0.3005264489231079,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.2513855121000346,
+          "worst_privacy_advantage": 0.1026255461382164
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 5.036988358757288e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            0.941518771910242,
+            0.058481228089757975
+          ],
+          [
+            0.9415187719102422,
+            0.05848122808975771
+          ],
+          [
+            0.941518771910242,
+            0.05848122808975796
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.3005264479231078,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.3005264479231078,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.2420452198333498,
+          0.2211500588879769
+        ],
+        "unguarded_worst_conditional_error": 0.30052644792310784,
+        "value_guard": 1e-09
+      },
+      "strength": "rank=4"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.29983351274362224,
+          0.22138640954813138
+        ],
+        "labels": [
+          {
+            "contamination": 0.29983351274362224,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7001665944144608,
+            "retained_mass": 0.7001664872563778,
+            "transform": [
+              [
+                0.5245221138983795,
+                0.47547788610162045,
+                0.0,
+                0.0
+              ],
+              [
+                0.42213128300154834,
+                0.4754807915324196,
+                0.10238792546603194,
+                0.0
+              ],
+              [
+                0.0,
+                0.27060817645240026,
+                0.7293918235475998,
+                0.0
+              ],
+              [
+                -0.0,
+                0.27060817645240026,
+                0.7293918235475998,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.7293947289783989
+          },
+          {
+            "contamination": 0.22138640954813138,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7786137065362847,
+            "retained_mass": 0.7786135904518686,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                0.11791110396471707,
+                0.882088896035283
+              ],
+              [
+                0.0,
+                -0.0,
+                0.11791110396471713,
+                0.8820888960352828
+              ],
+              [
+                0.0,
+                0.0,
+                0.1179111039647164,
+                0.8820888960352836
+              ],
+              [
+                0.0,
+                0.0,
+                0.11791033437839121,
+                0.8820896656216088
+              ]
+            ],
+            "transform_trace": 1.0000007695863253
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7001664872563778,
+          0.7786135904518686
+        ]
+      },
+      "candidate": "TaCo::components_removed=1",
+      "method": "TaCo",
+      "provenance": {
+        "commit": "35995e44b95dc1722b03d18b9b16c5b9f8322db5",
+        "components": 20,
+        "components_removed": 1,
+        "official_entrypoints": [
+          "TaCo.concept_removal.sobol_importance_from_sample",
+          "TaCo.concept_removal.crop_concepts",
+          "TaCo.concept_removal.build_gender_neutral_features"
+        ],
+        "protocol_adapter": "PCA is fit on train only to keep certification and external splits locked",
+        "remote": "https://github.com/fanny-jourdan/TaCo",
+        "repository": "/Volumes/Backups/FARO/external/TaCo",
+        "sobol_design": 8,
+        "sobol_sampled": 500
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.29588062314161445,
+          0.2184678352973332
+        ],
+        "certified_worst_conditional_error_upper": 0.30906424149647066,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.2654536066625437,
+          "worst_privacy_advantage": 0.10657616921767543
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 7.771561172376096e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            0.9868163816451438,
+            0.013183618354856116
+          ],
+          [
+            0.9868163816451438,
+            0.013183618354856116
+          ],
+          [
+            0.9868163816451438,
+            0.013183618354856144
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.30906424049647047,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.30906424049647047,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.29588062214161437,
+          0.21846783429733319
+        ],
+        "unguarded_worst_conditional_error": 0.3090642404964706,
+        "value_guard": 1e-09
+      },
+      "strength": "components_removed=1"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.29714489493357876,
+          0.22838640985668457
+        ],
+        "labels": [
+          {
+            "contamination": 0.29714489493357876,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7028552123390495,
+            "retained_mass": 0.7028551050664212,
+            "transform": [
+              [
+                0.5777126066844828,
+                0.42228739331551723,
+                0.0,
+                0.0
+              ],
+              [
+                0.1723472243585766,
+                0.4222873933155173,
+                0.4053653823259062,
+                0.0
+              ],
+              [
+                0.17233684488092418,
+                0.42228739331551723,
+                0.40537576180355855,
+                0.0
+              ],
+              [
+                0.17233684488092418,
+                0.42228739331551723,
+                0.40537576180355855,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.4053757618035585
+          },
+          {
+            "contamination": 0.22838640985668457,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7716137065362847,
+            "retained_mass": 0.7716135901433154,
+            "transform": [
+              [
+                -0.0,
+                0.0,
+                0.11509281969278673,
+                0.8849071803072134
+              ],
+              [
+                0.0,
+                -0.0,
+                0.11509281969278667,
+                0.8849071803072134
+              ],
+              [
+                0.0,
+                0.0,
+                0.11509281969278644,
+                0.8849071803072136
+              ],
+              [
+                0.0,
+                0.0,
+                0.11509202160483603,
+                0.884907978395164
+              ]
+            ],
+            "transform_trace": 1.0000007980879504
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7028551050664212,
+          0.7716135901433154
+        ]
+      },
+      "candidate": "TaCo::components_removed=2",
+      "method": "TaCo",
+      "provenance": {
+        "commit": "35995e44b95dc1722b03d18b9b16c5b9f8322db5",
+        "components": 20,
+        "components_removed": 2,
+        "official_entrypoints": [
+          "TaCo.concept_removal.sobol_importance_from_sample",
+          "TaCo.concept_removal.crop_concepts",
+          "TaCo.concept_removal.build_gender_neutral_features"
+        ],
+        "protocol_adapter": "PCA is fit on train only to keep certification and external splits locked",
+        "remote": "https://github.com/fanny-jourdan/TaCo",
+        "repository": "/Volumes/Backups/FARO/external/TaCo",
+        "sobol_design": 8,
+        "sobol_sampled": 500
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.2913047123737196,
+          0.22389772722653895
+        ],
+        "certified_worst_conditional_error_upper": 0.3109590414886947,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.2519488374174514,
+          "worst_privacy_advantage": 0.083329382025227
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 4.440892098500626e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            0.9803456708850249,
+            0.019654329114975055
+          ],
+          [
+            0.9803456708850249,
+            0.019654329114975055
+          ],
+          [
+            0.9803456708850249,
+            0.019654329114975114
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.31095904048869455,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.31095904048869455,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.2913047113737195,
+          0.22389772622653892
+        ],
+        "unguarded_worst_conditional_error": 0.3109590404886946,
+        "value_guard": 1e-09
+      },
+      "strength": "components_removed=2"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.30226898750936704,
+          0.23538640948759693
+        ],
+        "labels": [
+          {
+            "contamination": 0.30226898750936704,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.6977311203256749,
+            "retained_mass": 0.697731012490633,
+            "transform": [
+              [
+                0.5961096109262773,
+                0.4038903890737226,
+                0.0,
+                0.0
+              ],
+              [
+                0.225220299555056,
+                0.4038903890737226,
+                0.3708893113712214,
+                0.0
+              ],
+              [
+                0.22520792626574798,
+                0.4038903890737226,
+                0.37090168466052936,
+                0.0
+              ],
+              [
+                0.22520792626574798,
+                0.4038903890737226,
+                0.37090168466052936,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.3709016846605293
+          },
+          {
+            "contamination": 0.23538640948759693,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7646137065362848,
+            "retained_mass": 0.7646135905124031,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                0.11745437840043417,
+                0.8825456215995658
+              ],
+              [
+                0.0,
+                -0.0,
+                0.1174543784004342,
+                0.8825456215995658
+              ],
+              [
+                0.0,
+                0.0,
+                0.11745437840043388,
+                0.8825456215995661
+              ],
+              [
+                0.0,
+                0.0,
+                0.1174535087399804,
+                0.8825464912600196
+              ]
+            ],
+            "transform_trace": 1.0000008696604534
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.697731012490633,
+          0.7646135905124031
+        ]
+      },
+      "candidate": "TaCo::components_removed=3",
+      "method": "TaCo",
+      "provenance": {
+        "commit": "35995e44b95dc1722b03d18b9b16c5b9f8322db5",
+        "components": 20,
+        "components_removed": 3,
+        "official_entrypoints": [
+          "TaCo.concept_removal.sobol_importance_from_sample",
+          "TaCo.concept_removal.crop_concepts",
+          "TaCo.concept_removal.build_gender_neutral_features"
+        ],
+        "protocol_adapter": "PCA is fit on train only to keep certification and external splits locked",
+        "remote": "https://github.com/fanny-jourdan/TaCo",
+        "repository": "/Volumes/Backups/FARO/external/TaCo",
+        "sobol_design": 8,
+        "sobol_sampled": 500
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.2954949808143239,
+          0.23011137445820323
+        ],
+        "certified_worst_conditional_error_upper": 0.31790550910192517,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.26199397841892286,
+          "worst_privacy_advantage": 0.10069171558637713
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 3.1793222856512553e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            0.9775894717123987,
+            0.02241052828760125
+          ],
+          [
+            0.9775894717123987,
+            0.02241052828760125
+          ],
+          [
+            0.9775894717123988,
+            0.02241052828760118
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.317905508101925,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.317905508101925,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.2954949798143238,
+          0.2301113734582032
+        ],
+        "unguarded_worst_conditional_error": 0.3179055081019251,
+        "value_guard": 1e-09
+      },
+      "strength": "components_removed=3"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.3116518741306411,
+          0.15588640751109195
+        ],
+        "labels": [
+          {
+            "contamination": 0.3116518741306411,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.6883482342808416,
+            "retained_mass": 0.6883481258693589,
+            "transform": [
+              [
+                0.9642467322152221,
+                0.03575326778477783,
+                0.0,
+                0.0
+              ],
+              [
+                0.13179607217099787,
+                0.5646424180142368,
+                0.3035615098147654,
+                0.0
+              ],
+              [
+                0.0,
+                0.5646339365321511,
+                0.4353660634678489,
+                0.0
+              ],
+              [
+                -0.0,
+                0.5646339365321511,
+                0.4353660634678489,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.9642552136973077
+          },
+          {
+            "contamination": 0.15588640751109195,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.8441137065362844,
+            "retained_mass": 0.844113592488908,
+            "transform": [
+              [
+                -0.0,
+                -0.0,
+                0.14133913141944923,
+                0.8586608685805508
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.14134029989560157,
+                0.8586597001043984
+              ],
+              [
+                0.0,
+                0.0,
+                0.14134029989560198,
+                0.8586597001043981
+              ],
+              [
+                0.0,
+                0.0,
+                0.14133913141944923,
+                0.8586608685805508
+              ]
+            ],
+            "transform_trace": 1.0000011684761527
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.6883481258693589,
+          0.844113592488908
+        ]
+      },
+      "candidate": "TaCo::components_removed=5",
+      "method": "TaCo",
+      "provenance": {
+        "commit": "35995e44b95dc1722b03d18b9b16c5b9f8322db5",
+        "components": 20,
+        "components_removed": 5,
+        "official_entrypoints": [
+          "TaCo.concept_removal.sobol_importance_from_sample",
+          "TaCo.concept_removal.crop_concepts",
+          "TaCo.concept_removal.build_gender_neutral_features"
+        ],
+        "protocol_adapter": "PCA is fit on train only to keep certification and external splits locked",
+        "remote": "https://github.com/fanny-jourdan/TaCo",
+        "repository": "/Volumes/Backups/FARO/external/TaCo",
+        "sobol_design": 8,
+        "sobol_sampled": 500
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.3006891645797256,
+          0.15040329334018104
+        ],
+        "certified_worst_conditional_error_upper": 0.3006891645797257,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.25419115769637685,
+          "worst_privacy_advantage": 0.032804011175062264
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 2.220446049250313e-16,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            0.03517614190993121,
+            0.9648238580900688
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.30068916357972564,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.30068916357972564,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": false,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.3006891635797255,
+          0.15040329234018102
+        ],
+        "unguarded_worst_conditional_error": 0.30068916357972564,
+        "value_guard": 1e-09
+      },
+      "strength": "components_removed=5"
+    },
+    {
+      "bridge_membership": {
+        "contaminations": [
+          0.22407954753671255,
+          0.1544138518727053
+        ],
+        "labels": [
+          {
+            "contamination": 0.22407954753671255,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.7759205598044269,
+            "retained_mass": 0.7759204524632874,
+            "transform": [
+              [
+                0.3747900928862842,
+                0.3451469001961406,
+                0.2800630069175752,
+                0.0
+              ],
+              [
+                0.3747891423056553,
+                0.3451478507767695,
+                0.2800630069175752,
+                0.0
+              ],
+              [
+                0.3747891423056553,
+                0.3451469001961406,
+                0.2800639574982041,
+                0.0
+              ],
+              [
+                0.3747891423056553,
+                0.3451478507767695,
+                0.2800630069175752,
+                -0.0
+              ]
+            ],
+            "transform_trace": 1.0000019011612578
+          },
+          {
+            "contamination": 0.1544138518727053,
+            "method": "strict_v2_structural_zero_outward_repaired_l1_bridge",
+            "minimum_membership_slack": -0.0,
+            "optimal_retained_mass_upper": 0.8455862620454535,
+            "retained_mass": 0.8455861481272947,
+            "transform": [
+              [
+                -0.0,
+                0.0,
+                0.3119342117053566,
+                0.6880657882946434
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.3119342117053557,
+                0.6880657882946443
+              ],
+              [
+                0.0,
+                0.0,
+                0.3119342117053566,
+                0.6880657882946434
+              ],
+              [
+                0.0,
+                0.0,
+                0.09582128166894507,
+                0.9041787183310549
+              ]
+            ],
+            "transform_trace": 1.2161129300364115
+          }
+        ],
+        "method": "strict_v2_simultaneous_l1_bridge_membership",
+        "retained_masses": [
+          0.7759204524632874,
+          0.8455861481272947
+        ]
+      },
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "method": "MANCE++",
+      "provenance": {
+        "commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+        "epsilon": 0.05,
+        "external_label_adapter": "dummy labels are supplied because stop_at_floor=False; edited representations do not depend on evaluation labels",
+        "external_labels_hidden": true,
+        "history": [
+          {
+            "concept_acc": 0.5902500152587891,
+            "control_acc": 0.5895500183105469,
+            "scorer_val_acc": NaN,
+            "step": 0
+          },
+          {
+            "concept_acc": 0.5918999910354614,
+            "control_acc": 0.5887500047683716,
+            "scorer_val_acc": 0.8865000009536743,
+            "step": 1
+          },
+          {
+            "concept_acc": 0.5983499884605408,
+            "control_acc": 0.5874000191688538,
+            "scorer_val_acc": 0.8865000009536743,
+            "step": 2
+          },
+          {
+            "concept_acc": 0.6000999808311462,
+            "control_acc": 0.5860499739646912,
+            "scorer_val_acc": 0.8865000009536743,
+            "step": 3
+          }
+        ],
+        "n_neighbors": 8,
+        "official_entrypoint": "mance.MANCE(variant='mance++').fit_erase",
+        "remote": "https://github.com/MatanAvitan/mance.git",
+        "repository": "/Volumes/Backups/FARO/external/mance",
+        "steps_completed": 3,
+        "steps_requested": 3,
+        "tangent_rank": 7
+      },
+      "release_l2": {
+        "certified_source_advantage_upper": [
+          0.22407956861793682,
+          0.19624059060997573
+        ],
+        "certified_worst_conditional_error_upper": 0.27469625489662025,
+        "decoder": [
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.19368769766087632,
+          "worst_privacy_advantage": 0.024381688951168545
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 2.6629210404434166e-09,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            1.0,
+            -0.0
+          ],
+          [
+            0.7670726743559089,
+            0.2329273256440912
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 2,
+        "solved_decoder_assignments": 4,
+        "solver_dual_bound": 0.2746962512336991,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.2746962512336991,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.2240795676179368,
+          0.1962405896099757
+        ],
+        "unguarded_worst_conditional_error": 0.27469625389662017,
+        "value_guard": 1e-09
+      },
+      "release_l4": {
+        "certified_source_advantage_upper": [
+          0.22407956861793682,
+          0.19624059060997573
+        ],
+        "certified_worst_conditional_error_upper": 0.27469625489662025,
+        "decoder": [
+          0,
+          1,
+          0,
+          1
+        ],
+        "diagnostic": {
+          "estimable": true,
+          "missing_strata": [],
+          "worst_conditional_error": 0.1936876976608763,
+          "worst_privacy_advantage": 0.024381688951168767
+        },
+        "feasibility_guard": 1e-06,
+        "max_constraint_violation": 2.116475028453402e-08,
+        "method": "strict_outward_transform_exact_lp",
+        "optimization_source_thresholds": [
+          0.349999,
+          0.349999
+        ],
+        "release_channel": [
+          [
+            -0.0,
+            -0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0,
+            0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            0.0,
+            0.7670726743559088,
+            0.23292732564409124
+          ],
+          [
+            0.0,
+            -0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "released_token_count": 4,
+        "solved_decoder_assignments": 16,
+        "solver_dual_bound": 0.27469625123369906,
+        "solver_mip_gap": 0.0,
+        "solver_objective": 0.27469625123369906,
+        "solver_status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "threshold_decisions": {
+          "0.30": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.35": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.40": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.45": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          },
+          "0.49": {
+            "deployed": true,
+            "diagnostic_safe": true,
+            "false_acceptance": false
+          }
+        },
+        "unguarded_source_advantages": [
+          0.2240795676179368,
+          0.1962405896099757
+        ],
+        "unguarded_worst_conditional_error": 0.27469625389662017,
+        "value_guard": 1e-09
+      },
+      "strength": "epsilon=0.05,steps=3"
+    }
+  ],
+  "seed": 1206,
+  "selection_by_utility_threshold": {
+    "0.30": {
+      "bridge_contaminations": [
+        0.22407954753671255,
+        0.1544138518727053
+      ],
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "certified_source_advantage_upper": [
+        0.22407956861793682,
+        0.19624059060997573
+      ],
+      "certified_worst_conditional_error_upper": 0.27469625489662025,
+      "decision": "deploy",
+      "diagnostic_estimable": true,
+      "diagnostic_safe": true,
+      "diagnostic_worst_conditional_error": 0.19368769766087632,
+      "diagnostic_worst_source_advantage": 0.024381688951168545,
+      "false_acceptance": false,
+      "method": "MANCE++",
+      "released_token_count": 2,
+      "strength": "epsilon=0.05,steps=3",
+      "utility_threshold": 0.3
+    },
+    "0.35": {
+      "bridge_contaminations": [
+        0.22407954753671255,
+        0.1544138518727053
+      ],
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "certified_source_advantage_upper": [
+        0.22407956861793682,
+        0.19624059060997573
+      ],
+      "certified_worst_conditional_error_upper": 0.27469625489662025,
+      "decision": "deploy",
+      "diagnostic_estimable": true,
+      "diagnostic_safe": true,
+      "diagnostic_worst_conditional_error": 0.19368769766087632,
+      "diagnostic_worst_source_advantage": 0.024381688951168545,
+      "false_acceptance": false,
+      "method": "MANCE++",
+      "released_token_count": 2,
+      "strength": "epsilon=0.05,steps=3",
+      "utility_threshold": 0.35
+    },
+    "0.40": {
+      "bridge_contaminations": [
+        0.22407954753671255,
+        0.1544138518727053
+      ],
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "certified_source_advantage_upper": [
+        0.22407956861793682,
+        0.19624059060997573
+      ],
+      "certified_worst_conditional_error_upper": 0.27469625489662025,
+      "decision": "deploy",
+      "diagnostic_estimable": true,
+      "diagnostic_safe": true,
+      "diagnostic_worst_conditional_error": 0.19368769766087632,
+      "diagnostic_worst_source_advantage": 0.024381688951168545,
+      "false_acceptance": false,
+      "method": "MANCE++",
+      "released_token_count": 2,
+      "strength": "epsilon=0.05,steps=3",
+      "utility_threshold": 0.4
+    },
+    "0.45": {
+      "bridge_contaminations": [
+        0.22407954753671255,
+        0.1544138518727053
+      ],
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "certified_source_advantage_upper": [
+        0.22407956861793682,
+        0.19624059060997573
+      ],
+      "certified_worst_conditional_error_upper": 0.27469625489662025,
+      "decision": "deploy",
+      "diagnostic_estimable": true,
+      "diagnostic_safe": true,
+      "diagnostic_worst_conditional_error": 0.19368769766087632,
+      "diagnostic_worst_source_advantage": 0.024381688951168545,
+      "false_acceptance": false,
+      "method": "MANCE++",
+      "released_token_count": 2,
+      "strength": "epsilon=0.05,steps=3",
+      "utility_threshold": 0.45
+    },
+    "0.49": {
+      "bridge_contaminations": [
+        0.22407954753671255,
+        0.1544138518727053
+      ],
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "certified_source_advantage_upper": [
+        0.22407956861793682,
+        0.19624059060997573
+      ],
+      "certified_worst_conditional_error_upper": 0.27469625489662025,
+      "decision": "deploy",
+      "diagnostic_estimable": true,
+      "diagnostic_safe": true,
+      "diagnostic_worst_conditional_error": 0.19368769766087632,
+      "diagnostic_worst_source_advantage": 0.024381688951168545,
+      "false_acceptance": false,
+      "method": "MANCE++",
+      "released_token_count": 2,
+      "strength": "epsilon=0.05,steps=3",
+      "utility_threshold": 0.49
+    }
+  },
+  "strict_amendment_sha256": "b009bcbecfecc9eea699b5104305a99c734803978663eb88ef229b51d14e2e80",
+  "strict_repair_version": "v2_structural_zero_columns"
+}

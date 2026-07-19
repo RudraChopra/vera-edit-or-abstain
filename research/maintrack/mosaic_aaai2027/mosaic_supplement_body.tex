@@ -631,13 +631,14 @@ Globality is asserted only when every decoder and attacker assignment is
 enumerated, the exact LP reports an optimal status or the fallback MIP gap is
 at most $10^{-10}$, and the solver feasibility tolerance is $10^{-9}$.
 The original bridge run preserves raw solver outputs, but claim-grade decisions
-come from a pre-inspection strict replay triggered by an adversarial proof audit.
-That replay contracts retained mass using a $10^{-9}$ outward guard until every
-independently recomputed membership slack is nonnegative, optimizes source
-constraints with a $10^{-6}$ inward margin, adds $10^{-9}$ to recomputed risk
-bounds, and compares those outward values with the original thresholds using
-zero decision tolerance. A timeout, negative membership slack, oversized
-assignment family, or post-solve mismatch can only abstain.
+come from a strict replay triggered by an adversarial proof audit. It contracts
+retained mass using a $10^{-9}$ outward guard until every independently
+recomputed membership slack is nonnegative, optimizes source constraints with
+a $10^{-6}$ inward margin, adds $10^{-9}$ to recomputed risk bounds, and
+compares those outward values with the original thresholds using zero decision
+tolerance. A timeout, negative membership slack, oversized assignment family,
+or post-solve mismatch can only abstain. The disclosed v2 correction to this
+repair is detailed below.
 
 The exact audit checks zero-radius agreement with a separate population
 evaluator, binary confidence-ball endpoints, 100 randomized dominance
@@ -733,7 +734,26 @@ all code hashes, the zero-tolerance decision rule, and the requirement to replay
 all 1,400 optima regardless of outcome. Both raw and strict receipts remain
 public so this correction cannot be hidden.
 
+After the complete v1 strict audit, we found that its repair added the guard to
+the denominator of every output constraint, including a transform column that
+was identically zero. The exact constraint for such a column is
+$\underline q_{s,y}(z)\geq t_y\cdot0$ and cannot restrict $t_y$; replacing the
+zero by $10^{-9}$ incorrectly collapsed retained mass to zero. All v1 outcomes
+had already been inspected and showed zero deployments. Before any corrected
+replay, a second hash lock disclosed that timing and froze a single change:
+omit the guard-ratio contraction only when every entry of the complete
+transform output column is exactly zero, then recheck every original slack,
+including that column. No table, candidate, threshold, radius, split, release
+optimizer, or diagnostic changed. The scope audit compares all 2,600 label
+certificates: all 918 changed labels have the required structural zero and no
+other label changes. Deterministic replay matches all 100 v2 receipts; exact
+rational arithmetic verifies nonnegative slack for all 1,300 bridges and
+outward bounds for all 1,400 releases. The v1 receipts remain part of the
+artifact and v2 is identified as post-audit corrective evidence.
+
 \input{mosaic_supplement_results}
+
+\input{mosaic_bridge_supplement_results}
 
 \input{mosaic_transform_exact_supplement_results}
 

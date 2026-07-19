@@ -1,7 +1,7 @@
 """Exact finite-token envelopes for MOSAIC.
 
-MOSAIC (Monotone Optimized Shift-Aware Information Coarsening) is a new,
-separate research direction from VERA.  Its central design choice is to release
+MOSAIC (Minimax-Optimized Source-Agnostic Invariant Channels) is a new,
+separate research direction from VERA. Its central design choice is to release
 a finite token rather than an unconstrained continuous embedding.  On a finite
 alphabet, total variation is the exact advantage of the best *arbitrary*
 binary downstream attacker; no attacker portfolio is required.
