@@ -1,0 +1,124 @@
+{
+  "claim_boundary": "This is a fresh, preregistered confirmation on one public tabular geographic shift. The finite-sample statement is per registered reference/bridge event, not a population-wide privacy or fairness guarantee; it does not cover post-certification drift or unregistered outputs.",
+  "code_sha256": {
+    "research/mosaic/audit_mosaic_bridge_strict.py": "4d705e849dafd1aac81ec0ffa1e4c8a2e474569c90050b1889b8c065d15326d3",
+    "research/mosaic/audit_mosaic_bridge_strict_v2.py": "14bf1c67f70a5b71bb8cb23126e899884a2e6f15229f0af0ecf2dfe753b3dab4",
+    "research/mosaic/mosaic_bridge.py": "a4db7cf4752ec463fc01bd8ad436c06846c74d3feefe0aeb62d5dd87e4df32a4",
+    "research/mosaic/mosaic_envelope.py": "2987bde2e3bed364aad28ad31fb9d31f4168835a1070b8065d6336efc0b6ee05",
+    "research/mosaic/mosaic_real.py": "b8e1d70b8c72f79db6d4cf6587a9e34fde0a050387058b4d00c754f8b60a94f7",
+    "research/mosaic/mosaic_strict_certification_v2.py": "2cd9ebf580817d89f94b067899cbfc540e69cebe064ed597036c9de8dd84f5c8",
+    "research/mosaic/mosaic_transform_exact_optimizer.py": "6f7085858f272d8585b5eb90027c5e1aace6d1728bd1e82a1c27a9433ce125d0",
+    "research/mosaic/replay_mosaic_bridge_strict.py": "291d285155fc6f3573606c103061bb06ffbeaf490882c2b7bd9f6c1015b18d07",
+    "research/mosaic/replay_mosaic_bridge_strict_v2.py": "48750c4afaa48aec3b758c6248689b79042159401013ce42c8c7da993caee64f",
+    "research/mosaic/run_mosaic_bridge_frontier.py": "4478d1d525648f783f1ed4172c611a3fd336c546098387f005904c2f0efe02ab",
+    "research/mosaic/run_mosaic_official_frontier_exact_confirmation.py": "66d7aa3eeedd6460fc894c281b4c660e3da0c781984012eeb379e543b506f166",
+    "research/mosaic/run_mosaic_real_pilot.py": "d2e63c704ba18881318d2a936b8fcb628d7937017003bc720ba7e778616d9578",
+    "research/scripts/official_eraser_adapters.py": "ebcb3db26b60ba240958ff9944ec174f4e63a90fadcbbb87169c67eac87bcd26",
+    "research/scripts/prepare_acs_income_store.py": "f0de47d980743c2131bd3fb1d17a3e11da0e236af375a2d49adcd67a9b481147",
+    "research/scripts/run_official_eraser_frontier.py": "2a408a5e78f88c687a40e600b12924c5d70299204ad6fdf3ead51911348b0f7f"
+  },
+  "confirmation_seeds": [
+    1305,
+    1306,
+    1307,
+    1308,
+    1309
+  ],
+  "data_protocol": {
+    "external_split": "Seeded two-thirds bridge and one-third untouched diagnostic fold within each source-label stratum.",
+    "frontier": "Identity plus 12 official INLP, LEACE, R-LACE, TaCo, and MANCE++ edits; no proxy rows.",
+    "maximum_balanced_external": 12000,
+    "maximum_balanced_reference": 8000,
+    "maximum_eraser_train": 8000,
+    "maximum_tokenizer_construction": 2000,
+    "preprocessing": "Train-only standardization and PCA to 128 dimensions or the input dimension, whichever is smaller."
+  },
+  "datasets": {
+    "ACSIncome-CA-TX": {
+      "audit_source": "binary sex; excluded from the released feature matrix",
+      "manifest_sha256": "d37d371760fd813e47d08bd91baea49dc66ac8efa2bbbb0bdcdd789ea2549ae3",
+      "modality": "tabular geographic shift",
+      "path": "/Volumes/Backups/FARO/artifacts/acs_income_ca_tx_numpy_store",
+      "reference_population": "California ACS 2018 1-Year PUMS",
+      "target_mode": "native_binary",
+      "target_population": "Texas ACS 2018 1-Year PUMS",
+      "task": "income above $50,000"
+    }
+  },
+  "locked_at": "2026-07-19T17:10:07.870151+00:00",
+  "official_repositories": {
+    "INLP": {
+      "clean": true,
+      "commit": "e1edcc19d808108ab71cbb3afb0389db0206a7eb",
+      "path": "/Volumes/Backups/FARO/external/nullspace_projection",
+      "remote": "https://github.com/shauli-ravfogel/nullspace_projection.git"
+    },
+    "LEACE": {
+      "clean": true,
+      "commit": "9f51753821316a1edacf78b52b464ab26d40e60a",
+      "path": "/Volumes/Backups/FARO/external/concept-erasure",
+      "remote": "https://github.com/EleutherAI/concept-erasure"
+    },
+    "MANCE++": {
+      "clean": true,
+      "commit": "d1a260f945914fa1d1c75a71163af3cd586eb241",
+      "path": "/Volumes/Backups/FARO/external/mance",
+      "remote": "https://github.com/MatanAvitan/mance.git"
+    },
+    "R-LACE": {
+      "clean": true,
+      "commit": "2d9b6d03f65416172b4a2ca7f6da10e374002e5f",
+      "path": "/Volumes/Backups/FARO/external/rlace-icml",
+      "remote": "https://github.com/shauli-ravfogel/rlace-icml"
+    },
+    "TaCo": {
+      "clean": true,
+      "commit": "35995e44b95dc1722b03d18b9b16c5b9f8322db5",
+      "path": "/Volumes/Backups/FARO/external/TaCo",
+      "remote": "https://github.com/fanny-jourdan/TaCo"
+    }
+  },
+  "pass_conditions": {
+    "complete_execution": "All 5 seeds run every one of 13 official candidates.",
+    "complete_reporting": "Report every seed, candidate failure, abstention, diagnostic result, and selected certificate regardless of outcome.",
+    "external_diagnostic": "Treat Texas diagnostic results as held-out checks; do not use them to select a candidate or to estimate theorem coverage.",
+    "strict_replay": "Every raw receipt has a strict-v2 receipt and a matching independent replay."
+  },
+  "phase": "fresh ACSIncome California-to-Texas strict bridge confirmation",
+  "project": "MOSAIC: Minimax-Optimized Source-Agnostic Invariant Channels",
+  "protocol": {
+    "bridge_fraction": 0.6666666666666666,
+    "familywise_delta": 0.05,
+    "fine_token_count": 4,
+    "frontier_candidate_count": 13,
+    "l4_policy": "reoptimize the minimum-error L2 candidate on the same covered table",
+    "per_candidate_table_delta": 0.0019230769230769232,
+    "primary_released_token_count": 2,
+    "primary_utility_threshold": 0.4,
+    "privacy_advantage_threshold": 0.35,
+    "secondary_released_token_count": 4,
+    "utility_thresholds": [
+      0.3,
+      0.35,
+      0.4,
+      0.45,
+      0.49
+    ]
+  },
+  "repository_head_at_lock": "b02d835341b89050107d18edfd39a70edb502d81",
+  "selection": {
+    "primary": "At utility threshold 0.40, select the feasible L=2 candidate with lowest strict bridge-certified worst source-label error; lexical tie break; otherwise abstain.",
+    "secondary": "Reoptimize L=4 only for that selected L=2 candidate without using diagnostics."
+  },
+  "status": "locked_before_confirmatory_outcomes",
+  "stopping_rule": "Run all five seeds and all candidates. No outcome-based threshold changes, data replacement, early stopping, or selective reporting.",
+  "strict_replay": {
+    "execution": "Write each raw frontier receipt, deterministically replay every bridge and release with the locked strict-v2 arithmetic, then independently replay the strict receipts before reporting selections.",
+    "required_outputs": {
+      "decision_tolerance": 0.0,
+      "independent_replays": 5,
+      "strict_receipts": 5
+    },
+    "version": "v2_structural_zero_columns"
+  }
+}
