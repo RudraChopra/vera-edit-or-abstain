@@ -33,6 +33,11 @@ ROOT = Path(__file__).resolve().parent
 REPOSITORY = ROOT.parents[1]
 DEFAULT_OUTPUT = REPOSITORY / "research" / "artifacts" / "mosaic_real_pilot_v1.json"
 DATASETS = {
+    "ACSIncome-CA-TX": {
+        "path": Path("/Volumes/Backups/FARO/artifacts/acs_income_ca_tx_numpy_store"),
+        "target_mode": "native_binary",
+        "modality": "tabular geographic shift",
+    },
     "Waterbirds": {
         "path": Path("/Volumes/Backups/FARO/artifacts/waterbirds_official_numpy_store"),
         "target_mode": "native_binary",
