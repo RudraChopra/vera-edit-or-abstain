@@ -3,19 +3,19 @@ Concept-erasure evaluations rarely certify the public interface that remains
 after an edit. We present MOSAIC, a software-only release method that either
 selects a task-specific stochastic channel and decoder or abstains. One
 simultaneous confidence region over pre-release token laws covers every channel
-optimized from that table. Labeled target bridge data then certify the portion
-of population shift explained by one common Markov transform, while the
-unexplained portion is charged to channel capacity. We prove finite-sample
-envelopes for the Bayes source attacker within each task label and for
-worst-stratum task error, global solvability for finite alphabets, and sharp
-abstention boundaries for unrestricted shift and missing target support. In
-1,000 hash-locked safety trials, naive continuum selection deploys
-contract-violating releases on 42.1\% of tables; MOSAIC records none. Across
-100 registered jobs on five real benchmarks, unconditional deployment violates
-38/80 estimable external diagnostics, validation-only selection violates 18/60,
-and a bridge plug-in violates 7/47. Under the primary contract, MOSAIC releases
-20 interfaces with 0/20 observed diagnostic violations. Every certificate,
-decision, and population-risk check is retained for independent replay.
+optimized from that table. Labeled target data certify a common-transform plus
+residual shift class; the unexplained mass is charged exactly to the release
+channel. We prove finite-sample Bayes-attacker and worst-stratum utility
+envelopes, global finite-alphabet optimization, and abstention boundaries for
+unrestricted shift and missing target support. In 1,000 locked safety trials,
+naive continuum selection releases contract-violating channels on 42.1\% of
+tables; MOSAIC records none. Across 100 registered real-data jobs, MOSAIC
+releases 20 interfaces with 0/20 diagnostic violations, while a direct
+target-table certificate releases 36 with 0/36. Under bridge-admitted laws away
+from those sampled target tables, however, the direct rule violates 16/36
+contracts (44.4\%); MOSAIC releases the 20 safe cases and abstains on all 16.
+A 75-job scaling study reaches $K=64$ tokens and $G=4$ sources with subsecond
+median optimization in every cell.
 \end{abstract}
 
 \section{Introduction}
@@ -47,13 +47,15 @@ transform-and-contamination envelopes then certify source distinguishability
 and a jointly selected decoder. Finite-alphabet optimization is global, and
 MOSAIC returns \textsc{abstain} when no feasible release exists.
 
-MOSAIC turns these pieces into one deployment procedure: it certifies the
-whole post-channel family from a pre-channel table, tests the registered shift
-class with target bridge data, and jointly optimizes privacy and utility. This
-differs from finite-candidate risk control because its confidence event lies
-upstream of the channel search. Hash-locked experiments compare plug-in and
-held-out selection, LTT, deterministic release, shift-unaware certification,
-official erasers, and an exact population oracle.
+The central object is the data-certified bridge: a finite-sample test that
+turns labeled target observations into a population class on which the chosen
+interface remains valid. The upstream confidence event then covers the whole
+post-channel family, so privacy and utility can be optimized jointly without
+testing each channel. This differs from finite-candidate risk control because
+the event lies before the channel search. Locked experiments compare this
+transport certificate with direct target-table certification, plug-in and
+held-out selection, LTT, deterministic release, official erasers, and an exact
+population oracle.
 
 \begin{figure*}[t]
   \centering
@@ -366,6 +368,11 @@ making the public token independent of the fine token. A bounded $\eta_y$ is
 therefore an identifiable assumption of the deployment contract, not a hidden
 technical convenience.
 
+A constant-row channel is also the input-independent, $\varepsilon=0$ endpoint
+of local differential privacy; randomized response is its nonconstant noisy
+relative \citep{warner1965randomized}. MOSAIC differs by optimizing a
+task-specific channel under an explicit source-inference contract.
+
 There is a separate identifiability boundary for external auditing. Suppose a
 required source is absent and let
 $A_{\rm miss}(q_0,M)=\sup_{q_1\in\Delta_K}A((q_0,q_1),M)$.
@@ -403,11 +410,12 @@ Zero retained mass, missing support, no feasible row, or a failed numerical
 check returns \textsc{abstain}; otherwise only $(M,g)$ and $Z$ are released.
 
 With $R=\max_y|\mathcal V_y|$, the direct formulation is polynomial in $K$ for
-fixed $(G,J,L,R)$ but exponential in the deliberately small $L$ through
-attacker and decoder enumeration. Larger public alphabets require separation
-or column generation. Endpoint enumeration, population identities, dense
-channel grids, and randomized exact-versus-fallback comparisons check the
-encoding; the supplement gives complexity and power-curve details.
+fixed $(G,J,L,R)$ but exponential in $L$ through attacker and decoder
+enumeration. Our constraint-generation path solves a restricted LP, finds the
+strongest omitted attacker exactly, and adds it until none violates the
+contract; finite termination follows from the $G^L$ assignment family.
+Endpoint enumeration, dense channel grids, and independent certificate
+recomputation check the encoding; the supplement reports scaling.
 
 \section{Hash-Locked Evaluation}
 

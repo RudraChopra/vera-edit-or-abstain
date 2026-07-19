@@ -137,6 +137,18 @@ def test_multinomial_certificate_reports_a_valid_but_conservative_radius() -> No
     )
 
 
+def test_weissman_radius_supports_large_finite_alphabets_stably() -> None:
+    n = 10_000
+    token_count = 64
+    delta = 0.001
+    radius = weissman_l1_radius(n, token_count, delta)
+    expected = np.sqrt(
+        2.0 * (np.log((1 << token_count) - 2) - np.log(delta)) / n
+    )
+    assert np.isfinite(radius)
+    assert radius == pytest.approx(expected)
+
+
 def test_event_mass_upper_bound_has_the_expected_endpoints() -> None:
     assert float(upper_event_mass(0.0, 2.0)) == pytest.approx(0.0)
     assert float(upper_event_mass(1.0, 2.0)) == pytest.approx(1.0)

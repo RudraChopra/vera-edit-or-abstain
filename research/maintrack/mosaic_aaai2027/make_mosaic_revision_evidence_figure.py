@@ -17,6 +17,7 @@ REPOSITORY = ROOT.parents[2]
 ARTIFACTS = REPOSITORY / "research" / "artifacts"
 EVIDENCE = ARTIFACTS / "mosaic_revision_evidence_v1.json"
 MISSPEC = ARTIFACTS / "mosaic_bridge_misspecification_v1.json"
+ADMITTED_SHIFT = ARTIFACTS / "mosaic_admitted_shift_stress_v1.json"
 OUTPUT = ROOT / "figures" / "figure4_mosaic_revision_evidence"
 
 INK = "#202124"
@@ -59,43 +60,57 @@ def style(ax: plt.Axes, label: str) -> None:
     ax.spines[["top", "right", "left"]].set_visible(False)
 
 
-def direct_target_panel(ax: plt.Axes, evidence: dict[str, Any]) -> None:
-    values = evidence["all_datasets"]
-    names = ["Strict\nMOSAIC", "Direct\ntarget", "Bridge\nplug-in"]
-    keys = ["strict_mosaic", "direct_target_table", "bridge_plugin"]
-    colors = [GREEN, BLUE, ORANGE]
-    deployments = [int(values[key]["deployments"]) for key in keys]
-    violations = [int(values[key]["diagnostic_violations"] if key == "direct_target_table" else values[key]["false_acceptances"]) for key in keys]
-    positions = np.arange(len(keys))
-    bars = ax.bar(positions, deployments, color=colors, width=0.62, zorder=2)
-    for bar, deployed, violation_count in zip(bars, deployments, violations, strict=True):
+def direct_target_panel(ax: plt.Axes, stress: dict[str, Any]) -> None:
+    primary = stress["primary"]
+    names = ["Direct target\ntable", "Strict\nMOSAIC"]
+    deployments = [
+        int(primary["direct_deployments"]),
+        int(primary["mosaic_deployments"]),
+    ]
+    violations = [
+        int(primary["direct_contract_violations"]),
+        int(primary["mosaic_contract_violations"]),
+    ]
+    colors = [BLUE, GREEN]
+    positions = np.arange(len(names))
+    bars = ax.bar(positions, deployments, color=colors, width=0.58, zorder=2)
+    for bar, deployed, violation_count in zip(bars, deployments, violations):
         ax.text(
             bar.get_x() + bar.get_width() / 2,
-            deployed + 2.2,
-            f"{deployed}",
+            deployed + 1.5,
+            f"{deployed} deployed",
             ha="center",
             va="bottom",
-            fontsize=7.0,
+            fontsize=6.7,
             fontweight="bold",
         )
+        if violation_count:
+            ax.bar(
+                bar.get_x() + bar.get_width() / 2,
+                violation_count,
+                color=RED,
+                width=bar.get_width(),
+                zorder=3,
+            )
         ax.text(
             bar.get_x() + bar.get_width() / 2,
-            max(2.0, deployed * 0.12),
+            max(1.0, violation_count / 2),
             f"{violation_count} violations",
             ha="center",
-            va="bottom",
-            fontsize=5.7,
-            color="white" if deployed > 12 else INK,
+            va="center",
+            fontsize=5.9,
+            color="white" if violation_count else INK,
+            fontweight="bold" if violation_count else "normal",
         )
     ax.set_xticks(positions, names)
-    ax.set_ylim(0, 60)
-    ax.set_yticks([0, 20, 40, 60])
-    ax.set_ylabel("Jobs at primary contract")
-    ax.set_title("Target-table certification is a useful comparator", loc="left")
+    ax.set_ylim(0, 42)
+    ax.set_yticks([0, 10, 20, 30, 40])
+    ax.set_ylabel("Real-table selected jobs")
+    ax.set_title("The bridge blocks harmful admitted drift", loc="left")
     ax.text(
         0.0,
         -0.31,
-        "Direct target certifies the sampled target table; MOSAIC certifies a bridge-admitted law class.",
+        "Worst laws lie inside each learned bridge class but outside the direct table region.",
         transform=ax.transAxes,
         fontsize=5.65,
         color=MUTED,
@@ -204,6 +219,7 @@ def frontier_panel(ax: plt.Axes, evidence: dict[str, Any]) -> None:
 def main() -> None:
     evidence = load(EVIDENCE)
     misspec = load(MISSPEC)
+    stress = load(ADMITTED_SHIFT)
     if evidence["off_event_formal_certificates"]["false_acceptances"] != 0:
         raise ValueError("revision figure requires passing off-event accounting")
     mpl.rcParams.update(
@@ -218,11 +234,11 @@ def main() -> None:
         }
     )
     figure, axes = plt.subplots(2, 2, figsize=(7.08, 4.8), facecolor="white")
-    direct_target_panel(axes[0, 0], evidence)
+    direct_target_panel(axes[0, 0], stress)
     stratum_panel(axes[0, 1], evidence, misspec)
     utility_panel(axes[1, 0], evidence)
     frontier_panel(axes[1, 1], evidence)
-    for axis, label in zip(axes.flat, "abcd", strict=True):
+    for axis, label in zip(axes.flat, "abcd"):
         style(axis, label)
     figure.subplots_adjust(left=0.09, right=0.995, top=0.94, bottom=0.18, wspace=0.34, hspace=0.72)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)

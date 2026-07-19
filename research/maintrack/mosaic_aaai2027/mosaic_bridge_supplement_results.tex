@@ -1,19 +1,11 @@
 \section{Matched Baselines and Bridge-Validity Stress}
 
-\begingroup\raggedright
 \paragraph{Matched baseline receipts.}
-The paired-baseline lock has SHA-256 digest
-\texttt{3acbaf34e4487905bd7aef622ef9998e}\allowbreak
-\texttt{410707cf850f3e7b2a6dd6673a6d7845}. The schema-repaired report preserves
-every numerical field from its immutable predecessor and has digest
-\texttt{891ab17e0da31491c95806f09ab7497a}\allowbreak
-\texttt{4a7e782e6e6f60d85e472fb2e6201add}. Its deterministic audit replays 2,000
+The schema-repaired report preserves every numerical field from its immutable
+predecessor. Its deterministic audit replays 2,000
 tables, 8,000 method rows, 12,000 diagnostics, and all aggregate cells with no
-failure; the audit digest is
-\texttt{fe7cb389343a6dae56a2be8e9c04c034}\allowbreak
-\texttt{64f7caf4397c7d102ef2bad02a230462}. This is a code-independent entry point
-and row-level recomputation, but not independent human review.\par
-\endgroup
+failure. This is a code-independent entry point and row-level recomputation,
+but not independent human review. All digests are in the release manifest.
 
 \begin{table}[t]
 \centering
@@ -44,18 +36,10 @@ audit, is $2.279\times10^{-72}$ and is descriptive. Zero false acceptances in
 1,000 trials has exact 95\% upper endpoint 0.3682\% for each method--scenario
 cell.
 
-\begingroup\raggedright
 \paragraph{Bridge misspecification receipts.}
-The stress-study lock, report, and audit digests are respectively
-\texttt{fd4ca4fb4fdc21d5283005bca7baa2d}\allowbreak
-\texttt{babae4e3a54bfab27c921f12dce6e0bbd},
-\texttt{9721ab7dcbdcfad7189ef3ce857fac570}\allowbreak
-\texttt{8c8deb40880df5c8fcf486d5bd2ce4d}, and
-\texttt{9f5e10d8b1736e11ea186ace5bc3865a}\allowbreak
-\texttt{310430b340ac0baaa5b23738ffb6f538}. The audit replays 12,000 tables,
+The audit replays 12,000 tables,
 216,000 replicate fields, and 228 aggregate checks. It finds no failure of a
-claimed bridge implication on the simultaneous confidence event.\par
-\endgroup
+claimed bridge implication on the simultaneous confidence event.
 
 \begin{table*}[t]
 \centering
@@ -85,25 +69,9 @@ below the required retained mass.
 
 \section{Real Data-Certified Bridge Study}
 
-\begingroup\raggedright
-The v2 strict amendment digest is
-\texttt{b009bcbecfecc9eea699b5104305a99c}\allowbreak
-\texttt{734803978663eb88ef229b51d14e2e80}. Its 100-receipt manifest, deterministic
-audit, exact-rational audit, correction-scope audit, comparator audit, and final
-summary have respective digests
-\texttt{1a8bbe430649f18b816faa5c67c4d3eb}\allowbreak
-\texttt{6105e333c9842f33ce6a1e0489a9b5cd},
-\texttt{94ea89ee6773b46f04ffe4380e795c196}\allowbreak
-\texttt{728436fe2e3364c53211f55fec8e814},
-\texttt{457e51515212899a28fd52440cce0c19}\allowbreak
-\texttt{b8e62e7ca80d131bb0c55c1237a539a0},
-\texttt{7181ddbc0464223d06b703b4a4f7c53c}\allowbreak
-\texttt{9a84ac81ffa17a545f5fd9a73ad677cd},
-\texttt{9243be640b864ab039915ae386528d08c}\allowbreak
-\texttt{b72cd4121bf10da5fc3cef018842172}, and
-\texttt{dbd5cc804909b9ee232efa84a233ecca}\allowbreak
-\texttt{02afded0fd695489afd20862f2327342}.\par
-\endgroup
+The 100-receipt manifest links the deterministic, exact-rational,
+correction-scope, and comparator audits. Their digests are consolidated in the
+release manifest.
 
 \begin{table*}[t]
 \centering
@@ -153,13 +121,8 @@ alter the per-job finite-sample guarantee.
 \paragraph{Fresh corrected confirmation.}
 Before any outcome from seeds 1220--1224, a separate lock fixed the same five
 datasets, 13 official candidates, contracts, and new bridge--diagnostic splits.
-Its strict-v2 manifest, independent replay, and exact-rational audit digests
-are respectively \texttt{3d31450e26c822a6e88f59270eaade52}\allowbreak
-\texttt{128d6f189fdac7842212b5ff6468057d},
-\texttt{e824e4446ec502e64cdbed5ef167020c}\allowbreak
-\texttt{61a9e94d8063e33d77ebb48a1d920826}, and
-\texttt{25575e85e1c29596914e15d83986759}\allowbreak
-\texttt{ae5ac931651cf17aa87dbc6190202b295}. All 25 raw jobs have 13 rows and
+Its strict-v2 manifest links the independent and exact-rational audits; their
+digests appear in the consolidated checksum index. All 25 raw jobs have 13 rows and
 zero optimization errors; strict replay reproduces 325 candidates and 350
 global optimizations with no failure, and rational replay verifies every
 serialized bridge and release. At $.40$, it deploys on 5/5 BiasBios jobs with

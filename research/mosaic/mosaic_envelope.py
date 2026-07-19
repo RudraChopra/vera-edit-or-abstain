@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from itertools import product
-from math import log, log2, sqrt
+from math import log, log1p, log2, sqrt
 from typing import Iterable, Sequence
 
 import numpy as np
@@ -211,11 +211,12 @@ def weissman_l1_radius(
 
     if n <= 0:
         raise ValueError("n must be positive")
-    if token_count < 2 or token_count > MAX_EXACT_TOKENS:
-        raise ValueError(f"token_count must lie in [2, {MAX_EXACT_TOKENS}]")
+    if token_count < 2:
+        raise ValueError("token_count must be at least two")
     if not 0.0 < failure_probability < 1.0:
         raise ValueError("failure_probability must lie in (0, 1)")
-    log_prefactor = log((1 << token_count) - 2)
+    # log(2^K - 2), written without constructing an exponentially large integer.
+    log_prefactor = token_count * log(2.0) + log1p(-(2.0 ** (1 - token_count)))
     return min(2.0, sqrt(2.0 * (log_prefactor - log(failure_probability)) / n))
 
 

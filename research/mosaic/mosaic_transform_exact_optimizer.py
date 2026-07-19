@@ -55,6 +55,8 @@ class TransformExactChannelSolution:
     solver_mip_gap: float
     solver_dual_bound: float
     max_constraint_violation: float
+    active_attacker_assignments: int
+    constraint_generation_iterations: int
     method: str
 
 
@@ -164,6 +166,7 @@ def _build_exact_decoder_problem(
     *,
     released_count: int,
     decoder: tuple[int, ...],
+    attacker_assignments: Sequence[Sequence[int]] | None = None,
 ) -> tuple[_MILPBuilder, np.ndarray]:
     label_count, source_count, fine_count = empirical.shape
     builder = _MILPBuilder()
@@ -179,7 +182,22 @@ def _build_exact_decoder_problem(
             1.0,
         )
 
-    assignments = tuple(product(range(source_count), repeat=released_count))
+    if attacker_assignments is None:
+        assignments = tuple(product(range(source_count), repeat=released_count))
+    else:
+        assignments = tuple(
+            dict.fromkeys(
+                tuple(int(value) for value in assignment)
+                for assignment in attacker_assignments
+            )
+        )
+        if not assignments:
+            raise ValueError("attacker_assignments cannot be empty")
+        for assignment in assignments:
+            if len(assignment) != released_count:
+                raise ValueError("each attacker assignment needs one source per output")
+            if any(value < 0 or value >= source_count for value in assignment):
+                raise ValueError("attacker source labels are out of range")
     chance = 1.0 / source_count
     privacy_ba_thresholds = chance + (1.0 - chance) * thresholds
     for label in range(label_count):
@@ -251,6 +269,7 @@ def optimize_transform_exact_channel(
     decoder_candidates: Sequence[Sequence[int]] | None = None,
     maximum_worst_conditional_error: float | None = None,
     solver_time_limit_seconds: float | None = None,
+    attacker_constraint_generation: bool = False,
 ) -> TransformExactChannelSolution:
     """Globally optimize the exact finite structured-shift certificate."""
 
@@ -295,36 +314,82 @@ def optimize_transform_exact_channel(
     best: dict[str, object] | None = None
     messages = []
     for decoder in decoders:
-        builder, channel_indices = _build_exact_decoder_problem(
-            empirical,
-            radii,
-            libraries,
-            eta,
-            thresholds,
-            released_count=released_token_count,
-            decoder=decoder,
-        )
-        objective, bounds, constraints = builder.matrices()
-        options: dict[str, float] = {
-            "mip_rel_gap": 0.0,
-            "mip_feasibility_tolerance": MIP_FEASIBILITY_TOLERANCE,
-        }
-        if solver_time_limit_seconds is not None:
-            options["time_limit"] = float(solver_time_limit_seconds)
-        with warnings.catch_warnings():
-            warnings.filterwarnings(
-                "ignore",
-                message="Unrecognized options detected.*mip_feasibility_tolerance",
-                category=RuntimeWarning,
+        active_assignments: set[tuple[int, ...]] | None
+        if attacker_constraint_generation:
+            active_assignments = {
+                tuple([source] * released_token_count)
+                for source in range(source_count)
+            }
+        else:
+            active_assignments = None
+        generation_iteration = 0
+        while True:
+            generation_iteration += 1
+            builder, channel_indices = _build_exact_decoder_problem(
+                empirical,
+                radii,
+                libraries,
+                eta,
+                thresholds,
+                released_count=released_token_count,
+                decoder=decoder,
+                attacker_assignments=(
+                    sorted(active_assignments)
+                    if active_assignments is not None
+                    else None
+                ),
             )
-            result = milp(
-                objective,
-                integrality=np.zeros(len(objective), dtype=np.int32),
-                bounds=bounds,
-                constraints=constraints,
-                options=options,
+            objective, bounds, constraints = builder.matrices()
+            options: dict[str, float] = {
+                "mip_rel_gap": 0.0,
+                "mip_feasibility_tolerance": MIP_FEASIBILITY_TOLERANCE,
+            }
+            if solver_time_limit_seconds is not None:
+                options["time_limit"] = float(solver_time_limit_seconds)
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore",
+                    message="Unrecognized options detected.*mip_feasibility_tolerance",
+                    category=RuntimeWarning,
+                )
+                result = milp(
+                    objective,
+                    integrality=np.zeros(len(objective), dtype=np.int32),
+                    bounds=bounds,
+                    constraints=constraints,
+                    options=options,
+                )
+            messages.append(str(result.message))
+            if not result.success or result.x is None or result.fun is None:
+                break
+            values = np.asarray(result.x, dtype=np.float64)
+            channel = np.clip(values[channel_indices], 0.0, 1.0)
+            channel /= channel.sum(axis=1, keepdims=True)
+            privacy = tuple(
+                transform_exact_attacker_confidence_bound(
+                    empirical[label],
+                    channel,
+                    l1_radii=radii[label],
+                    common_fine_token_channels=libraries[label],
+                    contamination=float(eta[label]),
+                )
+                for label in range(label_count)
             )
-        messages.append(str(result.message))
+            violating_assignments = {
+                certificate.maximizing_assignment
+                for label, certificate in enumerate(privacy)
+                if certificate.normalized_advantage
+                > float(thresholds[label]) + POSTHOC_TOLERANCE
+            }
+            if violating_assignments and active_assignments is not None:
+                new_assignments = violating_assignments - active_assignments
+                if not new_assignments:
+                    raise RuntimeError("POSTHOC_EXACT_PRIVACY_MISMATCH")
+                active_assignments.update(new_assignments)
+                continue
+            if violating_assignments:
+                raise RuntimeError("POSTHOC_EXACT_PRIVACY_MISMATCH")
+            break
         if not result.success or result.x is None or result.fun is None:
             continue
         raw_gap = getattr(result, "mip_gap", None)
@@ -337,25 +402,6 @@ def optimize_transform_exact_channel(
             messages.append(f"rejected non-global solution with gap {gap}")
             continue
 
-        values = np.asarray(result.x, dtype=np.float64)
-        channel = np.clip(values[channel_indices], 0.0, 1.0)
-        channel /= channel.sum(axis=1, keepdims=True)
-        privacy = tuple(
-            transform_exact_attacker_confidence_bound(
-                empirical[label],
-                channel,
-                l1_radii=radii[label],
-                common_fine_token_channels=libraries[label],
-                contamination=float(eta[label]),
-            )
-            for label in range(label_count)
-        )
-        if any(
-            certificate.normalized_advantage
-            > float(thresholds[label]) + POSTHOC_TOLERANCE
-            for label, certificate in enumerate(privacy)
-        ):
-            raise RuntimeError("POSTHOC_EXACT_PRIVACY_MISMATCH")
         utility = tuple(
             tuple(
                 transform_exact_utility_confidence_bound(
@@ -393,6 +439,12 @@ def optimize_transform_exact_channel(
             "gap": gap,
             "dual_bound": dual_bound,
             "violation": violation,
+            "active_assignments": (
+                source_count**released_token_count
+                if active_assignments is None
+                else len(active_assignments)
+            ),
+            "generation_iterations": generation_iteration,
         }
         if best is None or float(candidate["objective"]) < float(best["objective"]) - 1e-10:
             best = candidate
@@ -424,5 +476,11 @@ def optimize_transform_exact_channel(
         solver_mip_gap=float(best["gap"]),
         solver_dual_bound=float(best["dual_bound"]),
         max_constraint_violation=float(best["violation"]),
-        method="global_decoder_enumeration_transform_exact_lp",
+        active_attacker_assignments=int(best["active_assignments"]),
+        constraint_generation_iterations=int(best["generation_iterations"]),
+        method=(
+            "global_decoder_enumeration_constraint_generated_transform_exact_lp"
+            if attacker_constraint_generation
+            else "global_decoder_enumeration_transform_exact_lp"
+        ),
     )

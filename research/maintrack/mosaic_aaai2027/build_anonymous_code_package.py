@@ -166,6 +166,20 @@ PYTHONPATH=research/mosaic:research/scripts \
   --output /tmp/mosaic_bridge_misspecification_audit.json
 ```
 
+The review-stage admitted-shift, ACS diagnosis, utility table, and scaling
+artifacts are deterministic and can be rebuilt directly:
+
+```bash
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/analyze_mosaic_admitted_shift_stress.py
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/analyze_mosaic_acs_infeasibility.py
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/summarize_mosaic_release_utility_table.py
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/run_mosaic_scaling_study.py
+```
+
 The external-shift evidence has four independent replay layers. The first
 recomputes every raw finite-confidence bridge and global optimum. The next two
 replay the corrected outward-rounded v2 receipts in floating-point and exact
@@ -228,8 +242,9 @@ redistributed. Their complete token tables and replayable decisions are included
 
 ## Certificate Coverage
 
-The release contract is evaluated for target laws represented by the labeled
-bridge sample. Missing source-label strata lead to abstention. The archive
+The release contract is evaluated over the common-transform plus bounded-residual
+class certified from the labeled bridge sample, not only at its empirical table.
+Missing source-label strata lead to abstention. The archive
 preserves the strict-v1 record and the disclosed structural-zero repair, along
 with the deterministic and exact-rational v2 replays. The current strict-v2
 receipts are the release record used by the paper.

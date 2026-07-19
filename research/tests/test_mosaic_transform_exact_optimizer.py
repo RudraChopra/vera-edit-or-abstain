@@ -3,6 +3,7 @@ from __future__ import annotations
 from itertools import product
 
 import numpy as np
+import pytest
 
 from mosaic_optimizer import optimize_invariant_channel
 from mosaic_transform_exact import (
@@ -110,3 +111,27 @@ def test_exact_optimizer_beats_or_matches_dense_channel_grid() -> None:
             ]
             grid_best = min(grid_best, max(utility))
     assert exact.certified_worst_conditional_error <= grid_best + 2e-7
+
+
+def test_constraint_generation_matches_full_attacker_enumeration() -> None:
+    empirical, radii, libraries = _optimization_problem()
+    arguments = dict(
+        l1_radii=radii,
+        common_channels_by_label=libraries,
+        contaminations=(0.1, 0.1),
+        privacy_advantage_thresholds=(0.45, 0.45),
+        released_token_count=2,
+    )
+    full = optimize_transform_exact_channel(empirical, **arguments)
+    generated = optimize_transform_exact_channel(
+        empirical, attacker_constraint_generation=True, **arguments
+    )
+    assert generated.certified_worst_conditional_error == pytest.approx(
+        full.certified_worst_conditional_error, abs=2e-7
+    )
+    assert generated.active_attacker_assignments <= 4
+    assert generated.constraint_generation_iterations >= 1
+    assert all(
+        certificate.normalized_advantage <= 0.45 + 2e-7
+        for certificate in generated.privacy_certificates
+    )
