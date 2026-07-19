@@ -1,0 +1,23 @@
+{
+  "allowed_change": "Add exactly one scenario key to each replicate row, using the unique sample-size mapping already registered and used by the original runner for aggregate cells. Add one top-level provenance object.",
+  "audit_policy": "Run the unchanged, pre-outcome-locked deterministic replay audit against the repaired copy and retain the original report byte-for-byte.",
+  "code_sha256": {
+    "research/mosaic/lock_mosaic_baseline_schema_repair.py": "27d6fbe7413ca43b175892f91d106c264a724f9c7a81340a140e489fc46898f6",
+    "research/mosaic/repair_mosaic_baseline_report_schema.py": "4a79b6a6301efd06ead47c31c6d63f2ca67e9088022e2136314f669a3b9d3cdb",
+    "research/tests/test_mosaic_baseline_schema_repair.py": "719992abb2394f3a9a15c9b5d0e7abc86f72ff604a312ff5f6f72fea5b708ee0"
+  },
+  "forbidden_changes": "No seed, method, channel, decoder, estimate, decision, diagnostic, aggregate, interval, threshold, or pass condition may change.",
+  "locked_at": "2026-07-19T04:20:33.832594+00:00",
+  "original_audit_lock_sha256": "01e4c3e4efa6bee7bbd45abbfa735138fdc4a35738ff8257758c913ddc95b220",
+  "original_preregistration_sha256": "3acbaf34e4487905bd7aef622ef9998e410707cf850f3e7b2a6dd6673a6d7845",
+  "original_report_sha256": "e2e0bdf8c0e890a6d423aa417e421147bb0ba6b0bf453cc898486ebcbaba435c",
+  "project": "MOSAIC paired baseline schema-only repair",
+  "repository_head_before_lock": "681acbdfd6604fec44f16c4a2f951b9375212880",
+  "required_repaired_rows": 8000,
+  "sample_size_to_scenario": {
+    "125": "hard_safety_boundary",
+    "250": "retention_and_stochastic_value"
+  },
+  "status": "post_outcome_schema_only_amendment",
+  "trigger": "The separately prelocked audit terminated before replay with KeyError('scenario') because the runner serialized ScenarioResult without a scenario field, while diagnostics and aggregate cells retained it."
+}
