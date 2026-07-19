@@ -88,8 +88,8 @@ SOFTWARE.
 
 ANONYMOUS_README = """# MOSAIC anonymous code and data supplement
 
-This archive supports the double-blind submission "MOSAIC: Certifiable
-Stochastic Representation Release under Structured Deployment Shift." It
+This archive supports the double-blind submission "MOSAIC: Data-Certified
+Stochastic Release under Structured Deployment Shift." It
 contains the new method, locked protocols, focused tests, complete synthetic
 receipts, official-method compact receipts, and independent replay programs.
 

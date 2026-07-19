@@ -1,6 +1,6 @@
 # MOSAIC novelty-collision audit
 
-Date: 2026-07-18
+Date: 2026-07-18; expanded 2026-07-19 for the data-certified bridge
 
 ## Claim under audit
 
@@ -16,7 +16,11 @@ construction:
 4. an exact external supremum under a common-transform polytope plus bounded
    source-specific contamination;
 5. matching worst-stratum task utility and a globally solved finite-alphabet
-   release-or-abstain rule.
+   release-or-abstain rule;
+6. a finite-sample robust LP that learns one common transform and the largest
+   uniformly certifiable retained mass from labeled target bridge data; and
+7. persistent-release semantics, with exact product-channel certification for
+   a bounded number of fresh queries.
 
 ## Nearest neighbors checked
 
@@ -29,6 +33,10 @@ construction:
 | [Optimized Pre-Processing for Discrimination Prevention](https://proceedings.neurips.cc/paper/2017/hash/9a49a25d845a483fae4be7e341368e36-Abstract.html) | Stochastic preprocessing and privacy-utility tradeoffs. | Population optimization without MOSAIC's adaptive finite-sample or structured external-shift certificate. |
 | [Fundamental Limits of Perfect Concept Erasure](https://openreview.net/forum?id=bppVexkY5N) | Information-theoretic privacy-utility limits for concept erasure. | Establishes erasure limits, not the confidence envelope, external shift class, or release-or-abstain optimizer. |
 | [On the Contractivity of Privacy Mechanisms](https://arxiv.org/abs/1801.06255) | Dobrushin-style channel contraction. | Supplies a classical ingredient. MOSAIC's exact transform-polytope envelope is tighter than the contraction fallback and is coupled to adaptive finite-sample selection. |
+| [Equivalent Comparisons of Experiments](https://doi.org/10.1214/aoms/1177729032), [Sufficiency and Approximate Sufficiency](https://doi.org/10.1214/aoms/1177700372), and [Comparison of Statistical Experiments](https://doi.org/10.1017/CBO9780511666353) | Blackwell garbling, approximate sufficiency, deficiency, and Markov-kernel comparison are classical. | MOSAIC does not claim experiment comparison as new. Its bridge is a finite-sample one-sided contamination certificate over simultaneous empirical confidence regions, composed with same-table release optimization. |
+| [Weighted Garbling](https://arxiv.org/abs/2410.21694) | Generalizes Blackwell order using state-independent signal weights and characterizes conditional informativeness. | This is a close population-level neighbor and must be cited. MOSAIC instead certifies a common Markov transform plus arbitrary state-specific residual mixture from finite reference and bridge samples, maximizes uniform retained mass, and propagates that event to source leakage and task utility. |
+| [Testable Learning with Distribution Shift](https://proceedings.mlr.press/v247/klivans24a.html) | Uses target data to test whether a learner can guarantee shifted-distribution performance. | Supplies the test-or-abstain paradigm, not the finite-experiment bridge LP, universal finite-token attacker, or joint stochastic release optimizer. |
+| [Data-Driven Robust Optimization](https://arxiv.org/abs/1401.0212) | Builds statistically calibrated uncertainty sets and optimizes decisions robustly over them. | Supplies broad robust-optimization precedent. MOSAIC's claim is the exact finite-experiment geometry and its composition with adaptive source-leakage release, not data-driven uncertainty sets in general. |
 
 The sweep also included conformal risk control under covariate or likelihood-ratio
 shift, privacy funnels, distributionally robust fair representation learning,
@@ -37,12 +45,14 @@ drift and robust erasure.
 
 ## Verdict
 
-No exact collision was found for the five-part construction above. The strongest
+No exact collision was found for the seven-part construction above. This is a
+documented negative search, not proof of priority. The strongest
 collision risk is a reviewer interpreting MOSAIC as merely Learn-Then-Test over
-channels or FARE with a randomized encoder. The paper addresses both directly:
-it states what is inherited, identifies the confidence-table object that removes
-channel-count multiplicity, and isolates the transform-exact external theorem as
-the new technical component.
+channels, FARE with a randomized encoder, or a finite-sample wrapper around
+Blackwell/Le Cam comparison. The paper addresses all three directly: it states
+what is inherited, identifies the confidence-table object that removes
+channel-count multiplicity, and isolates the bridge-to-release composition as
+the narrow technical addition.
 
 This audit cannot prove worldwide novelty. The paper must keep its contribution
 claim narrow, cite all component literatures, and avoid claiming that

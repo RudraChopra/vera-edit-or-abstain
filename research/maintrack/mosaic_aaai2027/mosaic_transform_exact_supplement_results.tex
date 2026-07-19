@@ -14,11 +14,11 @@ The strict-decision v2 preregistration has SHA-256 digest
 The original v1 confirmation passed every pre-audit gate, but its independent
 replay marked two of 10,000 deployment decisions as mismatches. All 80,000
 recomputed certificate and external-risk quantities matched. The two returned
-capacity-transfer channels exceeded the privacy threshold by
+capacity-fallback channels exceeded the source-leakage threshold by
 $4.12\times10^{-10}$ and $4.40\times10^{-10}$: below the solver's $10^{-9}$
 feasibility and $2\times10^{-7}$ post-hoc tolerances, but above the replay's
 $10^{-10}$ decision tolerance. We preserved the failed audit, changed the
-deployment layer to recheck every privacy certificate at $10^{-10}$, and
+deployment layer to recheck every source-leakage certificate at $10^{-10}$, and
 recorded before rerunning that exactly those two rows should flip to abstention
 without changing any primary gate. The hash-locked v2 rerun matched that
 prediction exactly; its audit has zero mismatch.
@@ -57,7 +57,7 @@ distinct from the theorem's familywise $\delta=0.05$ guarantee.
 The exploratory five-threshold receipt has digest
 \texttt{5147a0a73ce888265351baa8ee638b75}\allowbreak
 \texttt{1fc4837b60f96335d1fccd14442bdeea}. It reuses the audited channels and exact
-population risks, holds the privacy threshold at .35, and changes only the
+population risks, holds the source-leakage threshold at .35, and changes only the
 utility decision threshold. Because four thresholds were selected after
 outcomes, the sensitivity table in the main paper is explicitly descriptive.
 All 20 method--size--threshold cells have zero false acceptance, and exact
@@ -67,11 +67,11 @@ retention is never lower than capacity transfer.\par
 \section{Transform-Exact Verification Matrix}
 
 The exact support implementation is checked in three independent ways. At zero
-radius, privacy and utility match a population evaluator that enumerates every
+radius, source leakage, and utility match a population evaluator that enumerates every
 transform extreme, attacker assignment, and residual simplex vertex. For
 binary fine alphabets, confidence-ball endpoint enumeration reproduces the
 support-function result. Finally, 100 randomized instances verify that the
-exact envelope never exceeds the capacity-transfer fallback. The optimizer is
+exact envelope never exceeds the capacity fallback. The optimizer is
 then checked against dense channel grids and an independent post-solve
 certificate recomputation. Eleven focused transform-exact tests pass as part of
 a repository-wide run of 158 tests plus 14 subtests.

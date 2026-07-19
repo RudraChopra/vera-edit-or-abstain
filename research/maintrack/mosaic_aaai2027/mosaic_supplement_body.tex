@@ -74,8 +74,24 @@ pointwise over the complete channel space, so it remains true after any
 measurable same-table selection of $M$.
 \end{proof}
 
-For positive stratum count $n_{s,y}$ and fixed allocation $\delta_{s,y}$, the
-confirmation uses
+\begin{corollary}[Unconditional and label-aware attackers]
+Let $X=(Y,C)$ and let $r_s$ denote the natural, unbalanced law
+$P(X\mid S=s)$. Define the lifted channel
+$\widetilde M((y,c),z)=M(c,z)$. Applying the theorem to
+$(r_1,\ldots,r_G)$ certifies every source attacker observing $Z$ without
+conditioning on $Y$. Replacing the output by $(Y,Z)$ and using
+$\widetilde M((y,c),(y',z))=\mathbf1\{y=y'\}M(c,z)$ certifies the stronger
+attacker that also observes the true label.
+\end{corollary}
+
+The corollary requires confidence regions for the natural joint laws and is
+not implied by source--label-balanced sampling. The primary experiments instead
+register the maximum label-conditional advantage, which removes the prevalence
+channel by design.
+
+For fixed-size i.i.d. or exchangeable categorical observations within each
+stratum, positive count $n_{s,y}$, and an outcome-independent allocation
+$\delta_{s,y}$, the confirmation uses
 \begin{equation}
  \epsilon_{s,y}=\min\left\{2,
  \sqrt{\frac{2\log((2^K-2)/\delta_{s,y})}{n_{s,y}}}\right\}.
@@ -83,6 +99,124 @@ confirmation uses
 \end{equation}
 A union bound gives $\Pr(\mathcal E)\geq1-\sum_{s,y}\delta_{s,y}$. A zero-count
 stratum receives radius two and is covered deterministically.
+
+\section{Data-Certified Shift Bridge}
+
+For each source and task label, let
+$\mathcal C_{s,y}$ be the reference confidence set above and let
+\begin{equation}
+ \mathcal D_{s,y}=\{q\in\Delta_K:
+ \|q-\widehat q_{s,y}\|_1\leq\xi_{s,y}\}
+ \label{supp:eq:bridge-set}
+\end{equation}
+be the confidence set from a labeled target bridge fold. Define
+\begin{align}
+ h_{s,y}(w)&=\max_{p\in\mathcal C_{s,y}}p^\top w,
+ &\underline q_{s,y}(z)&=\min_{q\in\mathcal D_{s,y}}q(z).
+ \label{supp:eq:bridge-support}
+\end{align}
+The coordinate lower bound is
+$-\Phi(\widehat q_{s,y},\xi_{s,y};-e_z)$ and is therefore exact. For fixed
+$y$, solve
+\begin{equation}
+ \begin{aligned}
+ \widehat t_y=\max_{t,W}\quad&t\\
+ \mathrm{s.t.}\quad&W_{cz}\geq0,\quad
+ \sum_zW_{cz}=t &&\forall c,\\
+ &h_{s,y}(W_{:z})\leq\underline q_{s,y}(z)
+ &&\forall s,z,\\
+ &0\leq t\leq1.
+ \end{aligned}
+ \label{supp:eq:bridge-lp}
+\end{equation}
+This is an LP. In particular, each support constraint is represented by
+variables $(\nu_{s,z},\lambda_{s,z},\theta_{s,z})$ satisfying
+\begin{align}
+ \nu_{s,z}+\theta_{s,z,c}&\geq W_{cz} &&\forall c,\nonumber\\
+ -\lambda_{s,z}\leq\theta_{s,z,c}&\leq\lambda_{s,z} &&\forall c,\nonumber\\
+ \nu_{s,z}+\widehat p_{s,y}^{\top}\theta_{s,z}
+ +\epsilon_{s,y}\lambda_{s,z}
+ &\leq\underline q_{s,y}(z),\quad \lambda_{s,z}\geq0.
+ \label{supp:eq:bridge-dual}
+\end{align}
+Strong duality for Eq.~\eqref{supp:eq:support} makes this epigraph exact.
+
+\begin{theorem}[Adaptive finite-sample bridge membership]
+Suppose the reference and bridge sets jointly cover all $p_{s,y}$ and
+$q_{s,y}$. Any feasible $(t,W)$ in Eq.~\eqref{supp:eq:bridge-lp}, including its
+same-table maximizer, satisfies, for $t>0$,
+\begin{equation}
+ q_{s,y}=t p_{s,y}T+(1-t)r_{s,y},\qquad T=W/t,
+ \label{supp:eq:bridge-membership}
+\end{equation}
+for one source-blind stochastic $T$ and source-specific probability vectors
+$r_{s,y}$.
+\end{theorem}
+
+\begin{proof}
+Coverage and feasibility give, for every source and output coordinate,
+\begin{equation}
+ q_{s,y}(z)\geq\underline q_{s,y}(z)
+ \geq h_{s,y}(W_{:z})\geq p_{s,y}^{\top}W_{:z}.
+\end{equation}
+Thus $d_{s,y}=q_{s,y}-p_{s,y}W$ is coordinatewise nonnegative. Since every row
+of $W$ sums to $t$, $\mathbf1^\top d_{s,y}=1-t$. If $t<1$, set
+$r_{s,y}=d_{s,y}/(1-t)$; if $t=1$, then $d_{s,y}=0$ and any residual law may be
+used. Also, $T=W/t$ is row-stochastic. Every implication above holds
+simultaneously for every feasible $(t,W)$ on one event, so choosing the
+maximizer from the same confidence tables costs no additional multiplicity.
+\end{proof}
+
+\begin{proposition}[Robust optimality of the bridge LP]
+Over the Cartesian product of all reference and bridge confidence sets,
+Eq.~\eqref{supp:eq:bridge-lp} returns the largest retained mass for which one
+fixed source-blind transform certifies Eq.~\eqref{supp:eq:bridge-membership}
+uniformly over every law in that product.
+\end{proposition}
+
+\begin{proof}
+For fixed $(t,T)$, the decomposition exists for a particular $(p,q)$ exactly
+when $q_{s,y}-tp_{s,y}T$ is coordinatewise nonnegative: its coordinates then
+sum to $1-t$ and can be normalized into a residual law. Requiring this for all
+$(p,q)$ in the product region is equivalent to
+\begin{equation}
+ \max_{p\in\mathcal C_{s,y}}t(pT)(z)
+ \leq\min_{q\in\mathcal D_{s,y}}q(z)\quad\forall s,z.
+\end{equation}
+The two extrema separate because the region is a Cartesian product.
+Substituting $W=tT$ gives exactly the constraints of
+Eq.~\eqref{supp:eq:bridge-lp}; Eq.~\eqref{supp:eq:bridge-dual} introduces no
+relaxation. Maximizing $t$ proves the claim.
+\end{proof}
+
+\begin{corollary}[End-to-end target-population certificate]
+Suppose $\widehat t_y>0$ for every required label. Insert the singleton
+transform $\{\widehat T_y\}$ and contamination
+$\widehat\eta_y=1-\widehat t_y$ from the bridge LP into the transform-exact
+within-label source-distinguishability and utility optimizer. On the same joint event, every
+same-table-selected release channel and decoder obeys its certified contracts
+on the bridge population. This remains simultaneous across task labels,
+registered utility thresholds, and finitely many released alphabet sizes when
+their underlying reference and bridge tables share the registered allocation.
+\end{corollary}
+
+\begin{proof}
+The bridge theorem establishes membership in the structured class used by the
+transform-exact source-distinguishability and utility theorems below. Those theorems are
+pointwise over every release channel and decoder on the same reference event.
+Intersecting with the bridge confidence event and substituting the selected
+singleton transform proves the result. Thresholds and alphabet sizes index
+decisions made inside that already covered collection; separately learned
+tokenizers or erasers still require familywise allocation across their
+distinct tables.
+\end{proof}
+
+If a required bridge stratum has count zero, its honest set
+$\mathcal D_{s,y}$ is the full simplex and every
+$\underline q_{s,y}(z)=0$. For any $t>0$, the probability vector $p_{s,y}T$
+has a positive coordinate, contradicting the corresponding bridge constraint.
+Hence $\widehat t_y=0$. This is the operational missing-source boundary used in
+the bridge confirmation.
 
 \section{Channel Capacity and Common-Shift Transfer}
 
@@ -245,7 +379,7 @@ Repeat the transform-exact proof for bounded loss $\ell_y$, without averaging
 over sources or maximizing an attacker assignment.
 \end{proof}
 
-The capacity-transfer fallback is
+The capacity fallback is
 \begin{corollary}[Adaptive shifted-utility fallback]
 On $\mathcal E$, every selected $(M,g)$ satisfies
 \begin{equation}
@@ -300,6 +434,83 @@ $M(c_1,\cdot)$. Total variation is therefore at least $1-e_0-e_1$, giving
 Thus a nontrivial task contract is incompatible with chance-level source
 capacity under unrestricted differential shift.
 
+\section{Repeated Queries and Side Information}
+
+\begin{proposition}[Persistent-query equivalence]
+Suppose the runtime samples one token $Z$ per immutable item and every later
+query returns that stored token. For any finite or countably infinite number of
+queries, the complete transcript has exactly the same source-inference Bayes
+accuracy as one observation of $Z$.
+\end{proposition}
+
+\begin{proof}
+Every persistent transcript has the form $(Z,Z,\ldots)$. The transcript is a
+deterministic function of $Z$, while $Z$ is recovered from its first
+coordinate. They therefore generate the same sigma-field. The classes of
+measurable source decisions based on either observation coincide, so their
+optimal balanced accuracies are equal.
+\end{proof}
+
+Fresh independent draws are a different mechanism. For a registered budget
+$r$, define the product channel
+\begin{equation}
+ M^{\otimes r}(c,z_{1:r})=\prod_{j=1}^{r}M(c,z_j).
+ \label{supp:eq:product-channel}
+\end{equation}
+
+\begin{proposition}[Exact bounded-query reduction]
+An attacker observing $r$ conditionally independent fresh releases sees
+exactly one output of $M^{\otimes r}$. Substituting this product channel into
+the adaptive, bridge, structured-shift, and capacity results gives an exact
+certificate for that query budget, without a union bound over queries.
+\end{proposition}
+
+\begin{proof}
+Conditioned on fine token $c$, the transcript probability mass function is the
+right-hand side of Eq.~\eqref{supp:eq:product-channel}. Every theorem depends
+on the release mechanism only through this conditional channel. Replacing the
+output alphabet $[L]$ by $[L]^r$ therefore reproduces the transcript experiment
+exactly. The alphabet has size $L^r$, which is a computational rather than a
+statistical restriction.
+\end{proof}
+
+\begin{proposition}[Unbounded fresh-query failure]
+If two rows $M(c,\cdot)$ and $M(c',\cdot)$ differ, then their $r$-fold product
+laws have total variation tending to one. Consequently the binary
+source-inference capacity of $M^{\otimes r}$ tends to one as $r\to\infty$.
+\end{proposition}
+
+\begin{proof}
+For distinct finite-alphabet laws $u$ and $v$, their Hellinger affinity
+$\alpha=\sum_z\sqrt{u(z)v(z)}$ is strictly below one. Product affinity equals
+$\alpha^r$, and
+$\operatorname{TV}(u^{\otimes r},v^{\otimes r})\geq1-\alpha^r\to1$.
+Concentrating two source laws on fine tokens $c$ and $c'$ makes binary balanced
+Bayes accuracy
+$(1+\operatorname{TV})/2\to1$. The capacity is at least this value and at most
+one.
+\end{proof}
+
+The registered attacker observes the persistent token, knows the complete
+mechanism, and has no additional item-level side information. If a variable
+$H$ is also public, the relevant experiment is $(Z,H)$, not $Z$; it must be
+included in the fine/output alphabet and certified jointly. In particular,
+original features, source-dependent metadata, mutable identifier behavior,
+timing, and private mechanism state are outside the theorem. A production
+runtime must durably bind each versioned item identifier to one immutable fine
+token and one sampled output; rebinding or silent rerandomization violates the
+registered mechanism.
+
+Persistence is an item-level statement, not a population-level composition
+theorem. Tokens from distinct items associated with one source form a joint
+experiment. Even when each item is persistent, independent observations from
+different items can increase source distinguishability, while correlations,
+adaptive mechanisms, stopping times, and observable query counts can change the
+joint law further. Such access requires a certificate for the complete
+multi-item transcript. The product-channel proposition applies only to repeated
+conditionally independent draws from one fixed fine token under one fixed
+channel and a noninformative registered query count.
+
 \section{Missing-Source Non-Identifiability}
 
 Fix two required sources and a released-token law $q_0M$ for source zero.
@@ -311,7 +522,8 @@ distribution is identical for every $q_1\in\Delta_K$. Define
 \end{equation}
 
 \begin{theorem}[Missing-source non-identifiability]
-Let a possibly randomized protocol observe no source-one rows and claim
+Fix $q_0$, $M$, and $\tau$ independently of the missing-source law and the
+audit randomness. Let a possibly randomized protocol observe no source-one rows and claim
 $A((q_0,q_1),M)\leq\tau$. If its false-certification probability is at most
 $\delta<1$ uniformly over every $q_1$, then for
 $\tau<A_{\rm miss}(q_0,M)$ it can issue that claim with probability at most
@@ -379,21 +591,50 @@ approximation if their maximum discrepancy exceeds $5\times10^{-3}$.
 
 \section{Optimization Certificate}
 
-For fixed decoder, each support-function dual, transformed score, and residual
-row maximum in Eqs.~\eqref{supp:eq:exactconfidence} and
-\eqref{supp:eq:exactutilityconfidence} has a linear epigraph in the channel and
-auxiliary variables. Enforcing all transform extremes and attacker assignments
-therefore gives one linear program per decoder; enumerating all $J^L$ decoders
-returns the global transform-exact finite-alphabet optimum. The
-capacity-transfer fallback represents each minimum as a binary disjunction and
-solves a mixed-integer linear program per decoder.
+For completeness, fix a decoder $g$ and write
+$b_{y,T,a,s}$ for the support-function epigraph with score
+$Tv_{M,a,s}$, $c_{a,s}\geq v_{M,a,s}(c)$ for every $c$, and
+$d_{s,y,T}$ for the utility support epigraph with score $TM\ell_y$. Each $b$
+and $d$ is represented by the dual in Eq.~\eqref{supp:eq:supportdual}; its score
+is linear in $M$. The transform-exact LP is
+\begin{align}
+ \min_{M,\zeta}\quad&\zeta
+ \label{supp:eq:exact-lp}\\
+ \mathrm{s.t.}\quad&M_{cz}\geq0,\quad\sum_zM_{cz}=1 &&\forall c,\nonumber\\
+ &\frac1G\sum_s\left[(1-\eta_y)b_{y,T,a,s}
+ +\eta_yc_{a,s}\right]\leq\tau^{\rm BA}_{P,y}
+ &&\forall y,T,a,\nonumber\\
+ &(1-\eta_y)d_{s,y,T}+\eta_yu_y^{\max}\leq\zeta
+ &&\forall s,y,T,\nonumber
+\end{align}
+where $u_y^{\max}\geq(M\ell_y)(c)$ for every $c$ and
+$\tau^{\rm BA}_{P,y}=G^{-1}+(1-G^{-1})\tau_{P,y}$. All epigraph variables are
+minimized indirectly or upper-constrained, so an optimum can take each at its
+smallest valid value. Enforcing every finite transform extreme and all $G^L$
+attacker assignments exactly implements the maxima in the certificates.
+Enumerating all $J^L$ decoders and taking the smallest objective returns the
+global transform-exact finite-alphabet solution.
+
+For the capacity fallback, each expression
+$\min\{\operatorname{Cap}_G(M),\overline A_y+\rho_y\}$ and
+$\min\{U_y,\overline E_{s,y}+\kappa_y\}$ is represented by a binary disjunction.
+With branch bit $b$, the first branch constraint is relaxed by $2b$ and the
+second by $2(1-b)$; all constituent quantities lie in ranges for which two is a
+valid big-$M$ constant. The implementation analogously disjoins the utility
+branches, then enumerates decoders. Thus the fallback is a finite MILP, not a
+local nonlinear search.
 
 Globality is asserted only when every decoder and attacker assignment is
-enumerated, the exact LP reports an optimal status or the fallback reports
-numerical zero MIP gap, the primal residual is at most $2\times10^{-7}$, and an
-independent implementation reproduces every certificate and the objective at
-the same tolerance. A timeout, nonzero gap, oversized assignment family, or
-post-hoc mismatch cannot return a deployment.
+enumerated, the exact LP reports an optimal status or the fallback MIP gap is
+at most $10^{-10}$, and the solver feasibility tolerance is $10^{-9}$.
+The original bridge run preserves raw solver outputs, but claim-grade decisions
+come from a pre-inspection strict replay triggered by an adversarial proof audit.
+That replay contracts retained mass using a $10^{-9}$ outward guard until every
+independently recomputed membership slack is nonnegative, optimizes source
+constraints with a $10^{-6}$ inward margin, adds $10^{-9}$ to recomputed risk
+bounds, and compares those outward values with the original thresholds using
+zero decision tolerance. A timeout, negative membership slack, oversized
+assignment family, or post-solve mismatch can only abstain.
 
 The exact audit checks zero-radius agreement with a separate population
 evaluator, binary confidence-ball endpoints, 100 randomized dominance
@@ -409,7 +650,7 @@ For label zero the source laws are $(0.80,0.15,0.05)$ and
 $(0.65,0.30,0.05)$; for label one they are $(0.05,0.20,0.75)$ and
 $(0.05,0.35,0.60)$. The common-transform set is the convex hull of identity and
 a nearest-neighbor smoothing channel. The hard safety scenario uses
-$\eta=0.20$, privacy-advantage threshold $0.30$, and worst conditional error
+$\eta=0.20$, source-advantage threshold $0.30$, and worst conditional error
 threshold $0.40$. The retention scenario uses $\eta=0.10$, thresholds $0.35$
 and $0.45$. Every source--label stratum contains exactly $n$ independent draws.
 
@@ -420,6 +661,43 @@ and pass criteria, hashes the theorem and implementation, and was pushed before
 the confirmation began. Pilot seeds zero through 199 are excluded. The oldest
 aggregate-only pilot is retained as design history but cannot support a
 channel-level claim; every later pilot row is replayed by the exact evaluator.
+
+The data-certified bridge confirmation was locked separately after excluding
+all real-study seeds through 1199. It runs seeds 1200--1219 on Waterbirds,
+Camelyon17-WILDS, CivilComments-WILDS, BiasBios-Clinical, and GaitPDB. Within
+each represented target source--label stratum, a deterministic seeded split
+assigns two thirds to the bridge and one third to an untouched diagnostic set.
+The frontier has identity plus twelve settings from pinned official INLP,
+LEACE, R-LACE, TaCo, and MANCE++ repositories, with no proxy implementations.
+Each of 13 candidates has one reference and one bridge table; familywise
+$\delta=0.05$ is divided across these 26 tables, and each table's allocation is
+divided across its four source--label strata. Thus each multinomial radius uses
+$\delta/(13\cdot2\cdot4)$. The same event covers all bridge transforms,
+two- and four-token release optimizers, and utility thresholds
+$\{0.30,0.35,0.40,0.45,0.49\}$.
+
+The primary rule uses $L=2$, maximum source advantage $0.35$, and maximum
+worst-stratum error $0.40$. It selects the feasible candidate with minimum
+bridge-certified error and a lexical tie break. The minimum-error candidate is
+then reoptimized at $L=4$ without inspecting diagnostics. All 100 dataset--seed
+jobs, 1,300 candidate rows, and 1,400 global optima are required; the stopping
+rule forbids outcome-based replacement or omission. Confirmatory gates require
+zero optimization errors, zero primary diagnostic contract violations, at
+least 16 estimable primary deployments, BiasBios deployment on at least 16/20
+seeds at threshold $0.40$ and 14/20 at $0.35$, pointwise noninferiority of the
+globally optimized $L=4$ objective, and zero retained mass for every Camelyon
+job with missing bridge support. The claim is restricted to populations
+exchangeable with the bridge fold and is not a clinical-safety claim.
+
+After 27 of 100 raw receipts had been written, but before any receipt contents
+or outcomes were inspected, an adversarial proof audit identified that the
+original tolerance-based acceptance rule did not justify an exact software
+contract. A hash-locked numerical amendment therefore supersedes every raw
+bridge decision with the strict replay above. The amendment records the timing,
+the information seen (filenames, counts, timestamps, and process status only),
+all code hashes, the zero-tolerance decision rule, and the requirement to replay
+all 1,400 optima regardless of outcome. Both raw and strict receipts remain
+public so this correction cannot be hidden.
 
 \input{mosaic_supplement_results}
 

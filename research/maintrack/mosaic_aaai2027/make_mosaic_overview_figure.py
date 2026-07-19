@@ -74,39 +74,32 @@ def panel_title(ax: plt.Axes, number: str, title: str, subtitle: str) -> None:
 
 
 def fine_table_panel(ax: plt.Axes) -> None:
-    panel_title(ax, "1", "Certify fine-token laws", "One simultaneous event over\nsource-label strata")
-    values = np.asarray([[0.80, 0.15, 0.05], [0.65, 0.30, 0.05]])
-    x0, y0 = 0.09, 0.20
-    width, height = 0.76, 0.47
-    cell_w, cell_h = width / 3.0, height / 2.0
-    for row in range(2):
-        for column in range(3):
-            alpha = 0.15 + 0.75 * values[row, column]
-            color = BLUE if row == 0 else ORANGE
-            ax.add_patch(
-                Rectangle(
-                    (x0 + column * cell_w, y0 + (1 - row) * cell_h),
-                    cell_w,
-                    cell_h,
-                    facecolor=mpl.colors.to_rgba(color, alpha),
-                    edgecolor="white",
-                    linewidth=1.1,
+    panel_title(ax, "1", "Certify reference + bridge", "Simultaneous fine-token laws for\nreference $p$ and target $q$")
+    tables = (
+        (np.asarray([[0.80, 0.15, 0.05], [0.65, 0.30, 0.05]]), 0.07, r"$\widehat p$"),
+        (np.asarray([[0.69, 0.24, 0.07], [0.57, 0.34, 0.09]]), 0.57, r"$\widehat q$"),
+    )
+    for values, x0, label in tables:
+        y0, width, height = 0.30, 0.36, 0.34
+        cell_w, cell_h = width / 3.0, height / 2.0
+        for row in range(2):
+            for column in range(3):
+                alpha = 0.15 + 0.75 * values[row, column]
+                color = BLUE if row == 0 else ORANGE
+                ax.add_patch(
+                    Rectangle(
+                        (x0 + column * cell_w, y0 + (1 - row) * cell_h),
+                        cell_w,
+                        cell_h,
+                        facecolor=mpl.colors.to_rgba(color, alpha),
+                        edgecolor="white",
+                        linewidth=0.9,
+                    )
                 )
-            )
-            ax.text(
-                x0 + (column + 0.5) * cell_w,
-                y0 + (1.5 - row) * cell_h,
-                f"{values[row, column]:.2f}",
-                ha="center",
-                va="center",
-                fontsize=6.3,
-                color=INK,
-            )
-    ax.text(x0 - 0.025, y0 + 1.5 * cell_h, "$S=0$", ha="right", va="center", fontsize=6.2, color=BLUE)
-    ax.text(x0 - 0.025, y0 + 0.5 * cell_h, "$S=1$", ha="right", va="center", fontsize=6.2, color=ORANGE)
-    for column in range(3):
-        ax.text(x0 + (column + 0.5) * cell_w, y0 - 0.04, f"$c_{column+1}$", ha="center", va="top", fontsize=6.2)
-    ax.text(0.47, 0.045, r"$\Pr(\mathcal{E})\geq1-\delta$", ha="center", va="center", fontsize=7.0, color=INK)
+        ax.add_patch(Rectangle((x0, y0), width, height, facecolor="none", edgecolor=BORDER, linewidth=0.7))
+        ax.text(x0 + width / 2.0, y0 - 0.045, label, ha="center", va="top", fontsize=7.0, color=INK)
+    ax.text(0.50, 0.15, r"$\Pr(\mathcal{E}_p\cap\mathcal{E}_q)\geq1-\delta$", ha="center", va="center", fontsize=6.7, color=INK)
+    ax.text(0.50, 0.055, "missing target stratum forces abstention", ha="center", va="center", fontsize=5.9, color=VERMILION, fontweight="bold")
 
 
 def continuum_panel(ax: plt.Axes) -> None:
@@ -137,36 +130,41 @@ def continuum_panel(ax: plt.Axes) -> None:
 
 
 def shift_panel(ax: plt.Axes) -> None:
-    panel_title(ax, "3", "Shift occurs before release", "Common drift plus bounded\nsource-specific contamination")
-    ax.text(0.08, 0.59, "$p_s$", fontsize=8.0, color=INK, ha="center", va="center")
-    ax.add_patch(Rectangle((0.20, 0.49), 0.17, 0.20, facecolor=LIGHT, edgecolor=BLUE, linewidth=1.0))
-    ax.text(0.285, 0.59, "common\n$T_y$", fontsize=6.4, color=BLUE, ha="center", va="center")
-    arrow(ax, 0.11, 0.20, 0.59)
-    arrow(ax, 0.37, 0.45, 0.59)
-    ax.text(0.50, 0.59, r"$\oplus$", fontsize=9.0, color=MUTED, ha="center", va="center")
-    ax.add_patch(Rectangle((0.57, 0.49), 0.17, 0.20, facecolor=LIGHT, edgecolor=VERMILION, linewidth=1.0))
-    ax.text(0.655, 0.59, "bounded\n" + r"$\eta_y r_s$", fontsize=6.2, color=VERMILION, ha="center", va="center")
-    arrow(ax, 0.74, 0.82, 0.59)
-    ax.add_patch(Rectangle((0.82, 0.49), 0.13, 0.20, facecolor=LIGHT, edgecolor=GREEN, linewidth=1.0))
-    ax.text(0.885, 0.59, "$M$", fontsize=8.0, color=GREEN, ha="center", va="center", fontweight="bold")
-    ax.text(0.50, 0.34, r"$q_s=t_y p_sT_y+(1-t_y)r_s$", ha="center", va="center", fontsize=7.0, color=INK)
-    ax.text(0.50, 0.20, r"same $T_y,t_y$ across sources; $t_y\geq1-\eta_y$", ha="center", va="center", fontsize=6.0, color=MUTED)
-    ax.text(0.50, 0.08, "nothing bypasses the software channel", ha="center", va="center", fontsize=6.2, color=GREEN, fontweight="bold")
+    panel_title(ax, "3", "Certify target membership", "A robust bridge LP learns one\ncommon transform and retained mass")
+    ax.add_patch(Rectangle((0.07, 0.50), 0.19, 0.18, facecolor=LIGHT, edgecolor=BLUE, linewidth=1.0))
+    ax.text(0.165, 0.59, r"$\mathcal{C}_p$", fontsize=7.2, color=BLUE, ha="center", va="center")
+    ax.add_patch(Rectangle((0.07, 0.27), 0.19, 0.18, facecolor=LIGHT, edgecolor=ORANGE, linewidth=1.0))
+    ax.text(0.165, 0.36, r"$\mathcal{D}_q$", fontsize=7.2, color=ORANGE, ha="center", va="center")
+    arrow(ax, 0.26, 0.38, 0.59)
+    arrow(ax, 0.26, 0.38, 0.36)
+    ax.add_patch(Rectangle((0.38, 0.35), 0.25, 0.23, facecolor=LIGHT, edgecolor=INK, linewidth=1.0))
+    ax.text(0.505, 0.50, "ROBUST\nBRIDGE LP", fontsize=6.4, color=INK, ha="center", va="center", fontweight="bold")
+    arrow(ax, 0.63, 0.74, 0.47)
+    ax.add_patch(Rectangle((0.74, 0.35), 0.20, 0.23, facecolor=mpl.colors.to_rgba(GREEN, 0.10), edgecolor=GREEN, linewidth=1.0))
+    ax.text(0.84, 0.50, r"$\widehat T_y$" + "\n" + r"$\widehat\eta_y$", fontsize=7.0, color=GREEN, ha="center", va="center", fontweight="bold")
+    ax.text(0.50, 0.19, r"$q_s=\widehat t_y p_s\widehat T_y+(1-\widehat t_y)r_s$", ha="center", va="center", fontsize=6.4, color=INK)
+    ax.text(0.50, 0.07, "certify membership or abstain", ha="center", va="center", fontsize=6.2, color=GREEN, fontweight="bold")
 
 
 def decision_panel(ax: plt.Axes) -> None:
-    panel_title(ax, "4", "Release only with a certificate", "Exact Bayes attacker, worst-stratum\nutility, or abstain")
+    panel_title(
+        ax,
+        "4",
+        "Persist only if certified",
+        "Within-label Bayes source attacker plus the\nregistered task decoder",
+    )
     ax.add_patch(Rectangle((0.07, 0.42), 0.37, 0.24, facecolor=mpl.colors.to_rgba(GREEN, 0.10), edgecolor=GREEN, linewidth=1.1))
-    ax.text(0.255, 0.58, "PRIVACY", ha="center", va="center", fontsize=6.4, color=GREEN, fontweight="bold")
+    ax.text(0.255, 0.58, "SOURCE LEAKAGE", ha="center", va="center", fontsize=5.8, color=GREEN, fontweight="bold")
     ax.text(0.255, 0.48, r"$\overline{\mathrm{Adv}}\leq\tau_P$", ha="center", va="center", fontsize=7.0, color=INK)
     ax.add_patch(Rectangle((0.56, 0.42), 0.37, 0.24, facecolor=mpl.colors.to_rgba(BLUE, 0.10), edgecolor=BLUE, linewidth=1.1))
     ax.text(0.745, 0.58, "UTILITY", ha="center", va="center", fontsize=6.4, color=BLUE, fontweight="bold")
     ax.text(0.745, 0.48, r"$\overline{\mathrm{Err}}\leq\tau_U$", ha="center", va="center", fontsize=7.0, color=INK)
-    arrow(ax, 0.26, 0.45, 0.31)
-    arrow(ax, 0.74, 0.55, 0.31)
-    ax.add_patch(Rectangle((0.37, 0.20), 0.26, 0.18, facecolor=INK, edgecolor=INK, linewidth=1.0))
-    ax.text(0.50, 0.29, "DEPLOY", ha="center", va="center", fontsize=7.0, color="white", fontweight="bold")
-    ax.text(0.50, 0.08, "otherwise: ABSTAIN", ha="center", va="center", fontsize=6.5, color=VERMILION, fontweight="bold")
+    ax.add_patch(FancyArrowPatch((0.255, 0.42), (0.40, 0.38), arrowstyle="-|>", mutation_scale=9, linewidth=1.0, color=MUTED))
+    ax.add_patch(FancyArrowPatch((0.745, 0.42), (0.60, 0.38), arrowstyle="-|>", mutation_scale=9, linewidth=1.0, color=MUTED))
+    ax.add_patch(Rectangle((0.33, 0.20), 0.34, 0.18, facecolor=INK, edgecolor=INK, linewidth=1.0))
+    ax.text(0.50, 0.29, "PERSIST $Z$", ha="center", va="center", fontsize=6.4, color="white", fontweight="bold")
+    ax.text(0.50, 0.10, "same token on every later query", ha="center", va="center", fontsize=5.8, color=MUTED)
+    ax.text(0.50, 0.035, "otherwise: ABSTAIN", ha="center", va="center", fontsize=6.2, color=VERMILION, fontweight="bold")
 
 
 def main() -> None:
