@@ -1,0 +1,59 @@
+{
+  "candidate_family": {
+    "candidate_pairs": 500,
+    "channels": "fixed 5^3 binary-output stochastic grid",
+    "decoders": "all 2^2 binary decoders"
+  },
+  "claim_boundary": "This extension tests whether MOSAIC's reported retention advantage survives a matched confidence-region grid and a structure-aware Holm LTT baseline on untouched paired synthetic tables. It does not turn the FARE-style adaptation into an official FARE end-to-end experiment.",
+  "code_sha256": {
+    "research/mosaic/lock_mosaic_baseline_extension.py": "650cd18e365a13eecd7c28928181017969ed8bd9c24674929824729f00bc9eee",
+    "research/mosaic/mosaic_channel.py": "a69c82b9182be32d28d30e83795ac77c9512fa09f95f8bad7e1ed5732e60ecc4",
+    "research/mosaic/mosaic_envelope.py": "e45d2e0168321a5fa953fba0c980fbdd0418386463ed55127069943134f87540",
+    "research/mosaic/mosaic_exact.py": "da248f621a4d5155de9755f0c6ea1936e9acfbc18f624997f3df933aae7c542a",
+    "research/mosaic/mosaic_invariant.py": "25737e049e2bf329f1019b337c37fb84ca749730e27edf372ddc0ef4676e9826",
+    "research/mosaic/mosaic_optimizer.py": "6a7adddec0a95818b2854dafec52c5c15801e94401691880db0d17f66a73d4d9",
+    "research/mosaic/run_mosaic_baseline_extension.py": "6295509aa2550d94ebb74f693a7dc47d3b0b65f1af3c7be4be684c381b7a5028",
+    "research/mosaic/run_mosaic_synthetic_confirmation.py": "03b09811f1a1d5af928c8ff50538330e54a177cd020841a8f2665f4cd0578f2f",
+    "research/mosaic/run_mosaic_synthetic_pilot.py": "4538cdf6862c32f2e886ab6bae236b97b3d90fe918c86b67658949e555e45503",
+    "research/tests/test_mosaic_baseline_extension.py": "b8f1e46e695eaad97670244b7f7cbcefed90b64cd0660db6bf272cc17cd4788e"
+  },
+  "familywise_delta": 0.05,
+  "fare_scope": "The deterministic row tests FARE's restricted finite-encoder principle in this token/shift setting. It is not the official FARE fair-tree training pipeline, whose raw-input demographic-parity setting is not commensurate with this conditional shift witness.",
+  "locked_at": "2026-07-19T03:28:39.061087+00:00",
+  "methods": {
+    "fare_style_deterministic": "A matched restricted finite-encoder adaptation using all deterministic 3-to-2 maps and the same shift-aware certificate.",
+    "holm_ltt_grid": "Candidate-level composite Hoeffding p-values for the unsafe union null, followed by Holm step-down control across all 500 pairs.",
+    "mosaic_continuum": "The globally optimized stochastic continuum under one pre-channel multinomial confidence event.",
+    "table_region_grid": "The same simultaneous confidence event and structured-shift certificate, restricted to the fixed 500 channel-decoder pairs."
+  },
+  "original_synthetic_preregistration_sha256": "d6819cec1605db6dfeb5789c0f0f8d674ee135b51f1cd820aaff16df84b65cf2",
+  "pass_conditions": {
+    "comparison_gate": "None. Report every paired rate and interval regardless of ordering.",
+    "complete_rows": 8000,
+    "confidence_event_failures": 0,
+    "maximum_false_acceptance_rate": 0.05
+  },
+  "project": "MOSAIC paired structure-aware baseline extension",
+  "replicates_per_cell": 1000,
+  "repository_head_before_lock": "08c5dffda5c7b8cf1c97b523e0d30f57c050b626",
+  "scenarios": [
+    {
+      "contamination": 0.2,
+      "name": "hard_safety_boundary",
+      "sample_size_per_stratum": 125,
+      "source_advantage_threshold": 0.3,
+      "utility_threshold": 0.4
+    },
+    {
+      "contamination": 0.1,
+      "name": "retention_and_stochastic_value",
+      "sample_size_per_stratum": 250,
+      "source_advantage_threshold": 0.35,
+      "utility_threshold": 0.45
+    }
+  ],
+  "seed_base": 910000000,
+  "seed_exclusion": "All prior synthetic pilot, confirmation, transform-exact, and theory-alignment seeds are excluded.",
+  "status": "locked_before_outcomes",
+  "stopping_rule": "Run all 2,000 tables and all four methods. No seed replacement, candidate change, threshold change, or selective omission."
+}
