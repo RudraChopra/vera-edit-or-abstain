@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import json
 from collections import Counter
+from itertools import product
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Any
@@ -35,6 +36,7 @@ UTILITY_THRESHOLDS = (0.30, 0.35, 0.40, 0.45, 0.49)
 PRIMARY_UTILITY_THRESHOLD = 0.40
 PRIVACY_THRESHOLD = 0.35
 TOLERANCE = 2e-7
+TIE_TOLERANCE = 1e-12
 
 
 def threshold_key(value: float) -> str:
@@ -70,6 +72,37 @@ def population_metrics(
     return max(privacy), max(utility)
 
 
+def canonical_worst_assignment(
+    reference: np.ndarray,
+    transform: np.ndarray,
+    channel: np.ndarray,
+    contamination: float,
+    expected_balanced_accuracy: float,
+) -> tuple[int, ...]:
+    """Resolve exact-attacker ties independently of floating-point loop order."""
+
+    source_count = reference.shape[0]
+    released_count = channel.shape[1]
+    common_released = reference @ transform @ channel
+    matches: list[tuple[int, ...]] = []
+    for assignment in product(range(source_count), repeat=released_count):
+        assignment_array = np.asarray(assignment, dtype=np.int64)
+        common_score = 0.0
+        residual_score = 0.0
+        for source in range(source_count):
+            correct_outputs = (assignment_array == source).astype(np.float64)
+            common_score += float(common_released[source] @ correct_outputs)
+            residual_score += float(np.max(channel @ correct_outputs))
+        balanced_accuracy = (
+            (1.0 - contamination) * common_score + contamination * residual_score
+        ) / source_count
+        if abs(balanced_accuracy - expected_balanced_accuracy) <= TIE_TOLERANCE:
+            matches.append(tuple(int(value) for value in assignment))
+    if not matches:
+        raise RuntimeError("could not recover a maximizing attacker assignment")
+    return min(matches)
+
+
 def worst_admitted_law(
     reference: np.ndarray,
     bridge_membership: dict[str, Any],
@@ -90,7 +123,16 @@ def worst_admitted_law(
             (transform,),
             contamination=contamination,
         )
-        assignment = np.asarray(exact.maximizing_assignment, dtype=np.int64)
+        assignment = np.asarray(
+            canonical_worst_assignment(
+                reference[label],
+                transform,
+                direct_channel,
+                contamination,
+                exact.balanced_accuracy,
+            ),
+            dtype=np.int64,
+        )
         residuals = np.zeros((sources, tokens), dtype=np.float64)
         for source in range(sources):
             correct_outputs = (assignment == source).astype(np.float64)
@@ -109,6 +151,7 @@ def worst_admitted_law(
                 "retained_mass": retained,
                 "contamination": contamination,
                 "maximizing_assignment": assignment.tolist(),
+                "tie_rule": "lexicographically_first_within_1e-12_of_exact_maximum",
                 "residual_laws": residuals.tolist(),
                 "exact_direct_worst_normalized_advantage": exact.normalized_advantage,
             }

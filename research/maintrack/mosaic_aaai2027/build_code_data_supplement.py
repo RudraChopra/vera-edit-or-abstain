@@ -46,7 +46,7 @@ REAL_PREP_SOURCES = (
 )
 
 FROZEN_ARTIFACTS = {
-    "admitted_shift_stress.json": "research/artifacts/mosaic_admitted_shift_stress_v1.json",
+    "admitted_shift_stress.json": "research/artifacts/mosaic_admitted_shift_stress_v2.json",
     "release_utility_table.json": "research/artifacts/mosaic_release_utility_table_v1.json",
     "scaling_study.json": "research/artifacts/mosaic_scaling_study_v1.json",
     "acs_ca_tx.json": "research/artifacts/mosaic_acs_bridge_strict_v3_summary.json",

@@ -1,25 +1,21 @@
 \begin{abstract}
-Concept-erasure evaluations rarely certify the public interface that remains
-after an edit. We present MOSAIC, a software-only release method that either
-selects a task-specific stochastic channel and decoder or abstains. One
-simultaneous confidence region over pre-release token laws covers every channel
-optimized from that table. Labeled target data certify a common-transform plus
-residual shift class; the unexplained mass is charged exactly to the release
-channel. We prove finite-sample Bayes-attacker and worst-stratum utility
-envelopes, global finite-alphabet optimization, and abstention boundaries for
-unrestricted shift and missing target support. In 1,000 locked safety trials,
-naive continuum selection releases contract-violating channels on 42.1\% of
-tables; MOSAIC records none. Across 100 registered real-data jobs, MOSAIC
-releases 20 interfaces with 0/20 diagnostic violations, while a direct
-target-table certificate releases 36 with 0/36. In a post-hoc stress test under
-bridge-admitted laws away from those sampled target tables, the direct rule
-violates 16/36
-contracts (44.4\%); MOSAIC releases the 20 safe cases and abstains on all 16.
-A fresh 60-job natural geographic confirmation releases 15 four-token
-interfaces across four target states and two tasks, with 0/15 held-out and
-0/1,500 operational violations.
-A 75-job scaling study reaches $K=64$ tokens and $G=4$ sources with subsecond
-median optimization in every cell.
+Concept-erasure evaluations usually assess an edited representation, not the
+public interface that remains after editing. We introduce MOSAIC, a
+software-only procedure that releases a task-specific stochastic token channel
+and decoder only when both source leakage and worst-stratum task error are
+certified; otherwise it abstains. Its key move is to place one simultaneous
+confidence event on pre-release token laws, before channel optimization. That
+event covers every channel searched on the table. Labeled target data then
+either certify a common-transform-plus-residual shift class or force
+abstention. We prove finite-sample Bayes-attacker and utility envelopes,
+global finite-alphabet optimization, and the missing-support boundary. In
+1,000 locked safety trials, naive continuum selection releases
+contract-violating channels on 42.1\% of tables; MOSAIC records none. On 100
+registered real-data jobs, a direct target-table rule releases 36 interfaces.
+Under post-hoc bridge-admitted stress laws, 16 of those 36 violate their
+contract; MOSAIC retains the 20 safe releases and abstains on the other 16. A
+fresh 60-job geographic confirmation releases 15 interfaces across four target
+states and two tasks with 0/15 held-out and 0/1,500 operational violations.
 \end{abstract}
 
 \section{Introduction}
@@ -75,54 +71,27 @@ population oracle.
 
 \section{Related Work}
 
-\paragraph{Erasure and universal representations.}
 Concept-erasure methods remove source-associated directions, covariance, or
 components \citep{ravfogel2020null,ravfogel2022linear,belrose2023leace,
-jourdan2023taco,avitan2026mance}; interventions and leakage audits explain why a
-weak probe is not a universal certificate
-\citep{elazar2021amnesic,chowdhury2025limits}. FARE certifies every downstream
-classifier for restricted finite encoders, while Fair Normalizing Flows bounds
-strong adversaries through tractable densities
-\citep{jovanovic2023fare,balunovic2022fnf}. MOSAIC instead places its confidence
-event on pre-release token laws, uniformly covering a stochastic post-channel
-optimized on that table and transferred through an explicit shift class.
+jourdan2023taco,avitan2026mance}, while leakage audits show why a weak probe is
+not a universal guarantee \citep{pimentel2020probing,elazar2021amnesic,
+chowdhury2025limits}. FARE certifies every downstream classifier for restricted
+finite encoders, and Fair Normalizing Flows bounds strong adversaries through
+tractable densities \citep{jovanovic2023fare,balunovic2022fnf}. Stochastic
+preprocessing and fair representations motivate randomized release channels
+\citep{calmon2017preprocessing,makhdoumi2014privacyfunnel,agarwal2024randomization}.
 
-\paragraph{Randomized mappings and risk control.}
-Probabilistic preprocessing and fair representation already show the value of
-stochastic channels \citep{calmon2017preprocessing,makhdoumi2014privacyfunnel,
-agarwal2024randomization}. Risk-controlling prediction, Learn-Then-Test (LTT),
-conformal risk control, and Pareto testing certify registered decisions and may
-abstain \citep{bates2021rcps,angelopoulos2025ltt,angelopoulos2024crc,
-laufer2023pareto}. Robust variants address specified covariate or uncertainty
-shifts \citep{tibshirani2019covariate,cauchois2024robust}. These are the closest
-decision-layer precedents. MOSAIC instead covers an uncountable channel family
-through one confidence region for its sufficient table, without testing
-channels separately.
-
-\paragraph{Shift, comparison of experiments, and abstention.}
-Dobrushin coefficients quantify channel contraction
-\citep{diaz2018contractivity}; fairness and domain-adaptation impossibility
-results show why unrestricted shift precludes universal guarantees
-\citep{lechner2021impossibility,agarwal2025robustfair,bendavid2010impossibility}.
-WILDS and subgroup-robustness benchmarks document the practical problem
-\citep{koh2021wilds,sagawa2020groupdro,zhou2021spurious,sohoni2020subclass}.
-Bounded-shift fairness transfer and distributional fairness certification give
-complementary predictor-level robust bounds
-\citep{chen2022fairness,kang2022certifying}.
-Common source-blind transformation is Blackwell garbling, while Le Cam
-deficiency handles approximate experiment comparison
-\citep{blackwell1953experiments,lecam1964sufficiency,torgersen1991experiments};
-arbitrary residuals follow contamination neighborhoods
-\citep{huber1964robust}. Testable learning asks when target data can validate a
-shift assumption; recent work studies rejection granularity and tests
-registered noise models
-\citep{klivans2024testable,chandrasekaran2025learning,patel2026equivalence,
-goel2026noise}.
-MOSAIC contributes a
-finite-confidence garbling-and-contamination bridge that composes with the
-same-table optimizer. Its contract-driven abstention is distinct from
-predictive-confidence rejection \citep{elyaniv2010foundations,
-geifman2017selective}.
+LTT, conformal risk control, and Pareto testing certify registered decisions and
+may abstain \citep{bates2021rcps,angelopoulos2025ltt,angelopoulos2024crc,
+laufer2023pareto}; robust validation addresses declared uncertainty sets
+\citep{tibshirani2019covariate,cauchois2024robust}. MOSAIC differs by certifying
+the categorical experiment before channel search, covering an uncountable
+channel family without separate tests. Its source-blind transform is a
+Blackwell garbling and its residual is a contamination neighborhood
+\citep{blackwell1953experiments,lecam1964sufficiency,torgersen1991experiments,
+huber1964robust}. The bridge makes that shift model testable from target data,
+whereas unrestricted shift is impossible to certify
+\citep{bendavid2010impossibility,klivans2024testable,chandrasekaran2025learning}.
 
 \begin{table*}[t]
 \centering
@@ -163,6 +132,29 @@ with normalized advantage
 $\operatorname{Adv}_G(A)=(GA-1)/(G-1)$. This is chance-normalized and ranges
 from zero to one. The registered source contract is
 $\max_y\operatorname{Adv}_G(A_y)\leq\tau_P$.
+
+\paragraph{Running example.}
+Take two sources, two task labels, three fine tokens, and two released tokens.
+For label $y=0$, let $p_{0,0}=(.7,.2,.1)$ and $p_{1,0}=(.4,.5,.1)$, and consider
+\[
+M=\begin{pmatrix}.9&.1\\ .5&.5\\ .1&.9\end{pmatrix},\qquad
+g(0)=0,\quad g(1)=1.
+\]
+The released source laws are $(.74,.26)$ and $(.62,.38)$, so the Bayes source
+attacker has accuracy $.56$ and normalized advantage $.12$ for this label. The
+worst source-conditional task error is $.38$. MOSAIC asks whether these two
+numbers remain below their registered thresholds for every law supported by the
+reference and bridge confidence regions, not only for these empirical rows.
+
+\begin{center}
+\scriptsize
+\begin{tabular}{@{}clcl@{}}
+$C$ & fine token & $Z$ & public token \\
+$M$ & channel & $g$ & task decoder \\
+$p_{s,y}$ & reference law & $q_{s,y}$ & target law \\
+$t_y,T_y,r_{s,y}$ & bridge terms & $\tau_P,\tau_U$ & contracts
+\end{tabular}
+\end{center}
 
 The main contract concerns source inference within a task label. A joint-law
 extension covers natural-mixture source inference: define $X=(Y,C)$, estimate
@@ -227,7 +219,9 @@ The proof writes the Bayes attacker as a maximum over deterministic assignments.
 For a fixed assignment the source confidence sets separate, giving one support
 function per source; all maxima are finite and commute. The implication is
 pointwise over the complete stochastic-channel space, which is why adaptive
-selection needs no channel-count correction.
+selection needs no channel-count correction. In the running example, the same
+confidence event covers the displayed $M$ and every alternative three-by-two
+channel considered by the optimizer.
 
 \section{Data-Certified Shift Membership}
 
@@ -278,6 +272,8 @@ $\widehat\eta_y=1-\widehat t_y$ can be inserted into the certificates below on
 the same event. If a required bridge source--label stratum is absent, its
 confidence set is the full simplex, every coordinate lower bound is zero, and
 Eq.~\eqref{eq:bridge} forces $\widehat t=0$.
+For the practitioner, the bridge either supplies a measured residual budget for
+the target population or stops the release before a channel is deployed.
 
 \section{Certification under Pre-Release Shift}
 
@@ -360,49 +356,28 @@ It is the exact supremum over the same confidence and shift sets. Thus $M$,
 $g$, within-label source distinguishability, and worst-stratum utility can all
 be selected on one event.
 
-\begin{theorem}[No free lunch]
-$\operatorname{Cap}_G(M)=1/G$ if and only if all rows of $M$ are identical.
-For two sources, if two fine tokens carry different task labels and incur
-row-wise decoder errors at most $e_0$ and $e_1$, then the normalized capacity is
-at least $1-e_0-e_1$.
-\end{theorem}
+\begin{center}
+\fbox{\parbox{0.93\columnwidth}{\small\textbf{Guarantee at a glance.}
+With probability at least $1-\delta$ over the registered reference and bridge
+samples, every released $(M,g)$ meets both contracts for every target law in
+the learned bridge class. If the bridge has zero retained mass, a required
+stratum is missing, or no channel satisfies both bounds, MOSAIC abstains.}}
+\end{center}
 
-Consequently, unrestricted source-specific shift permits exact erasure only by
-making the public token independent of the fine token. A bounded $\eta_y$ is
-therefore an identifiable assumption of the deployment contract, not a hidden
-technical convenience.
-
-A constant-row channel is also the input-independent, $\varepsilon=0$ endpoint
-of local differential privacy; randomized response is its nonconstant noisy
-relative \citep{warner1965randomized}. MOSAIC differs by optimizing a
-task-specific channel under an explicit source-inference contract.
-
-There is a separate identifiability boundary for external auditing. Suppose a
-required source is absent and let
-$A_{\rm miss}(q_0,M)=\sup_{q_1\in\Delta_K}A((q_0,q_1),M)$.
-
-\begin{theorem}[Missing-source audit]
-For a release channel $M$ fixed independently of the missing-source law and
-audit randomness, any protocol with false-certification probability at most
-$\delta$ uniformly over the unobserved law $q_1$ can claim
-$A((q_0,q_1),M)\leq\tau<A_{\rm miss}(q_0,M)$ with probability at most
-$\delta$.
-\end{theorem}
-
-The observed audit distribution is identical for every missing law; choosing a
-simplex maximizer makes every stronger claim a false certification. The same
-argument makes the utility bound for a missing source--label stratum at least
-$\max_c(M\ell_y)(c)$. Missing required strata are therefore unestimable, not
-evidence of safety; the supplement gives the full proof.
+Unrestricted source-specific shift can be erased only by a fine-token-independent
+channel, so a bounded residual is a deployment assumption rather than a hidden
+technical convenience. Likewise, a missing required source stratum is
+unestimable rather than evidence of safety; both boundary proofs are in the
+supplement. A constant-row channel is the $\varepsilon=0$ endpoint of local
+differential privacy \citep{warner1965randomized}.
 
 \section{Global Optimization and Abstention}
 
 For fixed decoder, support functions, transformed scores, and residual maxima
-have linear epigraphs. Enforcing all transform extremes and $G^L$ attacker
-assignments gives one LP in the $KL$ channel entries; enumerating $J^L$
-decoders yields the global finite-alphabet optimum. The capacity fallback uses
-one mixed-integer LP per decoder. Acceptance requires solver optimality, valid
-primal residuals, and agreement with separately recomputed certificates.
+have linear epigraphs. Enforcing every transform extreme and attacker assignment
+gives one LP in the $KL$ channel entries; enumerating $J^L$ decoders yields the
+global finite-alphabet optimum. Acceptance requires solver optimality, valid
+primal residuals, and independent certificate recomputation.
 
 \paragraph{Release protocol.}
 Fix tokenizers, alphabets, thresholds, split roles, and confidence allocation
@@ -414,12 +389,9 @@ Zero retained mass, missing support, no feasible row, or a failed numerical
 check returns \textsc{abstain}; otherwise only $(M,g)$ and $Z$ are released.
 
 With $R=\max_y|\mathcal V_y|$, the direct formulation is polynomial in $K$ for
-fixed $(G,J,L,R)$ but exponential in $L$ through attacker and decoder
-enumeration. Our constraint-generation path solves a restricted LP, finds the
-strongest omitted attacker exactly, and adds it until none violates the
-contract; finite termination follows from the $G^L$ assignment family.
-Endpoint enumeration, dense channel grids, and independent certificate
-recomputation check the encoding; the supplement reports scaling.
+fixed $(G,J,L,R)$ and exponential only in the released alphabet $L$. Constraint
+generation adds the strongest omitted attacker until none violates the contract;
+the supplement gives the proof and scaling details.
 
 \section{Hash-Locked Evaluation}
 
@@ -520,35 +492,12 @@ the token when the contract passes and otherwise returns \textsc{abstain}.
 The released interface is compact and task-specific, which makes its complete
 source-inference experiment enumerable and auditable.
 
-\section{Guarantee Semantics}
-
-The probability $1-\delta$ is over simultaneous reference and bridge regions.
-On that event, the conclusion is uniform over optimized channels and every law
-in the certified shift class. The frozen tokenizer table covers the channel
-continuum and every decoder without a channel-count correction. Separately
-learned tokenizers or erasers receive their own registered familywise
-allocation: MOSAIC pays for statistical objects, not every point searched
-inside one covered object.
-
-\paragraph{Threat surface.}
-The attacker knows $M$ and may apply any rule to $Z$. The source-blind software
-channel is the only public token interface and samples once per
-immutable item; persistent repeats reveal no more than one $Z$. If $r$ fresh
-draws are permitted, certification must use product channel $M^{\otimes r}$;
-unbounded draws can reveal its row. Transcripts over distinct items require a
-joint-law certificate. Releasing $C$, original features, source-dependent
-metadata, mutable identifiers, or another side channel is outside scope.
-
-\section{Deployment Envelope}
-
-MOSAIC operates with conditionally i.i.d. reference and target bridge samples
-that include source and task labels for every required stratum. Source labels
-are audit data and belong in the associated governance plan. The method
-releases a compact, task-specific interface; larger alphabets can use
-structured confidence regions or column generation. The certificate covers
-within-label source inference from one persistent released token. Multi-item
-transcripts, prevalence-sensitive analyses, and additional public interfaces
-use the corresponding joint construction.
+\paragraph{Scope.}
+The probability $1-\delta$ is over the registered reference and bridge samples.
+The attacker knows $M$ and may use any rule on one persistent token $Z$.
+Additional public interfaces, repeated stochastic draws, or multi-item
+transcripts require the corresponding joint construction. Source and task labels
+are audit data for every required stratum; a missing stratum triggers abstention.
 
 \section{Conclusion}
 

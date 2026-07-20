@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from analyze_mosaic_admitted_shift_stress import (
+    canonical_worst_assignment,
     population_metrics,
     probability_tensor,
     worst_admitted_law,
@@ -55,3 +56,17 @@ def test_worst_admitted_law_matches_exact_direct_privacy():
     assert max(
         row["exact_direct_worst_normalized_advantage"] for row in details
     ) == pytest.approx(0.4)
+
+
+def test_canonical_worst_assignment_breaks_ties_lexicographically():
+    reference = np.asarray([[0.5, 0.5], [0.5, 0.5]])
+    transform = np.eye(2)
+    channel = np.asarray([[0.5, 0.5], [0.5, 0.5]])
+    assignment = canonical_worst_assignment(
+        reference,
+        transform,
+        channel,
+        contamination=0.2,
+        expected_balanced_accuracy=0.5,
+    )
+    assert assignment == (0, 0)
