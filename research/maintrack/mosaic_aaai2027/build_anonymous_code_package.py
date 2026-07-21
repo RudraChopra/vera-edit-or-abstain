@@ -37,7 +37,9 @@ LOCKED_REPLAYS = (
 )
 
 SOURCE_PATTERNS = (
+    "pyproject.toml",
     "research/mosaic/*.py",
+    "research/mosaic/mosaic_certified_release/*.py",
     "research/mosaic/*.md",
     "research/mosaic/*.json",
     "research/mosaic/*.sha256",
@@ -108,6 +110,19 @@ Python 3.12.13 was used with the versions pinned in
 official eraser adapters. The claim-grade runs used an Apple M4
 CPU, 16 GB unified memory, and macOS 26.2 arm64. Synthetic runs and all replay
 programs are CPU-only.
+
+## Installable release API
+
+Install the packaged certificate from the archive root:
+
+```bash
+python -m pip install .
+```
+
+The public path is `Mosaic().fit(...)`, `certify(...)`, then
+`release_or_abstain(...)`. A certified runtime binds each immutable item to one
+persistent sampled token; an unsupported or infeasible certificate returns an
+explicit abstention.
 
 ## Fast verification
 
@@ -391,7 +406,13 @@ def build(output: Path) -> dict[str, object]:
         for source in collect_files():
             destination = root / source.relative_to(REPOSITORY)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, destination)
+            if source == REPOSITORY / "pyproject.toml":
+                text = source.read_text(encoding="utf-8").replace(
+                    "Rudra " + "Chopra", "Anonymous Authors"
+                )
+                destination.write_text(text, encoding="utf-8")
+            else:
+                shutil.copy2(source, destination)
         write_locked_replays(root)
         (root / "README.md").write_text(ANONYMOUS_README, encoding="utf-8")
         (root / "LICENSE.txt").write_text(ANONYMOUS_LICENSE, encoding="utf-8")
