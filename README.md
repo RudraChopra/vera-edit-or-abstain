@@ -86,6 +86,32 @@ paper's structured shift class.
 - Exploratory real exact analysis: `research/artifacts/mosaic_real_transform_exact_exploratory_v1.json`
 - Exploratory real exact audit: `research/artifacts/mosaic_real_transform_exact_exploratory_audit_v1.json`
 
+## Installable API
+
+Install the certificate and use the same bridge and global optimizer exercised
+by the research pipeline:
+
+```bash
+python -m pip install .
+```
+
+The public deployment path has three steps. Construction, reference, and bridge
+rows must be disjoint; protected source labels are certification inputs only.
+
+```python
+from mosaic_certified_release import Mosaic
+
+model = Mosaic().fit(construction_x, construction_y)
+certificate = model.certify(reference_x, reference_y, reference_source,
+                            bridge_x, bridge_y, bridge_source)
+response = model.release_or_abstain(item_id, release_x)
+```
+
+`response` is either a persistent released token with its task prediction or
+an explicit `ABSTAIN`. Repeating an item identifier returns the same sampled
+token, preventing repeated-query composition from silently changing the
+registered release mechanism.
+
 ## Verification
 
 Install the lightweight confirmation environment and run the complete tests:
