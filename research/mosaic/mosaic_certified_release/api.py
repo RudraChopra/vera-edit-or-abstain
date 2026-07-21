@@ -96,13 +96,15 @@ class Mosaic:
     def fit(self, features: np.ndarray, targets: np.ndarray) -> "Mosaic":
         """Fit the task score and registered finite tokenizer."""
 
-        self.tokenizer_ = fit_score_tokenizer(
+        self._clear_certificate()
+        self.tokenizer_ = None
+        tokenizer = fit_score_tokenizer(
             features,
             targets,
             token_count=self.config.fine_token_count,
             seed=self.config.seed,
         )
-        self._clear_certificate()
+        self.tokenizer_ = tokenizer
         return self
 
     def certify(
@@ -118,11 +120,11 @@ class Mosaic:
 
         if self.tokenizer_ is None:
             raise RuntimeError("fit must be called before certify")
+        self._clear_certificate()
         reference_targets = _binary_vector(reference_targets, "reference targets")
         reference_sources = _binary_vector(reference_sources, "reference sources")
         bridge_targets = _binary_vector(bridge_targets, "bridge targets")
         bridge_sources = _binary_vector(bridge_sources, "bridge sources")
-        self._clear_certificate()
         table_delta = self.config.familywise_delta / 2.0
         reference = build_token_table(
             self.tokenizer_.encode(reference_features),
@@ -149,13 +151,14 @@ class Mosaic:
                 bridge_counts,
             )
 
-        bridge_certificate = certify_bridge_membership(
-            reference.probabilities,
-            reference_l1_radii=reference.l1_radii,
-            bridge_empirical_distributions=bridge.probabilities,
-            bridge_l1_radii=bridge.l1_radii,
-        )
+        bridge_certificate: BridgeMembershipCertificate | None = None
         try:
+            bridge_certificate = certify_bridge_membership(
+                reference.probabilities,
+                reference_l1_radii=reference.l1_radii,
+                bridge_empirical_distributions=bridge.probabilities,
+                bridge_l1_radii=bridge.l1_radii,
+            )
             solution = optimize_transform_exact_channel(
                 reference.probabilities,
                 l1_radii=reference.l1_radii,
@@ -175,7 +178,11 @@ class Mosaic:
                 str(error).split(":", 1)[0],
                 reference_counts,
                 bridge_counts,
-                retained_masses=bridge_certificate.retained_masses,
+                retained_masses=(
+                    bridge_certificate.retained_masses
+                    if bridge_certificate is not None
+                    else ()
+                ),
             )
 
         source_bounds = tuple(

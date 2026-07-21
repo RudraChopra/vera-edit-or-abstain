@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+import pytest
 
 from mosaic_certified_release import Mosaic, MosaicConfig
 
@@ -73,3 +74,32 @@ def test_missing_source_label_support_abstains() -> None:
     assert certificate.reason == "MISSING_SOURCE_LABEL_SUPPORT"
     assert release.status == "ABSTAIN"
     assert release.reason == certificate.reason
+
+
+def test_invalid_recertification_revokes_prior_release() -> None:
+    construction, construction_y, _ = _balanced_rows(500, 8)
+    reference, reference_y, reference_s = _balanced_rows(800, 9)
+    bridge, bridge_y, bridge_s = _balanced_rows(800, 10)
+    model = Mosaic().fit(construction, construction_y)
+    assert model.certify(
+        reference,
+        reference_y,
+        reference_s,
+        bridge,
+        bridge_y,
+        bridge_s,
+    ).certified
+
+    bad_source = reference_s.astype(np.int16)
+    bad_source[0] = 2
+    with pytest.raises(ValueError, match="binary vector"):
+        model.certify(
+            reference,
+            reference_y,
+            bad_source,
+            bridge,
+            bridge_y,
+            bridge_s,
+        )
+
+    assert model.release_or_abstain("revoked", reference[0]).status == "ABSTAIN"
