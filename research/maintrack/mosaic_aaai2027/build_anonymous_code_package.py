@@ -17,7 +17,7 @@ HERE = Path(__file__).resolve().parent
 REPOSITORY = HERE.parents[2]
 DEFAULT_OUTPUT = HERE / "mosaic_aaai2027_code_data_anonymous.zip"
 PACKAGE_ROOT = "mosaic_code_data_anonymous"
-FIXED_ZIP_TIME = (2026, 7, 18, 0, 0, 0)
+FIXED_ZIP_TIME = (2026, 7, 21, 0, 0, 0)
 
 LOCKED_REPLAYS = (
     {
@@ -197,6 +197,16 @@ PYTHONPATH=research/mosaic:research/scripts \
   python research/mosaic/run_mosaic_scaling_study.py
 PYTHONPATH=research/mosaic:research/scripts \
   python research/mosaic/audit_mosaic_acs_k8_high_support_v3.py
+```
+
+The registered Qwen pilot did not pass its fixed go rule. Recompute all six
+candidate decisions and verify the mandatory stop before temporal confirmation:
+
+```bash
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/audit_mosaic_qwen_pilot.py \
+  --report research/artifacts/mosaic_qwen_pilot_v1.json \
+  --output /tmp/mosaic_qwen_pilot_audit.json
 ```
 
 The external-shift evidence has four independent replay layers. The first

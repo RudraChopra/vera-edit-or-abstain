@@ -764,6 +764,25 @@ artifact and v2 is identified as post-audit corrective evidence.
 
 \input{mosaic_acs_natural_shift_supplement_results}
 
+\section{Registered Qwen Pilot Boundary}
+
+A prewritten unlocked pilot evaluated six Qwen2.5-1.5B-Instruct hidden-state
+interfaces on 12,264 CivilComments-WILDS examples. Integer dataset IDs divisible
+by four formed the pilot population; every later confirmation ID was excluded.
+The familywise $.05$ budget covered three fixed pooling rules, $K\in\{4,8\}$,
+and both reference and bridge tables. The go rule required complete strata,
+minimum retained mass at least $.50$, a nonconstant release, source advantage
+at most $.35$, and certified worst error at most $.49$.
+
+No candidate passed. The layer-14 and final-layer mean-pooled $K=4$ channels
+were nonconstant, with retained masses $.6154$ and $.6557$, but their certified
+worst errors were $.492292$ and $.490117$. Every $K=8$ candidate and the
+final-token $K=4$ candidate returned a constant release with error $.5$. An
+independent audit verifies all six candidates, all role--label--source counts,
+zero confirmation-ID overlap, every manifest hash, and the exact stopping rule.
+Consequently no temporal confirmation was registered and the main paper makes
+no LLM-interface claim.
+
 \section{Reproducibility Manifest}
 
 MOSAIC optimization, confirmations, and audits ran on an Apple M4 system with
@@ -782,18 +801,25 @@ human-subject data. Real-domain experiments, if included, retain dataset terms,
 official split definitions, preprocessing hashes, and method-specific code
 provenance in a separate manifest.
 
+The repository is also installable as \texttt{mosaic-certified-release}. Its
+public path is \texttt{fit}, \texttt{certify}, then
+\texttt{release\_or\_abstain}; the runtime persists one sampled token per item
+after certification and fails closed after missing support or invalid
+recertification. The anonymous archive contains the same package with sanitized
+authorship metadata and focused end-to-end tests.
+
 \begin{table}[t]
 \centering
 \scriptsize
 \setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{ll}
+\begin{tabular}{p{.54\columnwidth}p{.36\columnwidth}}
 \hline
 Artifact group & Checksum index \\
 \hline
-Main and supplement PDFs & V9 release SHA-256 manifest \\
+Main and supplement PDFs & V10 release SHA-256 manifest \\
 Locked protocols and reports & Anonymous code/data manifest \\
 Real compact receipts and audits & Anonymous code/data manifest \\
-Post-review stress, scaling, and natural shift & V9 release SHA-256 manifest \\
+Post-review stress, scaling, natural shift, and Qwen pilot & V10 release SHA-256 manifest \\
 \hline
 \end{tabular}
 \caption{Single-entry checksum map. Full digests are stored once in the two

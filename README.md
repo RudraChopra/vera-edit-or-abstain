@@ -58,7 +58,7 @@ combination and the transform-exact certificate.
   unsupported and utility-limited cases are reported as abstentions or
   unestimable, not safe. An independent replay of 650 global optima has zero
   mismatch, and all ten preregistered real-feature gates pass.
-- The repository-wide test run passes 217 tests plus 14 subtests.
+- The repository-wide test run passes 255 tests plus 14 subtests.
 
 These empirical statements are scoped to their locked studies. Favorable
 benchmark behavior does not prove that a deployment population belongs to the
@@ -114,6 +114,17 @@ response = model.release_or_abstain(item_id, release_x)
 an explicit `ABSTAIN`. Repeating an item identifier returns the same sampled
 token, preventing repeated-query composition from silently changing the
 registered release mechanism.
+
+## Registered LLM Extension
+
+A prewritten six-candidate pilot tested Qwen2.5-1.5B-Instruct hidden-state
+interfaces on disjoint CivilComments IDs. No candidate met the fixed go rule,
+so no temporal confirmation was registered and no LLM claim was added to the
+main paper. The two nonconstant K=4 candidates had certified worst errors
+0.492292 and 0.490117 against a required maximum of 0.49. The complete report
+and its independent stopping-rule audit are retained in
+`research/artifacts/mosaic_qwen_pilot_v1.json` and
+`research/artifacts/mosaic_qwen_pilot_audit_v1.json`.
 
 ## Verification
 
