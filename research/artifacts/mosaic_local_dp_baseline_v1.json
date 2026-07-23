@@ -1,0 +1,1529 @@
+{
+  "claim_boundary": "Randomized response is epsilon-local-DP with respect to the four-token input and therefore controls every downstream source attacker without a shift model. MOSAIC enforces the narrower source-inference contract over its learned bridge class. The comparison matches output size and attacker-advantage threshold, but the guarantees are intentionally not identical.",
+  "lock_sha256": "a165dea0e550fa783865dc02f29e978631967035804856d07dfd6c45eec50053",
+  "name": "MOSAIC matched local-DP baseline v1",
+  "protocol": {
+    "comparison": "MOSAIC and randomized response use the same frozen reference multinomials, confidence radii, bridge transforms, contamination budgets, binary output alphabet, and task-error contract",
+    "decoder_search": "enumerate all 16 deterministic four-token-to-binary task maps, then apply the fixed randomized-response channel and select the map with minimum exact bridge-class worst-stratum error",
+    "domains": [
+      "BiasBios-Clinical",
+      "ACS-geographic"
+    ],
+    "fine_token_count": 4,
+    "included_jobs": "every frozen primary MOSAIC deployment in the 20-job BiasBios study and 60-job ACS study",
+    "local_dp_epsilon": 0.7308875085427926,
+    "randomized_response_keep_probability": 0.675,
+    "released_token_count": 2,
+    "source_advantage_threshold": 0.35,
+    "utility_threshold": 0.4
+  },
+  "rows": [
+    {
+      "candidate": "INLP::rank=4",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1200.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1200.json"
+      ],
+      "job": "BiasBios-Clinical__seed1200",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07037784175473494,
+          0.07136027949449208
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.42359264247549633
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.26029440780720303,
+      "seed": 1200
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1201.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1201.json"
+      ],
+      "job": "BiasBios-Clinical__seed1201",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.06757784173483072,
+          0.08518528925372415
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4401301465997641
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.2824261580011871,
+      "seed": 1201
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1202.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1202.json"
+      ],
+      "job": "BiasBios-Clinical__seed1202",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.08017784148872531,
+          0.06901430164754352
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4167321538137748
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.25241631867205927,
+      "seed": 1202
+    },
+    {
+      "candidate": "INLP::rank=4",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1203.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1203.json"
+      ],
+      "job": "BiasBios-Clinical__seed1203",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07545284158803733,
+          0.07451027915499453
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4277926421374235
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.2724139949326918,
+      "seed": 1203
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1204.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1204.json"
+      ],
+      "job": "BiasBios-Clinical__seed1204",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.08437784138724469,
+          0.0653045925415503
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4205647984536385
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.2618783256825781,
+      "seed": 1204
+    },
+    {
+      "candidate": "INLP::rank=8",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1205.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1205.json"
+      ],
+      "job": "BiasBios-Clinical__seed1205",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07142784168420224,
+          0.0783384497246069
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.43093172712558336
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.27019398229269664,
+      "seed": 1205
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1206.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1206.json"
+      ],
+      "job": "BiasBios-Clinical__seed1206",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07842784163784944,
+          0.07312955642032803
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4339273139031638
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.27469625489662025,
+      "seed": 1206
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1207.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1207.json"
+      ],
+      "job": "BiasBios-Clinical__seed1207",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07937072341909768,
+          0.057738893915719736
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.42159444873041074
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.25886742901790694,
+      "seed": 1207
+    },
+    {
+      "candidate": "INLP::rank=8",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1208.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1208.json"
+      ],
+      "job": "BiasBios-Clinical__seed1208",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07422784164136975,
+          0.07688764719307617
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.43178132566137895
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.27165578432510534,
+      "seed": 1208
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1209.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1209.json"
+      ],
+      "job": "BiasBios-Clinical__seed1209",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07937056820623178,
+          0.07267854526944362
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4241642750965824
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.26719638026085335,
+      "seed": 1209
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1210.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1210.json"
+      ],
+      "job": "BiasBios-Clinical__seed1210",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07737784156618499,
+          0.04983533256692585
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.417117695511309
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.24851526709515503,
+      "seed": 1210
+    },
+    {
+      "candidate": "INLP::rank=8",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1211.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1211.json"
+      ],
+      "job": "BiasBios-Clinical__seed1211",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07779704753929662,
+          0.06387407004523893
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.41494953766363235
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.24608829368949653,
+      "seed": 1211
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1212.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1212.json"
+      ],
+      "job": "BiasBios-Clinical__seed1212",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.08287060858173656,
+          0.058971810574505845
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.428423406834501
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.27211654595623436,
+      "seed": 1212
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1213.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1213.json"
+      ],
+      "job": "BiasBios-Clinical__seed1213",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.06985284172360084,
+          0.05584760423671531
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.43403630332521226
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.26302216074526896,
+      "seed": 1213
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1214.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1214.json"
+      ],
+      "job": "BiasBios-Clinical__seed1214",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.08322052870289864,
+          0.06826158737204135
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4166182966052452
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.25668404176509546,
+      "seed": 1214
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1215.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1215.json"
+      ],
+      "job": "BiasBios-Clinical__seed1215",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.0852528419691354,
+          0.06663527745228803
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4325176404122776
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.2823514798568555,
+      "seed": 1215
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1216.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1216.json"
+      ],
+      "job": "BiasBios-Clinical__seed1216",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07825284181646719,
+          0.0640254627118555
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4180877336762213
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.25065346421831713,
+      "seed": 1216
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1217.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1217.json"
+      ],
+      "job": "BiasBios-Clinical__seed1217",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.08122784151811224,
+          0.0786312065117083
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4287156057961322
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.27740316454016894,
+      "seed": 1217
+    },
+    {
+      "candidate": "INLP::rank=4",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1218.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1218.json"
+      ],
+      "job": "BiasBios-Clinical__seed1218",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.0766778416329632,
+          0.06576027896189052
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4213176419338746
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.2592411557757133,
+      "seed": 1218
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "BiasBios-Clinical",
+      "inputs": [
+        "research/artifacts/mosaic_bridge_strict_v2_receipts_v1/BiasBios-Clinical__seed1219.json",
+        "research/artifacts/mosaic_bridge_confirmation_receipts_v1/BiasBios-Clinical__seed1219.json"
+      ],
+      "job": "BiasBios-Clinical__seed1219",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.07499548851224391,
+          0.05562858053339914
+        ],
+        "task_map": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4162517924168745
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.2509491605471224,
+      "seed": 1219
+    },
+    {
+      "candidate": "INLP::rank=8",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-FL__seed1400.json"
+      ],
+      "job": "ACS-employment-CA-FL__seed1400",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.05283382474492049,
+          0.05750047186424179
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.46540025661499784
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.37149464456278936,
+      "seed": 1400
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-FL__seed1402.json"
+      ],
+      "job": "ACS-employment-CA-FL__seed1402",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.05365085017592053,
+          0.059192178728651346
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.44475028954673
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.33298668373412976,
+      "seed": 1402
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-FL__seed1403.json"
+      ],
+      "job": "ACS-employment-CA-FL__seed1403",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.053883920258622986,
+          0.05995052045138105
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4444586297170787
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.32945016695824425,
+      "seed": 1403
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-FL__seed1404.json"
+      ],
+      "job": "ACS-employment-CA-FL__seed1404",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.062461111688489446,
+          0.06175885200633946
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.44241696237924355
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.3224200379373088,
+      "seed": 1404
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-IL__seed1402.json"
+      ],
+      "job": "ACS-employment-CA-IL__seed1402",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.08314457527614616,
+          0.05942560545221598
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4381587002807098
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.32162025259290744,
+      "seed": 1402
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-IL__seed1404.json"
+      ],
+      "job": "ACS-employment-CA-IL__seed1404",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.08006960773868643,
+          0.05732550824180804
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.441016953582316
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.32889064945829893,
+      "seed": 1404
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-NY__seed1400.json"
+      ],
+      "job": "ACS-employment-CA-NY__seed1400",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.05680121369065172,
+          0.05662550394932464
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4481335883045034
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.3384370424454633,
+      "seed": 1400
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-NY__seed1401.json"
+      ],
+      "job": "ACS-employment-CA-NY__seed1401",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.048983845658242764,
+          0.0517838592982649
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4368752651706489
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.3160095146239512,
+      "seed": 1401
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-NY__seed1403.json"
+      ],
+      "job": "ACS-employment-CA-NY__seed1403",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.056688993118283015,
+          0.057617226749894446
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.43903616689356595
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.32301581327473905,
+      "seed": 1403
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-WA__seed1400.json"
+      ],
+      "job": "ACS-employment-CA-WA__seed1400",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.05656730040660074,
+          0.061233815256005464
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.4397336541010261
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.32634185225344137,
+      "seed": 1400
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-WA__seed1401.json"
+      ],
+      "job": "ACS-employment-CA-WA__seed1401",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.060417510145303055,
+          0.052600490337543215
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.44136709169073063
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.3165947653019657,
+      "seed": 1401
+    },
+    {
+      "candidate": "MANCE++::epsilon=0.05,steps=3",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-WA__seed1402.json"
+      ],
+      "job": "ACS-employment-CA-WA__seed1402",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.06549213658496034,
+          0.05400089056236501
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.44130858989019023
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.32777633580039406,
+      "seed": 1402
+    },
+    {
+      "candidate": "LEACE::closed_form",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-employment-CA-WA__seed1403.json"
+      ],
+      "job": "ACS-employment-CA-WA__seed1403",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.0635093207775872,
+          0.05400062502179348
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.43320038320239207
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.3069041356593429,
+      "seed": 1403
+    },
+    {
+      "candidate": "INLP::rank=4",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-income-CA-NY__seed1400.json"
+      ],
+      "job": "ACS-income-CA-NY__seed1400",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.09682252641622213,
+          0.07343639138440494
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.49174043163141096
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.39203699498463074,
+      "seed": 1400
+    },
+    {
+      "candidate": "R-LACE::rank=4",
+      "domain": "ACS-geographic",
+      "inputs": [
+        "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-income-CA-NY__seed1402.json"
+      ],
+      "job": "ACS-income-CA-NY__seed1402",
+      "local_dp": {
+        "decision": "abstain",
+        "release_channel": [
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.675,
+            0.32499999999999996
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ],
+          [
+            0.32499999999999996,
+            0.675
+          ]
+        ],
+        "source_advantage_upper": [
+          0.09610934520439063,
+          0.07063178113000745
+        ],
+        "task_map": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "worst_conditional_error_upper": 0.5015338119548726
+      },
+      "mosaic_certified_worst_conditional_error_upper": 0.3940052156133913,
+      "seed": 1402
+    }
+  ],
+  "status": "complete_locked_local_dp_baseline",
+  "summary": {
+    "domains": [
+      "ACS-geographic",
+      "BiasBios-Clinical"
+    ],
+    "jobs": 35,
+    "local_dp_deployments": 0,
+    "local_dp_epsilon": 0.7308875085427926,
+    "local_dp_strictly_lower_error_jobs": 0,
+    "maximum_local_dp_minus_mosaic_error": 0.1710141425799433,
+    "median_local_dp_minus_mosaic_error": 0.1553786472047317,
+    "minimum_local_dp_minus_mosaic_error": 0.09390561205220849,
+    "mosaic_deployments": 35,
+    "mosaic_strictly_lower_error_jobs": 35,
+    "ties": 0
+  }
+}
