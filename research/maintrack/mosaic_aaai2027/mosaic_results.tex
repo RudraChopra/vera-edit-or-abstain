@@ -1,112 +1,181 @@
-\section{Results: Safety, Retention, and Scope}
+\section{Audited Results}
 
-\subsection{Safety: Does Certification Block Invalid Releases?}
-
-Figure~\ref{fig:confirmation} gives the primary synthetic result. Naive
-same-table optimization releases a population-violating channel on 421/1,000
-tables at the safety boundary. MOSAIC releases none of those channels. Across
-8,000 MOSAIC certification tables, every accepted release satisfies the exact
-population contract.
+The preregistered synthetic gates pass. Figure~\ref{fig:confirmation} reports every
+implementable rule in the primary cells; ``capacity fallback'' is MOSAIC's generic
+capacity certificate. Independent replay recomputes all 64,000 method receipts,
+128,000 population risks, decisions, and aggregate intervals with zero
+mismatch.
 
 \begin{figure*}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/figure2_mosaic_confirmation.pdf}
   \caption{Hash-locked confirmation with 1,000 independent certification
-  tables per cell. Error bars are exact 95\% Clopper--Pearson intervals.
-  (a) Naive same-table selection falsely accepts 42.1\% of boundary tables;
-  MOSAIC records no false acceptance. (b) In the retention cell, MOSAIC's
-  capacity fallback releases 56.3\%, versus 2.5\% for held-out certification,
-  3.3\% for finite-family LTT, and 0\% for deterministic release.
-  (c) Release frequency follows the preregistered sample-size curve with
-  0.20 percentage-point mean absolute error.}
+  tables per cell.  Error bars are exact 95\% Clopper--Pearson intervals.
+  (a) At the safety boundary, plug-in continuum selection falsely accepts
+  42.1\% of tables; MOSAIC abstains with no false acceptance. Ignoring shift is
+  worse. (b) In the retention cell, the capacity fallback safely deploys on 56.3\%,
+  versus 2.5\% for held-out certification, 3.3\% for finite LTT, and 0\% for
+  deterministic MOSAIC. (c) Deployment follows the preregistered theory curve
+  with 0.20 percentage-point mean absolute error. Exact 95\%
+  Clopper--Pearson intervals are shown.}
   \label{fig:confirmation}
 \end{figure*}
 
-The primary five-benchmark study shows the same pattern across progressively
-weaker release rules. At $\tau_U=.40$, strict MOSAIC releases 20/100 jobs with
-0/20 held-out violations. Removing confidence regions but retaining the fitted
-bridge releases 47 jobs and violates 7/47 estimable diagnostics. Ignoring the
-target-membership gate releases 80 jobs and violates 18/60 estimable
-diagnostics, while also releasing 20 Camelyon jobs whose required source
-stratum is absent. Unconditional deployment violates 38/80 estimable jobs.
-Thus each removed safeguard changes an observed decision: intervals prevent
-plug-in errors, the bridge gate rejects unsupported populations, and abstention
-prevents contract failures.
+The paired safety difference is 42.1 points (95\% bootstrap interval
+$[39.0,45.2]$), with 421 plug-in-only violations and no reverse discordance.
+Across 8,000 capacity-fallback certification tables, no accepted release violates the
+exact population contract. In the retention cell, capacity-fallback safe deployment
+exceeds held-out, finite-LTT, and deterministic rates by 53.8, 53.0, and 56.3
+points. No deterministic channel is feasible. These finite-run facts align
+with the $1-\delta$ guarantee.
 
-The bridge-membership study asks a different safety question: does the target
-population belong to the declared shift class? A valid common transform is
-accepted on 0\%, 31\%, 100\%, and 100\% of tables as labeled target support
-increases through 500, 1,000, 2,000, and 5,000 observations per stratum. Two
-registered violations, one source-specific transform and one excess
-contamination law, are rejected on every table. These are deliberately clear
-violations; local power immediately outside the bridge boundary is not measured
-by this experiment.
+A separately locked 5,000-table refinement evaluates exact shift geometry on
+the same tables. At $n=125$, transform-exact certification safely deploys on
+53.0\% versus 0.3\% for fallback; at $n=250$, the rates are 99.9\% and 57.8\%.
+The exact objective is no larger on all 5,000 pairs, as theory requires, and all
+10,000 method-cell decisions have zero false acceptances. Full cell tables,
+threshold sensitivity, amendment history, and audits are in the supplement.
 
-\subsection{Retention: What Does the Guarantee Cost?}
+\paragraph{Matched finite-family baselines.}
+A separately locked replay places four rules on the same 1,000 tables in each
+primary scenario. In the retention cell, continuum MOSAIC certifies 579/1,000
+deployments (57.9\%, exact 95\% interval $[54.77,60.98]$), versus 283/1,000
+(28.3\%, $[25.53,31.20]$) for Holm LTT over all 500 fixed
+channel--decoder pairs. MOSAIC alone deploys on 312 paired tables, LTT alone on
+16, and both on 267, a 29.6-point paired difference. The exact McNemar value
+is $2.28\times10^{-72}$; it is reported as a descriptive paired statistic.
+The confidence-region grid and matched deterministic restricted-encoder
+adaptation both abstain throughout this cell. All four rules have zero observed
+false acceptance. We do not label the deterministic row as FARE: official FARE
+trains a fair decision tree for demographic parity on its own raw-input
+protocol, whereas this study asks about within-label source inference under a
+pre-release geographic-shift contract. The row isolates the shared restricted-
+encoder idea without presenting a non-commensurate end-to-end comparison.
 
-Safety is useful only if the method can still release. In the synthetic
-retention cell, continuum MOSAIC releases 579/1,000 tables, compared with
-283/1,000 for Holm LTT over the same 500 fixed channel--decoder pairs.
-Transform-exact certification further improves retention by using the learned
-shift geometry: at $n=125$ it releases 53.0\% versus 0.3\% for the generic
-capacity fallback, and at $n=250$ the rates are 99.9\% and 57.8\%. Every
-accepted channel in these comparisons satisfies the population contract.
+\paragraph{Bridge validity and power.}
+Across a separate 12,000-table locked stress study, a correctly specified
+common transform is accepted on 0\%, 31\%, 100\%, and 100\% of tables as the
+bridge stratum size rises through 500, 1,000, 2,000, and 5,000. Underdeclared
+contamination has population retained mass $.775<.80$; a source-specific
+transform has minimum retained mass $.50$. Both violating populations are
+rejected on every table at every sample size. Independent replay finds no
+failure on the joint confidence event and no invalid false acceptance. The
+study establishes power against both registered bridge violations and shows the
+acceptance transition as bridge support grows.
 
-Real-data retention is more concentrated. All 20 primary releases come from
-BiasBios-Clinical, where median certified retained mass is $.797$; the other
-four benchmarks abstain because of missing support or an infeasible joint
-source--utility contract. One released rank-four INLP interface maps four fine
-tokens to two persistent public tokens. Its certified source-advantage and
-worst-stratum error bounds are $.204$ and $.261$, versus untouched diagnostic
-values $.052$ and $.184$. The gap between certified and diagnostic values is
-the finite-sample and shift margin paid for the guarantee.
+\paragraph{Real data-certified bridge.}
+At the primary $\tau_U=.40$ error contract, equivalently a $.60$
+worst-stratum accuracy floor, strict MOSAIC deploys on 20/100 jobs
+(20.0\%, exact 95\% interval $[12.67,29.18]$), all externally estimable, with
+0/20 observed violations (one-sided 95\% upper bound 13.91\%). The selected
+official edits comprise six INLP, five LEACE, and nine MANCE++ candidates.
+Capacity transfer deploys none. The bridge plug-in deploys 47 and violates
+7/47 estimable diagnostics (14.9\%); validation-only selection deploys 80,
+including 20 unestimable Camelyon jobs, and violates 18/60 estimable
+diagnostics (30.0\%). Unconditional deployment violates 38/80 estimable jobs
+(47.5\%) and also releases all 20 unestimable jobs. MOSAIC retains 20 safe
+deployments at every stronger threshold $.30$--$.45$ and adds three safe
+Waterbirds deployments at $.49$; the supplement enumerates every threshold.
+These untouched diagnostics show the practical effect of each selection rule
+alongside the finite-sample bridge guarantee.
+
+The primary releases concentrate on BiasBios-Clinical, where the bridge has
+strong support and certified median retained mass is $.797$. The other four
+benchmarks map the operational boundary of the method: missing source support
+produces a required abstention, while insufficient joint privacy--utility
+feasibility produces a contract-based abstention. Waterbirds illustrates the
+difference between an observed diagnostic and a certificate: its bridge plug-in
+releases all 20 jobs, whereas the strict procedure declines to release because
+the joint contract is not certified. The 100 jobs are repeated partitions of
+five benchmark populations, so results are reported by dataset as well as in
+aggregate.
+
+\paragraph{Concrete released interface.}
+One BiasBios-Clinical seed selects INLP at rank four for the binary clinical
+profession task, with binary gender used only as the audited source. A fixed
+task score bins each biography into four fine tokens; MOSAIC then emits one of
+two persistent stochastic public tokens rather than the edited embedding or the
+source label. Its certified source-advantage upper bound is $.204$ and its
+certified worst-stratum error upper bound is $.261$, below the registered $.35$
+and $.40$ contracts. On the untouched diagnostic fold, the corresponding values
+are $.052$ and $.184$. This is the deployed object: a small versioned routing
+interface with a decoder, not a claim that the underlying representation is
+universally erased.
+
+\paragraph{What the real ablations remove.}
+The primary rows form a diagnostic ladder rather than unrelated baselines.
+Capacity transfer keeps simultaneous regions but replaces the learned shift
+geometry by a worst-case channel-capacity charge; its 0/100 deployments versus
+MOSAIC's 20/100 show that the exact bridge is decision-relevant. The bridge
+plug-in retains target data and the fitted transform but removes confidence
+regions, gaining 27 deployments at the cost of seven observed violations.
+Validation-only selection removes the target-membership gate, adding 60
+deployments but producing 18 estimable violations and 20 unsupported releases.
+Unconditional deployment additionally removes contract-based abstention and
+produces 38 violations. Thus intervals, bridge membership, exact geometry, and
+abstention each change a measured deployment outcome.
+
+\paragraph{Direct target-table comparator.}
+An audited comparator applies the same simultaneous envelope directly to the
+labeled target bridge table, without making a bridge transport claim. It
+deploys 36/100 jobs and records 0/36 diagnostic violations, versus 20/100 and
+0/20 for strict MOSAIC. This retention gain disappears once the target law
+moves inside the learned bridge class but outside the sampled-table region.
+In this post-hoc stress test, for each of the 36 direct releases, we construct
+the bridge-admitted law that
+maximizes its source attacker. The direct rule then violates 16/36 contracts
+(44.4\%, exact 95\% interval $[27.9,61.9]$); MOSAIC releases the other 20,
+violates none, and abstains on all 16 failures. Every constructed law is an
+exact member of its stored bridge class and lies outside the direct confidence
+region. Median structural residual radius is $.279$, and median distance beyond
+the direct region is $.368$ in $\ell_1$ after deterministic resolution of an
+exact attacker tie. The supplement gives the construction,
+numerical interface utility, and threshold frontier.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{p{.35\columnwidth}cc}
+\hline
+Target-law scope & Direct table & MOSAIC \\
+\hline
+Bridge-admitted, outside direct region (36 real jobs) & 16 violations & 20 releases; 0 violations \\
+Direct-region, bridge-invalid (7,983 locked tables) & region contains $q$ & 7,983 abstentions \\
+\hline
+\end{tabular}
+\caption{Complementary scope cells. The first is the post-hoc real-table
+stress; the second reuses two prelocked bridge-invalid target laws.}
+\label{tab:scope-cells}
+\end{table}
+
+The second row closes the scope check without claiming a failure of direct
+target-table certification. In the separate 12,000-table study, the two
+prelocked violations have population retained mass below $.80$. Their true
+target laws fall inside the direct target region on 7,983/8,000 invalid tables;
+MOSAIC's membership gate abstains on all 8,000. Thus direct-region coverage and
+bridge membership answer different questions, while the bridge has an explicit
+rejection path when its declared structure fails. The supplement reports the
+rowwise construction and the full frozen receipt.
+
+\paragraph{Numerical verification and fresh confirmations.}
+Strict-v2 deterministic replay matches all 100 receipts, while exact-rational
+checks verify 1,300 bridge certificates and 1,400 outward release bounds. A
+pre-outcome five-seed BiasBios rerun releases every job without a diagnostic
+violation. The supplement records the independent ACS confirmation, correction
+history, and decomposed bounds.
 
 \input{mosaic_acs_natural_shift_results}
 
-\input{mosaic_path9_results}
-
-The ACS comparison makes the retention cost explicit. At $K=4$, direct
-target-table certification releases 47/60 jobs while MOSAIC releases 15/60;
-neither rule has a held-out population diagnostic violation. The direct rule
-certifies the law represented by one target table. MOSAIC certifies every law
-in the larger bridge class supported by reference and target evidence. No
-natural panel in this study shows a held-out contract failure for the direct
-rule, so the natural evidence establishes successful MOSAIC transport and its
-retention cost, not a higher natural failure frequency for direct
-certification.
-
-\subsection{Scope: When Is the Broader Bridge Needed?}
-
-The direct and bridge rules protect different target-law sets. In the primary
-study, the direct rule releases 36/100 jobs with 0/36 diagnostic violations,
-versus 20/100 and 0/20 for MOSAIC. To isolate the set difference, a disclosed
-post-hoc stress test maximizes source inference over each direct release's
-stored bridge class. Sixteen of the 36 direct interfaces violate their contract
-on an admitted law; MOSAIC releases the other 20 and abstains on all 16
-failures. Every stress law is an exact bridge-class member outside the direct
-confidence region. This result proves that the broader class can contain
-harmful laws; it does not estimate how often those laws occur naturally.
-
-The reverse mismatch is also detectable. In 8,000 locked tables from two
-bridge-invalid populations, the true target law lies inside the direct target
-region on 7,983 tables, while MOSAIC's membership gate abstains on all 8,000.
-A direct certificate can therefore be valid for a sampled target law even when
-that population is outside MOSAIC's declared transport model.
-
-Alphabet size creates a second boundary. Four released tokens improve only
-five of 100 primary jobs relative to two tokens. Synthetic optimization remains
-subsecond through $K=64$, $G=4$, and $L=4$, but attacker enumeration is
-exponential in released alphabet size $L$; these experiments do not establish
-scaling to large public alphabets. In the original ACS $K=8$ study, MOSAIC
-abstains on every job. Increasing certification support from 6,000 to 16,000
-rows per stratum later enables two of three registered employment transfers,
-showing that this boundary is statistical as well as computational.
-
-Finally, the contract covers one persistent token per item. A registered
-bounded session can be certified as one joint transcript, but repeated fresh
-draws or added side information require a new joint certificate. Likewise, the
-real proxy-label study abstains because source-label uncertainty is too large.
-Current deployment therefore requires confidential target source labels for
-auditing; inferring those labels does not automatically preserve power.
-Complete threshold frontiers, per-seed tables, exact-rational replays, proxy
-results, and amendment history are in the supplement.
+\paragraph{Alphabet sensitivity.}
+Four released tokens improve only five of 100 jobs within the registered
+$10^{-7}$ solver criterion, so the real gain comes from certifying shift
+geometry rather than enlarging the public alphabet. Across 75 synthetic jobs
+with $K\in\{4,8,16,32,64\}$ and $G\in\{2,3,4\}$, every $.40$ contract
+certifies; the largest cell has $.237$ median utility slack and $.360$-second
+median solve time. In the original real ACS $K=8$ extension, retained mass is
+$.377$--$.540$, every candidate needs a $.50$-error constant release, and
+MOSAIC abstains. With a locked increase from 6,000 to 16,000 certification
+rows per source--label stratum on three employment transfers, $K=8$ MOSAIC
+releases Florida and New York with 0/2 held-out and 0/200 operational
+violations; Illinois abstains. The supplement gives the complete support study.
