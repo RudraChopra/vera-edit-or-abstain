@@ -178,8 +178,14 @@ def serialize_proxy(certificate: Any) -> dict[str, Any]:
         "calibration_mode": certificate.calibration_mode,
         "proxy_sample_size": certificate.proxy_sample_size,
         "calibration_sample_size": certificate.calibration_sample_size,
+        "source_mass_calibration_sample_size": (
+            certificate.source_mass_calibration_sample_size
+        ),
         "per_event_failure_probability": (
             certificate.per_event_failure_probability
+        ),
+        "source_mass_per_event_failure_probability": (
+            certificate.source_mass_per_event_failure_probability
         ),
         "conditional_centers": (
             certificate.conditional_empirical_distributions.tolist()
@@ -198,6 +204,12 @@ def serialize_proxy(certificate: Any) -> dict[str, Any]:
                 ),
                 "source_mass_lower_bounds": list(
                     label.source_mass_lower_bounds
+                ),
+                "source_mass_interval_lowers": list(
+                    label.source_mass_interval_lowers
+                ),
+                "source_mass_interval_uppers": list(
+                    label.source_mass_interval_uppers
                 ),
                 "conditional_lp_solves": label.conditional_lp_solves,
             }

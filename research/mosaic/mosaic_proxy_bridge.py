@@ -22,6 +22,7 @@ from mosaic_envelope import weissman_l1_radius
 
 LP_TOLERANCE = 2e-8
 VALUE_GUARD = 1e-9
+SOURCE_MASS_FAMILY_FRACTION = 0.05
 
 
 @dataclass(frozen=True)
@@ -40,6 +41,8 @@ class ProxyLabelConditionalCertificate:
     conditional_l1_radii: tuple[float, ...]
     source_mass_lower_bounds: tuple[float, ...]
     source_mass_centers: tuple[float, ...]
+    source_mass_interval_lowers: tuple[float, ...]
+    source_mass_interval_uppers: tuple[float, ...]
     conditional_lp_solves: int
     confidence_region: str
     method: str
@@ -52,12 +55,14 @@ class ProxyLabelBridgeCertificate:
     conditional_l1_radii: np.ndarray
     family_failure_probability: float
     per_event_failure_probability: float
+    source_mass_per_event_failure_probability: float | None
     calibration_mode: str
     label_count: int
     source_count: int
     token_count: int
     proxy_sample_size: int
     calibration_sample_size: int
+    source_mass_calibration_sample_size: int
     method: str
 
 
@@ -194,6 +199,8 @@ def _polytope_matrices(
     proxy_empirical: np.ndarray,
     confusion: np.ndarray,
     radius: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, list[tuple[float, float]]]:
     source_count, token_count = proxy_empirical.shape
     latent_count = source_count * token_count
@@ -218,6 +225,17 @@ def _polytope_matrices(
     radius_row[latent_count:] = 1.0
     a_ub.append(radius_row)
     b_ub.append(float(radius))
+    if source_mass_lowers is not None:
+        assert source_mass_uppers is not None
+        for source in range(source_count):
+            upper = np.zeros(variable_count)
+            upper[
+                source * token_count : (source + 1) * token_count
+            ] = 1.0
+            a_ub.append(upper)
+            b_ub.append(float(source_mass_uppers[source]))
+            a_ub.append(-upper)
+            b_ub.append(float(-source_mass_lowers[source]))
     a_eq = np.zeros((1, variable_count))
     a_eq[0, :latent_count] = 1.0
     b_eq = np.asarray([1.0])
@@ -235,6 +253,8 @@ def _nominal_joint(
     proxy_empirical: np.ndarray,
     confusion: np.ndarray,
     effective_radius: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> np.ndarray:
     source_count, token_count = proxy_empirical.shape
     latent_count = source_count * token_count
@@ -257,6 +277,17 @@ def _nominal_joint(
         negative[latent_count + index] = -1.0
         a_ub.append(negative)
         b_ub.append(float(-proxy_flat[index]))
+    if source_mass_lowers is not None:
+        assert source_mass_uppers is not None
+        for source in range(source_count):
+            upper = np.zeros(variable_count)
+            upper[
+                source * token_count : (source + 1) * token_count
+            ] = 1.0
+            a_ub.append(upper)
+            b_ub.append(float(source_mass_uppers[source]))
+            a_ub.append(-upper)
+            b_ub.append(float(-source_mass_lowers[source]))
     a_eq = np.zeros((1, variable_count))
     a_eq[0, :latent_count] = 1.0
     result = linprog(
@@ -286,13 +317,19 @@ def _source_mass_lower_bound(
     confusion: np.ndarray,
     effective_radius: float,
     source: int,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> float:
     source_count, token_count = proxy_empirical.shape
     latent_count = source_count * token_count
     objective = np.zeros(2 * latent_count)
     objective[source * token_count : (source + 1) * token_count] = 1.0
     a_ub, b_ub, a_eq, b_eq, bounds = _polytope_matrices(
-        proxy_empirical, confusion, effective_radius
+        proxy_empirical,
+        confusion,
+        effective_radius,
+        source_mass_lowers,
+        source_mass_uppers,
     )
     result = linprog(
         objective,
@@ -315,6 +352,8 @@ def _conditional_support(
     source: int,
     sign: np.ndarray,
     source_mass_lower: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> float | None:
     source_count, token_count = proxy_empirical.shape
     latent_count = source_count * token_count
@@ -347,6 +386,21 @@ def _conditional_support(
     radius_row[slack_start:] = 1.0
     a_ub.append(radius_row)
     b_ub.append(0.0)
+    if source_mass_lowers is not None:
+        assert source_mass_uppers is not None
+        for current_source in range(source_count):
+            upper = np.zeros(variable_count)
+            upper[
+                current_source * token_count :
+                (current_source + 1) * token_count
+            ] = 1.0
+            upper[t_index] = -float(source_mass_uppers[current_source])
+            a_ub.append(upper)
+            b_ub.append(0.0)
+            lower = -upper
+            lower[t_index] = float(source_mass_lowers[current_source])
+            a_ub.append(lower)
+            b_ub.append(0.0)
 
     a_eq = np.zeros((2, variable_count))
     a_eq[0, :latent_count] = 1.0
@@ -383,6 +437,8 @@ def _conditional_radius(
     source: int,
     center: np.ndarray,
     source_mass_lower: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> tuple[float, int]:
     if source_mass_lower <= VALUE_GUARD:
         return 2.0, 0
@@ -397,12 +453,83 @@ def _conditional_radius(
             source,
             sign,
             source_mass_lower,
+            source_mass_lowers,
+            source_mass_uppers,
         )
         solves += 1
         if support is None:
             return 2.0, solves
         maximum = max(maximum, support - float(sign @ center))
     return min(2.0, max(0.0, maximum) + VALUE_GUARD), solves
+
+
+def _l1_chebyshev_center(
+    signs: list[np.ndarray],
+    supports: list[float],
+) -> tuple[np.ndarray, float]:
+    token_count = signs[0].size
+    objective = np.zeros(token_count + 1)
+    objective[-1] = 1.0
+    a_ub = []
+    b_ub = []
+    for sign, support in zip(signs, supports, strict=True):
+        row = np.zeros(token_count + 1)
+        row[:token_count] = -sign
+        row[-1] = -1.0
+        a_ub.append(row)
+        b_ub.append(-support)
+    a_eq = np.zeros((1, token_count + 1))
+    a_eq[0, :token_count] = 1.0
+    result = linprog(
+        objective,
+        A_ub=np.asarray(a_ub),
+        b_ub=np.asarray(b_ub),
+        A_eq=a_eq,
+        b_eq=np.asarray([1.0]),
+        bounds=[(0.0, 1.0)] * token_count + [(0.0, 2.0)],
+        method="highs",
+    )
+    if not result.success or result.x is None or result.fun is None:
+        raise RuntimeError(f"ABSTAIN_PROXY_CHEBYSHEV_CENTER_LP: {result.message}")
+    return (
+        np.asarray(result.x[:token_count]),
+        min(2.0, max(0.0, float(result.fun)) + VALUE_GUARD),
+    )
+
+
+def _conditional_center_radius(
+    proxy_empirical: np.ndarray,
+    confusion: np.ndarray,
+    effective_radius: float,
+    source: int,
+    source_mass_lower: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
+) -> tuple[np.ndarray, float, int]:
+    token_count = proxy_empirical.shape[1]
+    if source_mass_lower <= VALUE_GUARD:
+        return np.full(token_count, 1.0 / token_count), 2.0, 0
+    signs = [
+        np.asarray(values, dtype=np.float64)
+        for values in product((-1.0, 1.0), repeat=token_count)
+    ]
+    supports = []
+    for sign in signs:
+        support = _conditional_support(
+            proxy_empirical,
+            confusion,
+            effective_radius,
+            source,
+            sign,
+            source_mass_lower,
+            source_mass_lowers,
+            source_mass_uppers,
+        )
+        if support is None:
+            return np.full(token_count, 1.0 / token_count), 2.0, len(supports) + 1
+        supports.append(support)
+    center, radius = _l1_chebyshev_center(signs, supports)
+    return center, radius, len(supports) + 1
 
 
 def _confusion_from_calibration(
@@ -492,6 +619,30 @@ def _clopper_pearson_interval(
     return lower, upper
 
 
+def _source_mass_intervals_from_calibration(
+    calibration_counts: np.ndarray,
+    *,
+    per_event_delta: float,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    label_count, source_count = calibration_counts.shape
+    lowers = np.zeros((label_count, source_count), dtype=np.float64)
+    uppers = np.ones((label_count, source_count), dtype=np.float64)
+    totals = calibration_counts.sum(axis=1)
+    if np.any(totals <= 0):
+        raise ValueError("every task label needs source-mass calibration rows")
+    for label in range(label_count):
+        for source in range(source_count):
+            lower, upper = _clopper_pearson_interval(
+                int(calibration_counts[label, source]),
+                int(totals[label]),
+                per_event_delta,
+            )
+            lowers[label, source] = lower
+            uppers[label, source] = upper
+    centers = calibration_counts / totals[:, None]
+    return centers, lowers, uppers
+
+
 def _proxy_coordinate_intervals(
     counts: np.ndarray,
     *,
@@ -516,18 +667,35 @@ def _box_nominal_joint(
     confusion: np.ndarray,
     coordinate_lowers: np.ndarray,
     coordinate_uppers: np.ndarray,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> np.ndarray:
     source_count, token_count = coordinate_lowers.shape
     latent_count = source_count * token_count
     observation = _observation_matrix(confusion, token_count)
-    a_ub = np.vstack((observation, -observation))
-    b_ub = np.concatenate(
-        (coordinate_uppers.reshape(-1), -coordinate_lowers.reshape(-1))
-    )
+    a_ub = [*observation, *(-observation)]
+    b_ub = [
+        *coordinate_uppers.reshape(-1),
+        *(-coordinate_lowers.reshape(-1)),
+    ]
+    if source_mass_lowers is not None:
+        assert source_mass_uppers is not None
+        for source in range(source_count):
+            upper = np.zeros(latent_count)
+            upper[
+                source * token_count : (source + 1) * token_count
+            ] = 1.0
+            a_ub.extend((upper, -upper))
+            b_ub.extend(
+                (
+                    float(source_mass_uppers[source]),
+                    float(-source_mass_lowers[source]),
+                )
+            )
     result = linprog(
         np.zeros(latent_count),
-        A_ub=a_ub,
-        b_ub=b_ub,
+        A_ub=np.asarray(a_ub),
+        b_ub=np.asarray(b_ub),
         A_eq=np.ones((1, latent_count)),
         b_eq=np.asarray([1.0]),
         bounds=[(0.0, 1.0)] * latent_count,
@@ -545,18 +713,38 @@ def _box_source_mass_lower_bound(
     coordinate_lowers: np.ndarray,
     coordinate_uppers: np.ndarray,
     source: int,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> float:
     source_count, token_count = coordinate_lowers.shape
     latent_count = source_count * token_count
     observation = _observation_matrix(confusion, token_count)
     objective = np.zeros(latent_count)
     objective[source * token_count : (source + 1) * token_count] = 1.0
+    a_ub = [*observation, *(-observation)]
+    b_ub = [
+        *coordinate_uppers.reshape(-1),
+        *(-coordinate_lowers.reshape(-1)),
+    ]
+    if source_mass_lowers is not None:
+        assert source_mass_uppers is not None
+        for current_source in range(source_count):
+            upper = np.zeros(latent_count)
+            upper[
+                current_source * token_count :
+                (current_source + 1) * token_count
+            ] = 1.0
+            a_ub.extend((upper, -upper))
+            b_ub.extend(
+                (
+                    float(source_mass_uppers[current_source]),
+                    float(-source_mass_lowers[current_source]),
+                )
+            )
     result = linprog(
         objective,
-        A_ub=np.vstack((observation, -observation)),
-        b_ub=np.concatenate(
-            (coordinate_uppers.reshape(-1), -coordinate_lowers.reshape(-1))
-        ),
+        A_ub=np.asarray(a_ub),
+        b_ub=np.asarray(b_ub),
         A_eq=np.ones((1, latent_count)),
         b_eq=np.asarray([1.0]),
         bounds=[(0.0, 1.0)] * latent_count,
@@ -574,6 +762,8 @@ def _box_conditional_support(
     source: int,
     sign: np.ndarray,
     source_mass_lower: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> float:
     source_count, token_count = coordinate_lowers.shape
     latent_count = source_count * token_count
@@ -593,10 +783,23 @@ def _box_conditional_support(
     a_eq[
         1, source * token_count : (source + 1) * token_count
     ] = 1.0
+    a_ub = [*a_upper, *a_lower]
+    if source_mass_lowers is not None:
+        assert source_mass_uppers is not None
+        for current_source in range(source_count):
+            upper = np.zeros(latent_count + 1)
+            upper[
+                current_source * token_count :
+                (current_source + 1) * token_count
+            ] = 1.0
+            upper[t_index] = -float(source_mass_uppers[current_source])
+            lower = -upper
+            lower[t_index] = float(source_mass_lowers[current_source])
+            a_ub.extend((upper, lower))
     result = linprog(
         objective,
-        A_ub=np.vstack((a_upper, a_lower)),
-        b_ub=np.zeros(2 * latent_count),
+        A_ub=np.asarray(a_ub),
+        b_ub=np.zeros(len(a_ub)),
         A_eq=a_eq,
         b_eq=np.asarray([0.0, 1.0]),
         bounds=[(0.0, None)] * latent_count
@@ -615,6 +818,8 @@ def _box_conditional_radius(
     source: int,
     center: np.ndarray,
     source_mass_lower: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
 ) -> tuple[float, int]:
     if source_mass_lower <= VALUE_GUARD:
         return 2.0, 0
@@ -629,10 +834,45 @@ def _box_conditional_radius(
             source,
             sign,
             source_mass_lower,
+            source_mass_lowers,
+            source_mass_uppers,
         )
         solves += 1
         maximum = max(maximum, support - float(sign @ center))
     return min(2.0, max(0.0, maximum) + VALUE_GUARD), solves
+
+
+def _box_conditional_center_radius(
+    confusion: np.ndarray,
+    coordinate_lowers: np.ndarray,
+    coordinate_uppers: np.ndarray,
+    source: int,
+    source_mass_lower: float,
+    source_mass_lowers: np.ndarray | None = None,
+    source_mass_uppers: np.ndarray | None = None,
+) -> tuple[np.ndarray, float, int]:
+    token_count = coordinate_lowers.shape[1]
+    if source_mass_lower <= VALUE_GUARD:
+        return np.full(token_count, 1.0 / token_count), 2.0, 0
+    signs = [
+        np.asarray(values, dtype=np.float64)
+        for values in product((-1.0, 1.0), repeat=token_count)
+    ]
+    supports = [
+        _box_conditional_support(
+            confusion,
+            coordinate_lowers,
+            coordinate_uppers,
+            source,
+            sign,
+            source_mass_lower,
+            source_mass_lowers,
+            source_mass_uppers,
+        )
+        for sign in signs
+    ]
+    center, radius = _l1_chebyshev_center(signs, supports)
+    return center, radius, len(signs) + 1
 
 
 def _conditional_observation_matrix(
@@ -835,6 +1075,7 @@ def certify_proxy_label_conditionals(
     binary_symmetric_calibration: bool = False,
     confidence_region: str = "l1_weissman",
     known_source_masses: Sequence | None = None,
+    calibration_source_counts: Sequence | None = None,
     observation_model_l1_slack: float | Sequence[float] = 0.0,
 ) -> ProxyLabelBridgeCertificate:
     """Certify true source-conditional token laws from proxy-labeled counts.
@@ -860,6 +1101,10 @@ def certify_proxy_label_conditionals(
         raise ValueError("binary_symmetric_calibration requires calibration counts")
     if confidence_region not in {"coordinate_clopper_pearson", "l1_weissman"}:
         raise ValueError("unknown confidence_region")
+    if known_source_masses is not None and calibration_source_counts is not None:
+        raise ValueError(
+            "known_source_masses and calibration_source_counts are exclusive"
+        )
     raw_slack = np.asarray(observation_model_l1_slack, dtype=np.float64)
     if raw_slack.ndim == 0:
         model_slack = np.full(label_count, float(raw_slack))
@@ -890,12 +1135,38 @@ def certify_proxy_label_conditionals(
             or not np.allclose(fixed_masses.sum(axis=1), 1.0, atol=1e-10)
         ):
             raise ValueError("known source masses must be positive probability rows")
+    mass_calibration = None
+    if calibration_source_counts is not None:
+        mass_calibration = _validate_counts(
+            calibration_source_counts,
+            ndim=2,
+            name="calibration_source_counts",
+        )
+        if mass_calibration.shape != (label_count, source_count):
+            raise ValueError(
+                "calibration_source_counts must have shape JxG"
+            )
+        if np.any(mass_calibration.sum(axis=1) <= 0):
+            raise ValueError("every label needs source-mass calibration rows")
+    source_mass_family_failure = (
+        0.0
+        if mass_calibration is None
+        else SOURCE_MASS_FAMILY_FRACTION * family_failure_probability
+    )
+    base_family_failure = (
+        family_failure_probability - source_mass_family_failure
+    )
+    source_mass_per_event_delta = (
+        None
+        if mass_calibration is None
+        else source_mass_family_failure / (label_count * source_count)
+    )
 
     calibration_sample_size = 0
     if known_confusion_matrix is not None:
         raw = np.asarray(known_confusion_matrix, dtype=np.float64)
         event_count = label_count
-        per_event_delta = family_failure_probability / event_count
+        per_event_delta = base_family_failure / event_count
         if raw.ndim == 2:
             matrices = np.stack(
                 [
@@ -944,7 +1215,7 @@ def certify_proxy_label_conditionals(
                     "binary-symmetric calibration requires two sources and one pooled table"
                 )
             event_count = label_count + 1
-            per_event_delta = family_failure_probability / event_count
+            per_event_delta = base_family_failure / event_count
             matrix, row_radii, calibration_sample_size = (
                 _binary_symmetric_confusion_from_calibration(
                     calibration, failure_probability=per_event_delta
@@ -957,7 +1228,7 @@ def certify_proxy_label_conditionals(
             if calibration.shape != (source_count, source_count):
                 raise ValueError("pooled calibration must have shape GxG")
             event_count = label_count + source_count
-            per_event_delta = family_failure_probability / event_count
+            per_event_delta = base_family_failure / event_count
             matrix, row_radii, calibration_sample_size = _confusion_from_calibration(
                 calibration, per_event_delta=per_event_delta
             )
@@ -968,7 +1239,7 @@ def certify_proxy_label_conditionals(
             if calibration.shape != (label_count, source_count, source_count):
                 raise ValueError("label-specific calibration must have shape JxGxG")
             event_count = label_count + label_count * source_count
-            per_event_delta = family_failure_probability / event_count
+            per_event_delta = base_family_failure / event_count
             matrices, confusion_radii, calibration_sample_size = (
                 _confusion_from_calibration(
                     calibration, per_event_delta=per_event_delta
@@ -986,9 +1257,10 @@ def certify_proxy_label_conditionals(
                     "token-dependent calibration must have shape JxGxKxG"
                 )
             event_count = (
-                label_count + label_count * source_count * token_count
+                label_count
+                + label_count * source_count * token_count
             )
-            per_event_delta = family_failure_probability / event_count
+            per_event_delta = base_family_failure / event_count
             matrices, confusion_radii, calibration_sample_size = (
                 _confusion_from_calibration(
                     calibration, per_event_delta=per_event_delta
@@ -1001,6 +1273,23 @@ def certify_proxy_label_conditionals(
             raise ValueError(
                 "calibration counts need shape GxG, JxGxG, or JxGxKxG"
             )
+
+    if fixed_masses is not None:
+        mass_centers = fixed_masses
+        mass_lowers = fixed_masses
+        mass_uppers = fixed_masses
+    elif mass_calibration is not None:
+        mass_centers, mass_lowers, mass_uppers = (
+            _source_mass_intervals_from_calibration(
+                mass_calibration,
+                per_event_delta=float(source_mass_per_event_delta),
+            )
+        )
+        calibration_mode += "_with_source_mass_calibration"
+    else:
+        mass_centers = None
+        mass_lowers = None
+        mass_uppers = None
 
     labels = []
     conditional_centers = np.zeros((label_count, source_count, token_count))
@@ -1030,15 +1319,71 @@ def certify_proxy_label_conditionals(
             )
             if fixed_masses is None:
                 nominal = _box_nominal_joint(
-                    matrices[label], coordinate_lowers, coordinate_uppers
+                    matrices[label],
+                    coordinate_lowers,
+                    coordinate_uppers,
+                    (
+                        None
+                        if mass_lowers is None
+                        else mass_lowers[label]
+                    ),
+                    (
+                        None
+                        if mass_uppers is None
+                        else mass_uppers[label]
+                    ),
                 )
+                if mass_centers is not None:
+                    try:
+                        flat_center, _ = _fixed_mass_box_problem(
+                            matrices[label],
+                            mass_centers[label],
+                            coordinate_lowers,
+                            coordinate_uppers,
+                            objective=np.zeros(source_count * token_count),
+                        )
+                        nominal = (
+                            mass_centers[label, :, None]
+                            * flat_center.reshape(source_count, token_count)
+                        )
+                    except RuntimeError:
+                        pass
         else:
             if fixed_masses is None:
                 nominal = _nominal_joint(
                     proxy_empirical,
                     matrices[label],
                     effective_radius,
+                    (
+                        None
+                        if mass_lowers is None
+                        else mass_lowers[label]
+                    ),
+                    (
+                        None
+                        if mass_uppers is None
+                        else mass_uppers[label]
+                    ),
                 )
+                if mass_centers is not None:
+                    try:
+                        flat_center, residual = _fixed_mass_l1_problem(
+                            proxy_empirical,
+                            matrices[label],
+                            mass_centers[label],
+                            effective_radius,
+                            objective=None,
+                            constrain_radius=False,
+                        )
+                        if residual <= effective_radius + LP_TOLERANCE:
+                            nominal = (
+                                mass_centers[label, :, None]
+                                * flat_center.reshape(
+                                    source_count, token_count
+                                )
+                            )
+                    except RuntimeError:
+                        pass
         if fixed_masses is not None:
             centers, radius_tuple, solves = _fixed_mass_conditional_certificate(
                 proxy_empirical,
@@ -1059,10 +1404,6 @@ def certify_proxy_label_conditionals(
             lower_bounds = []
             solves = 0
             for source in range(source_count):
-                if masses[source] <= VALUE_GUARD:
-                    centers[source] = np.full(token_count, 1.0 / token_count)
-                else:
-                    centers[source] = nominal[source] / masses[source]
                 if confidence_region == "coordinate_clopper_pearson":
                     assert coordinate_lowers is not None
                     assert coordinate_uppers is not None
@@ -1071,14 +1412,33 @@ def certify_proxy_label_conditionals(
                         coordinate_lowers,
                         coordinate_uppers,
                         source,
+                        (
+                            None
+                            if mass_lowers is None
+                            else mass_lowers[label]
+                        ),
+                        (
+                            None
+                            if mass_uppers is None
+                            else mass_uppers[label]
+                        ),
                     )
-                    radius, count = _box_conditional_radius(
+                    center, radius, count = _box_conditional_center_radius(
                         matrices[label],
                         coordinate_lowers,
                         coordinate_uppers,
                         source,
-                        centers[source],
                         lower,
+                        (
+                            None
+                            if mass_lowers is None
+                            else mass_lowers[label]
+                        ),
+                        (
+                            None
+                            if mass_uppers is None
+                            else mass_uppers[label]
+                        ),
                     )
                 else:
                     lower = _source_mass_lower_bound(
@@ -1086,15 +1446,35 @@ def certify_proxy_label_conditionals(
                         matrices[label],
                         effective_radius,
                         source,
+                        (
+                            None
+                            if mass_lowers is None
+                            else mass_lowers[label]
+                        ),
+                        (
+                            None
+                            if mass_uppers is None
+                            else mass_uppers[label]
+                        ),
                     )
-                    radius, count = _conditional_radius(
+                    center, radius, count = _conditional_center_radius(
                         proxy_empirical,
                         matrices[label],
                         effective_radius,
                         source,
-                        centers[source],
                         lower,
+                        (
+                            None
+                            if mass_lowers is None
+                            else mass_lowers[label]
+                        ),
+                        (
+                            None
+                            if mass_uppers is None
+                            else mass_uppers[label]
+                        ),
                     )
+                centers[source] = center
                 lower_bounds.append(lower)
                 radii.append(radius)
                 solves += count
@@ -1127,14 +1507,44 @@ def certify_proxy_label_conditionals(
                 conditional_l1_radii=tuple(float(value) for value in radii),
                 source_mass_lower_bounds=tuple(float(value) for value in lower_bounds),
                 source_mass_centers=tuple(float(value) for value in masses),
+                source_mass_interval_lowers=tuple(
+                    float(value)
+                    for value in (
+                        np.zeros(source_count)
+                        if mass_lowers is None
+                        else mass_lowers[label]
+                    )
+                ),
+                source_mass_interval_uppers=tuple(
+                    float(value)
+                    for value in (
+                        np.ones(source_count)
+                        if mass_uppers is None
+                        else mass_uppers[label]
+                    )
+                ),
                 conditional_lp_solves=solves,
                 confidence_region=confidence_region,
                 method=(
                     "exact_proxy_fixed_mass_conditional_l1_lp"
                     if fixed_masses is not None
                     else (
-                        "exact_proxy_coordinate_polytope_conditional_l1_linear_fractional_lp"
+                        (
+                            "exact_proxy_coordinate_and_source_mass_polytope_"
+                            "conditional_l1_linear_fractional_lp"
+                        )
+                        if (
+                            confidence_region
+                            == "coordinate_clopper_pearson"
+                            and mass_lowers is not None
+                        )
+                        else "exact_proxy_coordinate_polytope_conditional_l1_linear_fractional_lp"
                         if confidence_region == "coordinate_clopper_pearson"
+                        else (
+                            "exact_proxy_l1_and_source_mass_polytope_"
+                            "conditional_l1_linear_fractional_lp"
+                        )
+                        if mass_lowers is not None
                         else "exact_proxy_l1_polytope_conditional_l1_linear_fractional_lp"
                     )
                 ),
@@ -1146,11 +1556,19 @@ def certify_proxy_label_conditionals(
         conditional_l1_radii=conditional_radii,
         family_failure_probability=float(family_failure_probability),
         per_event_failure_probability=float(per_event_delta),
+        source_mass_per_event_failure_probability=(
+            None
+            if source_mass_per_event_delta is None
+            else float(source_mass_per_event_delta)
+        ),
         calibration_mode=calibration_mode,
         label_count=label_count,
         source_count=source_count,
         token_count=token_count,
         proxy_sample_size=int(counts.sum()),
         calibration_sample_size=calibration_sample_size,
+        source_mass_calibration_sample_size=(
+            0 if mass_calibration is None else int(mass_calibration.sum())
+        ),
         method="simultaneous_proxy_label_target_conditionals_with_exact_lp_envelopes",
     )

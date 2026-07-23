@@ -183,3 +183,36 @@ def test_known_source_masses_tighten_the_proxy_conditional_envelope() -> None:
     assert np.all(
         fixed_mass.conditional_l1_radii < unknown_mass.conditional_l1_radii
     )
+
+
+def test_calibrated_source_mass_intervals_tighten_and_cover() -> None:
+    true_counts = _counts()
+    confusion = np.asarray([[0.95, 0.05], [0.05, 0.95]])
+    proxy = _proxy_counts(true_counts, confusion)
+    source_counts = 12 * true_counts.sum(axis=2)
+    unknown_mass = certify_proxy_label_conditionals(
+        proxy,
+        family_failure_probability=0.01,
+        known_confusion_matrix=confusion,
+        confidence_region="coordinate_clopper_pearson",
+    )
+    calibrated_mass = certify_proxy_label_conditionals(
+        proxy,
+        family_failure_probability=0.01,
+        known_confusion_matrix=confusion,
+        confidence_region="coordinate_clopper_pearson",
+        calibration_source_counts=source_counts,
+    )
+    true_conditionals = true_counts / true_counts.sum(axis=2, keepdims=True)
+    distances = np.abs(
+        calibrated_mass.conditional_empirical_distributions - true_conditionals
+    ).sum(axis=2)
+    assert np.all(
+        distances <= calibrated_mass.conditional_l1_radii + 2e-8
+    )
+    assert np.mean(calibrated_mass.conditional_l1_radii) < np.mean(
+        unknown_mass.conditional_l1_radii
+    )
+    assert calibrated_mass.calibration_mode.endswith(
+        "_with_source_mass_calibration"
+    )
