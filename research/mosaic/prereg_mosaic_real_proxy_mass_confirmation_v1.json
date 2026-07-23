@@ -1,0 +1,60 @@
+{
+  "claim_boundary": "This is a locked method follow-up after both earlier proxy studies abstained, not an independent first attempt. The source-mass constraint was developed on the disclosed powered-v1 calibration roles. This new seed, all four calibration sizes, the primary release decision, and the diagnostic result are reported without replacement.",
+  "code_sha256": {
+    "research/mosaic/mosaic_envelope.py": "01d8693d5557cf09d09ea5cf47d3259cb394f1c994e334040b1f898d58a772de",
+    "research/mosaic/mosaic_proxy_bridge.py": "888ae6b5c03851a21289bfdffc0b446950f789c51c2d34436a1e04ab4a80e314",
+    "research/mosaic/mosaic_real.py": "b8e1d70b8c72f79db6d4cf6587a9e34fde0a050387058b4d00c754f8b60a94f7",
+    "research/mosaic/mosaic_transform_exact_optimizer.py": "5188124aabd9e17e5648b5915ccb731023474b3f57aba5839b3a0ae37c4e5760",
+    "research/mosaic/run_mosaic_real_proxy_mass_confirmation.py": "64c1d3be96a95386a30880779dbb47525bde9a8417c00355c49379465837566e",
+    "research/mosaic/run_mosaic_real_proxy_powered.py": "5d8b4e5f11f9bc29a4459a3b5604cc3ab86a76795876c6e6976a3dca636b7d3c",
+    "research/mosaic/run_mosaic_real_proxy_study.py": "ede08ac5d0bbed9bdcb69ede7eeb57bdddee237b47b4386bbc9ebf55db72ed6e"
+  },
+  "locked_at_utc": "2026-07-23T21:33:45.659086+00:00",
+  "name": "MOSAIC real ACS proxy source-mass preregistration v1",
+  "prior_powered_abstention_sha256": "747f9d92cbf27e2b2fcc53239aec970973c285115284e89f19155f6201531ac1",
+  "protocol": {
+    "calibration_curve_fractions": [
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "calibration_model": "task-label, true-source, and two-token-specific source-to-proxy confusion tensor plus simultaneous task-label-specific true-source mass intervals",
+    "conditional_center": "exact L1 Chebyshev center over each calibrated latent-law polytope",
+    "confidence_region": "coordinate_clopper_pearson",
+    "curve_role": "descriptive nested calibration-size sensitivity; only the fixed full-calibration point is the primary release decision",
+    "design": "locked source-mass confirmation after the powered proxy study abstained; no new diagnostic outcome selects the design",
+    "family_failure_probability": 0.05,
+    "fine_token_count": 2,
+    "partition_fractions": {
+      "calibration": 0.4,
+      "diagnostic": 0.05,
+      "proxy_train": 0.2,
+      "target_proxy": 0.2,
+      "task_train": 0.15
+    },
+    "primary_gate": "full-calibration release, proxy balanced accuracy at least .60, and zero diagnostic contract violations",
+    "privacy_advantage_threshold": 0.35,
+    "proxy_imputer": "fixed equal-weight soft ensemble of class-balanced HistGradientBoosting and ExtraTrees",
+    "released_token_count": 2,
+    "seed": 20270725,
+    "source": "RAC1P white-alone versus all other codes",
+    "source_mass_family_allocation": "5 percent of the .05 familywise budget, split across four label-source binomial intervals",
+    "task": "Folktables ACSIncome",
+    "task_token_threshold": 0.5,
+    "utility_error_threshold": 0.4
+  },
+  "raw_data": {
+    "bytes": 267297811,
+    "path": "/Users/rudrachopra/Documents/Science Fair/data/acs_pums/2018/1-Year/psam_p06.csv",
+    "sha256": "dc2187fc90df2c5f6b546ee89a2b41c9a97379c9e7136461b6a6c8de871b43e0",
+    "source": "2018 ACS 1-Year California person PUMS"
+  },
+  "raw_transport": {
+    "url": "https://www2.census.gov/programs-surveys/acs/data/pums/2018/1-Year/csv_pca.zip",
+    "verification": "require the streamed uncompressed member to match the prior locked byte count and SHA-256"
+  },
+  "repository_head_before_lock": "ef08062f771f541e95ce4062ff8fc503e32195cf",
+  "status": "locked_before_powered_proxy_outcomes",
+  "stopping_rule": "Report every nested calibration point and the fixed full-size primary decision. Do not replace the seed, imputer, token count, source-mass allocation, confidence region, thresholds, or diagnostic fold."
+}
