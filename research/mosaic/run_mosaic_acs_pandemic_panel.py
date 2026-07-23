@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import io
 import json
+import os
 import subprocess
 import urllib.request
 import zipfile
@@ -15,11 +16,12 @@ from typing import Any, Sequence
 
 import numpy as np
 
+import official_eraser_adapters as eraser_adapters
 from mosaic_channel import l1_ball_expectation_lower, l1_ball_expectation_upper
 from mosaic_real import balanced_stratum_sample, build_token_table, fit_score_tokenizer
 from prepare_acs_natural_shift_stores import extract_task, reference_split, task_registry
 from run_mosaic_acs_natural_shift import puma_bridge_diagnostic_split
-from run_mosaic_official_frontier_exact_confirmation import identity_candidate, materialize
+from run_mosaic_official_frontier_exact_confirmation import identity_candidate
 from run_official_eraser_frontier import (
     dispatch_candidates,
     preprocess,
@@ -52,6 +54,13 @@ METHOD_KEYS = {
     "R-LACE": "rlace",
     "TaCo": "taco",
     "MANCE++": "mance",
+}
+OFFICIAL_REPOSITORIES = {
+    "INLP_REPO": "nullspace_projection",
+    "RLACE_REPO": "rlace-icml",
+    "LEACE_REPO": "concept-erasure",
+    "TACO_REPO": "TaCo",
+    "MANCE_REPO": "mance",
 }
 RELSHIPP_TO_RELP = {
     20: 0,
@@ -148,6 +157,11 @@ def expected_protocol() -> dict[str, Any]:
         },
         "future_asset_urls": {state: census_url(state) for state in TARGET_STATES},
     }
+
+
+def configure_official_repositories(root: Path) -> None:
+    for attribute, directory in OFFICIAL_REPOSITORIES.items():
+        setattr(eraser_adapters, attribute, root / directory)
 
 
 def validate_lock(path: Path, reference_csv: Path) -> dict[str, Any]:
@@ -747,6 +761,16 @@ def parse_args() -> argparse.Namespace:
         default=Path("data/acs_pums/2018/1-Year/psam_p06.csv"),
     )
     parser.add_argument("--future-raw-root", type=Path, default=Path("data/acs_pums"))
+    parser.add_argument(
+        "--official-root",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "MOSAIC_OFFICIAL_ROOT",
+                "/Volumes/Backups/FARO/external",
+            )
+        ),
+    )
     parser.add_argument("--download", action="store_true")
     return parser.parse_args()
 
@@ -756,6 +780,7 @@ def main() -> None:
     if args.output.exists():
         raise FileExistsError(f"refusing to overwrite {args.output}")
     lock = validate_lock(args.lock, args.reference_csv)
+    configure_official_repositories(args.official_root)
     data_lock = load(DATA_LOCK)
     reference_frame = load_reference_frame(args.reference_csv)
     rows: list[dict[str, Any]] = []
