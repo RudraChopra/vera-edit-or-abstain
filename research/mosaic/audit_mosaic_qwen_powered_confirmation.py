@@ -100,13 +100,14 @@ def validate_summary(
     }
     summary = load(result_dir / "summary.json")
     expected = {
-        "registered_seed_count": len(seeds),
-        "completed_seed_count": len(complete),
-        "primary_release_count": len(primary),
-        "primary_heldout_violation_count": heldout,
-        "operational_replay_count": operational_trials,
-        "operational_violation_count": operational_violations,
-        "utility_threshold_release_counts": threshold_counts,
+        "registered_jobs": len(seeds),
+        "completed_jobs": len(complete),
+        "error_jobs": len(seeds) - len(complete),
+        "primary_releases": len(primary),
+        "primary_abstentions": len(seeds) - len(primary),
+        "heldout_primary_violations": heldout,
+        "operational_primary_trials": operational_trials,
+        "operational_primary_violations": operational_violations,
     }
     for key, value in expected.items():
         if summary[key] != value:
@@ -120,8 +121,14 @@ def validate_summary(
         and heldout == 0
         and operational_violations == 0
     )
-    if bool(summary["main_paper_inclusion_gate_passed"]) != gate:
+    if bool(summary["main_paper_inclusion_gate_pass"]) != gate:
         raise RuntimeError("Qwen inclusion gate was not recomputed correctly")
+    expected_receipts = {
+        f"seed-{seed}.json": sha256(result_dir / f"seed-{seed}.json")
+        for seed in seeds
+    }
+    if summary["receipt_sha256"] != expected_receipts:
+        raise RuntimeError("Qwen receipt hash manifest differs")
     return {
         "registered_seeds": len(seeds),
         "completed_seeds": len(complete),
@@ -129,6 +136,7 @@ def validate_summary(
         "heldout_violations": heldout,
         "operational_trials": operational_trials,
         "operational_violations": operational_violations,
+        "utility_threshold_release_counts": threshold_counts,
     }
 
 
