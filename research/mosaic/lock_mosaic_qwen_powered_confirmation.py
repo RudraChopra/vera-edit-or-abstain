@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import subprocess
@@ -82,13 +83,21 @@ def protocol() -> dict[str, object]:
     }
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source-csv", type=Path, default=SOURCE_CSV)
+    return parser.parse_args()
+
+
 def main() -> None:
+    args = parse_args()
+    source_csv = args.source_csv
     sidecar = LOCK.with_suffix(LOCK.suffix + ".sha256")
     if LOCK.exists() or sidecar.exists():
         raise FileExistsError("Qwen powered lock already exists")
     if STORE.exists() or OUTPUT.exists():
         raise FileExistsError("Qwen powered store or outcome already exists")
-    if not SOURCE_CSV.exists() or not PILOT.exists():
+    if not source_csv.exists() or not PILOT.exists():
         raise FileNotFoundError("CivilComments source or Qwen pilot is missing")
     head = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -116,8 +125,8 @@ def main() -> None:
             "error, held-out diagnostic, and operational replay is reportable."
         ),
         "source_csv": {
-            "bytes": SOURCE_CSV.stat().st_size,
-            "sha256": sha256(SOURCE_CSV),
+            "bytes": source_csv.stat().st_size,
+            "sha256": sha256(source_csv),
         },
         "pilot_artifact": str(PILOT.relative_to(ROOT)),
         "pilot_artifact_sha256": sha256(PILOT),
