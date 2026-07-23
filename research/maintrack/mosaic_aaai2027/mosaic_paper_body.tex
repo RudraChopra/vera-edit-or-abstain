@@ -87,6 +87,10 @@ finite encoders, and Fair Normalizing Flows bounds strong adversaries through
 tractable densities \citep{jovanovic2023fare,balunovic2022fnf}. Stochastic
 preprocessing and fair representations motivate randomized release channels
 \citep{calmon2017preprocessing,makhdoumi2014privacyfunnel,agarwal2024randomization}.
+Related fairness certificates and transfer analyses control different
+population-level criteria under stated shift assumptions
+\citep{gitiaux2021smooth,chen2022fairness,kang2022certifying,
+agarwal2025robustfair}.
 
 LTT, conformal risk control, and Pareto testing certify registered decisions and
 may abstain \citep{bates2021rcps,angelopoulos2025ltt,angelopoulos2024crc,
@@ -99,6 +103,10 @@ Blackwell garbling and its residual is a contamination neighborhood
 huber1964robust}. The bridge makes that shift model testable from target data,
 whereas unrestricted shift is impossible to certify
 \citep{bendavid2010impossibility,klivans2024testable,chandrasekaran2025learning}.
+Selective classification supplies the broader abstention perspective
+\citep{elyaniv2010foundations,geifman2017selective}; group-robust learning
+targets worst-group prediction rather than certification of a released
+interface \citep{sagawa2020groupdro}.
 
 \begin{table*}[t]
 \centering
@@ -453,7 +461,7 @@ budget, using a retained-mass threshold of $.80$.
 \paragraph{Five-benchmark release study.}
 We registered 100 fresh jobs: 20 untouched seeds on each of Waterbirds,
 Camelyon17-WILDS, CivilComments-WILDS, BiasBios-Clinical, and GaitPDB, spanning
-vision, medical vision, text, and time series. Each job evaluates 13 frozen
+vision, medical vision, text, and time series \citep{koh2021wilds}. Each job evaluates 13 frozen
 feature edits from the official INLP, LEACE, R-LACE, TaCo, and MANCE++
 implementations; proxies are forbidden. Construction data alone fit a balanced
 task score and its four-bin tokenizer. Separate reference observations certify
