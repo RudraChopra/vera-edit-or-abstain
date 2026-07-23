@@ -1,0 +1,93 @@
+{
+  "claim_boundary": "This prospective panel reuses frozen 2018 interfaces and evaluates the first standard post-2020 ACS 1-year PUMS population. The Census Bureau did not publish a standard 2020 ACS 1-year PUMS product, so the study measures a 2018-to-2021 natural temporal discontinuity, not a literal standard-product 2020-to-2021 pair. Each 2021 state's whole PUMAs are split into disjoint membership and diagnostic folds.",
+  "code_sha256": {
+    "research/mosaic/mosaic_channel.py": "a69c82b9182be32d28d30e83795ac77c9512fa09f95f8bad7e1ed5732e60ecc4",
+    "research/mosaic/mosaic_real.py": "b8e1d70b8c72f79db6d4cf6587a9e34fde0a050387058b4d00c754f8b60a94f7",
+    "research/mosaic/run_mosaic_acs_natural_shift.py": "5459bd4a1426df148b84ee3e29c46ff47dc8f0e85c7bcd45450fb37565df3695",
+    "research/mosaic/run_mosaic_acs_pandemic_panel.py": "f955c2722340b9f3e7086d7e62a3fea34efe16288b3b1acb882de46f08b397a6",
+    "research/mosaic/run_mosaic_official_frontier_exact_confirmation.py": "66d7aa3eeedd6460fc894c281b4c660e3da0c781984012eeb379e543b506f166",
+    "research/scripts/official_eraser_adapters.py": "ebcb3db26b60ba240958ff9944ec174f4e63a90fadcbbb87169c67eac87bcd26",
+    "research/scripts/prepare_acs_natural_shift_stores.py": "f36e4717398857c8a2c77ca52431a6808baa2da552883f40de96b25568cf1bee",
+    "research/scripts/run_official_eraser_frontier.py": "2a408a5e78f88c687a40e600b12924c5d70299204ad6fdf3ead51911348b0f7f"
+  },
+  "input_sha256": {
+    "research/mosaic/prereg_mosaic_acs_natural_shift_data_v1.json": "6a38d6f2cb4dab58d6280d4592b3eb9f34708cee6f90c0cfc173ead913786aa8"
+  },
+  "locked_at_utc": "2026-07-23T20:38:52.554478+00:00",
+  "name": "MOSAIC ACS pandemic-discontinuity panel preregistration v1",
+  "protocol": {
+    "familywise_delta": 0.05,
+    "future_asset_urls": {
+      "FL": "https://www2.census.gov/programs-surveys/acs/data/pums/2021/1-Year/csv_pfl.zip",
+      "IL": "https://www2.census.gov/programs-surveys/acs/data/pums/2021/1-Year/csv_pil.zip",
+      "NY": "https://www2.census.gov/programs-surveys/acs/data/pums/2021/1-Year/csv_pny.zip",
+      "WA": "https://www2.census.gov/programs-surveys/acs/data/pums/2021/1-Year/csv_pwa.zip"
+    },
+    "future_table_delta": 0.00020833333333333335,
+    "future_tables_in_family": 240,
+    "future_year": "2021",
+    "future_year_interpretation": "first standard ACS 1-year PUMS release after the unavailable 2020 standard 1-year product",
+    "maximum_future_rows_per_role": 64000,
+    "membership_fraction_by_puma": 0.6666666666666666,
+    "natural_failure_witness": "a frozen direct deployment has a familywise lower confidence bound above either contract on the 2021 diagnostic fold, while MOSAIC abstains at the 2018 decision, rejects 2021 bridge membership, or has familywise upper confidence bounds below both contracts",
+    "population_jobs": 60,
+    "reference_year": "2018",
+    "relationship_crosswalk": {
+      "20": 0,
+      "21": 1,
+      "22": 13,
+      "23": 1,
+      "24": 13,
+      "25": 2,
+      "26": 3,
+      "27": 4,
+      "28": 5,
+      "29": 6,
+      "30": 7,
+      "31": 8,
+      "32": 9,
+      "33": 10,
+      "34": 12,
+      "35": 14,
+      "36": 15,
+      "37": 16,
+      "38": 17
+    },
+    "rules": [
+      "mosaic",
+      "direct"
+    ],
+    "seeds": [
+      1400,
+      1401,
+      1402,
+      1403,
+      1404
+    ],
+    "selection": "reuse every rule's frozen 2018 primary decision and interface without 2021 tuning",
+    "source_advantage_threshold": 0.35,
+    "target_states": [
+      "FL",
+      "IL",
+      "NY",
+      "WA"
+    ],
+    "tasks": [
+      "employment",
+      "income",
+      "public_coverage"
+    ],
+    "utility_threshold": 0.4
+  },
+  "raw_2021_assets_absent_at_lock": true,
+  "receipt_set_sha256": "fbee95c5111dd858598e8e8c0882ed2eea647a19b8e7822d26cfa4da0c608993",
+  "reference_raw_asset": {
+    "bytes": 267297811,
+    "sha256": "dc2187fc90df2c5f6b546ee89a2b41c9a97379c9e7136461b6a6c8de871b43e0",
+    "state": "CA",
+    "year": "2018"
+  },
+  "repository_head_before_lock": "ef8830668e3f4917b416605ffd4b7a02b23d2adf",
+  "status": "locked_before_2021_download",
+  "stopping_rule": "Report all 60 state-task-seed jobs, both frozen rules, every reconstruction failure, every membership decision, every diagnostic interval, and every natural-failure witness."
+}
