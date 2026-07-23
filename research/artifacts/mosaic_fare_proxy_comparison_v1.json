@@ -1,0 +1,196 @@
+{
+  "candidates": [
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=2,alpha=0.80",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    },
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=2,alpha=0.90",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    },
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=2,alpha=0.95",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    },
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=2,alpha=0.99",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    },
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=4,alpha=0.80",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    },
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=4,alpha=0.90",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    },
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=4,alpha=0.95",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    },
+    {
+      "calibration_cells_observed": true,
+      "candidate": "FARE::leaves=4,alpha=0.99",
+      "certified_source_advantage_upper": [
+        0.377229487467996,
+        1.0
+      ],
+      "certified_worst_conditional_error_upper": 1.0,
+      "decision": "abstain",
+      "decoder": [
+        0,
+        0
+      ],
+      "diagnostic_balanced_accuracy": 0.5,
+      "diagnostic_safe": false,
+      "diagnostic_source_advantage": 0.006545928182665195,
+      "diagnostic_worst_conditional_error": 1.0,
+      "false_acceptance": false,
+      "realized_leaf_count": 2
+    }
+  ],
+  "claim_boundary": "This is a commensurate representation comparison: official FARE constructs each tree representation, and the identical proxy, source-inference, and task-error contract judges its public leaf token. It does not convert MOSAIC's source-inference contract into FARE's original downstream demographic-parity theorem.",
+  "name": "Official FARE representation under the MOSAIC proxy contract",
+  "preregistration_sha256": "a8cc7ba5683ca65a3587e29e8fadf25ea935ae60332425386c769cd42dc853eb",
+  "protocol": {
+    "candidates": {
+      "alpha": [
+        0.8,
+        0.9,
+        0.95,
+        0.99
+      ],
+      "maximum_leaf_nodes": [
+        2,
+        4
+      ],
+      "minimum_leaf_samples": 1000
+    },
+    "family_failure_probability": 0.05,
+    "partition": "the exact five-way split and seed from the real ACS proxy study",
+    "privacy_advantage_threshold": 0.35,
+    "proxy_calibration": "label, true-source, and FARE-leaf-specific confusion tensor",
+    "selection": "minimum certified task-error upper bound among passing FARE candidates",
+    "task": "Folktables ACSIncome",
+    "utility_error_threshold": 0.4
+  },
+  "selected": null,
+  "summary": {
+    "candidate_count": 8,
+    "certified_candidates": 0,
+    "false_acceptances": 0,
+    "selected_candidate": null
+  }
+}

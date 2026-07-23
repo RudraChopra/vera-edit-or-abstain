@@ -280,6 +280,11 @@ receipts are the release record used by the paper.
 
 `MANIFEST.sha256` authenticates every other file in the archive. Public authorship
 and repository metadata are intentionally omitted for double-blind review.
+
+Text files copied from the named source release have author names, repository
+handles, and absolute home paths replaced in this review archive. Historical
+preregistration hashes continue to identify the original locked named-source
+bytes; `MANIFEST.sha256` authenticates the sanitized review copy.
 """
 
 
@@ -293,6 +298,23 @@ def sha256(path: Path) -> str:
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def sanitize_text_copy(text: str) -> str:
+    """Remove authorship and machine-local paths from a review copy."""
+
+    replacements = (
+        ("/Users/" + "rudrachopra", "/home/anonymous"),
+        ("/Users/", "/home/"),
+        ("/users/", "/home/"),
+        ("https://github.com/" + "RudraChopra", "https://example.invalid/anonymous"),
+        ("Rudra" + " Chopra", "Anonymous Authors"),
+        ("Rudra" + "Chopra", "anonymous"),
+        ("rudra" + "chopra", "anonymous"),
+    )
+    for original, replacement in replacements:
+        text = text.replace(original, replacement)
+    return text
 
 
 def collect_files() -> list[Path]:
@@ -416,11 +438,19 @@ def build(output: Path) -> dict[str, object]:
         for source in collect_files():
             destination = root / source.relative_to(REPOSITORY)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            if source == REPOSITORY / "pyproject.toml":
-                text = source.read_text(encoding="utf-8").replace(
-                    "Rudra " + "Chopra", "Anonymous Authors"
+            if source.suffix.lower() in {
+                ".json",
+                ".md",
+                ".py",
+                ".sha256",
+                ".toml",
+                ".txt",
+            }:
+                text = source.read_text(encoding="utf-8")
+                destination.write_text(
+                    sanitize_text_copy(text),
+                    encoding="utf-8",
                 )
-                destination.write_text(text, encoding="utf-8")
             else:
                 shutil.copy2(source, destination)
         write_locked_replays(root)

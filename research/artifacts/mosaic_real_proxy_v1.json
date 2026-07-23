@@ -1,0 +1,247 @@
+{
+  "claim_boundary": "This is a real attribute imputer on ACS microdata, not BISG: public ACS lacks surnames. True source labels are used only in disjoint proxy training, calibration, and diagnostic partitions. The target certificate uses proxy labels and a separately estimated token-dependent confusion tensor. The diagnostic partition is not used for selection.",
+  "gates": {
+    "all_calibration_cells_observed": true,
+    "certificate_releases": false,
+    "no_false_acceptance": true,
+    "proxy_is_nontrivial": true,
+    "released_interface_is_diagnostically_safe": true
+  },
+  "name": "MOSAIC real ACS proxy certification v1",
+  "passed": false,
+  "preregistration_sha256": "e20142f3f12e688fada53e6c582d73b5efc254796f3600f9fa13d6fec9a4265b",
+  "protocol": {
+    "calibration_model": "task-label, true-source, and fine-token specific source-to-proxy confusion tensor",
+    "family_failure_probability": 0.05,
+    "fine_token_count": 4,
+    "partition_fractions": {
+      "calibration": 0.2,
+      "diagnostic": 0.15,
+      "proxy_train": 0.2,
+      "target_proxy": 0.25,
+      "task_train": 0.2
+    },
+    "primary_gate": "release, zero diagnostic contract violations, and proxy balanced accuracy at least .60",
+    "privacy_advantage_threshold": 0.35,
+    "proxy": "held-out geography, birthplace, ancestry, Hispanic-origin, language, nativity, and citizenship imputer",
+    "released_token_count": 2,
+    "seed": 20270723,
+    "source": "RAC1P white-alone versus all other codes",
+    "task": "Folktables ACSIncome",
+    "utility_error_threshold": 0.4
+  },
+  "proxy_balanced_accuracy": 0.8396774656865831,
+  "proxy_certificate": {
+    "calibration_mode": "label_and_token_specific_confusion_calibration",
+    "calibration_sample_size": 39133,
+    "conditional_centers": [
+      [
+        [
+          0.41048447739503147,
+          0.3312944451919551,
+          0.20473296056949863,
+          0.05348811684351475
+        ],
+        [
+          0.4231451352450021,
+          0.36012675588862475,
+          0.1716715050220421,
+          0.04505660384433112
+        ]
+      ],
+      [
+        [
+          0.01334601271317497,
+          0.10392060319461427,
+          0.34003178605241763,
+          0.5427015980397931
+        ],
+        [
+          0.014569292366444544,
+          0.13199556384965988,
+          0.32071926035864184,
+          0.5327158834252538
+        ]
+      ]
+    ],
+    "conditional_l1_radii": [
+      [
+        0.5922240336474848,
+        0.9364034791786661
+      ],
+      [
+        0.8759498100434824,
+        1.480070380560936
+      ]
+    ],
+    "labels": [
+      {
+        "conditional_lp_solves": 32,
+        "confusion_matrix": [
+          [
+            [
+              0.6922232387923147,
+              0.30777676120768527
+            ],
+            [
+              0.725148776724708,
+              0.27485122327529204
+            ],
+            [
+              0.8434782608695652,
+              0.1565217391304348
+            ],
+            [
+              0.9139633286318759,
+              0.08603667136812412
+            ]
+          ],
+          [
+            [
+              0.17772861356932154,
+              0.8222713864306784
+            ],
+            [
+              0.15748963883955003,
+              0.84251036116045
+            ],
+            [
+              0.148664343786295,
+              0.851335656213705
+            ],
+            [
+              0.13114754098360656,
+              0.8688524590163934
+            ]
+          ]
+        ],
+        "confusion_row_l1_radii": [
+          0.049069106419021374,
+          0.05385410872192797,
+          0.06904761648338271,
+          0.13623230814612647,
+          0.05687386729186434,
+          0.062412763094143245,
+          0.08741514028074365,
+          0.17554533581798118
+        ],
+        "effective_proxy_l1_radius": 0.20369518246820217,
+        "source_mass_lower_bounds": [
+          0.3941024480423822,
+          0.21126514891439063
+        ]
+      },
+      {
+        "conditional_lp_solves": 32,
+        "confusion_matrix": [
+          [
+            [
+              0.7111111111111111,
+              0.28888888888888886
+            ],
+            [
+              0.7435185185185185,
+              0.2564814814814815
+            ],
+            [
+              0.8840579710144928,
+              0.11594202898550725
+            ],
+            [
+              0.9436477138518643,
+              0.05635228614813565
+            ]
+          ],
+          [
+            [
+              0.12903225806451613,
+              0.8709677419354839
+            ],
+            [
+              0.16599732262382866,
+              0.8340026773761714
+            ],
+            [
+              0.13010501750291714,
+              0.8698949824970829
+            ],
+            [
+              0.09809558030901905,
+              0.901904419690981
+            ]
+          ]
+        ],
+        "confusion_row_l1_radii": [
+          0.3122024796923874,
+          0.11038024524687126,
+          0.06055876575078703,
+          0.04711788293052077,
+          0.37615059933032313,
+          0.13272200428103512,
+          0.0876189054529743,
+          0.06876170379984409
+        ],
+        "effective_proxy_l1_radius": 0.4098792621508365,
+        "source_mass_lower_bounds": [
+          0.37580526880335924,
+          0.02871974003517072
+        ]
+      }
+    ],
+    "per_event_failure_probability": 0.002777777777777778,
+    "proxy_sample_size": 48915
+  },
+  "proxy_columns": [
+    "PUMA",
+    "POBP",
+    "ANC",
+    "ANC1P",
+    "ANC2P",
+    "HISP",
+    "LANP",
+    "ENG",
+    "NATIVITY",
+    "CIT"
+  ],
+  "raw_data_sha256": "dc2187fc90df2c5f6b546ee89a2b41c9a97379c9e7136461b6a6c8de871b43e0",
+  "release": {
+    "certified_source_advantage_upper": [],
+    "certified_worst_conditional_error_upper": null,
+    "decision": "abstain",
+    "decoder": null,
+    "diagnostic_safe": true,
+    "diagnostic_source_advantage": null,
+    "diagnostic_worst_conditional_error": null,
+    "reason": "ABSTAIN_EXACT_UTILITY_CONTRACT",
+    "release_channel": null
+  },
+  "sample_counts": {
+    "calibration": 39133,
+    "diagnostic": 29352,
+    "proxy_train": 39133,
+    "target_proxy": 48915,
+    "task_train": 39132
+  },
+  "status": "complete_locked_study",
+  "task_columns": [
+    "AGEP",
+    "COW",
+    "SCHL",
+    "MAR",
+    "OCCP",
+    "POBP",
+    "RELP",
+    "WKHP",
+    "SEX"
+  ],
+  "token_thresholds": [
+    0.07617542204337854,
+    0.3380594549072317,
+    0.7557419381124232
+  ],
+  "utility": {
+    "absolute_gap": null,
+    "released_interface_expected_balanced_accuracy": null,
+    "unedited_task_score_balanced_accuracy": 0.8175129047021519
+  }
+}

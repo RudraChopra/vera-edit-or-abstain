@@ -1,32 +1,37 @@
 \begin{abstract}
-Concept-erasure evaluations usually assess an edited representation, not the
-public interface that remains after editing. We introduce MOSAIC, a
-software-only procedure that releases a task-specific stochastic token channel
-and decoder only when both source leakage and worst-stratum task error are
-certified; otherwise it abstains. Its key move is to place one simultaneous
-confidence event on pre-release token laws, before channel optimization. That
-event covers every channel searched on the table. Labeled target data then
-either certify a common-transform-plus-residual shift class or force
-abstention. We prove finite-sample Bayes-attacker and utility envelopes,
-global finite-alphabet optimization, and the missing-support boundary. In
-1,000 locked safety trials, naive continuum selection releases
-contract-violating channels on 42.1\% of tables; MOSAIC records none. On 100
-registered real-data jobs, a direct target-table rule releases 36 interfaces.
-Under post-hoc bridge-admitted stress laws, 16 of those 36 violate their
-contract; MOSAIC retains the 20 safe releases and abstains on the other 16. A
-fresh 60-job geographic confirmation releases 15 interfaces across four target
-states and two tasks with 0/15 held-out and 0/1,500 operational violations.
+AI systems increasingly expose small decision interfaces---routing,
+moderation, eligibility, or triage signals---derived from richer internal
+representations. We introduce MOSAIC, a software-only release layer that emits
+a task-specific stochastic token only when its strongest source-inference
+attacker and worst-stratum task error are both certified under data-supported
+deployment shift; otherwise it abstains. A simultaneous confidence event is
+placed on pre-release token laws before channel optimization, so it covers the
+entire stochastic-channel family searched on that table. Labeled target data
+then certify a common-transform-plus-residual bridge class. We prove exact
+finite-sample attacker and utility envelopes, global finite-alphabet
+optimization, matching universal-region sample-complexity bounds, bounded
+multi-item transcript accounting, and anytime-valid recertification. In 1,000
+locked safety trials, naive continuum selection releases contract-violating
+channels on 42.1\% of tables; MOSAIC records none. Across three natural-shift
+confirmations in text, census, and images, MOSAIC releases 75/120 interfaces
+with 0/75 held-out violations and median added channel costs below one
+accuracy point on census and image tasks. Under disclosed post-hoc
+bridge-admitted stress laws, a direct target-table rule violates 16/36
+contracts; MOSAIC retains the 20 safe releases and abstains on all 16 failures.
 \end{abstract}
 
 \section{Introduction}
 
-Representation editing is commonly evaluated by fitting a probe to a frozen
-embedding \citep{ravfogel2020null,ravfogel2022linear,belrose2023leace,
+Routing, moderation, eligibility, and triage systems often expose a compact
+decision signal derived from a richer model state. Representation editing is
+commonly evaluated by fitting a probe to that state
+\citep{ravfogel2020null,ravfogel2022linear,belrose2023leace,
 jourdan2023taco,avitan2026mance}, although probe design can change the apparent
 conclusion \citep{pimentel2020probing}. This leaves two deployment gaps: a
-different downstream rule may recover the attribute, and an edit selected on a
-noisy validation table may fail after population shift. Both matter when the
-released token is a public interface.
+different downstream rule may recover the attribute, and a release selected
+on a noisy validation table may fail after population shift. The operational
+object that needs a contract is the public interface, not the claim that every
+trace of a concept vanished internally.
 
 We study a task-specific finite-token interface. A tokenizer fixed without the
 certification fold maps an internal representation to $C\in[K]$; a source-blind
@@ -38,11 +43,12 @@ common Markov transform plus bounded source-specific contamination, permitting
 large source-blind drift while charging the part that can create new source
 differences.
 
-MOSAIC, Minimax-Optimized Source-Agnostic Invariant Channels, builds an exact
-attacker envelope from simultaneous multinomial confidence regions. Because
-the event precedes $M$, it covers every stochastic channel, including one
-optimized on the same table. A bridge LP uses labeled target data to learn a
-common transform and the largest certifiable retained mass; exact
+MOSAIC, Minimax-Optimized Source-Agnostic Invariant Channels, is a general
+certified-release layer instantiated here for edited representations. It builds
+an exact attacker envelope from simultaneous multinomial confidence regions.
+Because the event precedes $M$, it covers every stochastic channel, including
+one optimized on the same table. A bridge LP uses labeled target data to learn
+a common transform and the largest certifiable retained mass; exact
 transform-and-contamination envelopes then certify source distinguishability
 and a jointly selected decoder. Finite-alphabet optimization is global, and
 MOSAIC returns \textsc{abstain} when no feasible release exists.
@@ -62,7 +68,7 @@ population oracle.
   \includegraphics[width=\textwidth]{figures/figure1_mosaic_overview.pdf}
   \caption{MOSAIC has three steps: certify the reference and labeled
   target-bridge evidence, design a source-blind stochastic token interface on
-  that shared event, and gate deployment on bridge membership, source leakage,
+  that shared event, and gate deployment on bridge membership, source distinguishability,
   and task utility. The runtime persists one token only after every check
   passes; otherwise it abstains.}
   \label{fig:overview}
@@ -132,18 +138,18 @@ $\operatorname{Adv}_G(A)=(GA-1)/(G-1)$. This is chance-normalized and ranges
 from zero to one. The registered source contract is
 $\max_y\operatorname{Adv}_G(A_y)\leq\tau_P$.
 
-\paragraph{Running example.}
-Take two sources, two task labels, three fine tokens, and two released tokens.
-For label $y=0$, let $p_{0,0}=(.7,.2,.1)$ and $p_{1,0}=(.4,.5,.1)$, and consider
+\paragraph{Running case.}
+We follow one registered BiasBios-Clinical interface throughout the paper.
+Binary gender is the audited source and a clinical-profession decision is the
+task. After rank-four INLP, a fixed task score maps each biography to one of
+four fine tokens. MOSAIC releases two tokens with decoder $g(z)=z$ and
 \[
-M=\begin{pmatrix}.9&.1\\ .5&.5\\ .1&.9\end{pmatrix},\qquad
-g(0)=0,\quad g(1)=1.
+M=\begin{pmatrix}1&0\\1&0\\.725&.275\\0&1\end{pmatrix}.
 \]
-The released source laws are $(.74,.26)$ and $(.62,.38)$, so the Bayes source
-attacker has accuracy $.56$ and normalized advantage $.12$ for this label. The
-worst source-conditional task error is $.38$. MOSAIC asks whether these two
-numbers remain below their registered thresholds for every law supported by the
-reference and bridge confidence regions, not only for these empirical rows.
+It never exposes the edited embedding. The source-advantage bounds are $.201$
+and $.204$ within the two task labels, and the certified worst-stratum task
+error is $.260$, clearing the registered $.35$ and $.40$ contracts. The
+untouched diagnostic values are $.052$ and $.184$.
 
 \begin{center}
 \scriptsize
@@ -218,8 +224,8 @@ The proof writes the Bayes attacker as a maximum over deterministic assignments.
 For a fixed assignment the source confidence sets separate, giving one support
 function per source; all maxima are finite and commute. The implication is
 pointwise over the complete stochastic-channel space, which is why adaptive
-selection needs no channel-count correction. In the running example, the same
-confidence event covers the displayed $M$ and every alternative three-by-two
+selection needs no channel-count correction. In the running case, the same
+confidence event covers the displayed $M$ and every alternative four-by-two
 channel considered by the optimizer.
 
 \section{Data-Certified Shift Membership}
@@ -246,20 +252,15 @@ $W=tT$ by solving
 The support functions and coordinate lower bounds have exact LP duals, so
 Eq.~\eqref{eq:bridge} is one linear program rather than a transform search.
 
-\paragraph{Running example, continued.}
-For the displayed $y=0$ reference rows, take bridge rows
-$\widehat q_{0,0}=(.37,.25,.38)$ and
-$\widehat q_{1,0}=(.45,.45,.10)$ and set the radii to zero only for this
-calculation. The LP returns $\widehat t_0=.795$ and, rounded to three digits,
-\[
- \widehat T_0=
- \begin{pmatrix}.634&.052&.314\\ .109&.891&0\\0&1&0\end{pmatrix}.
-\]
-The residuals are $r_{0,0}=(0,0,1)$ and $r_{1,0}=(1,0,0)$: substituting them
-into Eq.~\eqref{eq:shift} reconstructs the two bridge rows. Thus the LP turns
-the toy's target table into a retained common component of $.795$ and a
-charged source-specific remainder of $.205$; the release optimizer must pay
-for that remainder rather than treating it as shared signal.
+\paragraph{Running case, continued.}
+For the released BiasBios interface, the bridge LP certifies retained common
+mass $.799$ and $.796$ in the two task labels. MOSAIC therefore charges
+source-specific residuals of $.201$ and $.204$ in its downstream attacker and
+utility envelopes. These are population bounds from separate reference and
+bridge confidence regions, not fitted similarities on the diagnostic fold.
+The resulting channel merges the first two score bins, randomizes only the
+third, and preserves the fourth: this is the complete public decision surface
+an auditor must inspect.
 
 \begin{theorem}[Adaptive finite-sample bridge]
 Suppose the reference and bridge confidence sets jointly cover every
@@ -378,6 +379,21 @@ the learned bridge class. If the bridge has zero retained mass, a required
 stratum is missing, or no channel satisfies both bounds, MOSAIC abstains.}}
 \end{center}
 
+\paragraph{Statistical and session extensions.}
+For a distribution-uniform $\ell_1$ region that must cover every bounded
+functional selected from the same $K$-category table, the minimax resolution
+rate is
+$n=\Theta((K+\log(1/\delta))/\gamma^2)$; the Weissman construction matches it
+up to constants \citep{han2015minimax}. For a registered session of $r$ possibly correlated fine
+items, compiling the mechanisms into the joint transcript channel gives the
+same exact envelope. A scalable capacity bound is
+$1-\prod_{i=1}^r(1-\alpha_i)$, where $\alpha_i$ is the Dobrushin coefficient
+of item channel $i$. Finally, replacing fixed-time regions by
+Dirichlet-mixture e-process regions makes every recertification time and
+optional stopping rule valid on one event \citep{ryu2024confidence}. The supplement proves these
+statements, gives a finite-cover extension for continuous release classes, and
+an all-threshold DKW corollary.
+
 Unrestricted source-specific shift can be erased only by a fine-token-independent
 channel, so a bounded residual is a deployment assumption rather than a hidden
 technical convenience. Likewise, a missing required source stratum is
@@ -464,6 +480,16 @@ folds; no person or PUMA crosses that boundary. Every job evaluates the same
 thresholds, and 100 one-token operational draws per release. We hash-lock all
 12 raw-data manifests and processed stores before any outcome is computed.
 
+\paragraph{Natural image-origin confirmation.}
+CINIC-10 provides file-level CIFAR-10 versus ImageNet origin
+\citep{darlow2018cinic}. A locked five-seed study uses ImageNet-pretrained
+ResNet-18 features, a vehicle-versus-animal task, and disjoint construction,
+reference, bridge, and diagnostic folds. Each seed compares the unedited
+interface with official closed-form LEACE under the same $.35$ source and
+$.40$ utility contracts; neither origin labels nor embeddings are released. A
+disclosed sequential extension reruns 40 fixed seeds under one stricter
+familywise allocation.
+
 \paragraph{Bridge validity stress.}
 A separate 12,000-table confirmation varies the bridge sample size from 500 to
 5,000 per source--label stratum. One population obeys a common transform;
@@ -475,46 +501,21 @@ rejected.
 
 \input{mosaic_results}
 
+\input{mosaic_path9_results}
+
 \section{Discussion}
 
-\paragraph{Beyond finite candidate testing.}
-LTT and Pareto testing control risk after registering a finite family. MOSAIC
-certifies the categorical experiment before release: on one covered table,
-every $M$ and $g$ inherit the same pointwise envelope. The optimizer can then
-search a continuum without turning internal search points into hypotheses.
-Tokenizers and erasers are registered statistical objects with their own
-familywise allocation. The matched 500-pair replay shows the practical result:
-a structure-aware Holm implementation leaves power on the table when the full
-channel space is downstream of one confidence event.
+\paragraph{Decision layer.}
+Unlike finite-family LTT, MOSAIC certifies the categorical experiment before
+release, so every same-table $M$ and $g$ inherits one pointwise envelope. The
+bridge then returns the largest part of each target law explained by a common
+source-blind transform and charges the remainder. Tokenizers, strata,
+population, thresholds, and confidence allocation are registered first.
+Retraining improves a predictor; MOSAIC certifies the exposed interface.
 
-\paragraph{Bridge and deployment rule.}
-The bridge measures how much of each target source law is explained by one
-common transformation of its reference law. Equation~\eqref{eq:bridge} ranges
-over every source-blind $K\times K$ Markov transform and returns the largest
-jointly supported retained mass $t_y$; the residual $1-t_y$ receives the
-adversarial capacity charge. More bridge data tightens this fit. The protocol
-registers source and task strata, tokenizer, target population, confidence
-allocation, and decision thresholds before optimization. A different target
-population, source definition, or tokenizer defines a new bridge. This gives a
-clear distinction from target retraining: retraining can improve a target
-predictor, while MOSAIC certifies a persistent source-blind token interface.
-
-\paragraph{Operational use.}
-MOSAIC is designed for stable software decision interfaces where a channel, a
-decoder, and a persistence rule can be versioned together. The runtime emits
-the token when the contract passes and otherwise returns \textsc{abstain}.
-The released interface is compact and task-specific, which makes its complete
-source-inference experiment enumerable and auditable.
-
-\paragraph{Scope.}
-The probability $1-\delta$ is over the registered reference and bridge samples.
-The attacker knows $M$ and may use any rule on one persistent token $Z$.
-Additional public interfaces, repeated stochastic draws, or multi-item
-transcripts require the corresponding joint construction. Source and task labels
-are audit data for every required stratum; a missing stratum triggers abstention.
-
-\section{Conclusion}
-
-MOSAIC turns editing into release design: one confidence event supports
-continuum optimization, while the target bridge certifies shift and forces
-abstention when evidence is insufficient.
+\paragraph{Operation and scope.}
+The runtime emits one stored token or \textsc{abstain} and fails closed on
+missing support or expired evidence. Probability $1-\delta$ is over registered
+reference and bridge samples. Bounded multi-item transcripts use the joint
+construction above; unbounded draws or new side information require a new
+contract.

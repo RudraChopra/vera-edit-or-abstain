@@ -1,0 +1,34 @@
+{
+  "name": "MOSAIC path-to-9 theory confirmation v1",
+  "status": "locked before confirmatory execution",
+  "date": "2026-07-23",
+  "familywise_failure_probability": 0.05,
+  "random_seed": 42701,
+  "anytime_study": {
+    "alphabets": [2, 4, 8],
+    "repetitions_per_alphabet": 1000,
+    "checkpoints": [32, 64, 128, 256, 512, 1024, 2048, 4096],
+    "dirichlet_prior": 0.5,
+    "gate": "for every alphabet, exact confidence-sequence false-exclusion rate <= 0.07"
+  },
+  "continuous_cover_study": {
+    "repetitions": 500,
+    "sample_size_per_source": 4000,
+    "threshold_grid_size": 33,
+    "temperature": 0.12,
+    "gate": "post-selection population source accuracy is below its certificate in at least 0.93 of repetitions"
+  },
+  "transcript_study": {
+    "item_counts": [1, 2, 3, 4, 5],
+    "gate": "every exact joint Dobrushin coefficient is at most the multiplicative bound to tolerance 1e-12"
+  },
+  "sample_complexity_study": {
+    "alphabets": [2, 4, 8, 16, 32, 64],
+    "contracts": [0.1, 0.2, 0.3],
+    "margins": [0.025, 0.05, 0.1],
+    "soundness_error": 0.025,
+    "power_error": 0.025,
+    "gate": "all finite cells have positive lower bounds and Weissman upper bounds no smaller than the embedded binary lower bound"
+  },
+  "claim_boundary": "The study checks implementations and finite behavior. Theorems are mathematical claims proved separately; simulation is not their proof."
+}

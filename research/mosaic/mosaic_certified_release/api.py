@@ -243,6 +243,18 @@ class Mosaic:
 
         joblib.dump(self, Path(path))
 
+    def write_report(
+        self,
+        directory: str | Path,
+        *,
+        title: str = "MOSAIC Certification Report",
+    ) -> tuple[Path, Path]:
+        """Write machine-readable and human-readable audit reports."""
+
+        from .report import write_certification_report
+
+        return write_certification_report(self, directory, title=title)
+
     @classmethod
     def load(cls, path: str | Path) -> "Mosaic":
         """Load a trusted local MOSAIC artifact."""

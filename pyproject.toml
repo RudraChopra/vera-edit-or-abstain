@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mosaic-certified-release"
-version = "0.1.0"
+version = "0.2.0"
 description = "Certified stochastic release or abstention under structured deployment shift"
-readme = "README.md"
+readme = "AUDITOR_QUICKSTART.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [{name = "Rudra Chopra"}]
@@ -26,17 +26,27 @@ classifiers = [
 [project.optional-dependencies]
 test = ["pytest>=8"]
 
+[project.scripts]
+mosaic-audit = "mosaic_certified_release.cli:main"
+
 [tool.setuptools]
 package-dir = {"" = "research/mosaic"}
 py-modules = [
   "mosaic_bridge",
+  "mosaic_anytime",
   "mosaic_channel",
+  "mosaic_continuous",
+  "mosaic_decoder_lifted_optimizer",
   "mosaic_envelope",
   "mosaic_exact",
   "mosaic_invariant",
+  "mosaic_lower_bound",
   "mosaic_optimizer",
+  "mosaic_proxy_bridge",
   "mosaic_real",
   "mosaic_release",
+  "mosaic_transcript",
+  "mosaic_tradeoff",
   "mosaic_transform_exact",
   "mosaic_transform_exact_optimizer",
 ]

@@ -54,7 +54,7 @@ def design_panel(ax: plt.Axes) -> None:
 
 
 def gate_panel(ax: plt.Axes) -> None:
-    title(ax, "3", "Gate the release", "Check bridge membership, source leakage,\nand worst-stratum task utility.")
+    title(ax, "3", "Gate the release", "Check bridge membership, source distinguishability,\nand worst-stratum task utility.")
     ax.add_patch(Rectangle((0.08, 0.31), 0.35, 0.25, facecolor=mpl.colors.to_rgba(GREEN, 0.10), edgecolor=GREEN, linewidth=1.2))
     ax.text(0.255, 0.435, "all checks pass", fontsize=7.0, color=INK, ha="center", va="center", fontweight="bold")
     ax.text(0.255, 0.355, "persist one token", fontsize=6.5, color=GREEN, ha="center", va="center")
