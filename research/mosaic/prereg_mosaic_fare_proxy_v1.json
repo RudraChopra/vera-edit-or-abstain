@@ -1,0 +1,44 @@
+{
+  "claim_boundary": "This protocol compares the public FARE leaf representation under the same proxy-calibrated source-inference and task-error contract used by MOSAIC. It does not claim that FARE's original downstream demographic-parity theorem certifies source inference.",
+  "code_sha256": {
+    "research/mosaic/mosaic_channel.py": "a69c82b9182be32d28d30e83795ac77c9512fa09f95f8bad7e1ed5732e60ecc4",
+    "research/mosaic/mosaic_proxy_bridge.py": "de669b2c8ac2c1df5adf7b332c84d242955460ef46cf867a27e12dfb0fe4ae4e",
+    "research/mosaic/mosaic_real.py": "b8e1d70b8c72f79db6d4cf6587a9e34fde0a050387058b4d00c754f8b60a94f7",
+    "research/mosaic/run_mosaic_fare_commensurate_proxy.py": "d621dfc45fa80f93cac0804e257aabdc86977abc3a5a9e8e3af983af5d32da64",
+    "research/mosaic/run_mosaic_real_proxy_study.py": "a8637f414b04372a1f70e2c2f1e33623ff01b440ef639497d668719f6c68042b"
+  },
+  "fare": {
+    "official_commit": "89cb1b66ed268c16659cbf7428c43e60da2df641",
+    "official_repository": "https://github.com/eth-sri/fare",
+    "patched_sklearn_commit": "fd60379f95f5c0d3791b2f54c4d070c0aa2ac576",
+    "representation": "terminal fair_gini_eo decision-tree leaf",
+    "runtime_numpy": "1.23.5",
+    "runtime_python": "3.9.25",
+    "runtime_sklearn": "1.2.dev0"
+  },
+  "protocol": {
+    "candidates": {
+      "alpha": [
+        0.8,
+        0.9,
+        0.95,
+        0.99
+      ],
+      "maximum_leaf_nodes": [
+        2,
+        4
+      ],
+      "minimum_leaf_samples": 1000
+    },
+    "family_failure_probability": 0.05,
+    "partition": "the exact five-way split and seed from the real ACS proxy study",
+    "privacy_advantage_threshold": 0.35,
+    "proxy_calibration": "label, true-source, and FARE-leaf-specific confusion tensor",
+    "selection": "minimum certified task-error upper bound among passing FARE candidates",
+    "task": "Folktables ACSIncome",
+    "utility_error_threshold": 0.4
+  },
+  "raw_data_sha256": "dc2187fc90df2c5f6b546ee89a2b41c9a97379c9e7136461b6a6c8de871b43e0",
+  "status": "locked_before_fare_outcomes",
+  "stopping_rule": "Run every registered leaf-count and alpha pair and report every abstention, release, and held-out diagnostic."
+}
