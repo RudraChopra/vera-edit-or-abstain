@@ -15,6 +15,7 @@ from run_mosaic_acs_temporal_replication import (
     DISCOVERY,
     LOCK,
     OUTPUT,
+    PANDEMIC_LOCK,
     STATE_FIPS,
     WITNESSES,
     expected_protocol,
@@ -113,6 +114,7 @@ def main() -> None:
             raise FileNotFoundError(ROOT / path)
     inputs = {
         str(DISCOVERY.relative_to(ROOT)): sha256(DISCOVERY),
+        str(PANDEMIC_LOCK.relative_to(ROOT)): sha256(PANDEMIC_LOCK),
         "research/mosaic/prereg_mosaic_acs_natural_shift_data_v1.json": sha256(
             ROOT / "research/mosaic/prereg_mosaic_acs_natural_shift_data_v1.json"
         ),
@@ -145,12 +147,7 @@ def main() -> None:
             path: sha256(ROOT / path) for path in CODE
         },
         "input_sha256": inputs,
-        "reference_raw_asset": {
-            "year": "2018",
-            "state": "CA",
-            "bytes": args.reference_csv.stat().st_size,
-            "sha256": sha256(args.reference_csv),
-        },
+        "reference_raw_asset": load(PANDEMIC_LOCK)["reference_raw_asset"],
         "raw_2022_assets_absent_at_lock": True,
         "stopping_rule": (
             "Report all three frozen interfaces, every reconstruction failure, "
