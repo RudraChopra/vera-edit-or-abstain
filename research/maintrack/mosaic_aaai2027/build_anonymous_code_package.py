@@ -70,6 +70,7 @@ FORBIDDEN_IDENTITY_MARKERS = (
     b"Rudra" + b"Chopra",
     b"rudra" + b"chopra",
     b"/" + b"Users" + b"/",
+    b"/" + b"Volumes" + b"/",
 )
 
 ANONYMOUS_LICENSE = """MIT License
@@ -307,6 +308,8 @@ def sanitize_text_copy(text: str) -> str:
         ("/Users/" + "rudrachopra", "/home/anonymous"),
         ("/Users/", "/home/"),
         ("/users/", "/home/"),
+        ("/Volumes/Backups", "/data/external"),
+        ("/Volumes/", "/data/"),
         ("https://github.com/" + "RudraChopra", "https://example.invalid/anonymous"),
         ("Rudra" + " Chopra", "Anonymous Authors"),
         ("Rudra" + "Chopra", "anonymous"),

@@ -37,3 +37,15 @@ def test_collect_files_includes_nested_bridge_receipts(tmp_path, monkeypatch):
         path.relative_to(tmp_path).as_posix() for path in builder.collect_files()
     }
     assert observed == expected
+
+
+def test_sanitizer_removes_machine_local_volume_paths():
+    builder = load_builder()
+    text = (
+        "store=/Volumes/Backups/FARO/artifacts/store "
+        "user=/Users/example/project"
+    )
+    sanitized = builder.sanitize_text_copy(text)
+    assert "/Volumes/" not in sanitized
+    assert "/Users/" not in sanitized
+    assert "/data/external/FARO/artifacts/store" in sanitized

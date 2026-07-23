@@ -44,6 +44,10 @@ EVIDENCE_AUDITS = (
     ROOT / "research/artifacts/mosaic_cinic10_natural_v2_audit.json",
     ROOT / "research/artifacts/mosaic_real_proxy_v1_audit.json",
     ROOT / "research/artifacts/mosaic_fare_proxy_comparison_v1_audit.json",
+    ROOT / "research/artifacts/mosaic_acs_scalar_confirmation_audit_v1.json",
+    ROOT / "research/artifacts/mosaic_real_proxy_mass_confirmation_audit_v1.json",
+    ROOT / "research/artifacts/mosaic_residual_sharpness_audit_v1.json",
+    ROOT / "research/artifacts/mosaic_local_dp_baseline_audit_v1.json",
 )
 IDENTITY_PATTERNS = (
     re.compile(r"rudra\s*chopra", re.IGNORECASE),
@@ -171,7 +175,10 @@ def main() -> None:
     for path in EVIDENCE_AUDITS:
         payload = json.loads(path.read_text(encoding="utf-8"))
         evidence[path.name] = {
-            "passed": payload.get("pass") is True,
+            "passed": (
+                payload.get("pass") is True
+                or payload.get("passed") is True
+            ),
             "sha256": sha256(path),
         }
     lean = json.loads(
