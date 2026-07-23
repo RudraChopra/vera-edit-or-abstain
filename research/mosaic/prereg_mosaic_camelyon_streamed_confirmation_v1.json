@@ -1,0 +1,90 @@
+{
+  "attacker_constraint_generation": true,
+  "balanced_fold_caps": {
+    "construction": 6000,
+    "reference": 18000
+  },
+  "claim_boundary": "This confirmation uses held-out Camelyon17 patches from hospitals represented in training. It tests supported multi-hospital patient shift, not transport to the unsupported center-2 test hospital.",
+  "code_sha256": {
+    "research/mosaic/mosaic_bridge.py": "a4db7cf4752ec463fc01bd8ad436c06846c74d3feefe0aeb62d5dd87e4df32a4",
+    "research/mosaic/mosaic_channel.py": "a69c82b9182be32d28d30e83795ac77c9512fa09f95f8bad7e1ed5732e60ecc4",
+    "research/mosaic/mosaic_envelope.py": "01d8693d5557cf09d09ea5cf47d3259cb394f1c994e334040b1f898d58a772de",
+    "research/mosaic/mosaic_real.py": "b8e1d70b8c72f79db6d4cf6587a9e34fde0a050387058b4d00c754f8b60a94f7",
+    "research/mosaic/mosaic_transform_exact_optimizer.py": "5188124aabd9e17e5648b5915ccb731023474b3f57aba5839b3a0ae37c4e5760",
+    "research/mosaic/prepare_camelyon_streamed_confirmation_store.py": "b42bc0faaba60d99837aeff7a38d09453b0ebb53fa8dd0d4f99017ce5c52fc0f",
+    "research/mosaic/run_mosaic_bridge_frontier.py": "4478d1d525648f783f1ed4172c611a3fd336c546098387f005904c2f0efe02ab",
+    "research/mosaic/run_mosaic_camelyon_multihospital_confirmation.py": "33c2ffe657e56ec1848093d47f8b4e032c454c669525b63ac38d0d6c53280471",
+    "research/mosaic/run_mosaic_camelyon_streamed_confirmation.py": "061d1dfb64bc56dbe7a10fdc993d00726de63e941f3c08b883092c434eb481f8"
+  },
+  "design": "Outcome-blind data-access amendment to the previously locked multi-hospital confirmation after its APFS source volume failed read-only verification. Method, sources, thresholds, seeds, and diagnostic rule are unchanged.",
+  "familywise_delta": 0.05,
+  "fine_token_count": 4,
+  "locked_at_utc": "2026-07-23T22:28:44.686539+00:00",
+  "main_paper_inclusion_gate": {
+    "maximum_heldout_primary_violations": 0,
+    "maximum_operational_primary_violations": 0,
+    "minimum_primary_releases": 3
+  },
+  "metadata": {
+    "bytes": 91685559,
+    "rows": 455954,
+    "sha256": "7bd59c895ab158732c9449c75bf02f7b2eed9bedd20259d99d9c171a270b9fb4"
+  },
+  "name": "MOSAIC Camelyon17 streamed multi-hospital lock v1",
+  "operational_draws_per_primary_release": 100,
+  "primary_utility_threshold": 0.4,
+  "privacy_advantage_threshold": 0.35,
+  "released_token_count": 2,
+  "remote_dataset": {
+    "parquet_files": [
+      "data/train-00000-of-00014.parquet",
+      "data/train-00001-of-00014.parquet",
+      "data/train-00002-of-00014.parquet",
+      "data/train-00003-of-00014.parquet",
+      "data/train-00004-of-00014.parquet",
+      "data/train-00005-of-00014.parquet",
+      "data/train-00006-of-00014.parquet",
+      "data/train-00007-of-00014.parquet",
+      "data/train-00008-of-00014.parquet",
+      "data/train-00009-of-00014.parquet",
+      "data/train-00010-of-00014.parquet",
+      "data/train-00011-of-00014.parquet",
+      "data/train-00012-of-00014.parquet",
+      "data/train-00013-of-00014.parquet",
+      "data/validation-00000-of-00003.parquet",
+      "data/validation-00001-of-00003.parquet",
+      "data/validation-00002-of-00003.parquet"
+    ],
+    "provenance_check": "Every selected image ID, label, center, patient, node, and coordinate must match the local official WILDS metadata.",
+    "repository": "wltjr1007/Camelyon17-WILDS",
+    "revision": "d784d5344ba6c967f83f9f3d9b2f1e2a4d6eb78f"
+  },
+  "repository_head_before_lock": "6db4625237fe8925c3ae34f41933212dbd961921",
+  "seeds": [
+    4301,
+    4302,
+    4303,
+    4304,
+    4305
+  ],
+  "solver_time_limit_seconds": 300.0,
+  "status": "locked_before_streamed_model_and_outcomes",
+  "store": {
+    "manifest_sha256": "bound_to_preregistration_sha256"
+  },
+  "streamed_store": {
+    "model": "torchvision ResNet18 ImageNet-1K V1 penultimate",
+    "preprocessing": "official torchvision weights transform",
+    "selected_image_ids_sha256": "7f3cf6ab82e9f19f43b6cb670d753e2cb8510adaa2630322b5b46cd51dc14b00",
+    "selected_rows": 39200,
+    "selection_seed": 20270727,
+    "train_rows_per_stratum": 7000,
+    "validation_rows_per_stratum": 2800
+  },
+  "utility_thresholds": [
+    0.35,
+    0.4,
+    0.45,
+    0.49
+  ]
+}
