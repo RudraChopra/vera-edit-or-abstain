@@ -1,0 +1,80 @@
+{
+  "claim_boundary": "This is a prospective 2023 confirmation after 2021 discovery and 2022 persistence, not a prospectively selected initial hypothesis. The scalar bound is fixed before 2023 access and applies only because each tested channel and utility functional is frozen.",
+  "code_sha256": {
+    "research/mosaic/mosaic_real.py": "b8e1d70b8c72f79db6d4cf6587a9e34fde0a050387058b4d00c754f8b60a94f7",
+    "research/mosaic/run_mosaic_acs_pandemic_panel.py": "f955c2722340b9f3e7086d7e62a3fea34efe16288b3b1acb882de46f08b397a6",
+    "research/mosaic/run_mosaic_acs_scalar_confirmation.py": "645b30540a4b9e4a82dee66bce21c6fa7210acba6d455cd1f5412b20dbc14c9d",
+    "research/mosaic/run_mosaic_acs_temporal_replication.py": "7630b3d8b1df41108ce4e7009f8fcf63db396040c5df41cbdb7d816add1e601c",
+    "research/mosaic/run_mosaic_official_frontier_exact_confirmation.py": "66d7aa3eeedd6460fc894c281b4c660e3da0c781984012eeb379e543b506f166",
+    "research/scripts/official_eraser_adapters.py": "ebcb3db26b60ba240958ff9944ec174f4e63a90fadcbbb87169c67eac87bcd26",
+    "research/scripts/prepare_acs_natural_shift_stores.py": "f36e4717398857c8a2c77ca52431a6808baa2da552883f40de96b25568cf1bee",
+    "research/scripts/run_official_eraser_frontier.py": "2a408a5e78f88c687a40e600b12924c5d70299204ad6fdf3ead51911348b0f7f"
+  },
+  "input_sha256": {
+    "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-public_coverage-CA-FL__seed1401.json": "2e1d666f70f027ea9be5ed91da273879c4e0e16a85d6668092df30b8615e39e0",
+    "research/artifacts/mosaic_acs_natural_shift_v1_receipts/ACS-public_coverage-CA-FL__seed1402.json": "039c1409a398a25d66bee11bd58bc681f7a4ed121413fe83ae0c19921351e90f",
+    "research/artifacts/mosaic_acs_temporal_replication_v1.json": "6b5188e04e54d3ad2c89643d50ba6cfa430bca7c05901ae69a0781c0eb2f2680",
+    "research/mosaic/prereg_mosaic_acs_natural_shift_data_v1.json": "6a38d6f2cb4dab58d6280d4592b3eb9f34708cee6f90c0cfc173ead913786aa8",
+    "research/mosaic/prereg_mosaic_acs_pandemic_panel_v1.json": "2d3fc8cd4a3d813e17bac9bff3f238d9277c7db9468aecfed7e5405df8cfd61e"
+  },
+  "locked_at_utc": "2026-07-23T21:08:24.015168+00:00",
+  "name": "MOSAIC ACS fixed-functional natural failure confirmation lock v1",
+  "protocol": {
+    "cell_delta": 0.00625,
+    "confidence_bound": "simultaneous one-sided Hoeffding lower bounds over two interfaces and four strata per interface",
+    "confirmation": "a natural failure is confirmed when any stratum's familywise lower bound exceeds the frozen utility threshold 0.40; the paired MOSAIC decision must remain its frozen 2018 abstention",
+    "confirmation_year": "2023",
+    "design": "prospective 2023 confirmation of the two frozen direct interfaces whose empirical utility failures repeated in both 2021 and 2022",
+    "familywise_delta": 0.05,
+    "fixed_functional": "for each task-label/source stratum, evaluate the frozen channel's per-token expected 0-1 loss in [0,1]",
+    "future_asset_urls": {
+      "FL": "https://www2.census.gov/programs-surveys/acs/data/pums/2023/1-Year/csv_pfl.zip"
+    },
+    "hypotheses": 2,
+    "maximum_confirmation_rows_per_interface": 128000,
+    "reference_year": "2018",
+    "selection": "no 2023 model, interface, tokenizer, threshold, stratum, or confidence-bound selection",
+    "strata_per_interface": 4,
+    "utility_threshold": 0.4,
+    "witnesses": [
+      {
+        "candidate": "TaCo::components_removed=1",
+        "seed": 1401,
+        "target_state": "FL",
+        "task": "public_coverage"
+      },
+      {
+        "candidate": "R-LACE::rank=4",
+        "seed": 1402,
+        "target_state": "FL",
+        "task": "public_coverage"
+      }
+    ]
+  },
+  "raw_2023_assets_absent_at_lock": true,
+  "reference_raw_asset": {
+    "bytes": 267297811,
+    "sha256": "dc2187fc90df2c5f6b546ee89a2b41c9a97379c9e7136461b6a6c8de871b43e0",
+    "state": "CA",
+    "year": "2018"
+  },
+  "repeated_2022_rows": [
+    {
+      "candidate": "TaCo::components_removed=1",
+      "seed": 1401,
+      "target_state": "FL",
+      "task": "public_coverage",
+      "worst_conditional_error_empirical": 0.4232441598150928
+    },
+    {
+      "candidate": "R-LACE::rank=4",
+      "seed": 1402,
+      "target_state": "FL",
+      "task": "public_coverage",
+      "worst_conditional_error_empirical": 0.4019031108347319
+    }
+  ],
+  "repository_head_before_lock": "e916ebc3e5bd25419d4adf2f95eb4ee4d23eafe4",
+  "status": "locked_before_2023_download",
+  "stopping_rule": "Report both frozen interfaces, all eight scalar stratum bounds, every reconstruction failure, and every confirmed or unconfirmed violation. No replacement interface or confidence method is allowed."
+}
