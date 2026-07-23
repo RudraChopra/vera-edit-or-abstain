@@ -1,0 +1,38 @@
+{
+  "claim_boundary": "This is a real attribute imputer on ACS microdata, not BISG: public ACS lacks surnames. True source labels are used only in disjoint proxy training, calibration, and diagnostic partitions. The target certificate uses proxy labels and a separately estimated token-dependent confusion tensor. The diagnostic partition is not used for selection.",
+  "code_sha256": {
+    "research/mosaic/mosaic_proxy_bridge.py": "61afa5112e60c2b2b18f1c9ef8ea3a2eb0931d9c8af72eb4e26aa45deaa43e3e",
+    "research/mosaic/mosaic_real.py": "b8e1d70b8c72f79db6d4cf6587a9e34fde0a050387058b4d00c754f8b60a94f7",
+    "research/mosaic/mosaic_transform_exact_optimizer.py": "5188124aabd9e17e5648b5915ccb731023474b3f57aba5839b3a0ae37c4e5760",
+    "research/mosaic/run_mosaic_real_proxy_study.py": "0f3beda278af87cc37ae25d217074a210c39e8cdaa63db7654f7154371857696"
+  },
+  "locked_at_utc": "2026-07-23T07:42:09.360802+00:00",
+  "name": "MOSAIC real ACS geography-ancestry proxy study v1",
+  "protocol": {
+    "calibration_model": "task-label, true-source, and fine-token specific source-to-proxy confusion tensor",
+    "family_failure_probability": 0.05,
+    "fine_token_count": 4,
+    "partition_fractions": {
+      "calibration": 0.2,
+      "diagnostic": 0.15,
+      "proxy_train": 0.2,
+      "target_proxy": 0.25,
+      "task_train": 0.2
+    },
+    "primary_gate": "release, zero diagnostic contract violations, and proxy balanced accuracy at least .60",
+    "privacy_advantage_threshold": 0.35,
+    "proxy": "held-out geography, birthplace, ancestry, Hispanic-origin, language, nativity, and citizenship imputer",
+    "released_token_count": 2,
+    "seed": 20270723,
+    "source": "RAC1P white-alone versus all other codes",
+    "task": "Folktables ACSIncome",
+    "utility_error_threshold": 0.4
+  },
+  "raw_data": {
+    "bytes": 267297811,
+    "path": "/Users/rudrachopra/Documents/Science Fair/data/acs_pums/2018/1-Year/psam_p06.csv",
+    "sha256": "dc2187fc90df2c5f6b546ee89a2b41c9a97379c9e7136461b6a6c8de871b43e0",
+    "source": "2018 ACS 1-Year California person PUMS"
+  },
+  "status": "locked_before_outcomes"
+}
