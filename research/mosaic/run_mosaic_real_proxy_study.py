@@ -23,7 +23,7 @@ from mosaic_transform_exact_optimizer import optimize_transform_exact_channel
 ROOT = Path(__file__).resolve().parents[2]
 LOCK = ROOT / "research/mosaic/prereg_mosaic_real_proxy_v1.json"
 AMENDMENT = ROOT / (
-    "research/mosaic/prereg_mosaic_real_proxy_v1_amendment.json"
+    "research/mosaic/prereg_mosaic_real_proxy_v1_amendment_v2.json"
 )
 RAW = Path(
     "/Users/rudrachopra/Documents/Science Fair/data/"
@@ -278,8 +278,9 @@ def main() -> None:
         calibration_confusion_counts=confusion,
         confidence_region="l1_weissman",
     )
-    identity = np.stack(
-        [np.eye(FINE_TOKEN_COUNT), np.eye(FINE_TOKEN_COUNT)]
+    identity = (
+        (np.eye(FINE_TOKEN_COUNT),),
+        (np.eye(FINE_TOKEN_COUNT),),
     )
     solution = optimize_transform_exact_channel(
         certificate.conditional_empirical_distributions,
