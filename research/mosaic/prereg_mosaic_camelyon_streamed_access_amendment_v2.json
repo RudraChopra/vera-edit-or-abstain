@@ -1,0 +1,26 @@
+{
+  "access_controls": {
+    "base_backoff_seconds": 30,
+    "checkpoint_unit": "completed parquet shard",
+    "duckdb_http_retries": 12,
+    "duckdb_http_retry_wait_ms": 2000,
+    "duckdb_http_timeout_seconds": 120,
+    "duckdb_threads": 1,
+    "inter_shard_wait_seconds": 15,
+    "max_attempts_per_shard": 8
+  },
+  "base_preregistration_sha256": "cd26a723c705dfc518b59190a982b40aa85bf73b2a7592ebd2c300c76294594f",
+  "code_sha256": {
+    "research/mosaic/prepare_camelyon_streamed_confirmation_store_v2.py": "20d9083a898cf7307492d0151c03fb1d16be5243b0069f048948faf5bacae92b"
+  },
+  "locked_at": "2026-07-24T03:06:08.026059+00:00",
+  "name": "MOSAIC Camelyon streamed data-access amendment v2",
+  "scope": "Data access only: serialize DuckDB HTTP reads, add bounded exponential retry, and checkpoint completed shards. Selected IDs, remote revision, images, preprocessing, model, feature layer, seeds, thresholds, bridge, optimizer, and gates are unchanged.",
+  "status": "locked_before_recovery_features_and_outcomes",
+  "trigger": {
+    "completed_manifest_available": false,
+    "failed_script": "research/mosaic/prepare_camelyon_streamed_confirmation_store.py",
+    "failure": "HTTP 429 while opening train shard 2 of 14",
+    "outcomes_available": false
+  }
+}
