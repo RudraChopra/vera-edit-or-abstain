@@ -63,6 +63,7 @@ ARTIFACT_PATTERNS = (
     "research/artifacts/mosaic_acs_bridge_strict_v3_receipts/*.json",
     "research/artifacts/mosaic_real_confirmation_v1/*.json",
     "research/artifacts/mosaic_real_exact_confirmation_v1/*.json",
+    "research/artifacts/mosaic_qwen_powered_confirmation_v1/*.json",
 )
 
 FORBIDDEN_IDENTITY_MARKERS = (
@@ -200,14 +201,27 @@ PYTHONPATH=research/mosaic:research/scripts \
   python research/mosaic/audit_mosaic_acs_k8_high_support_v3.py
 ```
 
-The registered Qwen pilot did not pass its fixed go rule. Recompute all six
-candidate decisions and verify the mandatory stop before temporal confirmation:
+The first Qwen pilot did not pass its fixed go rule. Recompute all six pilot
+decisions, then inspect the separately locked powered follow-up:
 
 ```bash
 PYTHONPATH=research/mosaic:research/scripts \
   python research/mosaic/audit_mosaic_qwen_pilot.py \
   --report research/artifacts/mosaic_qwen_pilot_v1.json \
   --output /tmp/mosaic_qwen_pilot_audit.json
+```
+
+The powered study uses a public CivilComments table and a pinned
+Qwen2.5-1.5B-Instruct revision. Its five complete receipt files and summary are
+included. To reconstruct the 56,000-row feature store and replay the full
+audit:
+
+```bash
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/prepare_civilcomments_qwen_powered_store.py \
+  --csv /path/to/all_data_with_identities.csv
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/audit_mosaic_qwen_powered_confirmation.py
 ```
 
 The external-shift evidence has four independent replay layers. The first

@@ -18,6 +18,9 @@ The named paper and named supplement are included for arXiv and direct review.
 - Three natural-shift domains now yield 75 releases in 120 jobs with zero
   held-out violations: BiasBios 20/20, geographic ACS 15/60, and natural
   CINIC-10 origin shift 40/40.
+- A locked powered Qwen2.5-1.5B hidden-state study releases 5/5 temporal
+  moderation interfaces with zero held-out violations and zero violations in
+  500 operational replays.
 - The 40-seed CINIC extension uses one stricter familywise allocation and
   passes its locked gate. The minimum leave-one-domain-out release rate is
   43.8%.
