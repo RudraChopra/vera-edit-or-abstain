@@ -39,6 +39,7 @@ PDFS = {
 }
 ARCHIVE = PAPER / "mosaic_aaai2027_code_data_anonymous.zip"
 EVIDENCE_AUDITS = (
+    ROOT / "research/artifacts/mosaic_path9_goal_completion_audit.json",
     ROOT / "research/artifacts/mosaic_path9_theory_v1_audit.json",
     ROOT / "research/artifacts/mosaic_cinic10_natural_v1_audit.json",
     ROOT / "research/artifacts/mosaic_cinic10_natural_v2_audit.json",

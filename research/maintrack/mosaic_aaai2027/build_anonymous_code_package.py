@@ -18,6 +18,14 @@ REPOSITORY = HERE.parents[2]
 DEFAULT_OUTPUT = HERE / "mosaic_aaai2027_code_data_anonymous.zip"
 PACKAGE_ROOT = "mosaic_code_data_anonymous"
 FIXED_ZIP_TIME = (2026, 7, 21, 0, 0, 0)
+TEXT_SUFFIXES = {
+    ".json",
+    ".md",
+    ".py",
+    ".sha256",
+    ".toml",
+    ".txt",
+}
 
 LOCKED_REPLAYS = (
     {
@@ -74,6 +82,9 @@ FORBIDDEN_IDENTITY_MARKERS = (
     b"/" + b"Users" + b"/",
     b"/" + b"Volumes" + b"/",
 )
+EXCLUDED_REPOSITORY_FILES = {
+    Path("research/artifacts/mosaic_submission_package_audit.json"),
+}
 
 ANONYMOUS_LICENSE = """MIT License
 
@@ -311,7 +322,9 @@ and repository metadata are intentionally omitted for double-blind review.
 Text files copied from the named source release have author names, repository
 handles, and absolute home paths replaced in this review archive. Historical
 preregistration hashes continue to identify the original locked named-source
-bytes; `MANIFEST.sha256` authenticates the sanitized review copy.
+bytes. Each locked replay's `SOURCE_BYTES.sha256` also records the original
+hash of any artifact whose review copy required redaction. `MANIFEST.sha256`
+authenticates the sanitized review copy.
 """
 
 
@@ -346,10 +359,30 @@ def sanitize_text_copy(text: str) -> str:
     return text
 
 
+def write_review_copy(destination: Path, data: bytes) -> bool:
+    """Write a review-safe copy and report whether its text was redacted."""
+
+    if destination.suffix.lower() not in TEXT_SUFFIXES:
+        destination.write_bytes(data)
+        return False
+    text = data.decode("utf-8")
+    sanitized = sanitize_text_copy(text)
+    if sanitized == text:
+        destination.write_bytes(data)
+        return False
+    destination.write_text(sanitized, encoding="utf-8")
+    return True
+
+
 def collect_files() -> list[Path]:
     files: set[Path] = set()
     for pattern in (*SOURCE_PATTERNS, *ARTIFACT_PATTERNS):
-        files.update(path for path in REPOSITORY.glob(pattern) if path.is_file())
+        files.update(
+            path
+            for path in REPOSITORY.glob(pattern)
+            if path.is_file()
+            and path.relative_to(REPOSITORY) not in EXCLUDED_REPOSITORY_FILES
+        )
     if not files:
         raise RuntimeError("anonymous package selection is empty")
     return sorted(files, key=lambda path: path.relative_to(REPOSITORY).as_posix())
@@ -368,6 +401,7 @@ def git_blob(commit: str, relative: str) -> bytes:
 def write_locked_replays(root: Path) -> None:
     for replay in LOCKED_REPLAYS:
         replay_root = root / "locked_replay" / replay["name"]
+        redacted_source_hashes: list[tuple[str, str]] = []
         prereg_source = REPOSITORY / replay["prereg"]
         prereg = json.loads(prereg_source.read_text(encoding="utf-8"))
         for relative, expected in prereg["code_sha256"].items():
@@ -380,7 +414,8 @@ def write_locked_replays(root: Path) -> None:
                 )
             destination = replay_root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
-            destination.write_bytes(data)
+            if write_review_copy(destination, data):
+                redacted_source_hashes.append((relative, actual))
         for relative, expected in prereg.get("pilot_artifact_sha256", {}).items():
             source = REPOSITORY / relative
             actual = sha256(source)
@@ -391,12 +426,24 @@ def write_locked_replays(root: Path) -> None:
                 )
             destination = replay_root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, destination)
+            if write_review_copy(destination, source.read_bytes()):
+                redacted_source_hashes.append((relative, actual))
         for key in ("prereg", "sidecar", "report"):
             source = REPOSITORY / replay[key]
             destination = replay_root / replay[key]
             destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, destination)
+            source_hash = sha256(source)
+            if write_review_copy(destination, source.read_bytes()):
+                redacted_source_hashes.append((replay[key], source_hash))
+        if redacted_source_hashes:
+            source_manifest = replay_root / "SOURCE_BYTES.sha256"
+            source_manifest.write_text(
+                "".join(
+                    f"{digest}  {relative}\n"
+                    for relative, digest in sorted(redacted_source_hashes)
+                ),
+                encoding="utf-8",
+            )
 
 
 def write_manifest(root: Path) -> Path:
@@ -467,14 +514,7 @@ def build(output: Path) -> dict[str, object]:
         for source in collect_files():
             destination = root / source.relative_to(REPOSITORY)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            if source.suffix.lower() in {
-                ".json",
-                ".md",
-                ".py",
-                ".sha256",
-                ".toml",
-                ".txt",
-            }:
+            if source.suffix.lower() in TEXT_SUFFIXES:
                 text = source.read_text(encoding="utf-8")
                 destination.write_text(
                     sanitize_text_copy(text),

@@ -59,9 +59,9 @@ The named paper and named supplement are included for arXiv and direct review.
 ## Verification
 
 - Main paper: 9 pages total; references begin on page 8.
-- Supplement: 16 pages before final Camelyon integration.
-- Code/data archive: 15.9 MB, below the 50 MB limit.
-- Full test suite: 313 tests and 14 subtests pass before the final rebuild.
+- Supplement: 17 pages.
+- Code/data archive: 15.4 MiB, below the 50 MB limit.
+- Full test suite: 316 tests and 14 subtests pass.
 - Submission audit: pass.
 - Anonymous PDF and archive identity scans: pass.
 - Visual PDF inspection: pass.
