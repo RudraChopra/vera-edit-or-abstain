@@ -21,6 +21,9 @@ The named paper and named supplement are included for arXiv and direct review.
 - A locked powered Qwen2.5-1.5B hidden-state study releases 5/5 temporal
   moderation interfaces with zero held-out violations and zero violations in
   500 operational replays.
+- A separately locked supported multi-hospital Camelyon17 study releases 5/5
+  pathology interfaces even at the .35 utility contract, with zero held-out
+  violations and zero violations in 500 operational replays.
 - A prospectively frozen 2023 ACS panel confirms one natural direct-rule
   contract violation that MOSAIC had rejected, with empirical error .4245 and
   a familywise lower bound of .4054 against the .40 contract.

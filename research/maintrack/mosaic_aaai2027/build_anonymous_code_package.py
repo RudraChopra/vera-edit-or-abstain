@@ -225,6 +225,17 @@ PYTHONPATH=research/mosaic:research/scripts \
   python research/mosaic/audit_mosaic_qwen_powered_confirmation.py
 ```
 
+The supported multi-hospital Camelyon study uses official WILDS metadata, a
+pinned public mirror revision, and torchvision ResNet-18 features. Its five
+receipts and summary are included. Reconstruct and replay it with:
+
+```bash
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/prepare_camelyon_streamed_confirmation_store_v2.py
+PYTHONPATH=research/mosaic:research/scripts \
+  python research/mosaic/audit_mosaic_camelyon_streamed_confirmation.py
+```
+
 The external-shift evidence has four independent replay layers. The first
 recomputes every raw finite-confidence bridge and global optimum. The next two
 replay the corrected outward-rounded v2 receipts in floating-point and exact

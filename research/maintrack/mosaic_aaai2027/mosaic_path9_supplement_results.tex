@@ -266,6 +266,51 @@ ranges from $.141$ to $.213$; diagnostic source advantage ranges from $.016$
 to $.038$. The released channel costs a median $.60$ balanced-accuracy points
 relative to its selected four-token task interface.
 
+\subsection{Supported multi-hospital pathology shift}
+
+A pre-outcome Camelyon17 lock fixes 39,200 official WILDS patches, five seeds,
+ImageNet-pretrained ResNet-18 penultimate features, a four-token to two-token
+release, and $.35$ source plus five utility contracts. Centers 0 and 3--4 form
+the two audited hospital sources; every train and validation source--label
+stratum contains 7,000 and 2,800 patches, respectively. The study concerns
+supported multi-hospital patient shift and does not claim transport to the
+unsupported center-2 test hospital.
+
+The original external feature store was unavailable, so an outcome-blind
+recovery used local official metadata and a pinned public WILDS mirror. A
+data-access-only amendment after an HTTP rate limit serialized the reads,
+added bounded retry, and checkpointed each shard. It changed no selected image,
+model, feature, seed, threshold, contract, bridge, or analysis. Every retrieved
+label, center, patient, node, and coordinate matches the locked metadata.
+
+MOSAIC releases 5/5 interfaces at every utility threshold from $.35$ through
+$.49$. Worst certified source advantage is $.2521$--$.2662$, and certified
+worst error is $.2571$--$.2848$. Untouched validation diagnostics have source
+advantage $.0126$--$.0274$ and worst error $.0964$--$.1428$. Thus all five
+releases satisfy the held-out contracts, as do all 500 stochastic operational
+replays. The independent auditor verifies every feature-array digest, receipt,
+and deterministic replay.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{rrrrrr}
+\hline
+Seed & Cert.\ src. & Cert.\ err. & Held-out src. & Held-out err. & Op.\ viol.\\
+\hline
+4301 & .2521 & .2571 & .0214 & .1405 & 0/100\\
+4302 & .2662 & .2848 & .0126 & .0964 & 0/100\\
+4303 & .2561 & .2628 & .0141 & .1428 & 0/100\\
+4304 & .2568 & .2673 & .0274 & .1096 & 0/100\\
+4305 & .2613 & .2672 & .0142 & .1298 & 0/100\\
+\hline
+\end{tabular}
+\caption{Locked Camelyon17 multi-hospital confirmation at the stricter $.35$
+utility contract. All five interfaces release.}
+\label{supp:tab:camelyon-streamed}
+\end{table}
+
 \subsection{A real estimated proxy}
 
 A locked ACSIncome follow-up trains a source imputer from geography,
