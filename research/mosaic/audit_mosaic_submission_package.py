@@ -48,6 +48,10 @@ EVIDENCE_AUDITS = (
     ROOT / "research/artifacts/mosaic_real_proxy_mass_confirmation_audit_v1.json",
     ROOT / "research/artifacts/mosaic_residual_sharpness_audit_v1.json",
     ROOT / "research/artifacts/mosaic_local_dp_baseline_audit_v1.json",
+    ROOT / "research/artifacts/mosaic_qwen_powered_confirmation_audit_v1.json",
+    ROOT
+    / "research/artifacts/"
+    "mosaic_camelyon_streamed_confirmation_audit_v1.json",
 )
 IDENTITY_PATTERNS = (
     re.compile(r"rudra\s*chopra", re.IGNORECASE),
@@ -107,6 +111,8 @@ def audit_pdf(
         )
     references_page = None
     if is_main:
+        if pages > 9:
+            failures.append(f"main paper has {pages} pages; maximum is 9")
         for page_number, page in enumerate(page_text, start=1):
             if re.search(r"(?m)^References\s*$", page):
                 references_page = page_number

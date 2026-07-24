@@ -1,0 +1,64 @@
+{
+  "arrays": {
+    "s": "s.npy",
+    "split": "split.npy",
+    "y": "y.npy",
+    "z": "z.npy"
+  },
+  "auxiliary_arrays": {
+    "ids": "ids.npy",
+    "source_rows": "source_rows.npy"
+  },
+  "confirmation_partition": "integer dataset id modulo 4 is nonzero",
+  "created_at": "2026-07-24T02:30:41.872545+00:00",
+  "dataset": "CivilComments-Qwen2.5-powered-temporal-confirmation",
+  "device": "mps",
+  "dimension": 1536,
+  "dtype": "float32",
+  "group_counts": {
+    "role=0,y=0,s=0": 1500,
+    "role=0,y=0,s=1": 1500,
+    "role=0,y=1,s=0": 1500,
+    "role=0,y=1,s=1": 1500,
+    "role=1,y=0,s=0": 4500,
+    "role=1,y=0,s=1": 4500,
+    "role=1,y=1,s=0": 4500,
+    "role=1,y=1,s=1": 4500,
+    "role=2,y=0,s=0": 8000,
+    "role=2,y=0,s=1": 8000,
+    "role=2,y=1,s=0": 8000,
+    "role=2,y=1,s=1": 8000
+  },
+  "hidden_layer": 28,
+  "invalid_confirmation_timestamp_count": 1,
+  "max_length": 96,
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "model_layers": 28,
+  "model_revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "n_examples": 56000,
+  "padding_side": "right",
+  "pilot_partition": "integer dataset id modulo 4 equals 0",
+  "pooling": "mean",
+  "preregistration_sha256": "7ae975aa86464a4660e1ce43407852a5b34074d3cb20326f2822634f14359711",
+  "prompt_prefix": "Moderate this comment for toxicity:\n",
+  "representation": "layer28_mean",
+  "source_concept": "identity_any >= 0.5 (identity mention, not author identity)",
+  "source_csv_sha256": "403e638c83a225d738a937ff98b61fd0631e30f710d57928c7766d413526b77f",
+  "source_rows_sha256": "989f57303e0ecc079930bb764085486741b0432aa568e85848c05580e9f8487c",
+  "target": "toxicity >= 0.5",
+  "temporal_roles": {
+    "balanced_role_caps": {
+      "construction": 6000,
+      "reference": 18000,
+      "target": 32000
+    },
+    "confirmation_partition": "integer dataset id modulo 4 is nonzero",
+    "construction": "created before 2016-10-01 UTC",
+    "pilot_partition": "integer dataset id modulo 4 equals 0",
+    "reference": "created from 2016-10-01 through 2017-03-31 UTC",
+    "reference_start_utc": "2016-10-01",
+    "selection_seed": 20270726,
+    "target": "created on or after 2017-04-01 UTC",
+    "target_start_utc": "2017-04-01"
+  }
+}

@@ -64,6 +64,7 @@ ARTIFACT_PATTERNS = (
     "research/artifacts/mosaic_real_confirmation_v1/*.json",
     "research/artifacts/mosaic_real_exact_confirmation_v1/*.json",
     "research/artifacts/mosaic_qwen_powered_confirmation_v1/*.json",
+    "research/artifacts/mosaic_camelyon_streamed_confirmation_v1/*.json",
 )
 
 FORBIDDEN_IDENTITY_MARKERS = (
